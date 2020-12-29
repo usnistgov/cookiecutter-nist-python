@@ -1,4 +1,4 @@
-Welcome to {{ cookiecutter.project_name }}'s documentation!
+Welcome to Python Boilerplate's documentation!
 ======================================
 
 .. toctree::
@@ -8,10 +8,11 @@ Welcome to {{ cookiecutter.project_name }}'s documentation!
    readme
    installation
    usage
+   demo
    modules
    contributing
-   {% if cookiecutter.create_author_file == 'y' -%}authors
-   {% endif -%}history
+   authors
+   history
 
 Indices and tables
 ==================

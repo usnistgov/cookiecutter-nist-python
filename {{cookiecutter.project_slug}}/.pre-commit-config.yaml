@@ -1,0 +1,45 @@
+# pre-commit install
+# pre-commit run --all-files
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    # -   id: check-yaml
+    #     args: [--unsafe]
+    -   id: check-added-large-files
+  # isort should run before black as black sometimes tweaks the isort output
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.6.4
+    hooks:
+      - id: isort
+  # https://github.com/python/black#version-control-integration
+  - repo: https://github.com/psf/black
+    rev: 20.8b1
+    hooks:
+      - id: black
+  - repo: https://github.com/keewis/blackdoc
+    rev: v0.3.1
+    hooks:
+      - id: blackdoc
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 3.8.4
+    hooks:
+      - id: flake8
+  # Note yet implemented
+  # - repo: https://github.com/pre-commit/mirrors-mypy
+  #   rev: v0.790  # Must match ci/requirements/*.yml
+  #   hooks:
+  #     - id: mypy
+  # run this occasionally, ref discussion https://github.com/pydata/xarray/pull/3194
+  # - repo: https://github.com/asottile/pyupgrade
+  #   rev: v1.22.1
+  #   hooks:
+  #     - id: pyupgrade
+  #       args:
+  #         - "--py3-only"
+  #         # remove on f-strings in Py3.7
+  #         - "--keep-percent-format"

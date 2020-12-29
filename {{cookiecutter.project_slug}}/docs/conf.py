@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# {{ cookiecutter.project_slug }} documentation build configuration file, created by
+# python_boilerplate documentation build configuration file, created by
 # sphinx-quickstart on Fri Jun  9 13:47:02 2017.
 #
 # This file is execfile()d with the current directory set to its
@@ -31,7 +31,100 @@ import {{ cookiecutter.project_slug }}
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode']
+extensions = [
+    'sphinx.ext.autodoc',
+    "sphinx.ext.autosummary",
+    "sphinx.ext.intersphinx",
+    # "sphinx.ext.extlinks",
+    "sphinx.ext.mathjax",
+    "sphinx.ext.napoleon",
+    "IPython.sphinxext.ipython_directive",
+    "IPython.sphinxext.ipython_console_highlighting",
+    "nbsphinx",
+    # "sphinx_autosummary_accessors",
+    # "scanpydoc.rtd_github_links",
+    'sphinx.ext.viewcode',
+]
+
+# defined stuff, from xarray
+nbsphinx_prolog = """
+{% set docname = env.doc2path(env.docname, base=None) %}
+
+You can view this notebook `on Github <https://github.com/wpk-nist-gov/{{ cookiecutter.project_slug }}/blob/master/doc/{{ docname }}>`_.
+"""
+
+autosummary_generate = True
+
+# # for scanpydoc's jinja filter
+# project_dir = pathlib.Path(__file__).parent.parent
+# html_context = {
+#     "github_user": "pydata",
+#     "github_repo": "xarray",
+#     "github_version": "master",
+# }
+
+autodoc_typehints = "none"
+
+napoleon_google_docstring = False
+napoleon_numpy_docstring = True
+
+napoleon_use_param = False
+napoleon_use_rtype = True
+napoleon_preprocess_types = True
+napoleon_type_aliases = {
+    # general terms
+    "sequence": ":term:`sequence`",
+    "iterable": ":term:`iterable`",
+    "callable": ":py:func:`callable`",
+    "dict_like": ":term:`dict-like <mapping>`",
+    "dict-like": ":term:`dict-like <mapping>`",
+    "mapping": ":term:`mapping`",
+    "file-like": ":term:`file-like <file-like object>`",
+    # special terms
+    # "same type as caller": "*same type as caller*",  # does not work, yet
+    # "same type as values": "*same type as values*",  # does not work, yet
+    # stdlib type aliases
+    "MutableMapping": "~collections.abc.MutableMapping",
+    "sys.stdout": ":obj:`sys.stdout`",
+    "timedelta": "~datetime.timedelta",
+    "string": ":class:`string <str>`",
+    # numpy terms
+    "array_like": ":term:`array_like`",
+    "array-like": ":term:`array-like <array_like>`",
+    "scalar": ":term:`scalar`",
+    "array": ":term:`array`",
+    "hashable": ":term:`hashable <name>`",
+    # matplotlib terms
+    "color-like": ":py:func:`color-like <matplotlib.colors.is_color_like>`",
+    "matplotlib colormap name": ":doc:matplotlib colormap name <Colormap reference>",
+    "matplotlib axes object": ":py:class:`matplotlib axes object <matplotlib.axes.Axes>`",
+    "colormap": ":py:class:`colormap <matplotlib.colors.Colormap>`",
+    # objects without namespace
+    "DataArray": "~xarray.DataArray",
+    "Dataset": "~xarray.Dataset",
+    "Variable": "~xarray.Variable",
+    "ndarray": "~numpy.ndarray",
+    "MaskedArray": "~numpy.ma.MaskedArray",
+    "dtype": "~numpy.dtype",
+    "ComplexWarning": "~numpy.ComplexWarning",
+    "Index": "~pandas.Index",
+    "MultiIndex": "~pandas.MultiIndex",
+    "CategoricalIndex": "~pandas.CategoricalIndex",
+    "TimedeltaIndex": "~pandas.TimedeltaIndex",
+    "DatetimeIndex": "~pandas.DatetimeIndex",
+    "Series": "~pandas.Series",
+    "DataFrame": "~pandas.DataFrame",
+    "Categorical": "~pandas.Categorical",
+    "Path": "~~pathlib.Path",
+    # objects with abbreviated namespace (from pandas)
+    "pd.Index": "~pandas.Index",
+    "pd.NaT": "~pandas.NaT",
+}
+
+numpydoc_class_members_toctree = True
+numpydoc_show_class_members = False
+
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -69,7 +162,7 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', "**.ipynb_checkpoints"]
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
@@ -83,18 +176,37 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+# html_theme = 'alabaster'
+html_theme = "sphinx_rtd_theme"
+
 
 # Theme options are theme-specific and customize the look and feel of a
 # theme further.  For a list of options available for each theme, see the
 # documentation.
 #
-# html_theme_options = {}
+# html_theme_options = {"logo_only": True}
+
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+
+# Sometimes the savefig directory doesn't exist and needs to be created
+# https://github.com/ipython/ipython/issues/8733
+# becomes obsolete when we can pin ipython>=5.2; see ci/requirements/doc.yml
+ipython_savefig_dir = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "_build", "html", "_static"
+)
+if not os.path.exists(ipython_savefig_dir):
+    os.makedirs(ipython_savefig_dir)
+
+
+# If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
+# using the given strftime format.
+today_fmt = "%Y-%m-%d"
+html_last_updated_fmt = today_fmt
 
 
 # -- Options for HTMLHelp output ---------------------------------------
@@ -128,8 +240,8 @@ latex_elements = {
 # [howto, manual, or own class]).
 latex_documents = [
     (master_doc, '{{ cookiecutter.project_slug }}.tex',
-     '{{ cookiecutter.project_name }} Documentation',
-     '{{ cookiecutter.full_name }}', 'manual'),
+     'Python Boilerplate Documentation',
+     'wpk', 'manual'),
 ]
 
 
@@ -139,7 +251,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     (master_doc, '{{ cookiecutter.project_slug }}',
-     '{{ cookiecutter.project_name }} Documentation',
+     'Python Boilerplate Documentation',
      [author], 1)
 ]
 
@@ -151,7 +263,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, '{{ cookiecutter.project_slug }}',
-     '{{ cookiecutter.project_name }} Documentation',
+     'Python Boilerplate Documentation',
      author,
      '{{ cookiecutter.project_slug }}',
      'One line description of project.',
@@ -160,3 +272,25 @@ texinfo_documents = [
 
 
 
+
+# Example configuration for intersphinx: refer to the Python standard library.
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3/", None),
+    "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
+    "iris": ("https://scitools.org.uk/iris/docs/latest", None),
+    "numpy": ("https://numpy.org/doc/stable", None),
+    "scipy": ("https://docs.scipy.org/doc/scipy/reference", None),
+    "numba": ("https://numba.pydata.org/numba-doc/latest", None),
+    "matplotlib": ("https://matplotlib.org", None),
+    "dask": ("https://docs.dask.org/en/latest", None),
+    "cftime": ("https://unidata.github.io/cftime", None),
+    "sparse": ("https://sparse.pydata.org/en/latest/", None),
+}
+
+# think jinja stuff
+# def escape_underscores(string):
+#     return string.replace("_", r"\_")
+
+
+# def setup(app):
+#     DEFAULT_FILTERS["escape_underscores"] = escape_underscores

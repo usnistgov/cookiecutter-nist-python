@@ -1,0 +1,14 @@
+{
+  "include" : [
+    "cmomy/**"
+  ],
+
+  "exclude" : [
+    "**/__pycache__",
+    ".tox/**",
+    "**/.mypy_cache",
+    "__pycache__",
+    "**egg-info"
+  ]
+
+}
