@@ -10,7 +10,6 @@ dependencies:
   - tox-conda
   # specials
   - pre-commit
-  - versioneer
   # repl
   - ipython
   - ipykernel

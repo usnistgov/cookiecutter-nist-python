@@ -2,17 +2,19 @@ Welcome to {{ cookiecutter.project_name }}'s documentation!
 ======================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    readme
    installation
    usage
    demo
-   modules
-   contributing
+   {% if cookiecutter.sphinx_auto == 'autodoc' -%}modules
+   {% elif cookiecutter.sphinx_auto == 'automodule' -%}api_automodule
+   {% elif cookiecutter.sphinx_auto == 'autosummary' -%}api_autosummary
+   {% endif -%}contributing
    {% if cookiecutter.create_author_file == 'y' -%}authors
-   {% endif -%}history
+   {% endif -%} history
 
 
 Indices and tables
