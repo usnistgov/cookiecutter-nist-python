@@ -4,6 +4,8 @@ channels:
   - wpk-nist
 dependencies:
   - python=3.8
+  # because using scm versioning
+  - setuptools>=38.4
   # cli
   {% if cookiecutter.command_line_interface|lower == 'click' -%}
   - Click{% endif %}

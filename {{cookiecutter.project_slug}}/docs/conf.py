@@ -52,18 +52,25 @@ nbsphinx_prolog = """
 {% set docname = env.doc2path(env.docname, base=None) %}
 {% endraw %}
 
-You can view this notebook `on Github <https://github.com/wpk-nist-gov/{{ cookiecutter.project_slug }}/blob/master/doc/{% raw %}{{ docname }}{% endraw %}>`_.
+You can view this notebook `on Github <https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}/blob/master/doc/{% raw %}{{ docname }}{% endraw %}>`_.
 """
 
 autosummary_generate = True
-
+# autoclass_content = "both"  # include both class docstring and __init__
+autodoc_default_flags = [
+        # Make sure that any autodoc declarations show the right members
+        "members",
+        "inherited-members",
+        "private-members",
+        "show-inheritance",
+]
 # # for scanpydoc's jinja filter
 # project_dir = pathlib.Path(__file__).parent.parent
-# html_context = {
-#     "github_user": "pydata",
-#     "github_repo": "xarray",
-#     "github_version": "master",
-# }
+html_context = {
+    "github_user": "{{ cookiecutter.github_username }}",
+    "github_repo": "{{ cookiecutter.project_slug}}",
+    "github_version": "master",
+}
 
 autodoc_typehints = "none"
 

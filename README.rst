@@ -54,11 +54,17 @@ Quickstart
 Install the latest Cookiecutter if you haven't installed it yet (this requires
 Cookiecutter 1.4.0 or higher)::
 
-    pip install -U cookiecutter
+  pip install -U cookiecutter
 
-Generate a Python package project::
+Generate a Python package project from original repo::
 
-    cookiecutter https://github.com/audreyfeldroy/cookiecutter-pypackage.git
+  cookiecutter https://github.com/audreyfeldroy/cookiecutter-pypackage.git
+
+Generate project from this repo::
+
+  cookiecutter https://github.com/wpk-nist-gov/cookiecutter-pypackage.git
+
+
 
 Then:
 

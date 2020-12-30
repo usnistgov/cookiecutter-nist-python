@@ -10,12 +10,12 @@ dependencies:
   - tox-conda
   # specials
   - pre-commit
-  - versioneer
   # repl
   - ipython
   - ipykernel
   # build
   - setuptools
+  - setuptools-scm
   - twine
   # conda specific
   - conda-build
