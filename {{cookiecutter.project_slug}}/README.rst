@@ -37,7 +37,7 @@ Features
 Credits
 -------
 
-This package was created with Cookiecutter_ and the `wpk-nist-gov/cookiecutter-pypackge`_ project template forked from `audreyr/cookiecutter-pypackage`_.
+This package was created with Cookiecutter_ and the `wpk-nist-gov/cookiecutter-pypackage`_ Project template forked from `audreyr/cookiecutter-pypackage`_.
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`wpk-nist-gov/cookiecutter-pypackage`: https://github.com/wpk-nist-gov/cookiecutter-pypackage
