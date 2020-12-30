@@ -122,21 +122,21 @@ release: dist ## package and upload a release
 release-test: dist ## package and upload to test
 	twine upload --repository testpypi dist/*
 
-dist: clean ## builds source and wheel package
+dist: ## builds source and wheel package (run clean?)
 	python setup.py sdist
 	python setup.py bdist_wheel
 	ls -l dist
 
 
-conda-dist:
+conda-dist: ## build conda dist (run dist and clean?)
 	mkdir conda_dist; \
 	cd cond_dist; \
 	grayskull pypi {{ cookiecutter.project_slug }} ; \
 	conda-build ; \
 	echo 'upload now'
 
-install: clean ## install the package to the active Python's site-packages
+install: ## install the package to the active Python's site-packages (run clean?)
 	python setup.py install
 
-install-dev: ## install development version
+install-dev: ## install development version (run clean?)
 	pip install -e . --no-deps

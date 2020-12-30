@@ -48,9 +48,11 @@ extensions = [
 
 # defined stuff, from xarray
 nbsphinx_prolog = """
+{% raw %}
 {% set docname = env.doc2path(env.docname, base=None) %}
+{% endraw %}
 
-You can view this notebook `on Github <https://github.com/wpk-nist-gov/{{ cookiecutter.project_slug }}/blob/master/doc/{{ docname }}>`_.
+You can view this notebook `on Github <https://github.com/wpk-nist-gov/{{ cookiecutter.project_slug }}/blob/master/doc/{% raw %}{{ docname }}{% endraw %}>`_.
 """
 
 autosummary_generate = True
