@@ -16,7 +16,7 @@ from .{{ cookiecutter.project_slug }} import a_function
 from .core import another_func
 
 try:
-    __version__ = pkg_resources.get_distribution("xarray").version
+    __version__ = pkg_resources.get_distribution("{{ cookiecutter.project_name }}").version
 except Exception:
     # Local copy or not installed with setuptools.
     # Disable minimum version checks on downstream libraries.
