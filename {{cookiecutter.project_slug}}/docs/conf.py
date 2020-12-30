@@ -242,8 +242,8 @@ latex_elements = {
 # [howto, manual, or own class]).
 latex_documents = [
     (master_doc, '{{ cookiecutter.project_slug }}.tex',
-     'Python Boilerplate Documentation',
-     'wpk', 'manual'),
+     '{{ cookiecutter.project_name }} Documentation',
+     '{{ cookiecutter.full_name }}', 'manual'),
 ]
 
 
@@ -253,7 +253,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     (master_doc, '{{ cookiecutter.project_slug }}',
-     'Python Boilerplate Documentation',
+     '{{ cookiecutter.project_name }} Documentation',
      [author], 1)
 ]
 
@@ -265,7 +265,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, '{{ cookiecutter.project_slug }}',
-     'Python Boilerplate Documentation',
+     '{{ cookiecutter.project_name }} Documentation',
      author,
      '{{ cookiecutter.project_slug }}',
      'One line description of project.',
