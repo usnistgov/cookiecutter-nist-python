@@ -15,6 +15,7 @@ dependencies:
   - ipykernel
   # build
   - setuptools
+  - setuptools-scm
   - twine
   # conda specific
   - conda-build

@@ -83,7 +83,7 @@ conda-env: ## conda create base env
 conda-dev: ## conda update development dependencies
 	conda env update -n {{ cookiecutter.project_slug }}-env -f environment-dev.yml
 
-conda-all: conda-create-env conda-create-dev ## conda create development env
+conda-all: conda-env conda-dev ## conda create development env
 
 mamba-env: ## mamba create base env
 	mamba env create -f environment.yml
@@ -91,7 +91,7 @@ mamba-env: ## mamba create base env
 mamba-dev: ## mamba update development dependencies
 	mamba env update -n {{ cookiecutter.project_slug }}-env -f environment-dev.yml
 
-mamba-all: mamba-create-env mamba-create-dev ## mamba create development env
+mamba-all: mamba-env mamba-dev ## mamba create development env
 
 activate: ## activate base env
 	conda activate {{ cookiecutter.project_slug }}-env
@@ -139,7 +139,7 @@ version: ## check version of package
 docs: ## generate Sphinx HTML documentation, including API docs
 	rm -f docs/{{ cookiecutter.project_slug }}.rst
 	rm -f docs/modules.rst
-	{% if cookiecutter.sphinx_auto == 'autodoc' -%}
+	{%- if cookiecutter.sphinx_auto == 'autodoc' %}
 	sphinx-apidoc -o docs/ {{ cookiecutter.project_slug }}
 	{%- endif %}
 	$(MAKE) -C docs clean
