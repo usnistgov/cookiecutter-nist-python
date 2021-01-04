@@ -4,6 +4,9 @@
     "github_username": "wpk-nist-gov",
     "project_name": "mypackage",
     "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
+    "_copy_without_render": [
+        "docs/_templates/*.rst"
+    ],
     "project_short_description": "Python Boilerplate contains all the boilerplate you need to create a Python package.",
     "pypi_username": "wpk-nist",
     "version": "0.0.1",
@@ -26,6 +29,5 @@
         "GNU General Public License v3",
         "Not open source"
     ],
-    "sphinx_auto": ["automodule", "autosummary", "autodoc"
-    ]
+    "sphinx_auto": ["automodule", "autosummary", "autodoc"]
 }
