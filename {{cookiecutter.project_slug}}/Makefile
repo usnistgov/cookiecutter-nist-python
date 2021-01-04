@@ -139,6 +139,7 @@ version: ## check version of package
 docs: ## generate Sphinx HTML documentation, including API docs
 	rm -f docs/{{ cookiecutter.project_slug }}.rst
 	rm -f docs/modules.rst
+	rm -fr docs/generated
 	{%- if cookiecutter.sphinx_auto == 'autodoc' %}
 	sphinx-apidoc -o docs/ {{ cookiecutter.project_slug }}
 	{%- endif %}
