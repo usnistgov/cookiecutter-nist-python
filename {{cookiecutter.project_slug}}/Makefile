@@ -170,7 +170,7 @@ conda-dist: ## build conda dist (run dist and clean?)
 	mkdir conda_dist; \
 	cd cond_dist; \
 	grayskull pypi {{ cookiecutter.project_slug }} ; \
-	conda-build ; \
+	conda-build .; \
 	echo 'upload now'
 
 
