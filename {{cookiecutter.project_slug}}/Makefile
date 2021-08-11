@@ -105,7 +105,7 @@ user-venv: ## create .venv file with name of conda env
 	echo {{ cookiecutter.project_slug}}-env > .venv
 
 user-autoenv-zsh: ## create .autoenv.zsh files
-	echo conda activate $(cat .venv) > .autoenv.zsh
+	echo conda activate $$(cat .venv) > .autoenv.zsh
 	echo conda deactivate > .autoenv_leave.zsh
 
 user-all: user-venv user-autoenv-zsh ## runs user scripts
