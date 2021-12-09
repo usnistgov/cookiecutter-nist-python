@@ -64,6 +64,10 @@ pre-commit-init: ## install pre-commit
 pre-commit-run: ## run pre-commit
 	pre-commit run
 
+pre-commit-autoupdate: ## run to update hooks
+	pre-commit autoupdate
+
+
 pre-commit-run-all: ## run pre-commit on all files
 	pre-commit run --all-files
 
