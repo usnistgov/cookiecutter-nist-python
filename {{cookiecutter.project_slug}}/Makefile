@@ -81,21 +81,22 @@ init: .git pre-commit-init ## run git-init pre-commit
 # virtual env
 ################################################################################
 .PHONY: conda-env conda-dev conda-all mamba-env mamba-dev mamba-all activate
-conda-env: ## conda create base env
+
+environment-dev.yaml:
+	conda-merge environment.yaml environment-tools.yaml > environment-dev.yaml
+
+## conda create base env
+conda-env:
 	conda env create -f environment.yaml
 
 conda-dev: ## conda update development dependencies
-	conda env update -n {{ cookiecutter.project_slug }}-env -f environment-dev.yaml
-
-conda-all: conda-env conda-dev ## conda create development env
+	conda env create -f environment-dev.yaml
 
 mamba-env: ## mamba create base env
 	mamba env create -f environment.yaml
 
 mamba-dev: ## mamba update development dependencies
-	mamba env update -n {{ cookiecutter.project_slug }}-env -f environment-dev.yaml
-
-mamba-all: mamba-env mamba-dev ## mamba create development env
+	mamba env create -f environment-dev.yaml
 
 activate: ## activate base env
 	conda activate {{ cookiecutter.project_slug }}-env
@@ -131,9 +132,9 @@ coverage: ## check code coverage quickly with the default Python
 	coverage html
 	$(BROWSER) htmlcov/index.html
 
-
 version: ## check version of package
-	python setup.py --version
+	python -m setuptools_scm
+
 
 
 ################################################################################
@@ -157,11 +158,11 @@ servedocs: docs ## compile the docs watching for changes
 
 ################################################################################
 # distribution
-################################################################################
+###############################################################################
 dist: ## builds source and wheel package (run clean?)
-	python setup.py sdist
-	python setup.py bdist_wheel
+	python -m build
 	ls -l dist
+
 
 .PHONY: release release-test conda-dist
 release: dist ## package and upload a release
@@ -183,7 +184,7 @@ conda-dist: ## build conda dist (run dist and clean?)
 ################################################################################
 .PHONY: install install-dev
 install: ## install the package to the active Python's site-packages (run clean?)
-	python setup.py install
+	pip install . --no-deps
 
 install-dev: ## install development version (run clean?)
 	pip install -e . --no-deps
