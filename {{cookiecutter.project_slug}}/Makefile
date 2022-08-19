@@ -82,21 +82,29 @@ init: .git pre-commit-init ## run git-init pre-commit
 ################################################################################
 .PHONY: conda-env conda-dev conda-all mamba-env mamba-dev mamba-all activate
 
-environment-dev.yaml:
+# environment-dev.yaml:
+# 	conda-merge environment.yaml environment-tools.yaml > environment-dev.yaml
+create-dev-yaml:
 	conda-merge environment.yaml environment-tools.yaml > environment-dev.yaml
 
 ## conda create base env
-conda-env:
-	conda env create -f environment.yaml
+# conda-env:
+# 	conda env create -f environment.yaml
 
-conda-dev: ## conda update development dependencies
-	conda env create -f environment-dev.yaml
+# conda-dev: ## conda update development dependencies
+# 	conda env create -f environment-dev.yaml
 
 mamba-env: ## mamba create base env
 	mamba env create -f environment.yaml
 
 mamba-dev: ## mamba update development dependencies
 	mamba env create -f environment-dev.yaml
+
+mamba-env-update:
+	mamba env update -f environment.yml
+
+mamba-dev-update:
+	mamba env update -f environment-dev.yml
 
 activate: ## activate base env
 	conda activate {{ cookiecutter.project_slug }}-env

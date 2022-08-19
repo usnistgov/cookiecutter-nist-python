@@ -1,34 +1,42 @@
 dependencies:
-  # development
+  ## development
   - isort
   - black
   - blackdoc
   - flake8
-  # testing
+  ## flake8 options
+  # - flake8-docstrings
+  ## testing
   - pytest
   - pytest-cov
-  - tox-conda
-  # specials
+  ## optional pytest
+  # - pytest-xdist
+  # - pytest-flake8
+  - tox
+  ## optional tox stuff
+  ## Don't think I need tox-conda if specify in tox.ini file
+  # - tox-conda
+  ## specials
   - pre-commit
-  # repl
+  ## repl
   - ipython
   - ipykernel
-  # build
+  ## build
   - setuptools
   - setuptools-scm
   - setuptools-scm-git-archive
   - build
   - twine
-  # conda specific
+  ## conda specific
   - conda-build
   - anaconda-client
   - greyskull
-  # doc stuff
+  ## doc stuff
   - sphinx
   - sphinx_rtd_theme
   - recommonmark # if want markdown
   - nbsphinx # if want notebooks
-  # lsp stuff
+  ## lsp stuff
   - autoflake
   - pyls-mypy
   - pyls-black
