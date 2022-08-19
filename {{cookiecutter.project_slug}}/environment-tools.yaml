@@ -24,7 +24,7 @@ dependencies:
   ## build
   - setuptools
   - setuptools-scm
-  - setuptools-scm-git-archive
+  - setuptools_scm_git_archive
   - build
   - twine
   ## conda specific
