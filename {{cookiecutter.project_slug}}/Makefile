@@ -148,7 +148,7 @@ version: ## check version of package
 ################################################################################
 # Docs
 ################################################################################
-.PHONY: docs serverdocs
+.PHONY: docs serverdocs create-docs-nist-pages
 docs: ## generate Sphinx HTML documentation, including API docs
 	rm -f docs/{{ cookiecutter.project_slug }}.rst
 	rm -f docs/modules.rst
@@ -162,6 +162,33 @@ docs: ## generate Sphinx HTML documentation, including API docs
 
 servedocs: docs ## compile the docs watching for changes
 	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
+
+
+# create docs-nist-pages directory with empty branch
+create-docs-nist-pages:
+	mkdir docs-nist-pages
+	cd docs-nist-pages
+	git clone git@github.com:{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }} html
+
+	echo "To push, use the following"
+	echo "cd docs-nist-pages/html"
+	echo ""
+	echo git checkout --orphan gh-pages
+	echo git reset --hard
+	echo git commit --allow-empty -m "Initializing gh-pages branch"
+	echo git push origin gh-pages
+	echo git checkout master
+
+copy-docs-to-docs-nist-pages:
+	cp -af docs/_build/html/* docs-nist-pages/html/
+
+cleanup-docs-nist-pages:
+	bash ./cleanup-docs-nist-pages.sh
+
+
+
+
+
 
 
 ################################################################################
