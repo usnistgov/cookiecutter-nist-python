@@ -13,7 +13,7 @@
    .. rubric:: {{ _('Methods') }}
 
    .. autosummary::
-      :toctree: 
+      :toctree:
    {% for item in methods %}
       ~{{ name }}.{{ item }}
    {%- endfor %}
@@ -23,9 +23,9 @@
    {% block attributes %}
    {% if attributes %}
    .. rubric:: {{ _('Attributes') }}
-   
+
    .. autosummary::
-      :toctree: 
+      :toctree:
    {% for item in attributes %}
       ~{{ name }}.{{ item }}
    {%- endfor %}
@@ -37,7 +37,7 @@
    .. rubric:: {{_('Dunder Methods') }}
 
    .. autosummary::
-      :toctree: 
+      :toctree:
    {% for item in all_methods %}
       {%- if item in ['__repr__',
                       '__len__',
