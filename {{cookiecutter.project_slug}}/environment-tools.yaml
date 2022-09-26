@@ -36,8 +36,12 @@ dependencies:
   - sphinx_rtd_theme
   - recommonmark # if want markdown
   - nbsphinx # if want notebooks
+  - sphinxcontrib-spelling
   ## lsp stuff
   - autoflake
   - pyls-mypy
   - pyls-black
   - pyls-isort
+  - pip
+  - pip:
+          - pyenchant

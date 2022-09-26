@@ -43,7 +43,8 @@ extensions = [
     "nbsphinx",
     # "sphinx_autosummary_accessors",
     # "scanpydoc.rtd_github_links",
-    'sphinx.ext.viewcode',
+    # 'sphinx.ext.viewcode',
+    'sphinx.ext.linkcode',
 ]
 
 # defined stuff, from xarray
@@ -70,6 +71,7 @@ html_context = {
     "github_user": "{{ cookiecutter.github_username }}",
     "github_repo": "{{ cookiecutter.project_slug}}",
     "github_version": "master",
+    "doc_path": "doc",
 }
 
 autodoc_typehints = "none"
@@ -178,6 +180,58 @@ pygments_style = 'sphinx'
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
+
+
+# based on numpy doc/source/conf.py
+def linkcode_resolve(domain, info):
+    """
+    Determine the URL corresponding to Python object
+    """
+    import inspect
+
+    if domain != "py":
+        return None
+
+    modname = info["module"]
+    fullname = info["fullname"]
+
+    submod = sys.modules.get(modname)
+    if submod is None:
+        return None
+
+    obj = submod
+    for part in fullname.split("."):
+        try:
+            obj = getattr(obj, part)
+        except AttributeError:
+            return None
+
+    try:
+        fn = inspect.getsourcefile(inspect.unwrap(obj))
+    except TypeError:
+        fn = None
+    if not fn:
+        return None
+
+    try:
+        source, lineno = inspect.getsourcelines(obj)
+    except OSError:
+        lineno = None
+
+    if lineno:
+        linespec = f"#L{lineno}-L{lineno + len(source) - 1}"
+    else:
+        linespec = ""
+
+    fn = os.path.relpath(fn, start=os.path.dirname(cmomy.__file__))
+
+    return f"https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}/blob/master/{{ cookiecutter.project_slug}}/{fn}{linespec}"
+
+
+# spelling
+spelling_word_list_filename = "spelling_wordlist.txt"
+
+
 
 
 # -- Options for HTML output -------------------------------------------
