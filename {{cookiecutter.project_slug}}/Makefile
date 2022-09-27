@@ -30,6 +30,7 @@ clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and 
 
 clean-build: ## remove build artifacts
 	rm -fr build/
+	rm -fr docs/_build/
 	rm -fr dist/
 	rm -fr .eggs/
 	find . -name '*.egg-info' -exec rm -fr {} +
@@ -80,30 +81,21 @@ init: .git pre-commit-init ## run git-init pre-commit
 ################################################################################
 # virtual env
 ################################################################################
-.PHONY: conda-env conda-dev conda-all mamba-env mamba-dev mamba-all activate
+.PHONY: mamba-env mamba-dev mamba-env-update mamba-dev-update activate
 
-# environment-dev.yaml:
-# 	conda-merge environment.yaml environment-tools.yaml > environment-dev.yaml
-create-dev-yaml:
+environment-dev.yaml: environment.yaml environment-tools.yaml
 	conda-merge environment.yaml environment-tools.yaml > environment-dev.yaml
 
-## conda create base env
-# conda-env:
-# 	conda env create -f environment.yaml
-
-# conda-dev: ## conda update development dependencies
-# 	conda env create -f environment-dev.yaml
-
-mamba-env: ## mamba create base env
+mamba-env: environment.yaml
 	mamba env create -f environment.yaml
 
-mamba-dev: ## mamba update development dependencies
+mamba-dev: environment-dev.yaml
 	mamba env create -f environment-dev.yaml
 
-mamba-env-update:
+mamba-env-update: environment.yaml
 	mamba env update -f environment.yml
 
-mamba-dev-update:
+mamba-dev-update: environment-dev.yaml
 	mamba env update -f environment-dev.yml
 
 activate: ## activate base env
@@ -140,8 +132,20 @@ coverage: ## check code coverage quickly with the default Python
 	coverage html
 	$(BROWSER) htmlcov/index.html
 
-version: ## check version of package
+
+
+
+################################################################################
+# versioning
+################################################################################
+.PHONY: version-scm version-import version
+version-scm: ## check version of package
 	python -m setuptools_scm
+
+version-import: ## check version from python import
+	python -c 'import analphipy; print(analphipy.__version__)'
+
+version: version-scm version-import
 
 
 
@@ -168,28 +172,23 @@ doc-spelling:
 
 # create docs-nist-pages directory with empty branch
 create-docs-nist-pages:
-	mkdir docs-nist-pages
-	cd docs-nist-pages
-	git clone git@github.com:{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }} html
-
-	echo "To push, use the following"
-	echo "cd docs-nist-pages/html"
-	echo ""
-	echo git checkout --orphan gh-pages
-	echo git reset --hard
-	echo git commit --allow-empty -m "Initializing gh-pages branch"
-	echo git push origin gh-pages
-	echo git checkout master
+	mkdir -p docs-nist-pages ; \
+	cd docs-nist-pages ; \
+	echo git clone git@github.com:{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }} html ;\
+	echo "To push, use the following" ; \
+	echo "cd docs-nist-pages/html" ; \
+	echo "" ; \
+	echo git checkout --orphan nist-pages ; \
+	echo git reset --hard ; \
+	echo git commit --allow-empty -m "Initializing gh-pages branch" ; \
+	echo git push origin nist-pages ; \
+	echo git checkout master ; \
 
 copy-docs-to-docs-nist-pages:
 	cp -af docs/_build/html/* docs-nist-pages/html/
 
 cleanup-docs-nist-pages:
 	bash ./cleanup-docs-nist-pages.sh
-
-
-
-
 
 
 
@@ -208,13 +207,19 @@ release: dist ## package and upload a release
 release-test: dist ## package and upload to test
 	twine upload --repository testpypi dist/*
 
-conda-dist: ## build conda dist (run dist and clean?)
-	mkdir conda_dist; \
-	cd cond_dist; \
-	grayskull pypi {{ cookiecutter.project_slug }} ; \
-	conda-build .; \
+
+conda-greyskull:
+	mkdir -p conda_dist && \
+	cd conda_dist && \
+	grayskull pypi analphipy && \
+	cat analphipy/meta.yaml
+
+conda-build:
+	cd conda_dist && \
+	conda-build . && \
 	echo 'upload now'
 
+conda-dist: conda-greyskull conda-build
 
 ################################################################################
 # installation
