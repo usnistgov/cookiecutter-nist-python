@@ -22,21 +22,21 @@ dependencies:
   - ipython
   - ipykernel
   ## build
-  - setuptools
   - setuptools-scm
-  - setuptools_scm_git_archive
-  - build
-  - twine
+  # - setuptools
+  # - setuptools_scm_git_archive
+  # - build
+  # - twine
   ## conda specific
-  - conda-build
-  - anaconda-client
-  - greyskull
+  # - conda-build
+  # - anaconda-client
+  # - grayskull
   ## doc stuff
   - sphinx
   - sphinx_rtd_theme
-  - recommonmark # if want markdown
   - nbsphinx # if want notebooks
   - sphinxcontrib-spelling
+  # - recommonmark # if want markdown
   ## lsp stuff
   - autoflake
   - pyls-mypy

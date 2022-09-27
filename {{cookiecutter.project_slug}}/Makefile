@@ -133,8 +133,6 @@ coverage: ## check code coverage quickly with the default Python
 	$(BROWSER) htmlcov/index.html
 
 
-
-
 ################################################################################
 # versioning
 ################################################################################
@@ -152,24 +150,7 @@ version: version-scm version-import
 ################################################################################
 # Docs
 ################################################################################
-.PHONY: docs serverdocs create-docs-nist-pages
-docs: ## generate Sphinx HTML documentation, including API docs
-	rm -f docs/{{ cookiecutter.project_slug }}.rst
-	rm -f docs/modules.rst
-	rm -fr docs/generated
-	{%- if cookiecutter.sphinx_auto == 'autodoc' %}
-	sphinx-apidoc -o docs/ {{ cookiecutter.project_slug }}
-	{%- endif %}
-	$(MAKE) -C docs clean
-	$(MAKE) -C docs html
-	$(BROWSER) docs/_build/html/index.html
-
-servedocs: docs ## compile the docs watching for changes
-	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
-
-doc-spelling:
-	sphinx-build -b spelling docs docs/_build
-
+.PHONY: create-docs-nist-pages
 # create docs-nist-pages directory with empty branch
 create-docs-nist-pages:
 	mkdir -p docs-nist-pages ; \
@@ -184,42 +165,57 @@ create-docs-nist-pages:
 	echo git push origin nist-pages ; \
 	echo git checkout master ; \
 
-copy-docs-to-docs-nist-pages:
-	cp -af docs/_build/html/* docs-nist-pages/html/
 
-cleanup-docs-nist-pages:
-	bash ./cleanup-docs-nist-pages.sh
+.PHONY: docs serverdocs doc-spelling docs-nist-pages
+docs: ## generate Sphinx HTML documentation, including API docs
+	rm -fr docs/generated
+	$(MAKE) -C docs clean
+	$(MAKE) -C docs html
+	$(BROWSER) docs/_build/html/index.html
 
+servedocs: docs ## compile the docs watching for changes
+	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
+
+docs-spelling:
+	sphinx-build -b spelling docs docs/_build
+
+docs-nist-pages:
+	tox -e docs
 
 
 ################################################################################
 # distribution
 ###############################################################################
-dist: ## builds source and wheel package (run clean?)
-	python -m build
-	ls -l dist
+.PHONY: pypi-build pypi-release pypi-test-release pypi-dist
+pypi-build:
+	tox -e pypi-build
+
+pypi-release:
+	tox -e pypi-release
 
 
-.PHONY: release release-test conda-dist
-release: dist ## package and upload a release
-	twine upload dist/*
+pypi-test-release:
+	tox -e pypi-test-release
 
-release-test: dist ## package and upload to test
-	twine upload --repository testpypi dist/*
+pypi-dist:
+	pypi-build
+	pypi-release
 
+.PHONY: conda-grayksull conda-build conda-release conda-dist
 
-conda-greyskull:
-	mkdir -p conda_dist && \
-	cd conda_dist && \
-	grayskull pypi analphipy && \
-	cat analphipy/meta.yaml
+conda-grayskull:
+	tox -e grayskull
 
 conda-build:
-	cd conda_dist && \
-	conda-build . && \
-	echo 'upload now'
+	tox -e conda-build
 
-conda-dist: conda-greyskull conda-build
+conda-release:
+	echo 'prefix upload with .tox/conda-dist/'
+
+conda-dist:
+	conda-grayskull
+	conda-build
+	conda-release
 
 ################################################################################
 # installation
