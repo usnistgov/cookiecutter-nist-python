@@ -155,7 +155,7 @@ version: version-scm version-import
 create-docs-nist-pages:
 	mkdir -p docs-nist-pages ; \
 	cd docs-nist-pages ; \
-	echo git clone git@github.com:{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }} html ;\
+	echo git clone git@github.com:{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}.git html ;\
 	echo "To push, use the following" ; \
 	echo "cd docs-nist-pages/html" ; \
 	echo "" ; \
