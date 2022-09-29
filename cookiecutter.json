@@ -6,7 +6,7 @@
     "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
     "_copy_without_render": [
         "docs/_templates/*.rst",
-        "docs/_templates/*.html"
+        "*.html"
     ],
     "project_short_description": "Python Boilerplate contains all the boilerplate you need to create a Python package.",
     "pypi_username": "wpk-nist",
