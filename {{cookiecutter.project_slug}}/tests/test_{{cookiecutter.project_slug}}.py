@@ -11,7 +11,7 @@ import unittest
 from click.testing import CliRunner
 {%- endif %}
 
-from {{ cookiecutter.project_slug }} import {{ cookiecutter.project_slug }}
+from {{ cookiecutter.project_slug }} import a_function, another_func
 {%- if cookiecutter.command_line_interface|lower == 'click' %}
 from {{ cookiecutter.project_slug }} import cli
 {%- endif %}
@@ -19,20 +19,22 @@ from {{ cookiecutter.project_slug }} import cli
 {%- if cookiecutter.use_pytest == 'y' %}
 
 
+
 @pytest.fixture
 def response():
-    """Sample pytest fixture.
-
-    See more at: http://doc.pytest.org/en/latest/fixture.html
-    """
-    # import requests
-    # return requests.get('https://github.com/audreyr/cookiecutter-pypackage')
+    return 1, 2
 
 
-def test_content(response):
-    """Sample pytest test function with the pytest fixture as an argument."""
-    # from bs4 import BeautifulSoup
-    # assert 'GitHub' in BeautifulSoup(response.content).title.string
+def test_a_function(response):
+    a, b = response
+    assert a_function(a, b) == (a, b)
+
+
+def test_another_function(response):
+    a, b = response
+    assert another_func(a, b) == a + b
+
+
 {%- if cookiecutter.command_line_interface|lower == 'click' %}
 
 

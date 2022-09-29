@@ -1,6 +1,7 @@
 """Main module."""
 
-def a_function(*args, **kwargs):
+
+def a_function(*args):
     """
     a test function
 
@@ -14,4 +15,5 @@ def a_function(*args, **kwargs):
     out : array
         an output
     """
-    pass
+
+    return args

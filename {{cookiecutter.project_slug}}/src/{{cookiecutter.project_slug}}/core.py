@@ -19,4 +19,5 @@ def another_func(a, b):
     --------
     {{ cookiecutter.project_slug }}.{{ cookiecutter.project_slug }}.a_function
     """
-    pass
+
+    return a + b

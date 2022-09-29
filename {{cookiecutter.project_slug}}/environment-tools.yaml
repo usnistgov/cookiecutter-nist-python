@@ -12,7 +12,7 @@ dependencies:
   ## optional pytest
   # - pytest-xdist
   # - pytest-flake8
-  - tox
+  - tox-conda
   ## optional tox stuff
   ## Don't think I need tox-conda if specify in tox.ini file
   # - tox-conda

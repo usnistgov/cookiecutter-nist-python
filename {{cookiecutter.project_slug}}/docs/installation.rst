@@ -14,6 +14,13 @@ To install {{ cookiecutter.project_name }}, run this command in your terminal:
 
     $ pip install {{ cookiecutter.project_slug }}
 
+or
+
+.. code-block:: console
+
+   $ conda install -c {{ cookiecutter.conda_channel }} {{ cookiecutter.project_slug }}
+
+
 This is the preferred method to install {{ cookiecutter.project_name }}, as it will always install the most recent stable release.
 
 If you don't have `pip`_ installed, this `Python installation guide`_ can guide
@@ -34,18 +41,20 @@ You can either clone the public repository:
 
     $ git clone git://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}
 
-Or download the `tarball`_:
-
-.. code-block:: console
-
-    $ curl -OJL https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}/tarball/master
 
 Once you have a copy of the source, you can install it with:
 
 .. code-block:: console
 
-    $ python setup.py install
+    $ pip install .
 
+To install dependecies with conda/mamba, use::
+
+.. code-block:: console
+
+   $ conda/mamba env create -n {name} -f environment.yaml
+   $ pip install . --no-deps
+
+To install an editable version, add the `-e` option to pip.
 
 .. _Github repo: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}
-.. _tarball: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}/tarball/master

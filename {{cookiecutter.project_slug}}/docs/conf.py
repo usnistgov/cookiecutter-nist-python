@@ -230,7 +230,7 @@ def linkcode_resolve(domain, info):
     else:
         linespec = ""
 
-    fn = os.path.relpath(fn, start=os.path.dirname(cmomy.__file__))
+    fn = os.path.relpath(fn, start=os.path.dirname({{cookiecutter.project_slug}}.__file__))
 
     return f"https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}/blob/master/{{ cookiecutter.project_slug}}/{fn}{linespec}"
 
@@ -352,15 +352,19 @@ texinfo_documents = [
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
     "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
-    "iris": ("https://scitools.org.uk/iris/docs/latest", None),
     "numpy": ("https://numpy.org/doc/stable", None),
-    "scipy": ("https://docs.scipy.org/doc/scipy/reference", None),
+    # "scipy": ('https://docs.scipy.org/doc/scipy/reference/', None),
+    "scipy": ("https://docs.scipy.org/doc/scipy/", None),
     "numba": ("https://numba.pydata.org/numba-doc/latest", None),
-    "matplotlib": ("https://matplotlib.org", None),
+    # "matplotlib": ("https://matplotlib.org", None),
+    "matplotlib": ("https://matplotlib.org/stable/", None),
     "dask": ("https://docs.dask.org/en/latest", None),
     "cftime": ("https://unidata.github.io/cftime", None),
     "sparse": ("https://sparse.pydata.org/en/latest/", None),
+    "xarray": ("https://docs.xarray.dev/en/stable/", None),
+    "skimage": ("https://scikit-image.org/docs/stable", None),
 }
+
 
 # think jinja stuff
 # def escape_underscores(string):

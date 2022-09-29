@@ -24,7 +24,7 @@ except ImportError:
     from importlib_metadata import version as _version  # type: ignore[no-redef]
 
 try:
-    __version__ = _version(("{{ cookiecutter.project_slug }}")
+    __version__ = _version("{{ cookiecutter.project_slug }}")
 except Exception:
     # Local copy or not installed with setuptools.
     # Disable minimum version checks on downstream libraries.

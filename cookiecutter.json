@@ -2,6 +2,7 @@
     "full_name": "William P. Krekelberg",
     "email": "wpk@nist.gov",
     "github_username": "wpk-nist-gov",
+    "conda_channel": "wpk-nist",
     "project_name": "mypackage",
     "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
     "_copy_without_render": [

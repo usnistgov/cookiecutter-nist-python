@@ -9,4 +9,3 @@ API Reference
 
    a_function
    another_func
-   inner.tmp
