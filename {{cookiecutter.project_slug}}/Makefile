@@ -147,18 +147,18 @@ version: version-scm version-import
 ################################################################################
 # Docs
 ################################################################################
-.PHONY: docs serverdocs doc-spelling
-docs: ## generate Sphinx HTML documentation, including API docs
-	rm -fr docs/generated
-	$(MAKE) -C docs clean
-	$(MAKE) -C docs html
-	$(BROWSER) docs/_build/html/index.html
+# .PHONY: docs serverdocs doc-spelling
+# docs: ## generate Sphinx HTML documentation, including API docs
+# 	rm -fr docs/generated
+# 	$(MAKE) -C docs clean
+# 	$(MAKE) -C docs html
+# 	$(BROWSER) docs/_build/html/index.html
 
-servedocs: docs ## compile the docs watching for changes
-	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
+# servedocs: docs ## compile the docs watching for changes
+# 	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
 
-docs-spelling:
-	sphinx-build -b spelling docs docs/_build
+# docs-spelling:
+# 	sphinx-build -b spelling docs docs/_build
 
 ################################################################################
 # TOX
@@ -179,7 +179,8 @@ docs-build: ## build docs in isolation
 	$(TOX) -e docs-build -- $(posargs)
 docs-release: ## release docs.  use posargs=... to override stuff
 	$(TOX) -e docs-release -- $(posargs)
-
+docs-spelling:
+	$(TOX) -e docs-spelling -- $(posargs)
 docs-nist-pages: ## do both build and releas
 	$(TOX) -e docs-build,docs-release -- $(posargs)
 
