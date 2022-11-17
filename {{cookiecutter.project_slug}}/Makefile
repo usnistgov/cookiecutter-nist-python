@@ -173,12 +173,15 @@ test-all: ## run tests on every Python version with tox
 
 
 ## docs
-.PHONY: docs-build docs-release docs-nist-pages
+.PHONY: docs-build docs-release docs-clean docs-spelling docs-nist-pages
 posargs=
 docs-build: ## build docs in isolation
 	$(TOX) -e docs-build -- $(posargs)
 docs-release: ## release docs.  use posargs=... to override stuff
 	$(TOX) -e docs-release -- $(posargs)
+docs-clean: ## clean docs
+	rm -rf docs/_build/*
+	rm -rf docs/generated/*
 docs-spelling:
 	$(TOX) -e docs-spelling -- $(posargs)
 docs-nist-pages: ## do both build and releas
