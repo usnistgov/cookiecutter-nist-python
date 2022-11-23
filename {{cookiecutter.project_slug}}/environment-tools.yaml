@@ -1,7 +1,5 @@
 dependencies:
-    # recommendation is to install linteres, etc with pipx
-    # and to handle documentation and building with tox
-    # in an isolated env
+    # recommend to install most of the commented out stuff with pipx
     ## specials
     # - pre-commit
     ## Linting

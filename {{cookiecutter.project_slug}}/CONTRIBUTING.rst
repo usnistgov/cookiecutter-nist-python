@@ -57,6 +57,8 @@ If you are proposing a feature:
 Get Started!
 ------------
 
+
+
 Ready to contribute? Here's how to set up `{{ cookiecutter.project_slug }}` for local development.
 
 1. Fork the `{{ cookiecutter.project_slug }}` repo on GitHub.
@@ -66,17 +68,13 @@ Ready to contribute? Here's how to set up `{{ cookiecutter.project_slug }}` for 
 
 
 3. Install dependecies.  There are useful commands in the makefile, that depend on
-   `pre-commit` and `conda-merge`.  These can be installed with `pip`, `pipx`, or `conda/mamba`.
+   `pre-commit` and `conda-merge`.  These can be installed in the local environment with `pip`, or `conda/mamba`, or across environments with `pipx` or `condax`.  For example, we do the following::
 
-4. Initiate pre-commit with::
+   $ for x in pre-commit tox ; do condax install $x; done
 
-     $ pre-commit install
+   Any additional packages you need for development can be installed likewise.
 
-   To update the recipe, use::
-
-     $ pre-commit autoupdate
-
-5. Create virtual env::
+4. Create virtual env::
 
      $ make mamba-dev
      $ conda activate {{ cookiecutter.project_slug }}-env
@@ -87,6 +85,14 @@ Ready to contribute? Here's how to set up `{{ cookiecutter.project_slug }}` for 
      $ conda/mamba env create -n {env-name} -f environment-dev.yaml
      $ conda activate {env-name}
 
+
+5. Initiate pre-commit with::
+
+     $ pre-commit install
+
+   To update the recipe, periodically run::
+
+     $ pre-commit autoupdate
 
 
 6. Install editable package::
