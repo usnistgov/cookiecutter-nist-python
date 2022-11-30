@@ -57,8 +57,6 @@ If you are proposing a feature:
 Get Started!
 ------------
 
-
-
 Ready to contribute? Here's how to set up `{{ cookiecutter.project_slug }}` for local development.
 
 1. Fork the `{{ cookiecutter.project_slug }}` repo on GitHub.
