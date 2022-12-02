@@ -72,6 +72,10 @@ pre-commit-autoupdate: ## run to update hooks
 pre-commit-run-all: ## run pre-commit on all files
 	pre-commit run --all-files
 
+pre-commit-pyupgrade: ## run pyupgrade via pre-commit on all files
+	pre-commit run --hook-stage manual pyupgrade --all-files
+
+
 .git: ## init git
 	git init
 
