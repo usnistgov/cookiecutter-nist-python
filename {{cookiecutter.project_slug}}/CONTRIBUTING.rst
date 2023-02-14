@@ -65,7 +65,7 @@ Ready to contribute? Here's how to set up `{{ cookiecutter.project_slug }}` for 
     $ git clone git@github.com:your_name_here/{{ cookiecutter.project_slug }}.git
 
 
-3. Install dependecies.  There are useful commands in the makefile, that depend on
+3. Install dependencies.  There are useful commands in the makefile, that depend on
    `pre-commit` and `conda-merge`.  These can be installed in the local environment with `pip`, or `conda/mamba`, or across environments with `pipx` or `condax`.  For example, we do the following::
 
    $ for x in pre-commit tox ; do condax install $x; done
@@ -173,8 +173,8 @@ To build the conda distribution, use::
 
   $ make dist-conda-[recipe, build]
 
-where `recipe` makes the conda recipy (using grayskull), and `build` makes the distro.  This can be manually added to a channel.
+where `recipe` makes the conda recipe (using grayskull), and `build` makes the distro.  This can be manually added to a channel.
 
-To test the created distrobutions, you can use one of::
+To test the created distributions, you can use one of::
 
   $ make test-dist-[pypi, conda]-[local,remote] py=[38, 39, 310]
