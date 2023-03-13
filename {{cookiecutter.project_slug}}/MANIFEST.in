@@ -7,10 +7,13 @@ include LICENSE
 include README.rst
 
 
-recursive-include tests *.py
-recursive-exclude * __pycache__
-recursive-exclude * [.]mypy_cache
-recursive-exclude * [.]ipynb_checkpoints
 
+recursive-include tests *.py
+
+global-exclude *.py[co]
+prune */*.egg-info
+prune */*mypy_cache
+prune */*ipynb_checkpoints
+prune */__pycache__
 
 recursive-include docs *.rst conf.py Makefile make.bat *.jpg *.png *.gif

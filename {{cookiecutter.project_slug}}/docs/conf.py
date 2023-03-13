@@ -41,20 +41,48 @@ extensions = [
     "IPython.sphinxext.ipython_directive",
     "IPython.sphinxext.ipython_console_highlighting",
     "nbsphinx",
-    # "sphinx_autosummary_accessors",
-    # "scanpydoc.rtd_github_links",
-    # 'sphinx.ext.viewcode',
-    'sphinx.ext.linkcode',
+    ## easier external links
+    # "sphinx.ext.extlinks",
+    ## view source code on created page
+    # "sphinx.ext.viewcode",
+    ## view source code on github
+    "sphinx.ext.linkcode",
+    ## add copy button
+    "sphinx_copybutton",
+    ## redirect stuff?
+    # "sphinxext.rediraffe",
+    ## pretty things up?
+    # "sphinx_design"
 ]
 
+
+# - top level variables --------------------------------------------------------
+# set github_username variable to be subbed later.
+# this makes it easy to switch from wpk -> usnistgov later
+github_username = "{{ cookiecutter.github_username }}"
+
+html_context = {
+    "github_user": github_username,
+    "github_repo": "{{ cookiecutter.project_slug}}",
+    "github_version": "master",
+    "doc_path": "doc",
+}
+
+
+# -- nbsphinx stuff ------------------------------------------------------------
+
 # defined stuff, from xarray
-nbsphinx_prolog = """
+nbsphinx_prolog = f"""
 {% raw %}
-{% set docname = env.doc2path(env.docname, base=None) %}
+{{% set docname = env.doc2path(env.docname, base=None) %}}
 {% endraw %}
 
-You can view this notebook `on Github <https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}/blob/master/doc/{% raw %}{{ docname }}{% endraw %}>`_.
+You can view this notebook `on Github <https://github.com/{github_username}/{{ cookiecutter.project_slug }}/blob/master/docs/{% raw %}{{{{ docname }}}}{% endraw %}>`_.
 """
+
+nbsphinx_kernel = "autosummary"
+
+# -- python3 ---------------------------------------------------------------
 
 autosummary_generate = True
 # autoclass_content = "both"  # include both class docstring and __init__
@@ -65,17 +93,9 @@ autodoc_default_flags = [
         "private-members",
         "show-inheritance",
 ]
-# # for scanpydoc's jinja filter
-# project_dir = pathlib.Path(__file__).parent.parent
-html_context = {
-    "github_user": "{{ cookiecutter.github_username }}",
-    "github_repo": "{{ cookiecutter.project_slug}}",
-    "github_version": "master",
-    "doc_path": "doc",
-}
-
 autodoc_typehints = "none"
 
+# -- napolean ------------------------------------------------------------------
 napoleon_google_docstring = False
 napoleon_numpy_docstring = True
 
@@ -132,10 +152,6 @@ napoleon_type_aliases = {
     "pd.NaT": "~pandas.NaT",
 }
 
-numpydoc_class_members_toctree = True
-numpydoc_show_class_members = False
-
-
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -189,61 +205,7 @@ pygments_style = 'sphinx'
 todo_include_todos = False
 
 
-# based on numpy doc/source/conf.py
-def linkcode_resolve(domain, info):
-    """
-    Determine the URL corresponding to Python object
-    """
-    import inspect
 
-    if domain != "py":
-        return None
-
-    modname = info["module"]
-    fullname = info["fullname"]
-
-    submod = sys.modules.get(modname)
-    if submod is None:
-        return None
-
-    obj = submod
-    for part in fullname.split("."):
-        try:
-            obj = getattr(obj, part)
-        except AttributeError:
-            return None
-
-    try:
-        fn = inspect.getsourcefile(inspect.unwrap(obj))
-    except TypeError:
-        fn = None
-    if not fn:
-        return None
-
-    try:
-        source, lineno = inspect.getsourcelines(obj)
-    except OSError:
-        lineno = None
-
-    if lineno:
-        linespec = f"#L{lineno}-L{lineno + len(source) - 1}"
-    else:
-        linespec = ""
-
-    fn = os.path.relpath(fn, start=os.path.dirname({{cookiecutter.project_slug}}.__file__))
-
-    return f"https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}/blob/master/{{ cookiecutter.project_slug}}/{fn}{linespec}"
-
-
-# only set spelling stuff if installed:
-try:
-    import sphinxcontrib.spelling # noqa: F401
-
-    extensions += ["sphinxcontrib.spelling"]
-    spelling_word_list_filename = "spelling_wordlist.txt"
-
-except ImportError:
-    pass
 
 
 # -- Options for HTML output -------------------------------------------
@@ -366,10 +328,58 @@ intersphinx_mapping = {
 }
 
 
-# think jinja stuff
-# def escape_underscores(string):
-#     return string.replace("_", r"\_")
+# based on numpy doc/source/conf.py
+def linkcode_resolve(domain, info):
+    """
+    Determine the URL corresponding to Python object
+    """
+    import inspect
+
+    if domain != "py":
+        return None
+
+    modname = info["module"]
+    fullname = info["fullname"]
+
+    submod = sys.modules.get(modname)
+    if submod is None:
+        return None
+
+    obj = submod
+    for part in fullname.split("."):
+        try:
+            obj = getattr(obj, part)
+        except AttributeError:
+            return None
+
+    try:
+        fn = inspect.getsourcefile(inspect.unwrap(obj))
+    except TypeError:
+        fn = None
+    if not fn:
+        return None
+
+    try:
+        source, lineno = inspect.getsourcelines(obj)
+    except OSError:
+        lineno = None
+
+    if lineno:
+        linespec = f"#L{lineno}-L{lineno + len(source) - 1}"
+    else:
+        linespec = ""
+
+    fn = os.path.relpath(fn, start=os.path.dirname({{cookiecutter.project_slug}}.__file__))
+
+    return f"https://github.com/{github_username}/{{ cookiecutter.project_slug }}/blob/master/{{ cookiecutter.project_slug}}/{fn}{linespec}"
 
 
-# def setup(app):
-#     DEFAULT_FILTERS["escape_underscores"] = escape_underscores
+# only set spelling stuff if installed:
+try:
+    import sphinxcontrib.spelling # noqa: F401
+
+    extensions += ["sphinxcontrib.spelling"]
+    spelling_word_list_filename = "spelling_wordlist.txt"
+
+except ImportError:
+    pass
