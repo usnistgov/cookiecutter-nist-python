@@ -2,19 +2,20 @@
     "full_name": "William P. Krekelberg",
     "email": "wpk@nist.gov",
     "github_username": "wpk-nist-gov",
-    "conda_channel": "wpk-nist",
+    "pypi_username": "wpk-nist",
+    "conda_channel": "{{ cookiecutter.pypi_username }}",
     "project_name": "mypackage",
     "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
     "_copy_without_render": [
         "*.html",
-        "docs/_templates/*.rst"
+        "docs/_templates/*.rst",
+        "docs/_templates/autosummary/*.rst"
     ],
     "project_short_description": "Python Boilerplate contains all the boilerplate you need to create a Python package.",
-    "pypi_username": "wpk-nist",
+
     "version": "0.0.1",
     "use_pytest": "y",
     "use_pypi_deployment_with_travis": "n",
-    "add_pyup_badge": "n",
     "command_line_interface": [
         "No command-line interface",
         "Click",
@@ -31,5 +32,6 @@
         "GNU General Public License v3",
         "Not open source"
     ],
-    "sphinx_auto": ["automodule", "autosummary", "autodoc"]
+    "sphinx_auto": ["automodule", "autosummary", "autodoc"],
+    "sphinx_theme": ["sphinx_book_theme", "furo"]
 }

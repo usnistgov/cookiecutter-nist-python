@@ -1,7 +1,6 @@
 [build-system]
 requires = [
-    "setuptools>=42",
-    "wheel",
+    "setuptools>=61.2",
     "setuptools_scm[toml]>=3.4",
     "setuptools_scm_git_archive",
 ]
@@ -9,3 +8,202 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools_scm]
 fallback_version = "999"
+
+
+{%- set license_classifiers = {
+    'NIST license': 'License :: Public Domain',
+    'MIT license': 'License :: OSI Approved :: MIT License',
+    'BSD license': 'License :: OSI Approved :: BSD License',
+    'ISC license': 'License :: OSI Approved :: ISC License (ISCL)',
+    'Apache Software License 2.0': 'License :: OSI Approved :: Apache Software License',
+    'GNU General Public License v3': 'License :: OSI Approved :: GNU General Public License v3 (GPLv3)'
+} %}
+
+
+[project]
+name = "{{ cookiecutter.project_slug }}"
+authors = [{name = "{{ cookiecutter.full_name.replace('\"', '\\\"') }}", email = "{{ cookiecutter.email }}"}]
+{%- if cookiecutter.open_source_license in license_classifiers %}
+license = {text = "{{ cookiecutter.open_source_license }}"}
+{%- endif %}
+description = "Python Boilerplate contains all the boilerplate you need to create a Python package."
+# if using markdown
+# long_description_content_type = text/markdown
+keywords = ["mypackage"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "License :: Public Domain",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Scientific/Engineering",
+]
+dynamic = ["readme", "version"]
+requires-python = ">=3.8"
+dependencies = [] # additional packages
+
+[project.urls]
+Homepage = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name}}"
+
+{%- if 'no' not in cookiecutter.command_line_interface|lower %}
+[project.scripts]
+{{ cookiecutter.project_slug }} = "{{ cookiecutter.project_slug}}.cli:main"
+{%- endif %}
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+zip-safe = true # if using mypy, must be False
+include-package-data = true
+license-files = ["LICENSE"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = false
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.md", "HISTORY.md", "LICENSE"], content-type = "text/markdown"}
+
+[tool.aliases]
+test = "pytest"
+
+[tool.pytest.ini_options]
+addopts = "--verbose"
+testpaths = ["tests"]
+
+[tool.isort]
+profile = "black"
+skip_gitignore = true
+force_to_top = ["true"]
+default_section = "THIRDPARTY"
+known_first_party = ["cmomy"]
+
+
+[tool.ruff]
+line-length = 88
+update-check = false
+target-version = "py38"
+
+select = [
+  # pyflakes
+  "F",
+  # pycodestyle
+  "E",
+  "W",
+  # isort
+  "I",
+  # pyupgrade
+  "UP",
+  # # flake8-2020
+  # "YTT",
+  # # flake8-bugbear
+  # "B",
+  # # flake8-quotes
+  # "Q",
+  # # pylint
+  # "PLE", "PLR", "PLW",
+  # # misc lints
+  # "PIE",
+  # # tidy imports
+  # "TID",
+  # # implicit string concatenation
+  # "ISC",
+  # # type-checking imports
+  # "TCH",
+]
+
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+# fixable = ["A", "B", "C", "D", "E", "F", "..."]
+unfixable = []
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+    "src/cmomy/tests",
+]
+
+
+ignore = [
+    # # whitespace before ':' - doesn't work well with black
+    # "E203",
+    # module level import not at top of file
+    "E402",
+    # line too long - let black worry about that
+    "E501",
+    # do not assign a lambda expression, use a def
+    "E731",
+    # # line break before binary operator
+    # "W503",
+    # allow black line after docstring
+    "D202",
+    "D105",
+    "D205",
+    "D400",
+    "D401",
+]
+
+per-file-ignores = {}
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+
+[tool.ruff.mccabe]
+# Unlike Flake8, default to a complexity level of 10.
+max-complexity = 10
+
+
+
+[tool.mypy]
+exclude = "properties|asv_bench|doc"
+files = ["."]
+show_error_codes = true
+warn_return_any = true
+warn_unused_configs = true
+# plugins = numpy.typing.mypy_plugin
+# Most of the numerical computing stack doesn't have type annotations yet.
+
+[[tool.mypy.overrides]]
+module = [
+       "numpy.*",
+       "bottleneck.*",
+       "dask.*",
+       "netCDF.*",
+       "pandas.*",
+       "pytest.*",
+       "scipy.*",
+       "setuptools",
+       "numba.*",
+       ]
+ignore_missing_imports = true
+
+# version spanning code is hard to type annotate (and most of this module will
+# be going away soon anyways)
+exclude = [
+    ".eggs",
+    "doc",
+    "docs",
+]

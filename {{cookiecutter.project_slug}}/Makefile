@@ -54,10 +54,10 @@ clean-test: ## remove test and coverage artifacts
 ################################################################################
 # utilities
 ################################################################################
-.PHONY: lint pre-commit-init pre-commit-run pre-commit-run-all init
+.PHONY: lint pre-commit-init pre-commit-run pre-commit-run-all pre-commit-lint-extra pre-commit-codespell init
 
 lint: ## check style with flake8
-	flake8 {{ cookiecutter.project_slug }} tests
+	flake8 cmomy tests
 
 pre-commit-init: ## install pre-commit
 	pre-commit install
@@ -65,22 +65,24 @@ pre-commit-init: ## install pre-commit
 pre-commit-run: ## run pre-commit
 	pre-commit run
 
-pre-commit-autoupdate: ## run to update hooks
-	pre-commit autoupdate
-
-
 pre-commit-run-all: ## run pre-commit on all files
 	pre-commit run --all-files
 
-pre-commit-pyupgrade: ## run pyupgrade via pre-commit on all files
-	pre-commit run --hook-stage manual pyupgrade --all-files
+pre-commit-manual: ## run pre-commit manual flags
+	pre-commit run --hook-stage manual
 
+pre-commit-lint-extra: ## run all linting
+	pre-commit run --all-files --hook-stage manual isort
+	pre-commit run --all-files --hook-stage manual flake8
+	pre-commit run --all-files --hook-stage manual pyupgrade
+
+pre-commit-codespell: ## run codespell. Note that this imports allowed words from docs/spelling_wordlist.txt
+	pre-commit run --all-files --hook-stage manual codespell
 
 .git: ## init git
 	git init
 
 init: .git pre-commit-init ## run git-init pre-commit
-
 
 ################################################################################
 # virtual env
@@ -149,22 +151,6 @@ version: version-scm version-import
 
 
 ################################################################################
-# Docs
-################################################################################
-# .PHONY: docs serverdocs doc-spelling
-# docs: ## generate Sphinx HTML documentation, including API docs
-# 	rm -fr docs/generated
-# 	$(MAKE) -C docs clean
-# 	$(MAKE) -C docs html
-# 	$(BROWSER) docs/_build/html/index.html
-
-# servedocs: docs ## compile the docs watching for changes
-# 	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
-
-# docs-spelling:
-# 	sphinx-build -b spelling docs docs/_build
-
-################################################################################
 # TOX
 ###############################################################################
 tox_posargs?=-v
@@ -177,7 +163,7 @@ test-all: ## run tests on every Python version with tox
 
 
 ## docs
-.PHONY: docs-build docs-release docs-clean docs-spelling docs-nist-pages
+.PHONY: docs-build docs-release docs-clean docs-spelling docs-nist-pages docs-open docs-live
 posargs=
 docs-build: ## build docs in isolation
 	$(TOX) -e docs-build -- $(posargs)
@@ -190,7 +176,10 @@ docs-spelling:
 	$(TOX) -e docs-spelling -- $(posargs)
 docs-nist-pages: ## do both build and releas
 	$(TOX) -e docs-build,docs-release -- $(posargs)
-
+docs-open: ## open the build
+	$(BROWSER) docs/_build/html/index.html
+docs-live: ## use autobuild for docs
+	$(TOX) -e docs-live -- $(posargs)
 
 ## distribution
 .PHONY: dist-pypi-build dist-pypi-testrelease dist-pypi-release dist-conda-recipe dist-conda-build
@@ -215,7 +204,7 @@ dist-conda-build: ## build conda recipe can pass posargs=...
 ## test distribution
 .PHONY: test-dist-pypi-remote test-dist-conda-remote test-dist-pypi-local test-dist-conda-local
 
-py?=39
+py?=310
 test-dist-pypi-remote: ## test pypi install, can run as `make test-dist-pypi-remote py=39` to run test-dist-pypi-local-py39
 	$(TOX) -e $@-py$(py) -- $(posargs)
 
@@ -227,8 +216,6 @@ test-dist-pypi-local: ## test pypi install, can run as `make test-dist-pypi-loca
 
 test-dist-conda-local: ## test conda install, can run as `make test-dist-conda-local py=39` to run test-dist-conda-local-py39
 	$(TOX) -e $@-py$(py) -- $(poasargs)
-
-
 
 
 
