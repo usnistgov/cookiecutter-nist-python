@@ -13,6 +13,7 @@ installation
 usage
 notebooks/demo
 api
+license
 contributing
 {% if cookiecutter.create_author_file == 'y' -%}
 authors
