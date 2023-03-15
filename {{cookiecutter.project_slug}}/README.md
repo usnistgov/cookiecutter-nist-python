@@ -27,7 +27,7 @@
 [xarray]: https://docs.xarray.dev/en/stable/
 
 
-# `{{ cookiecutter.project_name }}``
+# `{{ cookiecutter.project_name }}`
 
 A Python package for stuff.
 
