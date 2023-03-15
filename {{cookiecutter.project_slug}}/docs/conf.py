@@ -19,7 +19,8 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))
+
+sys.path.insert(0, os.path.abspath(".."))
 
 import {{ cookiecutter.project_slug }}
 
@@ -34,6 +35,9 @@ import {{ cookiecutter.project_slug }}
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
+    {% if cookiecutter.sphinx_use_autodocsumm == "y" -%}
+    "autodocsumm",
+    {% endif -%}
     "sphinx.ext.intersphinx",
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
@@ -55,6 +59,8 @@ extensions = [
     ## myst stuff
     "myst_nb",
 ]
+
+nitpicky = True
 
 # -- myst stuff ---------------------------------------------------------
 myst_enable_extensions = [
@@ -105,7 +111,9 @@ nb_execution_mode = "cache"
 # nb_execution_mode = "auto"
 
 # set the kernel name
-nb_kernel_rgx_aliases = {"cmomy.*": "python3", "conda.*": "python3"}
+nb_kernel_rgx_aliases = {"{{ cookiecutter.project_slug }}.*": "python3", "conda.*": "python3"}
+
+nb_execution_allow_errors = True
 
 # - top level variables --------------------------------------------------------
 # set github_username variable to be subbed later.
@@ -116,9 +124,8 @@ html_context = {
     "github_user": "{{ cookiecutter.github_username}}",
     "github_repo": "{{ cookiecutter.project_slug}}",
     "github_version": "master",
-    "doc_path": "doc",
+    "doc_path": "docs",
 }
-
 
 # -- python3 ---------------------------------------------------------------
 autosummary_generate = True
@@ -127,11 +134,11 @@ autodoc_member_order = "bysource"
 
 # autoclass_content = "both"  # include both class docstring and __init__
 autodoc_default_flags = [
-        # Make sure that any autodoc declarations show the right members
-        "members",
-        "inherited-members",
-        "private-members",
-        "show-inheritance",
+    # Make sure that any autodoc declarations show the right members
+    "members",
+    "inherited-members",
+    "private-members",
+    "show-inheritance",
 ]
 autodoc_typehints = "none"
 
@@ -201,19 +208,23 @@ napoleon_type_aliases = {
 
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 #
 # source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
+source_suffix = {
+    ".rst": "restructuredtext",
+    ".ipynb": "myst-nb",
+    ".myst": "myst-nb",
+}
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = "index"
 
 # General information about the project.
-project = '{{ cookiecutter.project_name }}'
+project = "{{ cookiecutter.project_name }}"
 copyright = "{% now 'local', '%Y' %}, {{ cookiecutter.full_name }}"
 author = "{{ cookiecutter.full_name }}"
 
@@ -248,14 +259,13 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', "**.ipynb_checkpoints"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "**.ipynb_checkpoints"]
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = "sphinx"
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
-
 
 
 # -- Options for HTML output -------------------------------------------
@@ -264,10 +274,8 @@ todo_include_todos = False
 # a list of builtin themes.
 #
 
-{% if cookiecutter.sphinx_theme == "sphinx_book_theme" %}
+{% if cookiecutter.sphinx_theme == "sphinx_book_theme" -%}
 html_theme = "sphinx_book_theme"
-
-
 
 html_theme_options = dict(
     # analytics_id=''  this is configured in rtfd.io
@@ -282,11 +290,9 @@ html_theme_options = dict(
     show_toc_level=6,
     show_navbar_depth=2,
 )
-
-
-{% elif cookiecutter.sphinx_theme == "furo" %}
+{% elif cookiecutter.sphinx_theme == "furo" -%}
 html_theme = "furo"
-{%endif %}
+{%endif -%}
 
 # handle nist css/js from here.
 html_css_files = [
@@ -311,7 +317,7 @@ html_js_files = [
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ["_static"]
 
 
 # Sometimes the savefig directory doesn't exist and needs to be created
@@ -333,7 +339,7 @@ html_last_updated_fmt = today_fmt
 # -- Options for HTMLHelp output ---------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = '{{ cookiecutter.project_slug }}doc'
+htmlhelp_basename = "{{ cookiecutter.project_slug }}doc"
 
 
 # -- Options for LaTeX output ------------------------------------------
@@ -342,15 +348,12 @@ latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
     #
     # 'papersize': 'letterpaper',
-
     # The font size ('10pt', '11pt' or '12pt').
     #
     # 'pointsize': '10pt',
-
     # Additional stuff for the LaTeX preamble.
     #
     # 'preamble': '',
-
     # Latex figure (float) alignment
     #
     # 'figure_align': 'htbp',
@@ -360,9 +363,13 @@ latex_elements = {
 # (source start file, target name, title, author, documentclass
 # [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, '{{ cookiecutter.project_slug }}.tex',
-     '{{ cookiecutter.project_name }} Documentation',
-     '{{ cookiecutter.full_name }}', 'manual'),
+    (
+        master_doc,
+        "{{ cookiecutter.project_slug }}.tex",
+        "{{ cookiecutter.project_name }} Documentation",
+        "{{ cookiecutter.full_name }}",
+        "manual",
+    ),
 ]
 
 
@@ -371,9 +378,13 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, '{{ cookiecutter.project_slug }}',
-     '{{ cookiecutter.project_name }} Documentation',
-     [author], 1)
+    (
+        master_doc,
+        "{{ cookiecutter.project_slug }}",
+        "{{ cookiecutter.project_name }} Documentation",
+        [author],
+        1,
+    ),
 ]
 
 
@@ -383,12 +394,15 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, '{{ cookiecutter.project_slug }}',
-     '{{ cookiecutter.project_name }} Documentation',
-     author,
-     '{{ cookiecutter.project_slug }}',
-     'One line description of project.',
-     'Miscellaneous'),
+    (
+        master_doc,
+        "{{ cookiecutter.project_slug }}",
+        "{{ cookiecutter.project_name }} Documentation",
+        author,
+        "{{ cookiecutter.project_slug }}",
+        "One line description of project.",
+        "Miscellaneous",
+    ),
 ]
 
 # -- user defined stuff ------------------------------------------------
@@ -407,7 +421,6 @@ intersphinx_mapping = {
     "sparse": ("https://sparse.pydata.org/en/latest/", None),
     "xarray": ("https://docs.xarray.dev/en/stable/", None),
 }
-
 
 
 # based on numpy doc/source/conf.py
@@ -451,14 +464,14 @@ def linkcode_resolve(domain, info):
     else:
         linespec = ""
 
-    fn = os.path.relpath(fn, start=os.path.dirname({{cookiecutter.project_slug}}.__file__))
+    fn = os.path.relpath(fn, start=os.path.dirname({{ cookiecutter.project_slug }}.__file__))
 
-    return f"https://github.com/{github_username}/{{ cookiecutter.project_slug }}/blob/master/{{ cookiecutter.project_slug}}/{fn}{linespec}"
+    return f"https://github.com/{github_username}/{{ cookiecutter.project_slug }}/blob/{html_context['github_version']}/src/{{ cookiecutter.project_slug }}/{fn}{linespec}"
 
 
 # only set spelling stuff if installed:
 try:
-    import sphinxcontrib.spelling # noqa: F401
+    import sphinxcontrib.spelling  # noqa: F401
 
     extensions += ["sphinxcontrib.spelling"]
     spelling_word_list_filename = "spelling_wordlist.txt"

@@ -57,7 +57,7 @@
 {% if modules %}
 .. autosummary::
    :toctree:
-   :template: custom-module-single.rst
+   :template: module-single.rst
    :recursive:
 {% for item in modules %}
    {{ item }}

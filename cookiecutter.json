@@ -33,5 +33,6 @@
         "Not open source"
     ],
     "sphinx_auto": ["automodule", "autosummary", "autodoc"],
+    "sphinx_use_autodocsumm": "y",
     "sphinx_theme": ["sphinx_book_theme", "furo"]
 }

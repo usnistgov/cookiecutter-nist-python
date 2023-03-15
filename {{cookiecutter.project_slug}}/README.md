@@ -9,8 +9,8 @@
 [black-badge]: https://img.shields.io/badge/code%20style-black-000000.svg
 [black-link]: https://github.com/ambv/black
 [pypi-badge]: https://img.shields.io/pypi/v/{{ cookiecutter.project_name }}
-<!-- [pypi-badge]: https://badge.fury.io/py/{{ cookiecutter.project_name }}
-[pypi-link]: https://pypi.org/project/cmomy
+<!-- [pypi-badge]: https://badge.fury.io/py/{{ cookiecutter.project_name }} -->
+[pypi-link]: https://pypi.org/project/{{ cookiecutter.project_name }}
 [docs-badge]: https://img.shields.io/badge/docs-sphinx-informational
 [docs-link]: https://pages.nist.gov/{{ cookiecutter.project_name }}/
 [repo-badge]: https://img.shields.io/badge/--181717?logo=github&logoColor=ffffff

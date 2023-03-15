@@ -81,6 +81,7 @@ condax install cruft
 condax install conda-merge
 ```
 
+
 ### Getting the repo
 
 Ready to contribute? Here's how to set up `{{ cookiecutter.project_slug }}` for local development.
@@ -166,6 +167,24 @@ Ready to contribute? Here's how to set up `{{ cookiecutter.project_slug }}` for 
     ```
 
 10. Submit a pull request through the GitHub website.
+
+
+### Dependency managment
+
+Dependencies need to be placed in a few locations, which depend on the nature of the dependency.
+
+* Package dependency: `environment.yaml` and `dependencies` section of `pyproject.toml`
+* Documentation dependency: `environment/docs-extras.yaml` and `test` section of `pyproject.toml`
+* Development dependency: `environment/dev-extras.yaml` and `dev` section of `pyproject.toml`
+
+Note that total yaml files are build using [conda-merge].  For example, `environment.yaml` is combined with `environment/docs-extras.yaml` to produce `environment/docs.yaml`.  This is automated in the `Makefile`.  You can also run, after doing any updates,
+
+```bash
+make environment-files
+```
+
+which will rebuild all the needed yaml files.
+
 
 ## Pull Request Guidelines
 

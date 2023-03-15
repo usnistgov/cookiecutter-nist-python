@@ -48,6 +48,13 @@ dependencies = [] # additional packages
 homepage = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name}}"
 documentation = "https://pages.nist.gov/{{ cookiecutter.project_slug }}/"
 
+[project.optional-dependencies]
+test = [
+    "pytest",
+]
+# dev = []
+# docs = []
+
 
 {%- if 'no' not in cookiecutter.command_line_interface|lower %}
 [project.scripts]
@@ -63,6 +70,13 @@ license-files = ["LICENSE"]
 [tool.setuptools.packages.find]
 where = ["src"]
 namespaces = false
+
+# To add package data
+# [tool.setuptools.package-data]
+# {{ cookiecutter.project_slug }} = [
+#     "py.typed"
+# ]
+
 
 [tool.setuptools.dynamic]
 readme = {file = ["README.md", "HISTORY.md", "LICENSE"], content-type = "text/markdown"}
@@ -80,9 +94,7 @@ testpaths = ["tests"]
 [tool.isort]
 profile = "black"
 skip_gitignore = true
-force_to_top = ["true"]
-default_section = "THIRDPARTY"
-known_first_party = ["cmomy"]
+known_first_party = ["{{ cookiecutter.project_slug }}"]
 
 
 [tool.ruff]
@@ -145,7 +157,7 @@ exclude = [
     "dist",
     "node_modules",
     "venv",
-    "src/cmomy/tests",
+    "src/{{ cookiecutter.project_slug }}/tests",
 ]
 
 
@@ -173,6 +185,8 @@ per-file-ignores = {}
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
+[tool.ruff.isort]
+known-first-party = ["{{ cookiecutter.project_slug }}"]
 
 [tool.ruff.mccabe]
 # Unlike Flake8, default to a complexity level of 10.
@@ -182,32 +196,28 @@ max-complexity = 10
 
 
 [tool.mypy]
-exclude = "properties|asv_bench|doc"
-files = ["."]
+files = ["src/{{ cookiecutter.project_slug }}"]
 show_error_codes = true
+warn_unused_ignores = true
 warn_return_any = true
 warn_unused_configs = true
-# plugins = numpy.typing.mypy_plugin
-# Most of the numerical computing stack doesn't have type annotations yet.
+exclude = [
+    ".eggs",
+    ".tox",
+    "doc",
+    "docs",
+]
 
 [[tool.mypy.overrides]]
+ignore_missing_imports = true
 module = [
        "numpy.*",
-       "bottleneck.*",
-       "dask.*",
-       "netCDF.*",
        "pandas.*",
        "pytest.*",
        "scipy.*",
        "setuptools",
-       "numba.*",
-       ]
-ignore_missing_imports = true
-
-# version spanning code is hard to type annotate (and most of this module will
-# be going away soon anyways)
-exclude = [
-    ".eggs",
-    "doc",
-    "docs",
 ]
+
+[[tool.mypy.overrides]]
+ignore_errors = true
+module = []

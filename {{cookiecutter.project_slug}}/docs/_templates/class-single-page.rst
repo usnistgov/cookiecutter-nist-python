@@ -2,51 +2,51 @@
 
 .. currentmodule:: {{ module }}
 
+
+
 .. autoclass:: {{ objname }}
    :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __iadd__, __sub__, __isub__, __mul__, __imul__
+
+
 
    {% block methods %}
-   ..
-      .. automethod:: __init__
-
    {% if methods %}
-   .. rubric:: {{ _('Methods') }}
 
+
+   .. rubric:: {{ _('Methods') }}
    .. autosummary::
-      :toctree:
    {% for item in methods %}
+      {%- if not item.startswith('_') %}
       ~{{ name }}.{{ item }}
+      {%- endif -%}
    {%- endfor %}
    {% endif %}
    {% endblock %}
 
    {% block attributes %}
    {% if attributes %}
+
+
    .. rubric:: {{ _('Attributes') }}
 
    .. autosummary::
-      :toctree:
    {% for item in attributes %}
       ~{{ name }}.{{ item }}
    {%- endfor %}
    {% endif %}
    {% endblock %}
 
+
    {% block all_methods %}
    {% if all_methods %}
    .. rubric:: {{_('Dunder Methods') }}
 
    .. autosummary::
-      :toctree:
    {% for item in all_methods %}
-      {%- if item in ['__repr__',
-                      '__len__',
+      {%- if item in [
                       '__call__',
-                      '__next__',
-                      '__iter__',
-                      '__getitem__',
-                      '__setitem__',
-                      '__delitem__',
                       '__add__',
                       '__iadd__',
                       '__sub__',

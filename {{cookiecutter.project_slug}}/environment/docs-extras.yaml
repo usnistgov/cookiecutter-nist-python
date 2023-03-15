@@ -1,0 +1,34 @@
+channels:
+    - conda-forge
+dependencies:
+    - setuptools-scm
+    - ipython
+    ## package deps
+    # - matplotlib
+    # - pandas
+    - pip
+    - pip:
+            - pyenchant
+            # TODO: something goes wonky with sphinx-book-theme and higher versions of sphinx
+            - ghp-import
+            - sphinx
+            ## themes
+            {% if cookiecutter.sphinx_theme == 'furo' -%}
+            - furo
+            {%- elif cookiecutter.sphinx_theme == "sphinx_book_theme" -%}
+            - sphinx-book-theme
+            {%- endif %}
+            ## optionals
+            # sphinx-design
+            - sphinx-copybutton
+            - sphinxcontrib-spelling
+            # sphinxext-rediraffe
+            ## autobuild
+            - sphinx-autobuild
+            ## myst
+            # myst-parser
+            - myst-nb
+            ## others
+            {% if cookiecutter.sphinx_use_autodocsumm == "y" -%}
+            - autodocsumm
+            {% endif -%}
