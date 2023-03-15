@@ -149,7 +149,9 @@ napoleon_type_aliases = {
     "callable": ":py:func:`callable`",
     "dict_like": ":term:`dict-like <mapping>`",
     "dict-like": ":term:`dict-like <mapping>`",
+    "path-like": ":term:`path-like <path-like object>`",
     "mapping": ":term:`mapping`",
+    "hashable": ":term:`hashable`",
     "file-like": ":term:`file-like <file-like object>`",
     # special terms
     # "same type as caller": "*same type as caller*",  # does not work, yet
@@ -164,20 +166,25 @@ napoleon_type_aliases = {
     "array-like": ":term:`array-like <array_like>`",
     "scalar": ":term:`scalar`",
     "array": ":term:`array`",
-    "hashable": ":term:`hashable <name>`",
     # matplotlib terms
     "color-like": ":py:func:`color-like <matplotlib.colors.is_color_like>`",
-    "matplotlib colormap name": ":doc:matplotlib colormap name <Colormap reference>",
+    "matplotlib colormap name": ":doc:`matplotlib colormap name <matplotlib:gallery/color/colormap_reference>`",
     "matplotlib axes object": ":py:class:`matplotlib axes object <matplotlib.axes.Axes>`",
     "colormap": ":py:class:`colormap <matplotlib.colors.Colormap>`",
-    # objects without namespace
+    # objects without namespace: xarray
     "DataArray": "~xarray.DataArray",
     "Dataset": "~xarray.Dataset",
     "Variable": "~xarray.Variable",
+    "DatasetGroupBy": "~xarray.core.groupby.DatasetGroupBy",
+    "DataArrayGroupBy": "~xarray.core.groupby.DataArrayGroupBy",
+    "CentralMoments": "~cmomy.CentralMoments",
+    "xCentralMoments": "~cmomy.xCentralMoments",
+    # objects without namespace: numpy
     "ndarray": "~numpy.ndarray",
     "MaskedArray": "~numpy.ma.MaskedArray",
     "dtype": "~numpy.dtype",
     "ComplexWarning": "~numpy.ComplexWarning",
+    # objects without namespace: pandas
     "Index": "~pandas.Index",
     "MultiIndex": "~pandas.MultiIndex",
     "CategoricalIndex": "~pandas.CategoricalIndex",
