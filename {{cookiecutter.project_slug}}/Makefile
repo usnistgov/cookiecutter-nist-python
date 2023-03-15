@@ -218,6 +218,12 @@ test-dist-conda-local: ## test conda install, can run as `make test-dist-conda-l
 	$(TOX) -e $@-py$(py) -- $(poasargs)
 
 
+## list all options
+.PHONY: tox-list
+
+tox-list:
+	$(TOX) -a
+
 
 ################################################################################
 # installation
