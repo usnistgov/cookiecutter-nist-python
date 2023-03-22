@@ -9,7 +9,8 @@
     "_copy_without_render": [
         "*.html",
         "docs/_templates/*.rst",
-        "docs/_templates/autosummary/*.rst"
+        "docs/_templates/autosummary/*.rst",
+        "docs/_templates/autodocsumm/*.rst"
     ],
     "project_short_description": "Python Boilerplate contains all the boilerplate you need to create a Python package.",
 
