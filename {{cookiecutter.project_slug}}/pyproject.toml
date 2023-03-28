@@ -46,7 +46,7 @@ dependencies = [] # additional packages
 
 [project.urls]
 homepage = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name}}"
-documentation = "https://pages.nist.gov/{{ cookiecutter.project_slug }}/"
+documentation = "https://pages.nist.gov/{{ cookiecutter.project_name }}/"
 
 [project.optional-dependencies]
 test = [

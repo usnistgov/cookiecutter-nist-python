@@ -65,7 +65,7 @@ repos:
       - id: flake8
         stages: [manual]
         additional_dependencies: [flake8-docstrings]
-        exclude: ^src/cmomy/tests/|^docs/conf.py|^setup.py
+        exclude: ^tests/|^src/{{ cookiecutter.project_slug }}/tests/|^docs/conf.py|^setup.py
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.1.1
     hooks:

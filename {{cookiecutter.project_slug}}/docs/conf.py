@@ -122,7 +122,7 @@ github_username = "{{ cookiecutter.github_username }}"
 
 html_context = {
     "github_user": "{{ cookiecutter.github_username}}",
-    "github_repo": "{{ cookiecutter.project_slug}}",
+    "github_repo": "{{ cookiecutter.project_name}}",
     "github_version": "master",
     "doc_path": "docs",
 }
@@ -147,7 +147,7 @@ napoleon_google_docstring = False
 napoleon_numpy_docstring = True
 
 napoleon_use_param = False
-napoleon_use_rtype = True
+napoleon_use_rtype = False
 napoleon_preprocess_types = True
 napoleon_type_aliases = {
     # general terms
@@ -466,7 +466,7 @@ def linkcode_resolve(domain, info):
 
     fn = os.path.relpath(fn, start=os.path.dirname({{ cookiecutter.project_slug }}.__file__))
 
-    return f"https://github.com/{github_username}/{{ cookiecutter.project_slug }}/blob/{html_context['github_version']}/src/{{ cookiecutter.project_slug }}/{fn}{linespec}"
+    return f"https://github.com/{github_username}/{{ cookiecutter.project_name }}/blob/{html_context['github_version']}/src/{{ cookiecutter.project_slug }}/{fn}{linespec}"
 
 
 # only set spelling stuff if installed:
