@@ -38,7 +38,7 @@ Once you have a copy of the source, you can install it with:
 $ pip install .
 ```
 
-To install dependecies with conda/mamba, use:
+To install dependencies with conda/mamba, use:
 
 ```
 .. code-block:: console

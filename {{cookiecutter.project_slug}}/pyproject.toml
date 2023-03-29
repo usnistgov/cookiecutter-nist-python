@@ -176,8 +176,19 @@ ignore = [
     "D202",
     "D105",
     "D205",
+    # this leads to errors with placing titles in module
+    # docstrings
     "D400",
     "D401",
+    "D415",
+    "D102",
+    "D103",
+    # these are useful, but too many errors
+    # due to use of docfiller
+    "D417",
+    "D107",
+    "D203",
+    "D212",
 ]
 
 per-file-ignores = {}

@@ -41,6 +41,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
+    "sphinx.ext.autosectionlabel",
     "IPython.sphinxext.ipython_directive",
     "IPython.sphinxext.ipython_console_highlighting",
     # "nbsphinx",
@@ -61,6 +62,7 @@ extensions = [
 ]
 
 nitpicky = True
+autosectionlabel_prefix_document = True
 
 # -- myst stuff ---------------------------------------------------------
 myst_enable_extensions = [
@@ -142,7 +144,7 @@ autodoc_default_flags = [
 ]
 autodoc_typehints = "none"
 
-# -- napolean ------------------------------------------------------------------
+# -- napoleon ------------------------------------------------------------------
 napoleon_google_docstring = False
 napoleon_numpy_docstring = True
 
