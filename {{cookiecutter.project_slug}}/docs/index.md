@@ -19,10 +19,5 @@ contributing
 authors
 {% endif -%}
 history
+navigation
 ```
-
-# Indices and tables
-
-- {ref}`genindex`
-- {ref}`modindex`
-- {ref}`search`
