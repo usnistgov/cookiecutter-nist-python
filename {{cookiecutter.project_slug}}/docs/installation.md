@@ -29,7 +29,7 @@ The sources for {{ cookiecutter.project_name }} can be downloaded from the [Gith
 You can either clone the public repository:
 
 ```console
-$ git clone git://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}
+$ git clone git://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}.git
 ```
 
 Once you have a copy of the source, you can install it with:
@@ -49,6 +49,6 @@ To install dependencies with conda/mamba, use:
 
 To install an editable version, add the `-e` option to pip.
 
-[github repo]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_slug}}
+[github repo]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}
 [pip]: https://pip.pypa.io
 [python installation guide]: http://docs.python-guide.org/en/latest/starting/installation/

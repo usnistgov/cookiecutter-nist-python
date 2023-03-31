@@ -152,16 +152,16 @@ environment-files: environment/dev.yaml environment/docs.yaml environment/test.y
 .PHONY: mamba-env mamba-dev mamba-env-update mamba-dev-update
 
 mamba-env: environment.yaml ## create base environment
-	mamba env create -f environment.yaml
+	mamba env create -f $<
 
 mamba-env-update: environment.yaml ## update base environment
-	mamba env update -f environment.yml
+	mamba env update -f $<
 
 mamba-dev: environment/dev.yaml ## create development environment
-	mamba env create -f environment-dev.yaml
+	mamba env create -f $<
 
 mamba-dev-update: environment/dev.yaml ## update development environment
-	mamba env update -f environment-dev.yml
+	mamba env update -f $<
 
 ################################################################################
 # TOX
