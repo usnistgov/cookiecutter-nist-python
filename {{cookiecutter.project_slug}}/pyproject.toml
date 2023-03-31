@@ -62,13 +62,14 @@ test = [
 {%- endif %}
 
 [tool.setuptools]
-package-dir = {"" = "src"}
 zip-safe = true # if using mypy, must be False
 include-package-data = true
 license-files = ["LICENSE"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
+# include = []
+# exclude = []
 namespaces = false
 
 # To add package data
