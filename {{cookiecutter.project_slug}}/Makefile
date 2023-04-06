@@ -93,7 +93,7 @@ init: .git pre-commit-init ## run git-init pre-commit
 ################################################################################
 .PHONY: user-venv user-autoenv-zsh user-all
 user-venv: ## create .venv file with name of conda env
-	echo {{ cookiecutter.project_slug}}-env > .venv
+	echo {{ cookiecutter.project_slug }}-env > .venv
 
 user-autoenv-zsh: ## create .autoenv.zsh files
 	echo conda activate $$(cat .venv) > .autoenv.zsh

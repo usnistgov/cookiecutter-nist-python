@@ -91,7 +91,7 @@ Ready to contribute? Here's how to set up `{{ cookiecutter.project_slug }}` for 
 2. Clone your fork locally:
 
     ```bash
-    git clone git@github.com:your_name_here/{{ cookiecutter.project_slug }}.git
+    git clone git@github.com:your_name_here/{{ cookiecutter.project_name }}.git
     ```
 
 3. Create development environment.  Using the `make` will install a development version using mamba.
