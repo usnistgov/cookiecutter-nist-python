@@ -1,5 +1,5 @@
 """
-.. currentmodule: {{ cookiecutter.project_name }}
+.. currentmodule: {{ cookiecutter.project_slug }}
 
 Top level stuff
 ===============

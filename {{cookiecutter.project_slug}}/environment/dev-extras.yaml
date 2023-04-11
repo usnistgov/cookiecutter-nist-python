@@ -44,8 +44,8 @@ dependencies:
     # - pytest-mypy
     # # Monkeytype: autocreate type hints
     # - MonkeyType
-    - pip
-    - pip:
+    # - pip
+    # - pip:
             # - mypy-extensions
             # - pytest-monkeytype
             # - flake8-mypy

@@ -125,7 +125,7 @@ github_username = "{{ cookiecutter.github_username }}"
 html_context = {
     "github_user": "{{ cookiecutter.github_username}}",
     "github_repo": "{{ cookiecutter.project_name}}",
-    "github_version": "master",
+    "github_version": "main",
     "doc_path": "docs",
 }
 
