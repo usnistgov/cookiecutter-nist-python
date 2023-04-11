@@ -5,14 +5,12 @@
 ```
 
 ```{toctree}
-:caption: 'Contents:'
 :maxdepth: 1
 
 <!-- example -->
 installation
-usage
-notebooks/demo
-api
+examples/index
+reference/index
 license
 contributing
 {% if cookiecutter.create_author_file == 'y' -%}
