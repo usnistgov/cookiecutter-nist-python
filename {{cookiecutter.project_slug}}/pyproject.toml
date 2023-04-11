@@ -155,6 +155,7 @@ exclude = [
     "dist",
     "node_modules",
     "venv",
+    "tests/",
     "src/{{ cookiecutter.project_slug }}/tests",
 ]
 
