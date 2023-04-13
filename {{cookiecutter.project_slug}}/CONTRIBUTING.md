@@ -127,16 +127,22 @@ Ready to contribute? Here's how to set up `{{ cookiecutter.project_slug }}` for 
     make mamba-dev
     ```
 
-1. Initiate pre-commit with:
+1. Initiate [pre-commit] with:
 
     ```bash
-    pre-commit init
+    pre-commit install
     ```
 
     To update the recipe, periodically run:
 
     ```bash
     pre-commit autoupdate
+    ```
+
+    If recipes change over time, you can clean up old installs with:
+
+    ```bash
+    pre-commit gc
     ```
 
 1. Install editable package:

@@ -13,7 +13,8 @@
         "docs/_templates/autodocsumm/*.rst",
         "docs/_static/*",
         "docs/_static/css/*",
-        "docs/_static/js/*"
+        "docs/_static/js/*",
+        "changelog.d/auto-changelog/*"
     ],
     "project_short_description": "Python Boilerplate contains all the boilerplate you need to create a Python package.",
 
