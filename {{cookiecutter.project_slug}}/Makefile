@@ -265,7 +265,7 @@ install-dev: ## install development version (run clean?)
 
 # Note that this requires `auto-changelog`, which can be installed with pip(x)
 auto-changelog: ## autogenerate changelog and print to stdout
-	auto-changelog -u -r usnistgov -v current --tag-prefix v --stdout --template changelog.d/auto-changelog/template.jinja2
+	auto-changelog -u -r usnistgov -v unreleased --tag-prefix v --stdout --template changelog.d/auto-changelog/template.jinja2
 
 commitizen-changelog:
-	cz changelog --unreleased-version v0.2.2 --dry-run --incremental
+	cz changelog --unreleased-version unreleased --dry-run --incremental
