@@ -59,26 +59,38 @@ If you are proposing a feature:
 [cruft]: https://github.com/cruft/cruft
 [conda-merge]: https://github.com/amitbeka/conda-merge
 [git-flow]: https://github.com/nvie/gitflow
+[scriv]: https://github.com/nedbat/scriv
+[conventional-style]: https://www.conventionalcommits.org/en/v1.0.0/
+[commitizen]: https://github.com/commitizen-tools/commitizen
 
 This project uses a host of tools to (hopefully) make development easier.  We recommend installing some of these tools system wide.  For this, we recommend using
 either [pipx] or [condax].  We mostly use conda/condax, but the choice is yours.  For conda, we recommend actually using [mamba]. Alternatively, you can setup `conda` to use the faster `mamba` solver.
 See [here][conda-fast-setup] for details.
 
-Additional dependencies are:
+Additional tools are:
 
 * [pre-commit]
 * [tox] and [tox-conda]
 * [cruft]
 * [conda-merge]
+* [scriv]
 
 These are setup using the following:
 
-```bash
+```console
 condax install pre-commit
 condax install tox
 condax inject tox tox-conda
 condax install cruft
 condax install conda-merge
+condax install commitizen
+pipx install scriv
+```
+
+Alternatively, you can install these dependencies using:
+
+```console
+conda env update -n {env-name} environment/tools.yaml
 ```
 
 
@@ -88,19 +100,34 @@ Ready to contribute? Here's how to set up `{{ cookiecutter.project_slug }}` for 
 
 1. Fork the `{{ cookiecutter.project_slug }}` repo on GitHub.
 
-2. Clone your fork locally:
+1. Clone your fork locally:
 
     ```bash
     git clone git@github.com:your_name_here/{{ cookiecutter.project_name }}.git
     ```
 
-3. Create development environment.  Using the `make` will install a development version using mamba.
+    If the repo includes submodules, you can add them either with the initial close using:
+
+    ```bash
+    git clone --recursive-submodules git@github.com:your_name_here/{{ cookiecutter.project_name }}.git
+    ```
+
+    or after the clone using
+
+    ```bash
+    cd {{ cookiecutter.project_name }}
+    git submodule update --init --recursive
+    ```
+
+
+
+1. Create development environment.  Using the `make` will install a development version using mamba.
 
     ```bash
     make mamba-dev
     ```
 
-4. Initiate pre-commit with:
+1. Initiate pre-commit with:
 
     ```bash
     pre-commit init
@@ -112,7 +139,7 @@ Ready to contribute? Here's how to set up `{{ cookiecutter.project_slug }}` for 
     pre-commit autoupdate
     ```
 
-5. Install editable package:
+1. Install editable package:
 
     ```bash
     pip install -e . --no-deps
@@ -124,7 +151,7 @@ Ready to contribute? Here's how to set up `{{ cookiecutter.project_slug }}` for 
     make install-dev
     ```
 
-07. Create a branch for local development:
+1. Create a branch for local development:
 
     ```bash
     git checkout -b name-of-your-bugfix-or-feature
@@ -132,7 +159,7 @@ Ready to contribute? Here's how to set up `{{ cookiecutter.project_slug }}` for 
 
     Now you can make your changes locally.  Alternatively, we recommend using [git-flow].
 
-08. When you're done making changes, check that your changes pass the pre-commit checks:
+1. When you're done making changes, check that your changes pass the pre-commit checks:
     tests.
 
     ```bash
@@ -157,16 +184,28 @@ Ready to contribute? Here's how to set up `{{ cookiecutter.project_slug }}` for 
     make test-all
     ```
 
+1. Create changelog fragment.  See [scriv] for more info.
 
-09. Commit your changes and push your branch to GitHub:
-
-    ```
-    $ git add .
-    $ git commit -m "Your detailed description of your changes."
-    $ git push origin name-of-your-bugfix-or-feature
+    ```bash
+    scriv create --edit
     ```
 
-10. Submit a pull request through the GitHub website.
+1. Commit your changes and push your branch to GitHub:
+
+    ```bash
+    git add .
+    git commit -m "Your detailed description of your changes."
+    git push origin name-of-your-bugfix-or-feature
+    ```
+
+    Note that the pre-commit hooks will force the commit message to be in the [conventional sytle][conventional-style].  To assist this, you may want to commit using [commitizen].
+
+    ```bash
+    cz commit
+    ```
+
+
+1. Submit a pull request through the GitHub website.
 
 
 ### Dependency management

@@ -231,3 +231,10 @@ module = [
 [[tool.mypy.overrides]]
 ignore_errors = true
 module = []
+
+[tool.scriv]
+format = "md"
+md_header_level = "2"
+
+[tool.commitizen]
+use_shortcuts = true
