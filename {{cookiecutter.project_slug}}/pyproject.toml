@@ -75,7 +75,7 @@ test = [
 ## exclude = []
 
 [tool.setuptools.dynamic]
-readme = {file = ["README.md", "HISTORY.md", "LICENSE"], content-type = "text/markdown"}
+readme = {file = ["README.md", "CHANGELOG.md", "LICENSE"], content-type = "text/markdown"}
 
 [tool.setuptools_scm]
 fallback_version = "999"
