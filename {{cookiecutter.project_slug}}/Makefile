@@ -54,7 +54,7 @@ clean-test: ## remove test and coverage artifacts
 ################################################################################
 # utilities
 ################################################################################
-.PHONY: lint pre-commit-init pre-commit-run pre-commit-run-all pre-commit-lint-extra pre-commit-codespell init
+.PHONY: lint pre-commit-init pre-commit-run pre-commit-run-all pre-commit-lint-extra pre-commit-codespell pre-commit-run-all-ruff
 
 lint: ## check style with flake8
 	flake8 cmomy tests
@@ -67,6 +67,9 @@ pre-commit-run: ## run pre-commit
 
 pre-commit-run-all: ## run pre-commit on all files
 	pre-commit run --all-files
+
+pre-commit-run-all-ruff: ## run ruff on on all files
+	pre-commit run --all-files ruff
 
 pre-commit-manual: ## run pre-commit manual flags
 	pre-commit run --hook-stage manual
