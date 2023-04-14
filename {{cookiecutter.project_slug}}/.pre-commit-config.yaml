@@ -24,6 +24,7 @@ repos:
         stages: [commit]
         additional_dependencies:
           - prettier-plugin-toml
+        exclude: ^docs/reference/
   # Ruff
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     # Ruff version.
