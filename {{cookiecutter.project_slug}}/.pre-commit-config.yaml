@@ -14,7 +14,8 @@ repos:
       - id: end-of-file-fixer
       - id: check-added-large-files
       - id: check-yaml
-        #     args: [--unsafe]
+      - id: check-json
+      #     args: [--unsafe]
   # Ruff
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     # Ruff version.
