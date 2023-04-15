@@ -1,6 +1,4 @@
-"""
-core functionality
-"""
+"""Core functionality"""
 
 
 def another_func(a, b):
@@ -15,7 +13,7 @@ def another_func(a, b):
         another input
 
 
-    See also
+    See Also
     --------
     {{ cookiecutter.project_slug }}.{{ cookiecutter.project_slug }}.a_function
     """

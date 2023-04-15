@@ -11,10 +11,8 @@ Top level stuff
    another_func - another test fuction
 """
 
-
-from .{{ cookiecutter.project_slug }} import a_function
 from .core import another_func
-
+from .{{ cookiecutter.project_slug }} import a_function
 
 # updated versioning scheme
 try:
@@ -32,4 +30,10 @@ except Exception:
 
 
 __author__ = """{{ cookiecutter.full_name }}"""
-__email__ = '{{ cookiecutter.email }}'
+__email__ = "{{ cookiecutter.email }}"
+
+
+__all__ = [
+    "a_function",
+    "another_func",
+]

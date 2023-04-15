@@ -5,7 +5,7 @@ channels:
 dependencies:
   - python>=3.8,<3.11
   # cli
-  {% if cookiecutter.command_line_interface|lower == 'click' -%}
+  {%- if cookiecutter.command_line_interface|lower == 'click' -%}
   - Click{% endif %}
-  {% if cookiecutter.command_line_interface|lower == 'fire' -%}
+  {%- if cookiecutter.command_line_interface|lower == 'fire' -%}
   - fire{% endif %}

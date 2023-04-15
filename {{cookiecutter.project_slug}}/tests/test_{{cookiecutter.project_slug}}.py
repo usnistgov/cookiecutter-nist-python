@@ -19,7 +19,6 @@ from {{ cookiecutter.project_slug }} import cli
 {%- if cookiecutter.use_pytest == 'y' %}
 
 
-
 @pytest.fixture
 def response():
     return 1, 2

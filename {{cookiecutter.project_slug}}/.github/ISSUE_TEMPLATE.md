@@ -1,6 +1,6 @@
-* {{ cookiecutter.project_name }} version:
-* Python version:
-* Operating System:
+-   {{ cookiecutter.project_name }} version:
+-   Python version:
+-   Operating System:
 
 ### Description
 

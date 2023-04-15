@@ -6,8 +6,6 @@ genindex
 modindex
 :::
 
-
-
 <!-- # Indices and tables -->
 
 <!-- - {ref}`genindex` -->

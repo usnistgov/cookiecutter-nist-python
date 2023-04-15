@@ -1,17 +1,15 @@
 ---
 jupytext:
-  text_representation:
-    format_name: myst
+    text_representation:
+        format_name: myst
 kernelspec:
-  display_name: Python 3
-  name: python3
+    display_name: Python 3
+    name: python3
 ---
-
 
 # Usage
 
 An example for using ipython directives or jupytext
-
 
 ## jupytext
 
@@ -26,7 +24,6 @@ a = 1
 
 print(a)
 ```
-
 
 ## ipython directive
 
