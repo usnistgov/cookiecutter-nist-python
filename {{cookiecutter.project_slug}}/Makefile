@@ -136,23 +136,31 @@ version: version-scm version-import
 ################################################################################
 
 ENVIRONMENTS = $(addsuffix .yaml,$(addprefix environment/, dev docs test))
+PRETTIER = pre-commit run prettier --files
 
 environment/%.yaml: environment.yaml environment/%-extras.yaml ## create combined environment/{dev,docs,test}.yaml
 	conda-merge $^ > $@
-	-pre-commit run prettier --files $@ &> /dev/null || true
+	-$(PRETTIER) $@ &> /dev/null || true
 
 environment/dev.yaml: ## development environment yaml file
 environment/test.yaml: ## testing environment yaml file
 enviornment/docs.yaml: ## docs environment yaml file
 
 
-.PHONY: environment-files-clean
+# special for linters
+environment/lint.yaml: environment.yaml $(addsuffix .yaml, $(addprefix environment/, test-extras lint-extras)) ## mypy environment
+	echo $^
+	conda-merge $^ > $@
+	-$(PRETTIER) $@ &> /dev/null || true
+
+ENVIRONMENTS += environment/lint.yaml
+
+.PHONY: environment-clean
 environment-files-clean: ## clean all created environment/{dev,docs,test}.yaml
 	-rm $(ENVIRONMENTS) 2> /dev/null || true
 
-.PHONY: environment-files-build
+.PHONY: environment-files
 environment-files-build: $(ENVIRONMENTS) ## rebuild all environment files
-
 
 ################################################################################
 # virtual env

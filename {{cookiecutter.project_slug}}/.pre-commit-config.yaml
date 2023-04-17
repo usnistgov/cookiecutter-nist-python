@@ -15,7 +15,14 @@ repos:
       - id: check-added-large-files
       - id: check-yaml
       - id: check-json
-      #     args: [--unsafe]
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-toml
+  - repo: https://github.com/pre-commit/pre-commit
+    rev: v3.2.2
+    hooks:
+      - id: validate_manifest
+  ## formatting
   # prettier
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: "v3.0.0-alpha.6" # Use the sha / tag you want to point at
@@ -64,33 +71,39 @@ repos:
         additional_dependencies: [tomli]
         args: [-I, docs/spelling_wordlist.txt]
         stages: [manual]
-  # this should be run before flake8 to
-  # this should be run externally
-  # messes up too many things
-  # - repo: https://github.com/PyCQA/docformatter
-  #   rev: v1.5.0
+  # TODO: Consider moving to flakeheaven
+  # see https://github.com/rstcheck/rstcheck/blob/main/.pre-commit-config.yaml
+  # see https://flakeheaven.readthedocs.io/en/latest/config.html
+  # - repo: https://github.com/flakeheaven/flakeheaven
+  #   rev: 3.3.0
   #   hooks:
-  #     - id: docformatter
-  #       args: [--in-place]
+  #     - id: flakeheaven
+  #       types_or: [python, jupyter, markdown, rst, yaml]
+  #       stages: [manual]
   - repo: https://github.com/pycqa/flake8
     rev: 6.0.0
     hooks:
       - id: flake8
         stages: [manual]
-        additional_dependencies: [flake8-docstrings]
+        additional_dependencies:
+          - flake8-docstrings
+          # - pep8-naming
+          # - flake8-rst-docstrings
         exclude: ^tests/|^src/{{ cookiecutter.project_slug }}/tests/|^docs/conf.py|^setup.py
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.2.0
+  # Manual mypy
+  - repo: local
     hooks:
       - id: mypy
-        # `properies` & `asv_bench` are copied from setup.cfg.
-        # `_typed_ops.py` is added since otherwise mypy will complain (but notably only in pre-commit)
-        exclude: properties|asv_bench|_typed_ops.py|conf.py
-        # This is slow and so we take it out of the fast-path; requires passing
-        # `--hook-stage manual` to pre-commit
+        # note: assumes python env is setup and activated
+        name: mypy
+        entry: tox
+        args: ["-e", "lint-mypy"]
+        language: system
+        pass_filenames: false
+        # additional_dependencies: [tox]
+        types: [python]
+        require_serial: true
         stages: [manual]
-        additional_dependencies:
-          [types-pkg_resources, typing-extensions==3.10.0.0, numpy]
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.3.1
     hooks:
