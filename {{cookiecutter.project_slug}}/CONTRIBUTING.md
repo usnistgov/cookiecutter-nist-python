@@ -219,7 +219,7 @@ Dependencies need to be placed in a few locations, which depend on the nature of
 Note that total yaml files are build using [conda-merge]. For example, `environment.yaml` is combined with `environment/docs-extras.yaml` to produce `environment/docs.yaml`. This is automated in the `Makefile`. You can also run, after doing any updates,
 
 ```bash
-make environment-files
+make environment-files-build
 ```
 
 which will rebuild all the needed yaml files.

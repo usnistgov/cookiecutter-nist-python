@@ -46,7 +46,7 @@ repos:
       - id: isort
         stages: [manual]
   # https://github.com/python/black#version-control-integration
-  - repo: https://github.com/psf/black
+  - Repo: https://github.com/psf/black
     rev: 23.3.0
     hooks:
       - id: black-jupyter

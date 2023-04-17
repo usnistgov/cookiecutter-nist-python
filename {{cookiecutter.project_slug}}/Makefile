@@ -155,11 +155,11 @@ environment/lint.yaml: environment.yaml $(addsuffix .yaml, $(addprefix environme
 
 ENVIRONMENTS += environment/lint.yaml
 
-.PHONY: environment-clean
+.PHONY: environment-files-clean
 environment-files-clean: ## clean all created environment/{dev,docs,test}.yaml
 	-rm $(ENVIRONMENTS) 2> /dev/null || true
 
-.PHONY: environment-files
+.PHONY: environment-files-build
 environment-files-build: $(ENVIRONMENTS) ## rebuild all environment files
 
 ################################################################################
