@@ -14,7 +14,7 @@ define PRINT_HELP_PYSCRIPT
 import re, sys
 
 for line in sys.stdin:
-	match = re.match(r'^([a-zA-Z_-]+):.*?## (.*)$$', line)
+	match = re.match(r'^([a-zA-Z_/.-]+):.*?## (.*)$$', line)
 	if match:
 		target, help = match.groups()
 		print("%-20s %s" % (target, help))
@@ -135,18 +135,23 @@ version: version-scm version-import
 # Environment files
 ################################################################################
 
-environment/dev.yaml: environment.yaml environment/dev-extras.yaml ## build development yaml file
+ENVIRONMENTS = $(addsuffix .yaml,$(addprefix environment/, dev docs test))
+
+environment/%.yaml: environment.yaml environment/%-extras.yaml ## create combined environment/{dev,docs,test}.yaml
 	conda-merge $^ > $@
+	-pre-commit run prettier --files $@ &> /dev/null || true
 
-environment/docs.yaml: environment.yaml environment/docs-extras.yaml ## build docs yaml file
-	conda-merge $^ > $@
+environment/dev.yaml: ## development environment yaml file
+environment/test.yaml: ## testing environment yaml file
+enviornment/docs.yaml: ## docs environment yaml file
 
-environment/test.yaml: environment.yaml environment/test-extras.yaml ## build test yaml file
-	conda-merge $^ > $@
 
-.PHONY: environment-files
+.PHONY: environment-files-clean
+environment-files-clean: ## clean all created environment/{dev,docs,test}.yaml
+	-rm $(ENVIRONMENTS) 2> /dev/null || true
 
-environment-files: environment/dev.yaml environment/docs.yaml environment/test.yaml ## rebuild all environment files
+.PHONY: environment-files-build
+environment-files-build: $(ENVIRONMENTS) ## rebuild all environment files
 
 
 ################################################################################
