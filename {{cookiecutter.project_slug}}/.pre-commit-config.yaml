@@ -7,6 +7,7 @@ default_install_hook_types:
   - pre-commit
   - commit-msg
 repos:
+  #* Top level
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
@@ -22,79 +23,68 @@ repos:
     rev: v3.2.2
     hooks:
       - id: validate_manifest
-  ## formatting
-  # prettier
+  #* Formatting
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: "v3.0.0-alpha.6" # Use the sha / tag you want to point at
+    rev: "v3.0.0-alpha.6"
     hooks:
       - id: prettier
         stages: [commit]
         additional_dependencies:
           - prettier-plugin-toml
         exclude: ^docs/reference/
-  # Ruff
+  #* Linting
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.6.0
+    hooks:
+      - id: markdownlint-cli2
+        stages: [manual]
+        args: ["--style prettier"]
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     # Ruff version.
     rev: "v0.0.261"
     hooks:
       - id: ruff
-        args: ["--fix"]
-  # isort should run before black as black sometimes tweaks the isort output
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.12.0
-    hooks:
-      - id: isort
-        stages: [manual]
-  # https://github.com/python/black#version-control-integration
   - repo: https://github.com/psf/black
     rev: 23.3.0
     hooks:
-      - id: black-jupyter
+      # - id: black-jupyter
+      # Move to just black.  use nbqa for notebook formatting
+      - id: black
   - repo: https://github.com/adamchainz/blacken-docs
-    rev: "1.13.0" # replace with latest tag on GitHub
+    rev: "1.13.0"
     hooks:
       - id: blacken-docs
         additional_dependencies:
-          - black==23.1.0
+          - black==23.3.0
         exclude: ^README.md
-  - repo: https://github.com/keewis/blackdoc
-    rev: v0.3.8
+  - repo: https://github.com/nbQA-dev/nbQA
+    rev: 1.7.0
     hooks:
-      - id: blackdoc
-        additional_dependencies: ["black==23.3.0"]
-      - id: blackdoc-autoupdate-black
-  - repo: https://github.com/codespell-project/codespell
-    rev: v2.2.4
-    hooks:
-      - id: codespell
-        types_or: [python, rst, markdown, cython, c]
-        additional_dependencies: [tomli]
-        args: [-I, docs/spelling_wordlist.txt]
+      - id: nbqa-ruff
+        additional_dependencies: [ruff]
+      - id: nbqa-black
+        additional_dependencies: [black]
+      - id: nbqa-pyupgrade
+        additional_dependencies: [pyupgrade]
         stages: [manual]
-  # TODO: Consider moving to flakeheaven
-  # see https://github.com/rstcheck/rstcheck/blob/main/.pre-commit-config.yaml
-  # see https://flakeheaven.readthedocs.io/en/latest/config.html
-  # - repo: https://github.com/flakeheaven/flakeheaven
-  #   rev: 3.3.0
-  #   hooks:
-  #     - id: flakeheaven
-  #       types_or: [python, jupyter, markdown, rst, yaml]
-  #       stages: [manual]
-  - repo: https://github.com/pycqa/flake8
-    rev: 6.0.0
-    hooks:
-      - id: flake8
+        args: [--py38-plus]
+      - id: nbqa-isort
+        additional_dependencies: [isort]
         stages: [manual]
-        additional_dependencies:
-          - flake8-docstrings
-          # - pep8-naming
-          # - flake8-rst-docstrings
-        exclude: ^tests/|^src/{{ cookiecutter.project_slug }}/tests/|^docs/conf.py|^setup.py
-  # Manual mypy
+
+  #* Commit message
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v2.1.1
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: [] # optional: list of Conventional Commits types to allow e.g. [feat, fix, ci, chore, test]
+
+  #* Manual Linting
+  #** mypy
   - repo: local
     hooks:
       - id: mypy
-        # note: assumes python env is setup and activated
         name: mypy
         entry: tox
         args: ["-e", "lint-mypy"]
@@ -104,34 +94,42 @@ repos:
         types: [python]
         require_serial: true
         stages: [manual]
+  # isort, pyupgrade, flake8 depend on ruff
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        stages: [manual]
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.3.1
     hooks:
       - id: pyupgrade
         stages: [manual]
-        args:
-          - --py38-plus
-          # remove on f-strings in Py3.7
-          - --keep-percent-format
-
-  # commit message
-  - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: v2.1.1
+        args: [--py38-plus]
+  - repo: https://github.com/pycqa/flake8
+    rev: 6.0.0
     hooks:
-      - id: conventional-pre-commit
-        stages: [commit-msg]
-        args: [] # optional: list of Conventional Commits types to allow e.g. [feat, fix, ci, chore, test]
-  # - repo: https://github.com/commitizen-tools/commitizen
-  #   rev: v2.42.1
-  #   hooks:
-  #     - id: commitizen
-  #       stages: [commit-msg]
-  # - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
-  #   rev: v9.5.0
-  #   hooks:
-  #     - id: commitlint
-  #       stages: [commit-msg]
-  # - repo: https://github.com/jorisroovers/gitlint
-  #   rev:  v0.19.1
-  #   hooks:
-  #   - id: gitlint
+      - id: flake8
+        stages: [manual]
+        additional_dependencies:
+          - flake8-docstrings
+          - Flake8-pyproject
+          # - pep8-naming
+          # - flake8-rst-docstrings
+        exclude: ^tests/|^src/{{ cookiecutter.project_slug }}/tests/|^docs/conf.py|^setup.py
+  #** spelling
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.2.4
+    hooks:
+      - id: codespell
+        types_or: [python, rst, markdown, cython, c]
+        additional_dependencies: [tomli]
+        args: [-I, docs/spelling_wordlist.txt]
+        stages: [manual]
+  #** markdown
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.6.0
+    hooks:
+      - id: markdownlint-cli2
+        stages: [manual]
+        args: ["--style prettier"]

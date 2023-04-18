@@ -1,19 +1,9 @@
-{% if cookiecutter.create_author_file == 'y' -%}
-include AUTHORS.md
-{% endif -%}
-include CONTRIBUTING.md
-include CHANGELOG.md
-include LICENSE
-include README.md
+# Defer to setuptools_scm
+# manually add not tracked files
+# or prune tracked files
 
-
-
-recursive-include tests *.py
-
-global-exclude *.py[co]
-prune */*.egg-info
-prune */*mypy_cache
-prune */*ipynb_checkpoints
-prune */__pycache__
-
-recursive-include docs *.rst conf.py Makefile make.bat *.jpg *.png *.gif
+# include README.md
+# recursive-include tests *.py
+# global-exclude *.py[co]
+# prune */*.egg-info
+# recursive-include docs *.rst conf.py Makefile make.bat *.jpg *.png *.gif

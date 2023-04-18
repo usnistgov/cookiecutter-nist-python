@@ -3,7 +3,7 @@ requires = ["setuptools>=61.2", "setuptools_scm[toml]>=7.0"]
 build-backend = "setuptools.build_meta"
 
 {%- set license_classifiers = {
-    'NIST license': 'License :: Public Domain',
+    'NIST license Public Domain': 'License :: Public Domain',
     'MIT license': 'License :: OSI Approved :: MIT License',
     'BSD license': 'License :: OSI Approved :: BSD License',
     'ISC license': 'License :: OSI Approved :: ISC License (ISCL)',
@@ -23,6 +23,9 @@ description = "{{ cookiecutter.project_short_description }}"
 keywords = ["{{ cookiecutter.project_name }}"]
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
+{%- if cookiecutter.open_source_license in license_classifiers %}
+    "{{ license_classifiers[cookiecutter.open_source_license] }}",
+{%- endif %}
     "License :: Public Domain",
     "Operating System :: OS Independent",
     "Intended Audience :: Science/Research",
@@ -87,6 +90,7 @@ skip_gitignore = true
 known_first_party = ["{{ cookiecutter.project_slug }}"]
 
 [tool.ruff]
+fix = true
 line-length = 88
 update-check = false
 target-version = "py38"
@@ -103,21 +107,21 @@ select = [
     # pydocstyle
     "D",
     # # flake8-2020
-    # "YTT",
+    "YTT",
     # # flake8-bugbear
     # "B",
-    # # flake8-quotes
-    # "Q",
+    # flake8-quotes
+    "Q",
     # # pylint
     # "PLE", "PLR", "PLW",
     # # misc lints
-    # "PIE",
+    "PIE",
     # # tidy imports
-    # "TID",
+    "TID",
     # # implicit string concatenation
     # "ISC",
     # # type-checking imports
-    # "TCH",
+    "TCH",
 
 ]
 # Allow autofix for all enabled rules (when `--fix`) is provided.
@@ -176,6 +180,8 @@ ignore = [
     "D107",
     "D203",
     "D212",
+    # Allow relative imports
+    "TID252",
 ]
 per-file-ignores = {  }
 # Allow unused variables when underscore-prefixed.
@@ -187,6 +193,48 @@ known-first-party = ["{{ cookiecutter.project_slug }}"]
 [tool.ruff.mccabe]
 # Unlike Flake8, default to a complexity level of 10.
 max-complexity = 10
+
+[tool.nbqa.addopts]
+ruff = ["--fix", "--extend-ignore=D100,B018"]
+
+[tool.flake8]
+docstring-convention = "numpy"
+ignore = [
+    # # whitespace before ':' - doesn't work well with black
+    "E203",
+    # module level import not at top of file
+    "E402",
+    # line too long - let black worry about that
+    "E501",
+    # do not assign a lambda expression, use a def
+    "E731",
+    # # line break before binary operator
+    "W503",
+    # allow black line after docstring
+    "D202",
+    "D105",
+    "D205",
+    # this leads to errors with placing titles in module
+    # docstrings
+    "D400",
+    "D401",
+    "D415",
+    "D102",
+    "D103",
+    # these are useful, but too many errors
+    # due to use of docfiller
+    "D417",
+    "D107",
+    "D203",
+    "D212",
+]
+
+[tool.scriv]
+format = "md"
+md_header_level = "2"
+
+[tool.commitizen]
+use_shortcuts = true
 
 [tool.cruft]
 
@@ -200,15 +248,8 @@ exclude = [".eggs", ".tox", "doc", "docs"]
 
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
-module = ["numpy.*", "pandas.*", "pytest.*", "scipy.*", "setuptools"]
+module = []
 
 [[tool.mypy.overrides]]
 ignore_errors = true
 module = []
-
-[tool.scriv]
-format = "md"
-md_header_level = "2"
-
-[tool.commitizen]
-use_shortcuts = true
