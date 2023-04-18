@@ -3,7 +3,7 @@ requires = ["setuptools>=61.2", "setuptools_scm[toml]>=7.0"]
 build-backend = "setuptools.build_meta"
 
 {%- set license_classifiers = {
-    'NIST license Public Domain': 'License :: Public Domain',
+    'NIST Public Domain': 'License :: Public Domain',
     'MIT license': 'License :: OSI Approved :: MIT License',
     'BSD license': 'License :: OSI Approved :: BSD License',
     'ISC license': 'License :: OSI Approved :: ISC License (ISCL)',
