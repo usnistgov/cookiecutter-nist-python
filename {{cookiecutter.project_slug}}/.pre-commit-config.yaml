@@ -58,7 +58,6 @@ repos:
         additional_dependencies: [ruff]
       - id: nbqa-black
         additional_dependencies: [black]
-      - id: nbqa-pyupgrade
 
   #* Commit message
   - repo: https://github.com/compilerla/conventional-pre-commit
