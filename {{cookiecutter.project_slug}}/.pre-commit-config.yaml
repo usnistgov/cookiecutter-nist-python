@@ -33,12 +33,6 @@ repos:
           - prettier-plugin-toml
         exclude: ^docs/reference/
   #* Linting
-  - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.6.0
-    hooks:
-      - id: markdownlint-cli2
-        stages: [manual]
-        args: ["--style prettier"]
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     # Ruff version.
     rev: "v0.0.261"
@@ -65,12 +59,6 @@ repos:
       - id: nbqa-black
         additional_dependencies: [black]
       - id: nbqa-pyupgrade
-        additional_dependencies: [pyupgrade]
-        stages: [manual]
-        args: [--py38-plus]
-      - id: nbqa-isort
-        additional_dependencies: [isort]
-        stages: [manual]
 
   #* Commit message
   - repo: https://github.com/compilerla/conventional-pre-commit
@@ -81,7 +69,6 @@ repos:
         args: [] # optional: list of Conventional Commits types to allow e.g. [feat, fix, ci, chore, test]
 
   #* Manual Linting
-  #** mypy
   - repo: local
     hooks:
       - id: mypy
@@ -94,7 +81,7 @@ repos:
         types: [python]
         require_serial: true
         stages: [manual]
-  # isort, pyupgrade, flake8 depend on ruff
+  # isort, pyupgrade, flake8 defer to ruff
   - repo: https://github.com/PyCQA/isort
     rev: 5.12.0
     hooks:
@@ -117,6 +104,16 @@ repos:
           # - pep8-naming
           # - flake8-rst-docstrings
         exclude: ^tests/|^src/{{ cookiecutter.project_slug }}/tests/|^docs/conf.py|^setup.py
+  - repo: https://github.com/nbQA-dev/nbQA
+    rev: 1.7.0
+    hooks:
+      - id: nbqa-pyupgrade
+        additional_dependencies: [pyupgrade]
+        stages: [manual]
+        args: [--py38-plus]
+      - id: nbqa-isort
+        additional_dependencies: [isort]
+        stages: [manual]
   #** spelling
   - repo: https://github.com/codespell-project/codespell
     rev: v2.2.4
