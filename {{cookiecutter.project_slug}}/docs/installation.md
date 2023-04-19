@@ -41,12 +41,11 @@ $ pip install .
 
 To install dependencies with conda/mamba, use:
 
-```
-.. code-block:: console
-```
+```console
 
-> \$ conda/mamba env create -n \{name} -f environment.yaml
-> \$ pip install . --no-deps
+conda env create -n {name} -f environment.yaml
+pip install . --no-deps
+```
 
 To install an editable version, add the `-e` option to pip.
 
