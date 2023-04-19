@@ -1,10 +1,10 @@
 # Indices and tables
 
-:::{toctree}
+```{toctree}
 
 genindex
 modindex
-:::
+```
 
 <!-- # Indices and tables -->
 
