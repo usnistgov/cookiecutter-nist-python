@@ -18,14 +18,16 @@ or
 $ conda install -c {{ cookiecutter.conda_channel }} {{ cookiecutter.project_slug }}
 ```
 
-This is the preferred method to install {{ cookiecutter.project_name }}, as it will always install the most recent stable release.
+This is the preferred method to install {{ cookiecutter.project_name }}, as it
+will always install the most recent stable release.
 
 If you don't have [pip] installed, this [Python installation guide] can guide
 you through the process.
 
 ## From sources
 
-The sources for {{ cookiecutter.project_name }} can be downloaded from the [Github repo].
+The sources for {{ cookiecutter.project_name }} can be downloaded from the
+[Github repo].
 
 You can either clone the public repository:
 
@@ -51,4 +53,5 @@ To install an editable version, add the `-e` option to pip.
 
 [github repo]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}
 [pip]: https://pip.pypa.io
-[python installation guide]: http://docs.python-guide.org/en/latest/starting/installation/
+[python installation guide]:
+  http://docs.python-guide.org/en/latest/starting/installation/
