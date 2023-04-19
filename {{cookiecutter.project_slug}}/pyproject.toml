@@ -26,7 +26,6 @@ classifiers = [
 {%- if cookiecutter.open_source_license in license_classifiers %}
     "{{ license_classifiers[cookiecutter.open_source_license] }}",
 {%- endif %}
-    "License :: Public Domain",
     "Operating System :: OS Independent",
     "Intended Audience :: Science/Research",
     "Programming Language :: Python",
