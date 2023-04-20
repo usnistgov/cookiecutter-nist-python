@@ -1,21 +1,17 @@
-```{highlight} shell
-
-```
-
 # Installation
 
 ## Stable release
 
 To install {{ cookiecutter.project_name }}, run this command in your terminal:
 
-```console
-$ pip install {{ cookiecutter.project_slug }}
+```bash
+pip install {{ cookiecutter.project_slug }}
 ```
 
 or
 
-```console
-$ conda install -c {{ cookiecutter.conda_channel }} {{ cookiecutter.project_slug }}
+```bash
+conda install -c {{ cookiecutter.conda_channel }} {{ cookiecutter.project_slug }}
 ```
 
 This is the preferred method to install {{ cookiecutter.project_name }}, as it
@@ -31,25 +27,25 @@ The sources for {{ cookiecutter.project_name }} can be downloaded from the
 
 You can either clone the public repository:
 
-```console
-$ git clone git://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}.git
+```bash
+git clone git://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}.git
 ```
 
 Once you have a copy of the source, you can install it with:
 
-```console
-$ pip install .
+```bash
+pip install .
 ```
 
 To install dependencies with conda/mamba, use:
 
-```console
-
-conda env create -n {name} -f environment.yaml
-pip install . --no-deps
+```bash
+conda env create [-n {name}] -f environment.yaml
+conda activate {name}
+pip install [-e] --no-deps .
 ```
 
-To install an editable version, add the `-e` option to pip.
+where options in brackets are options (for environment name, and editable install, repectively).
 
 [github repo]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}
 [pip]: https://pip.pypa.io

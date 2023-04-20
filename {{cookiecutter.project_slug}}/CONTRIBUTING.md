@@ -46,7 +46,7 @@ If you are proposing a feature:
 - Remember that this is a volunteer-driven project, and that contributions are
   welcome :)
 
-## Get Started!
+## Get Started
 
 ### Environment setup
 
@@ -285,20 +285,20 @@ The package is setup to use tox to test, build and release pip and conda
 distributions, and release the docs. Most of these tasks have a command in the
 `Makefile`. To test against multiple versions, use:
 
-```
-$ make test-all
+```bash
+make test-all
 ```
 
 To build the documentation in an isolated environment, use:
 
-```
-$ make docs-build
+```bash
+make docs-build
 ```
 
 To release the documentation use:
 
-```
-$ make docs-release posargs='-m "commit message" -r origin -p'
+```bash
+make docs-release posargs='-m "commit message" -r origin -p'
 ```
 
 Where posargs is are passed to ghp-import. Note that the branch created is
@@ -306,8 +306,8 @@ called `nist-pages`. This can be changed in `tox.ini`.
 
 To build the distribution, use:
 
-```
-$ make dist-pypi-[build-testrelease-release]
+```bash
+make dist-pypi-[build-testrelease-release]
 ```
 
 where `build` build to distro, `testrelease` tests putting on `testpypi` and
@@ -315,8 +315,8 @@ release puts the distro on pypi.
 
 To build the conda distribution, use:
 
-```
-$ make dist-conda-[recipe, build]
+```bash
+make dist-conda-[recipe, build]
 ```
 
 where `recipe` makes the conda recipe (using grayskull), and `build` makes the
@@ -324,6 +324,6 @@ distro. This can be manually added to a channel.
 
 To test the created distributions, you can use one of:
 
-```
-$ make test-dist-[pypi, conda]-[local,remote] py=[38, 39, 310]
+```bash
+make test-dist-[pypi, conda]-[local,remote] py=[38, 39, 310]
 ```

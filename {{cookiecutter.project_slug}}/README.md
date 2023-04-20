@@ -1,10 +1,17 @@
+# `{{ cookiecutter.project_name }}`
+
+A Python package for stuff.
+
 [![Repo][repo-badge]][repo-link] [![Docs][docs-badge]][docs-link]
 [![PyPI license][license-badge]][license-link]
 [![PyPI version][pypi-badge]][pypi-link]
 [![Conda (channel only)][conda-badge]][conda-link]
 [![Code style: black][black-badge]][black-link]
 
-<!-- For more badges, see https://shields.io/category/other and https://naereen.github.io/badges/ -->
+<!-- For more badges, see
+  https://shields.io/category/other
+  https://naereen.github.io/badges/
+-->
 <!-- [pypi-badge]: https://badge.fury.io/py/{{ cookiecutter.project_name }} -->
 
 [black-badge]: https://img.shields.io/badge/code%20style-black-000000.svg
@@ -29,9 +36,6 @@ cookiecutter.conda_channel }}/{{ cookiecutter.project_name }}
 }}/{{ cookiecutter.project_name }}/blob/main/LICENSE [numpy]: https://numpy.org
 [Numba]: https://numba.pydata.org/ [xarray]: https://docs.xarray.dev/en/stable/
 
-# `{{ cookiecutter.project_name }}`
-
-A Python package for stuff.
 
 ## Overview
 
@@ -66,7 +70,6 @@ conda install -c {{ cookiecutter.conda_channel}} {{ cookiecutter.project_name }}
 import {{ cookiecutter.project_slug }}
 
 ```
-
 <!-- end-docs -->
 
 ## Documentation

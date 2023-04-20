@@ -1,5 +1,4 @@
-# Welcome to {{ cookiecutter.project_name }}'s documentation!
-
+<!-- markdownlint-disable MD041 -->
 ```{include} ../README.md
 :end-before: <!-- end-docs -->
 ```
