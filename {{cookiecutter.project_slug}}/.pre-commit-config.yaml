@@ -19,10 +19,6 @@ repos:
       - id: check-merge-conflict
       - id: check-symlinks
       - id: check-toml
-  - repo: https://github.com/pre-commit/pre-commit
-    rev: v3.2.2
-    hooks:
-      - id: validate_manifest
   #* Formatting
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: "v3.0.0-alpha.6"
