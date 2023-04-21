@@ -70,6 +70,7 @@ conda install -c {{ cookiecutter.conda_channel}} {{ cookiecutter.project_name }}
 import {{ cookiecutter.project_slug }}
 
 ```
+
 <!-- end-docs -->
 
 ## Documentation

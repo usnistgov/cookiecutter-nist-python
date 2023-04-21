@@ -231,6 +231,7 @@ ignore = [
 [tool.scriv]
 format = "md"
 md_header_level = "2"
+new_fragment_template = "file: changelog.d/templates/new_fragment.md.j2"
 
 [tool.commitizen]
 use_shortcuts = true

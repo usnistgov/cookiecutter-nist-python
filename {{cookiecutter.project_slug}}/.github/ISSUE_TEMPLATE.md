@@ -1,4 +1,5 @@
 <!-- markdownlint-disable MD041 -->
+
 -   {{ cookiecutter.project_name }} version:
 -   Python version:
 -   Operating System:
