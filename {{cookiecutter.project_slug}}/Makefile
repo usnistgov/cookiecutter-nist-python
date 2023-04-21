@@ -64,7 +64,7 @@ pre-commit: ## run pre-commit
 pre-commit-all: ## run pre-commit on all files
 	pre-commit run --all-files
 
-.PHONY: pre-commit-lint pre-commit-lint-notebooks pre-commit-prettier pre-commit-markdownlint
+.PHONY: pre-commit-lint pre-commit-lint-notebooks pre-commit-prettier pre-commit-lint-markdown
 pre-commit-lint: ## run ruff and black on on all files
 	pre-commit run --all-files ruff
 	pre-commit run --all-files black
@@ -77,7 +77,7 @@ pre-commit-lint-notebooks: ## Run nbqa linting
 pre-commit-prettier: ## run prettier on all files.
 	pre-commit run --all-files prettier
 
-pre-commit-markdownlint: ## run markdown linter.
+pre-commit-lint-markdown: ## run markdown linter.
 	pre-commit run --all-files --hook-stage manual markdownlint-cli2
 
 .PHONY: pre-commit-lint-extra pre-commit-mypy pre-commit-codespell
