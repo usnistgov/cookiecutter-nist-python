@@ -95,16 +95,12 @@ pre-commit-codespell: ## run codespell. Note that this imports allowed words fro
 	pre-commit run --all-files --hook-stage manual codespell
 
 
-
 ################################################################################
 # my convenience functions
 ################################################################################
 .PHONY: user-venv user-autoenv-zsh user-all
-# user-venv: ## create .venv file with name of conda env
-# 	echo $$(conda info --base)/envs/{{ cookiecutter.project_slug }}-env > .venv
 user-venv: ## create .venv file with name of conda env
-	echo $${PWD}/.tox/{{ cookiecutter.project_slug }}-dev > .venv
-
+	echo $${PWD}/.tox/dev > .venv
 
 user-autoenv-zsh: ## create .autoenv.zsh files
 	echo conda activate $$(cat .venv) > .autoenv.zsh
