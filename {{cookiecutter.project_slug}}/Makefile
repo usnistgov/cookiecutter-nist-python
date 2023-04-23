@@ -193,6 +193,11 @@ mamba-dev-update: environment/dev.yaml ## update development environment
 tox_posargs?=-v
 TOX=CONDA_EXE=mamba tox $(tox_posargs)
 
+
+.PHONY: tox-ipykernel-display-name
+tox-ipykernel-display-name: ## Update display-name for any tox env with ipykernel
+	bash ./scripts/tox-ipykernel-display-name.sh {{ cookiecutter.project_slug }}
+
 ## dev env
 .PHONY: dev-env
 dev-env: environment/dev.yaml ## create development environment using tox
@@ -205,6 +210,11 @@ test-all: environment/test.yaml ## run tests on every Python version with tox
 
 
 ## docs
+.PHONY: docs-examples-symlink
+docs-examples-symlink: ## create symlinks to notebooks from /examples/ to /docs/examples.
+	bash ./scripts/docs-examples-symlinks.sh
+
+
 .PHONY: docs-build docs-release docs-clean docs-spelling docs-nist-pages docs-open docs-live docs-clean-build docs-linkcheck
 posargs=
 docs-build: ## build docs in isolation

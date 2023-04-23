@@ -64,6 +64,7 @@ If you are proposing a feature:
 [scriv]: https://github.com/nedbat/scriv
 [conventional-style]: https://www.conventionalcommits.org/en/v1.0.0/
 [commitizen]: https://github.com/commitizen-tools/commitizen
+[nb-conda-kernels]: https://github.com/Anaconda-Platform/nb_conda_kernels
 
 This project uses a host of tools to (hopefully) make development easier. We
 recommend installing some of these tools system wide. For this, we recommend
@@ -125,12 +126,34 @@ local development.
    git submodule update --init --recursive
    ```
 
-1. Create development environment. Using the `make` will install a development
-   version using mamba.
+1. Create development environment. There are two options to create the development environment.  The recommended
+   method is to use tox by using either:
+
+   ```bash
+   tox -e dev
+   ```
+
+   or
+
+   ```bash
+   make dev-env
+   ```
+
+   These create a development environment located at `.tox/dev`.
+
+   Alternativley, you can create centrally located conda environmentment using the command:
 
    ```bash
    make mamba-dev
    ```
+
+   If the development environment includes `ipykernel`, you should also run:
+
+   ```bash
+   make tox-ipykernel-display-name
+   ```
+
+   This will add a meaningful display name for the kernel (assuming you're using [nb-conda-kernels])
 
 1. Initiate [pre-commit] with:
 
@@ -195,6 +218,15 @@ local development.
    ```bash
    make test-all
    ```
+
+   Additionally, you should run the following:
+
+   ```bash
+   make pre-commit-lint-markdown
+   make pre-commit-codespell
+   ```
+
+
 
 1. Create changelog fragment. See [scriv] for more info.
 
@@ -274,6 +306,14 @@ We use [tox] to isolate the documentation build. Useful commands are as follows.
   ```bash
   tox -e docs-release
   ```
+
+  If you make any changes to `docs/examples`, you should run:
+
+  ```bash
+  make docs-examples-symlink
+  ```
+
+  to update symlinks from `docs/examples` to `examples`.
 
   After this, the docs can be pushed to the correct branch for distribution.
 
