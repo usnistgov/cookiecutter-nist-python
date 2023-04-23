@@ -126,8 +126,9 @@ local development.
    git submodule update --init --recursive
    ```
 
-1. Create development environment. There are two options to create the development environment.  The recommended
-   method is to use tox by using either:
+1. Create development environment. There are two options to create the
+   development environment. The recommended method is to use tox by using
+   either:
 
    ```bash
    tox -e dev
@@ -141,7 +142,8 @@ local development.
 
    These create a development environment located at `.tox/dev`.
 
-   Alternativley, you can create centrally located conda environmentment using the command:
+   Alternativley, you can create centrally located conda environmentment using
+   the command:
 
    ```bash
    make mamba-dev
@@ -153,7 +155,8 @@ local development.
    make tox-ipykernel-display-name
    ```
 
-   This will add a meaningful display name for the kernel (assuming you're using [nb-conda-kernels])
+   This will add a meaningful display name for the kernel (assuming you're using
+   [nb-conda-kernels])
 
 1. Initiate [pre-commit] with:
 
@@ -225,8 +228,6 @@ local development.
    make pre-commit-lint-markdown
    make pre-commit-codespell
    ```
-
-
 
 1. Create changelog fragment. See [scriv] for more info.
 
