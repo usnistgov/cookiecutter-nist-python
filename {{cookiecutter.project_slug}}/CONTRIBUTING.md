@@ -48,6 +48,57 @@ If you are proposing a feature:
 
 ## Get Started
 
+### Environment setup
+
+[pipx]: https://github.com/pypa/pipx
+[condax]: https://github.com/mariusvniekerk/condax
+[mamba]: https://github.com/mamba-org/mamba
+[conda-fast-setup]:
+  https://www.anaconda.com/blog/a-faster-conda-for-a-growing-community
+[pre-commit]: https://pre-commit.com/
+[tox]: https://tox.wiki/en/latest/
+[tox-conda]: https://github.com/tox-dev/tox-conda
+[cruft]: https://github.com/cruft/cruft
+[conda-merge]: https://github.com/amitbeka/conda-merge
+[git-flow]: https://github.com/nvie/gitflow
+[scriv]: https://github.com/nedbat/scriv
+[conventional-style]: https://www.conventionalcommits.org/en/v1.0.0/
+[commitizen]: https://github.com/commitizen-tools/commitizen
+[nb-conda-kernels]: https://github.com/Anaconda-Platform/nb_conda_kernels
+
+This project uses a host of tools to (hopefully) make development easier. We
+recommend installing some of these tools system wide. For this, we recommend
+using either [pipx] or [condax]. We mostly use conda/condax, but the choice is
+yours. For conda, we recommend actually using [mamba]. Alternatively, you can
+setup `conda` to use the faster `mamba` solver. See [here][conda-fast-setup] for
+details.
+
+Additional tools are:
+
+- [pre-commit]
+- [tox] and [tox-conda]
+- [cruft]
+- [conda-merge]
+- [scriv]
+
+These are setup using the following:
+
+```console
+condax install pre-commit
+condax install tox
+condax inject tox tox-conda
+condax install cruft
+condax install conda-merge
+condax install commitizen
+pipx install scriv
+```
+
+Alternatively, you can install these dependencies using:
+
+```console
+conda env update -n {env-name} environment/tools.yaml
+```
+
 ### Getting the repo
 
 Ready to contribute? Here's how to set up `{{ cookiecutter.project_slug }}` for
@@ -202,56 +253,6 @@ local development.
 
 1.  Submit a pull request through the GitHub website.
 
-### Environment setup
-
-[pipx]: https://github.com/pypa/pipx
-[condax]: https://github.com/mariusvniekerk/condax
-[mamba]: https://github.com/mamba-org/mamba
-[conda-fast-setup]:
-  https://www.anaconda.com/blog/a-faster-conda-for-a-growing-community
-[pre-commit]: https://pre-commit.com/
-[tox]: https://tox.wiki/en/latest/
-[tox-conda]: https://github.com/tox-dev/tox-conda
-[cruft]: https://github.com/cruft/cruft
-[conda-merge]: https://github.com/amitbeka/conda-merge
-[git-flow]: https://github.com/nvie/gitflow
-[scriv]: https://github.com/nedbat/scriv
-[conventional-style]: https://www.conventionalcommits.org/en/v1.0.0/
-[commitizen]: https://github.com/commitizen-tools/commitizen
-[nb-conda-kernels]: https://github.com/Anaconda-Platform/nb_conda_kernels
-
-This project uses a host of tools to (hopefully) make development easier. We
-recommend installing some of these tools system wide. For this, we recommend
-using either [pipx] or [condax]. We mostly use conda/condax, but the choice is
-yours. For conda, we recommend actually using [mamba]. Alternatively, you can
-setup `conda` to use the faster `mamba` solver. See [here][conda-fast-setup] for
-details.
-
-Additional tools are:
-
-- [pre-commit]
-- [tox] and [tox-conda]
-- [cruft]
-- [conda-merge]
-- [scriv]
-
-These are setup using the following:
-
-```console
-condax install pre-commit
-condax install tox
-condax inject tox tox-conda
-condax install cruft
-condax install conda-merge
-condax install commitizen
-pipx install scriv
-```
-
-Alternatively, you can install these dependencies using:
-
-```console
-conda env update -n {env-name} environment/tools.yaml
-```
 
 ### Dependency management
 
