@@ -1,7 +1,5 @@
 <!-- markdownlint-disable MD041 -->
 
-A Python package for stuff.
-
 [![Repo][repo-badge]][repo-link] [![Docs][docs-badge]][docs-link]
 [![PyPI license][license-badge]][license-link]
 [![PyPI version][pypi-badge]][pypi-link]
@@ -16,27 +14,25 @@ A Python package for stuff.
 
 [black-badge]: https://img.shields.io/badge/code%20style-black-000000.svg
 [black-link]: https://github.com/ambv/black
-
 [pypi-badge]: https://img.shields.io/pypi/v/{{ cookiecutter.project_name }}
 [pypi-link]: https://pypi.org/project/{{ cookiecutter.project_name }}
 [docs-badge]: https://img.shields.io/badge/docs-sphinx-informational
 [docs-link]: https://pages.nist.gov/{{ cookiecutter.project_name }}/
 [repo-badge]: https://img.shields.io/badge/--181717?logo=github&logoColor=ffffff
-[repo-link]: https://github.com/{{ cookiecutter.github_username
-}}/{{ cookiecutter.project_name }} [conda-badge]:
-https://img.shields.io/conda/v/{{ cookiecutter.conda_channel
-}}/{{ cookiecutter.project_name }} [conda-link]: https://anaconda.org/{{
-cookiecutter.conda_channel }}/{{ cookiecutter.project_name }}
+[repo-link]: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }} 
+[conda-badge]:https://img.shields.io/conda/v/{{ cookiecutter.conda_channel }}/{{ cookiecutter.project_name }} 
+[conda-link]: https://anaconda.org/{{ cookiecutter.conda_channel }}/{{ cookiecutter.project_name }}
 
 <!-- Use total link so works from anywhere -->
 
 [license-badge]: https://img.shields.io/pypi/l/cmomy?color=informational
-
-[license-link]: https://github.com/{{ cookiecutter.github_username
-}}/{{ cookiecutter.project_name }}/blob/main/LICENSE [numpy]: https://numpy.org
+[license-link]: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/blob/main/LICENSE 
+[numpy]: https://numpy.org
 [Numba]: https://numba.pydata.org/ [xarray]: https://docs.xarray.dev/en/stable/
 
 # `{{ cookiecutter.project_name }}`
+
+A Python package for stuff.
 
 ## Overview
 
