@@ -48,6 +48,160 @@ If you are proposing a feature:
 
 ## Get Started
 
+### Getting the repo
+
+Ready to contribute? Here's how to set up `{{ cookiecutter.project_slug }}` for
+local development.
+
+1.  Fork the `{{ cookiecutter.project_slug }}` repo on GitHub.
+
+1.  Clone your fork locally:
+
+    ```bash
+    git clone git@github.com:your_name_here/{{ cookiecutter.project_name }}.git
+    ```
+
+    If the repo includes submodules, you can add them either with the initial
+    close using:
+
+    ```bash
+    git clone --recursive-submodules git@github.com:your_name_here/{{ cookiecutter.project_name }}.git
+    ```
+
+    or after the clone using
+
+    ```bash
+    cd {{ cookiecutter.project_name }}
+    git submodule update --init --recursive
+    ```
+
+1.  Create development environment. There are two options to create the
+    development environment.
+
+    a. The recommended method is to use tox by using either:
+
+        ```bash
+        tox -e dev
+        ```
+
+        or
+
+        ```bash
+        make dev-env
+        ```
+        These create a development environment located at `.tox/dev`.
+
+        ```bash
+        make tox-ipykernel-display-name
+        ```
+
+        This will add a meaningful display name for the kernel (assuming you're using
+        [nb-conda-kernels])
+
+    b. Alternativley, you can create centrally located conda environmentment
+    using the command:
+
+        ```bash
+        make mamba-dev
+        ```
+
+        This will create a conda environment '{{ cookiecutter.project_slug }}-env' in the default location.
+
+        To install (an editable version) of the current package:
+
+        ```bash
+        pip install -e . --no-deps
+        ```
+
+        or
+
+        ```bash
+        make install-dev
+        ```
+
+1.  Initiate [pre-commit] with:
+
+    ```bash
+    pre-commit install
+    ```
+
+    To update the recipe, periodically run:
+
+    ```bash
+    pre-commit autoupdate
+    ```
+
+    If recipes change over time, you can clean up old installs with:
+
+    ```bash
+    pre-commit gc
+    ```
+
+1.  Create a branch for local development:
+
+    ```bash
+    git checkout -b name-of-your-bugfix-or-feature
+    ```
+
+    Now you can make your changes locally. Alternatively, we recommend using
+    [git-flow].
+
+1.  When you're done making changes, check that your changes pass the pre-commit
+    checks: tests.
+
+    ```bash
+    pre-commit run [--all-files]
+    ```
+
+    To run tests, use:
+
+    ```bash
+    pytest
+    ```
+
+    To test against multiple python versions, use tox:
+
+    ```bash
+    tox
+    ```
+
+    or using the `make`:
+
+    ```bash
+    make test-all
+    ```
+
+    Additionally, you should run the following:
+
+    ```bash
+    make pre-commit-lint-markdown
+    make pre-commit-codespell
+    ```
+
+1.  Create changelog fragment. See [scriv] for more info.
+
+    ```bash
+    scriv create --edit
+    ```
+
+1.  Commit your changes and push your branch to GitHub:
+
+    ```bash
+    git add .
+    git commit -m "Your detailed description of your changes."
+    git push origin name-of-your-bugfix-or-feature
+    ```
+
+    Note that the pre-commit hooks will force the commit message to be in the
+    [conventional sytle][conventional-style]. To assist this, you may want to
+    commit using [commitizen].
+
+    ```bash
+    cz commit
+    ```
+
+1.  Submit a pull request through the GitHub website.
+
 ### Environment setup
 
 [pipx]: https://github.com/pypa/pipx
@@ -98,160 +252,6 @@ Alternatively, you can install these dependencies using:
 ```console
 conda env update -n {env-name} environment/tools.yaml
 ```
-
-### Getting the repo
-
-Ready to contribute? Here's how to set up `{{ cookiecutter.project_slug }}` for
-local development.
-
-1. Fork the `{{ cookiecutter.project_slug }}` repo on GitHub.
-
-1. Clone your fork locally:
-
-   ```bash
-   git clone git@github.com:your_name_here/{{ cookiecutter.project_name }}.git
-   ```
-
-   If the repo includes submodules, you can add them either with the initial
-   close using:
-
-   ```bash
-   git clone --recursive-submodules git@github.com:your_name_here/{{ cookiecutter.project_name }}.git
-   ```
-
-   or after the clone using
-
-   ```bash
-   cd {{ cookiecutter.project_name }}
-   git submodule update --init --recursive
-   ```
-
-1. Create development environment. There are two options to create the
-   development environment. The recommended method is to use tox by using
-   either:
-
-   ```bash
-   tox -e dev
-   ```
-
-   or
-
-   ```bash
-   make dev-env
-   ```
-
-   These create a development environment located at `.tox/dev`.
-
-   Alternativley, you can create centrally located conda environmentment using
-   the command:
-
-   ```bash
-   make mamba-dev
-   ```
-
-   If the development environment includes `ipykernel`, you should also run:
-
-   ```bash
-   make tox-ipykernel-display-name
-   ```
-
-   This will add a meaningful display name for the kernel (assuming you're using
-   [nb-conda-kernels])
-
-1. Initiate [pre-commit] with:
-
-   ```bash
-   pre-commit install
-   ```
-
-   To update the recipe, periodically run:
-
-   ```bash
-   pre-commit autoupdate
-   ```
-
-   If recipes change over time, you can clean up old installs with:
-
-   ```bash
-   pre-commit gc
-   ```
-
-1. Install editable package:
-
-   ```bash
-   pip install -e . --no-deps
-   ```
-
-   or
-
-   ```bash
-   make install-dev
-   ```
-
-1. Create a branch for local development:
-
-   ```bash
-   git checkout -b name-of-your-bugfix-or-feature
-   ```
-
-   Now you can make your changes locally. Alternatively, we recommend using
-   [git-flow].
-
-1. When you're done making changes, check that your changes pass the pre-commit
-   checks: tests.
-
-   ```bash
-   pre-commit run [--all-files]
-   ```
-
-   To run tests, use:
-
-   ```bash
-   pytest
-   ```
-
-   To test against multiple python versions, use tox:
-
-   ```bash
-   tox
-   ```
-
-   or using the `make`:
-
-   ```bash
-   make test-all
-   ```
-
-   Additionally, you should run the following:
-
-   ```bash
-   make pre-commit-lint-markdown
-   make pre-commit-codespell
-   ```
-
-1. Create changelog fragment. See [scriv] for more info.
-
-   ```bash
-   scriv create --edit
-   ```
-
-1. Commit your changes and push your branch to GitHub:
-
-   ```bash
-   git add .
-   git commit -m "Your detailed description of your changes."
-   git push origin name-of-your-bugfix-or-feature
-   ```
-
-   Note that the pre-commit hooks will force the commit message to be in the
-   [conventional sytle][conventional-style]. To assist this, you may want to
-   commit using [commitizen].
-
-   ```bash
-   cz commit
-   ```
-
-1. Submit a pull request through the GitHub website.
 
 ### Dependency management
 
