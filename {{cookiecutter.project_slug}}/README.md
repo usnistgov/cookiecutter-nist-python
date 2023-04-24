@@ -1,4 +1,4 @@
-# `{{ cookiecutter.project_name }}`
+<!-- markdownlint-disable MD041 -->
 
 A Python package for stuff.
 
@@ -36,6 +36,7 @@ cookiecutter.conda_channel }}/{{ cookiecutter.project_name }}
 }}/{{ cookiecutter.project_name }}/blob/main/LICENSE [numpy]: https://numpy.org
 [Numba]: https://numba.pydata.org/ [xarray]: https://docs.xarray.dev/en/stable/
 
+# `{{ cookiecutter.project_name }}`
 
 ## Overview
 
