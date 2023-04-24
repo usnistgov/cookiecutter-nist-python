@@ -55,12 +55,11 @@ repos:
         additional_dependencies: [black]
 
   #* Commit message
-  - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: v2.1.1
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.0.1
     hooks:
-      - id: conventional-pre-commit
+      - id: commitizen
         stages: [commit-msg]
-        args: [] # optional: list of Conventional Commits types to allow e.g. [feat, fix, ci, chore, test]
 
   #* Manual Linting
   - repo: local
