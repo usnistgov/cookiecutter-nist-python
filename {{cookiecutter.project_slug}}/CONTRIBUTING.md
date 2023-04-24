@@ -64,7 +64,7 @@ If you are proposing a feature:
 [scriv]: https://github.com/nedbat/scriv
 [conventional-style]: https://www.conventionalcommits.org/en/v1.0.0/
 [commitizen]: https://github.com/commitizen-tools/commitizen
-[nb-conda-kernels]: https://github.com/Anaconda-Platform/nb_conda_kernels
+[nb_conda_kernels]: https://github.com/Anaconda-Platform/nb_conda_kernels
 
 This project uses a host of tools to (hopefully) make development easier. We
 recommend installing some of these tools system wide. For this, we recommend
@@ -104,154 +104,155 @@ conda env update -n {env-name} environment/tools.yaml
 Ready to contribute? Here's how to set up `{{ cookiecutter.project_slug }}` for
 local development.
 
-1.  Fork the `{{ cookiecutter.project_slug }}` repo on GitHub.
+- Fork the `{{ cookiecutter.project_slug }}` repo on GitHub.
 
-1.  Clone your fork locally:
+- Clone your fork locally:
 
-    ```bash
-    git clone git@github.com:your_name_here/{{ cookiecutter.project_name }}.git
-    ```
+  ```bash
+  git clone git@github.com:your_name_here/{{ cookiecutter.project_name }}.git
+  ```
 
-    If the repo includes submodules, you can add them either with the initial
-    close using:
+  If the repo includes submodules, you can add them either with the initial
+  close using:
 
-    ```bash
-    git clone --recursive-submodules git@github.com:your_name_here/{{ cookiecutter.project_name }}.git
-    ```
+  ```bash
+  git clone --recursive-submodules git@github.com:your_name_here/{{ cookiecutter.project_name }}.git
+  ```
 
-    or after the clone using
+  or after the clone using
 
-    ```bash
-    cd {{ cookiecutter.project_name }}
-    git submodule update --init --recursive
-    ```
+  ```bash
+  cd {{ cookiecutter.project_name }}
+  git submodule update --init --recursive
+  ```
 
-1.  Create development environment. There are two options to create the
-    development environment.
+- Create development environment. There are two options to create the
+  development environment.
 
-    a. The recommended method is to use tox by using either:
-
-        ```bash
-        tox -e dev
-        ```
-
-        or
-
-        ```bash
-        make dev-env
-        ```
-        These create a development environment located at `.tox/dev`.
-
-        ```bash
-        make tox-ipykernel-display-name
-        ```
-
-        This will add a meaningful display name for the kernel (assuming you're using
-        [nb-conda-kernels])
-
-    b. Alternativley, you can create centrally located conda environmentment
-    using the command:
-
-        ```bash
-        make mamba-dev
-        ```
-
-        This will create a conda environment '{{ cookiecutter.project_slug }}-env' in the default location.
-
-        To install (an editable version) of the current package:
-
-        ```bash
-        pip install -e . --no-deps
-        ```
-
-        or
-
-        ```bash
-        make install-dev
-        ```
-
-1.  Initiate [pre-commit] with:
+  - The recommended method is to use tox by using either:
 
     ```bash
-    pre-commit install
+    tox -e dev
     ```
 
-    To update the recipe, periodically run:
+    or
 
     ```bash
-    pre-commit autoupdate
+    make dev-env
     ```
 
-    If recipes change over time, you can clean up old installs with:
+    These create a development environment located at `.tox/dev`.
 
     ```bash
-    pre-commit gc
+    make tox-ipykernel-display-name
     ```
 
-1.  Create a branch for local development:
+    This will add a meaningful display name for the kernel (assuming you're
+    using [nb_conda_kernels])
+
+  - Alternativley, you can create centrally located conda environmentment using
+    the command:
 
     ```bash
-    git checkout -b name-of-your-bugfix-or-feature
+    make mamba-dev
     ```
 
-    Now you can make your changes locally. Alternatively, we recommend using
-    [git-flow].
+    This will create a conda environment '{{ cookiecutter.project_slug }}-env' in the default location.
 
-1.  When you're done making changes, check that your changes pass the pre-commit
-    checks: tests.
+    To install (an editable version) of the current package:
 
     ```bash
-    pre-commit run [--all-files]
+    pip install -e . --no-deps
     ```
 
-    To run tests, use:
+    or
 
     ```bash
-    pytest
+    make install-dev
     ```
 
-    To test against multiple python versions, use tox:
+- Initiate [pre-commit] with:
 
-    ```bash
-    tox
-    ```
+  ```bash
+  pre-commit install
+  ```
 
-    or using the `make`:
+  To update the recipe, periodically run:
 
-    ```bash
-    make test-all
-    ```
+  ```bash
+  pre-commit autoupdate
+  ```
 
-    Additionally, you should run the following:
+  If recipes change over time, you can clean up old installs with:
 
-    ```bash
-    make pre-commit-lint-markdown
-    make pre-commit-codespell
-    ```
+  ```bash
+  pre-commit gc
+  ```
 
-1.  Create changelog fragment. See [scriv] for more info.
+- Create a branch for local development:
 
-    ```bash
-    scriv create --edit
-    ```
+  ```bash
+  git checkout -b name-of-your-bugfix-or-feature
+  ```
 
-1.  Commit your changes and push your branch to GitHub:
+  Now you can make your changes locally. Alternatively, we recommend using
+  [git-flow].
 
-    ```bash
-    git add .
-    git commit -m "Your detailed description of your changes."
-    git push origin name-of-your-bugfix-or-feature
-    ```
+- When you're done making changes, check that your changes pass the pre-commit
+  checks: tests.
 
-    Note that the pre-commit hooks will force the commit message to be in the
-    [conventional sytle][conventional-style]. To assist this, you may want to
-    commit using [commitizen].
+  ```bash
+  pre-commit run [--all-files]
+  ```
 
-    ```bash
-    cz commit
-    ```
+  To run tests, use:
 
-1.  Submit a pull request through the GitHub website.
+  ```bash
+  pytest
+  ```
+
+  To test against multiple python versions, use tox:
+
+  ```bash
+  tox
+  ```
+
+  or using the `make`:
+
+  ```bash
+  make test-all
+  ```
+
+  Additionally, you should run the following:
+
+  ```bash
+  make pre-commit-lint-markdown
+  make pre-commit-codespell
+  ```
+
+- Create changelog fragment. See [scriv] for more info.
+
+  ```bash
+  scriv create --edit
+  ```
+
+- Commit your changes and push your branch to GitHub:
+
+  ```bash
+  git add .
+  git commit -m "Your detailed description of your changes."
+  git push origin name-of-your-bugfix-or-feature
+  ```
+
+  Note that the pre-commit hooks will force the commit message to be in the
+  [conventional sytle][conventional-style]. To assist this, you may want to
+  commit using [commitizen].
+
+  ```bash
+  cz commit
+  ```
+
+- Submit a pull request through the GitHub website.
 
 ### Dependency management
 
@@ -280,11 +281,11 @@ which will rebuild all the needed yaml files.
 
 Before you submit a pull request, check that it meets these guidelines:
 
-1. The pull request should include tests.
-2. If the pull request adds functionality, the docs should be updated. Put your
-   new functionality into a function with a docstring, and add the feature to
-   the list in README.rst.
-3. The pull request should work for Python 3.8, 3.9, 3.10.
+- The pull request should include tests.
+- If the pull request adds functionality, the docs should be updated. Put your
+  new functionality into a function with a docstring, and add the feature to the
+  list in CHANGELOG.md. You should use [scriv] for this.
+- The pull request should work for Python 3.8, 3.9, 3.10.
 
 ## Building the docs
 
@@ -366,5 +367,13 @@ distro. This can be manually added to a channel.
 To test the created distributions, you can use one of:
 
 ```bash
+tox -e test-dist-[pypi, conda]-[local,remote]-py[38,39,...]
+```
+
+or
+
+```bash
 make test-dist-[pypi, conda]-[local,remote] py=[38, 39, 310]
 ```
+
+where one options in the brackets should be choosen.
