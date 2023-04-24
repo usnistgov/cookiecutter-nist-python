@@ -6,29 +6,31 @@
 [![Conda (channel only)][conda-badge]][conda-link]
 [![Code style: black][black-badge]][black-link]
 
-<!-- For more badges, see
+<!--
+  For more badges, see
   https://shields.io/category/other
   https://naereen.github.io/badges/
+  [pypi-badge]: https://badge.fury.io/py/{{ cookiecutter.project_name }}
 -->
-<!-- [pypi-badge]: https://badge.fury.io/py/{{ cookiecutter.project_name }} -->
 
 [black-badge]: https://img.shields.io/badge/code%20style-black-000000.svg
-[black-link]: https://github.com/ambv/black
+[black-link]: https://github.com/psf/black
 [pypi-badge]: https://img.shields.io/pypi/v/{{ cookiecutter.project_name }}
 [pypi-link]: https://pypi.org/project/{{ cookiecutter.project_name }}
 [docs-badge]: https://img.shields.io/badge/docs-sphinx-informational
 [docs-link]: https://pages.nist.gov/{{ cookiecutter.project_name }}/
 [repo-badge]: https://img.shields.io/badge/--181717?logo=github&logoColor=ffffff
-[repo-link]: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }} 
-[conda-badge]:https://img.shields.io/conda/v/{{ cookiecutter.conda_channel }}/{{ cookiecutter.project_name }} 
+[repo-link]: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}
+[conda-badge]:https://img.shields.io/conda/v/{{ cookiecutter.conda_channel }}/{{ cookiecutter.project_name }}
 [conda-link]: https://anaconda.org/{{ cookiecutter.conda_channel }}/{{ cookiecutter.project_name }}
-
-<!-- Use total link so works from anywhere -->
-
 [license-badge]: https://img.shields.io/pypi/l/cmomy?color=informational
-[license-link]: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/blob/main/LICENSE 
+[license-link]: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/blob/main/LICENSE
+
+<!-- other links -->
+
 [numpy]: https://numpy.org
-[Numba]: https://numba.pydata.org/ [xarray]: https://docs.xarray.dev/en/stable/
+[Numba]: https://numba.pydata.org/
+[xarray]: https://docs.xarray.dev/en/stable/
 
 # `{{ cookiecutter.project_name }}`
 
