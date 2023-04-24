@@ -27,6 +27,12 @@ repos:
         stages: [commit]
         additional_dependencies:
           - prettier-plugin-toml
+  #** markdown
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.6.0
+    hooks:
+      - id: markdownlint-cli2
+        args: ["--style prettier"]
   #* Linting
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     # Ruff version.
@@ -116,10 +122,3 @@ repos:
         additional_dependencies: [tomli]
         args: [-I, docs/spelling_wordlist.txt]
         stages: [manual]
-  #** markdown
-  - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.6.0
-    hooks:
-      - id: markdownlint-cli2
-        stages: [manual]
-        args: ["--style prettier"]
