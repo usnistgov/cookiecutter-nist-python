@@ -253,7 +253,6 @@ local development.
 
 1.  Submit a pull request through the GitHub website.
 
-
 ### Dependency management
 
 Dependencies need to be placed in a few locations, which depend on the nature of
