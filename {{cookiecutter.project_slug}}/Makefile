@@ -138,7 +138,6 @@ version: version-scm version-import
 ################################################################################
 # Environment files
 ################################################################################
-
 ENVIRONMENTS = $(addsuffix .yaml,$(addprefix environment/, dev docs test))
 PRETTIER = pre-commit run prettier --files
 
@@ -187,8 +186,8 @@ mamba-dev-update: environment/dev.yaml ## update development environment
 # TOX
 ###############################################################################
 tox_posargs?=-v
-TOX=CONDA_EXE=mamba tox $(tox_posargs)
-
+version?=
+TOX=CONDA_EXE=mamba SETUPTOOLS_SCM_PRETEND_VERSION=$(version) tox $(tox_posargs)
 
 .PHONY: tox-ipykernel-display-name
 tox-ipykernel-display-name: ## Update display-name for any tox env with ipykernel
