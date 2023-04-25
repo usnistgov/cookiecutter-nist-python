@@ -80,6 +80,16 @@ repos:
         types: [python]
         require_serial: true
         stages: [manual]
+      - id: pyright
+        name: pyright
+        entry: pyright
+        args: []
+        language: system
+        pass_filenames: true
+        # additional_dependencies: [tox]
+        types: [python]
+        require_serial: true
+        stages: [manual]
   # isort, pyupgrade, flake8 defer to ruff
   - repo: https://github.com/PyCQA/isort
     rev: 5.12.0

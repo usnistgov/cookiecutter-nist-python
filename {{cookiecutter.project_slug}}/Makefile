@@ -91,6 +91,9 @@ pre-commit-lint-extra: ## run all extra linting (isort, flake8, pyupgrade, nbqa 
 pre-commit-mypy: ## run mypy
 	pre-commit run --all-files --hook-stage manual mypy
 
+pre-commit-pyright: ## run pyright
+	pre-commit run --all-files --hook-stage manual pyright
+
 pre-commit-codespell: ## run codespell. Note that this imports allowed words from docs/spelling_wordlist.txt
 	pre-commit run --all-files --hook-stage manual codespell
 
