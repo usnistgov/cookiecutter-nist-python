@@ -427,6 +427,7 @@ intersphinx_mapping = {
 
 linkcheck_ignore = ["https://doi.org/"]
 
+
 # based on numpy doc/source/conf.py
 def linkcode_resolve(domain, info):
     """Determine the URL corresponding to Python object"""
