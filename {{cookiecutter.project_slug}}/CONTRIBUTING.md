@@ -383,5 +383,7 @@ where one options in the brackets should be choosen.
 
 [setuptools_scm]: https://github.com/pypa/setuptools_scm
 
-Versioning is handled with [setuptools_scm].  The pacakge version is set by the git tag.
-For convenience, you can override the version in the makefile (calling tox) by setting `version=v{major}.{minor}.{micro}`.  This is useful for updating the docs, etc.
+Versioning is handled with [setuptools_scm].The pacakge version is set by the
+git tag. For convenience, you can override the version in the makefile (calling
+tox) by setting `version=v{major}.{minor}.{micro}`. This is useful for updating
+the docs, etc.
