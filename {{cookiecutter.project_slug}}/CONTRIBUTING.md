@@ -378,7 +378,6 @@ make test-dist-[pypi, conda]-[local,remote] py=[38, 39, 310]
 
 where one options in the brackets should be choosen.
 
-
 ## Package version
 
 [setuptools_scm]: https://github.com/pypa/setuptools_scm
