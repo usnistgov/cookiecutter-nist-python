@@ -294,19 +294,19 @@ We use [tox] to isolate the documentation build. Useful commands are as follows.
 - Build the docs:
 
   ```bash
-  tox -e docs-build
+  tox -e docs -- build
   ```
 
 - Spellcheck the docs:
 
   ```bash
-  tox -e docs-spelling
+  tox -e docs -- spelling
   ```
 
 - Create a release of the docs:
 
   ```bash
-  tox -e docs-release
+  tox -e docs -- release
   ```
 
   If you make any changes to `docs/examples`, you should run:
@@ -320,6 +320,10 @@ We use [tox] to isolate the documentation build. Useful commands are as follows.
   After this, the docs can be pushed to the correct branch for distribution.
 
 - Live documentation updates using
+
+  ```bash
+  make docs-livehtml
+  ```
 
 ## Using tox
 
@@ -340,7 +344,7 @@ make docs-build
 To release the documentation use:
 
 ```bash
-make docs-release posargs='-m "commit message" -r origin -p'
+make docs-release release_args='-m "commit message" -r origin -p'
 ```
 
 Where posargs is are passed to ghp-import. Note that the branch created is

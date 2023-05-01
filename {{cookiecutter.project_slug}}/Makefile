@@ -228,17 +228,17 @@ docs-release: ## release docs.  use posargs=... to override stuff
 docs-command: ## run command with command=...
 	$(TOX) -e docs -- command $(posargs)
 
-.PHONY: .docs-spelling docs-nist-pages docs-open docs-live docs-clean-build docs-linkcheck
+.PHONY: .docs-spelling docs-nist-pages docs-open docs-livehtml docs-clean-build docs-linkcheck
 docs-spelling: ## run spell check with sphinx
 	$(TOX) -e docs -- spelling $(posargs)
-docs-live: ## use autobuild for docs
+docs-livehtml: ## use autobuild for docs
 	$(TOX) -e docs -- livehtml $(posargs)
 docs-open: ## open the build
 	$(BROWSER) docs/_build/html/index.html
 docs-linkcheck: ## check links
 	$(TOX) -e docs -- linkcheck $(posargs)
 
-docs-build docs-release docs-command docs-clean docs-spelling docs-nist-pages docs-live: environment/docs.yaml
+docs-build docs-release docs-command docs-clean docs-livehtml docs-linkcheck: environment/docs.yaml
 
 
 ## linting
