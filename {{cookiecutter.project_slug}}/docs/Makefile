@@ -18,29 +18,35 @@ ALLSPHINXAUTOOPTS = $(ALLSPHINXOPTS) \
 	--ignore "*/.ipynb_checkpoints/*"
 
 
+
+.PHONY: help Makefile clean-all build livehtml showlinks release command
 # Put it first so that "make" without argument is like "make help".
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(ALLSPHINXOPTS) $(O)
-
-
-allclean: clean
-	rm -rf $(BUILDDIR)/*
-	rm -rf generated/*
-	rm -rf reference/generated/*
-
-.PHONY: help Makefile allclean
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 %: Makefile
 	$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(ALLSPHINXOPTS) $(O)
 
+clean-all: clean
+	rm -rf $(BUILDDIR)/*
+	rm -rf generated/*
+	rm -rf reference/generated/*
 
-.PHONY: livehtml
+# Alias to html
+build: html
+
 livehtml:
 	$(SPHINXAUTOBUILD) "$(SOURCEDIR)" "$(BUILDDIR)/html" $(ALLSPHINXAUTOOPTS) $(O)
 
-
-.PHONY: showlinks
 showlinks:
 	python -m sphinx.ext.intersphinx $(BUILDDIR)/html/objects.inv
+
+message?='update docs'
+release:
+	ghp-import -o -n -m $(message) -b nist-pages $(BUILDDIR)/html
+
+command ?= @echo pass "command=..."
+command:
+	$(command)
