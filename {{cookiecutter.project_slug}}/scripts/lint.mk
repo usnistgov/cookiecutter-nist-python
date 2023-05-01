@@ -3,15 +3,14 @@
 help:
 	@echo Makefile for linting
 
-posargs?=
 mypy:
-	-mypy --color-output $(posargs)
+	-mypy --color-output $(mypy_args)
 
 pyright:
-	-pyright $(posargs)
+	-pyright $(pyright_args)
 
 pytype:
-	-pytype $(posargs)
+	-pytype $(pytype_args)
 
 all: mypy pyright pytype
 

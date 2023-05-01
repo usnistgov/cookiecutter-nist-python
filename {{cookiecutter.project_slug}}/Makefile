@@ -142,11 +142,11 @@ version: version-scm version-import
 # Environment files
 ################################################################################
 ENVIRONMENTS = $(addsuffix .yaml,$(addprefix environment/, dev docs test))
-PRETTIER = pre-commit run prettier --files
+PRETTIER = bash scripts/run-prettier.sh
 
 environment/%.yaml: environment.yaml environment/%-extras.yaml ## create combined environment/{dev,docs,test}.yaml
 	conda-merge $^ > $@
-	-$(PRETTIER) $@ &> /dev/null || true
+	$(PRETTIER) $@
 
 environment/dev.yaml: ## development environment yaml file
 environment/test.yaml: ## testing environment yaml file
@@ -157,7 +157,7 @@ enviornment/docs.yaml: ## docs environment yaml file
 environment/lint.yaml: environment.yaml $(addsuffix .yaml, $(addprefix environment/, test-extras lint-extras)) ## mypy environment
 	echo $^
 	conda-merge $^ > $@
-	-$(PRETTIER) $@ &> /dev/null || true
+	$(PRETTIER) $@
 
 ENVIRONMENTS += environment/lint.yaml
 
@@ -241,6 +241,21 @@ docs-linkcheck: ## check links
 docs-build docs-release docs-command docs-clean docs-spelling docs-nist-pages docs-live: environment/docs.yaml
 
 
+## linting
+.PHONY: lint-mypy lint-pyright lint-pytype lint-all
+lint-mypy: ## run mypy
+	$(TOX) -e lint -- mypy
+
+lint-pyright: ## run pyright
+	$(TOX) -e lint -- pyright
+
+lint-pytype: ## run pytype
+	$(TOX) -e lint -- pytype
+
+lint-all: lint-mypy lint-pyright lint-pytype
+
+lint-mypy lint-pyright lint-pytype: environment/lint.yaml
+
 ## distribution
 .PHONY: dist-pypi-build dist-pypi-testrelease dist-pypi-release dist-pypi-command
 
@@ -266,23 +281,22 @@ dist-conda-build dist-conda-recipe dist-conda-command: environment/dist-conda.ya
 
 
 ## test distribution
-.PHONY: test-dist-pypi-remote test-dist-conda-remote test-dist-pypi-local test-dist-conda-local
+.PHONY: testdist-pypi-remote testdist-conda-remote testdist-pypi-local testdist-conda-local
 
 py?=310
-test-dist-pypi-remote: ## test pypi install, can run as `make test-dist-pypi-remote py=39` to run test-dist-pypi-local-py39
+testdist-pypi-remote: ## test pypi install, can run as `make test-dist-pypi-remote py=39` to run test-dist-pypi-local-py39
 	$(TOX) -e $@-py$(py) -- $(posargs)
 
-test-dist-conda-remote: ## test conda install, can run as `make test-dist-conda-remote py=39` to run test-dist-conda-local-py39
+testdist-conda-remote: ## test conda install, can run as `make test-dist-conda-remote py=39` to run test-dist-conda-local-py39
 	$(TOX) -e $@-py$(py) -- $(poasargs)
 
-test-dist-pypi-local: ## test pypi install, can run as `make test-dist-pypi-local py=39` to run test-dist-pypi-local-py39
+testdist-pypi-local: ## test pypi install, can run as `make test-dist-pypi-local py=39` to run test-dist-pypi-local-py39
 	$(TOX) -e $@-py$(py) -- $(posargs)
 
-test-dist-conda-local: ## test conda install, can run as `make test-dist-conda-local py=39` to run test-dist-conda-local-py39
+testdist-conda-local: ## test conda install, can run as `make test-dist-conda-local py=39` to run test-dist-conda-local-py39
 	$(TOX) -e $@-py$(py) -- $(poasargs)
 
-
-test-dist-pypi: environment/test.
+testdist-pypi: environment/test.yaml
 
 
 ## list all options

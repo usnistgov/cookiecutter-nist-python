@@ -20,6 +20,9 @@ insert_final_newline = false
 [Makefile]
 indent_style = tab
 
+[*.mk]
+indent_style = tab
+
 [*.{yaml,yml}]
 indent_size = 2
 
