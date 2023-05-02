@@ -188,9 +188,9 @@ mamba-dev-update: environment/dev.yaml ## update development environment
 ################################################################################
 # TOX
 ###############################################################################
-tox-args?=-v
+tox_args?=-v
 version?=
-TOX=CONDA_EXE=mamba SETUPTOOLS_SCM_PRETEND_VERSION=$(version) tox $(tox-args)
+TOX=CONDA_EXE=mamba SETUPTOOLS_SCM_PRETEND_VERSION=$(version) tox $(tox_args)
 
 .PHONY: tox-ipykernel-display-name
 tox-ipykernel-display-name: ## Update display-name for any tox env with ipykernel
@@ -220,7 +220,7 @@ docs-clean: ## clean docs
 	rm -rf docs/generated/*
 	rm -rf docs/reference/generated/*
 docs-clean-build: docs-clean docs-build ## clean and build
-docs-release: ## release docs.  use release-args=... to override stuff
+docs-release: ## release docs.  use release_args=... to override stuff
 	$(TOX) -e docs -- release
 docs-command: ## run command with command=...
 	$(TOX) -e docs -- command
@@ -239,11 +239,11 @@ docs-build docs-release docs-command docs-clean docs-livehtml docs-linkcheck: en
 
 ## linting
 .PHONY: lint-mypy lint-pyright lint-pytype lint-all lint-command
-lint-mypy: ## run mypy
+lint-mypy: ## run mypy mypy_args=...
 	$(TOX) -e lint -- mypy
-lint-pyright: ## run pyright
+lint-pyright: ## run pyright pyright_args=...
 	$(TOX) -e lint -- pyright
-lint-pytype: ## run pytype
+lint-pytype: ## run pytype pytype_args=...
 	$(TOX) -e lint -- pytype
 lint-all:
 	$(TOX) -e lint -- all

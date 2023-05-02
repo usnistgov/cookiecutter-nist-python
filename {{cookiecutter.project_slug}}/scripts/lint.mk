@@ -4,13 +4,13 @@ help:
 	@echo Makefile for linting
 
 mypy:
-	-mypy --color-output $(mypy-args)
+	-mypy --color-output $(mypy_args)
 
 pyright:
-	-pyright $(pyright-args)
+	-pyright $(pyright_args)
 
 pytype:
-	-pytype $(pytype-args)
+	-pytype $(pytype_args)
 
 all: mypy pyright pytype
 
