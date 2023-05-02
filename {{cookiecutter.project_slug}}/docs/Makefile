@@ -43,7 +43,7 @@ livehtml:
 showlinks:
 	python -m sphinx.ext.intersphinx $(BUILDDIR)/html/objects.inv
 
-release_args ?= '-m "update docs" -b nist-pages'
+release_args ?= -m "update docs" -b nist-pages
 release:
 	ghp-import -o -n $(release_args) $(BUILDDIR)/html
 
