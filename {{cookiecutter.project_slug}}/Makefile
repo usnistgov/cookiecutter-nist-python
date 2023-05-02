@@ -248,7 +248,7 @@ lint-pytype: ## run pytype
 lint-all:
 	$(TOX) -e lint -- all
 lint-command:
-	$(tox) -e lint -- command
+	$(TOX) -e lint -- command
 
 lint-mypy lint-pyright lint-pytype lint-all lint-command: environment/lint.yaml
 
