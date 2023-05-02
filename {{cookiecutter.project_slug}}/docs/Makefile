@@ -45,7 +45,7 @@ showlinks:
 
 release_args ?= '-m "update docs" -b nist-pages'
 release:
-	ghp-import -o -n -m $(release_args) $(BUILDDIR)/html
+	ghp-import -o -n $(release_args) $(BUILDDIR)/html
 
 command ?= @echo pass "command=..."
 command:
