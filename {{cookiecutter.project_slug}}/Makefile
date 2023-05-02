@@ -188,9 +188,9 @@ mamba-dev-update: environment/dev.yaml ## update development environment
 ################################################################################
 # TOX
 ###############################################################################
-tox_posargs?=-v
+tox-args?=-v
 version?=
-TOX=CONDA_EXE=mamba SETUPTOOLS_SCM_PRETEND_VERSION=$(version) tox $(tox_posargs)
+TOX=CONDA_EXE=mamba SETUPTOOLS_SCM_PRETEND_VERSION=$(version) tox $(tox-args)
 
 .PHONY: tox-ipykernel-display-name
 tox-ipykernel-display-name: ## Update display-name for any tox env with ipykernel
@@ -203,9 +203,8 @@ dev-env: environment/dev.yaml ## create development environment using tox
 
 ## testing
 .PHONY: test-all
-test-all: environment/test.yaml ## run tests on every Python version with tox
+test-all: environment/test.yaml ## run tests on every Python version with tox.  can pass posargs=...
 	$(TOX) -- $(posargs)
-
 
 ## docs
 .PHONY: docs-examples-symlink
@@ -214,69 +213,65 @@ docs-examples-symlink: ## create symlinks to notebooks from /examples/ to /docs/
 
 
 .PHONY: docs-build docs-release docs-clean docs-command
-
-posargs?=
 docs-build: ## build docs in isolation
-	$(TOX) -e docs -- build $(posargs)
+	$(TOX) -e docs -- build
 docs-clean: ## clean docs
 	rm -rf docs/_build/*
 	rm -rf docs/generated/*
 	rm -rf docs/reference/generated/*
 docs-clean-build: docs-clean docs-build ## clean and build
-docs-release: ## release docs.  use posargs=... to override stuff
-	$(TOX) -e docs -- release $(posargs)
+docs-release: ## release docs.  use release-args=... to override stuff
+	$(TOX) -e docs -- release
 docs-command: ## run command with command=...
-	$(TOX) -e docs -- command $(posargs)
+	$(TOX) -e docs -- command
 
 .PHONY: .docs-spelling docs-nist-pages docs-open docs-livehtml docs-clean-build docs-linkcheck
 docs-spelling: ## run spell check with sphinx
-	$(TOX) -e docs -- spelling $(posargs)
+	$(TOX) -e docs -- spelling
 docs-livehtml: ## use autobuild for docs
-	$(TOX) -e docs -- livehtml $(posargs)
+	$(TOX) -e docs -- livehtml
 docs-open: ## open the build
 	$(BROWSER) docs/_build/html/index.html
 docs-linkcheck: ## check links
-	$(TOX) -e docs -- linkcheck $(posargs)
+	$(TOX) -e docs -- linkcheck
 
 docs-build docs-release docs-command docs-clean docs-livehtml docs-linkcheck: environment/docs.yaml
 
-
 ## linting
-.PHONY: lint-mypy lint-pyright lint-pytype lint-all
+.PHONY: lint-mypy lint-pyright lint-pytype lint-all lint-command
 lint-mypy: ## run mypy
 	$(TOX) -e lint -- mypy
-
 lint-pyright: ## run pyright
 	$(TOX) -e lint -- pyright
-
 lint-pytype: ## run pytype
 	$(TOX) -e lint -- pytype
+lint-all:
+	$(TOX) -e lint -- all
+lint-command:
+	$(tox) -e lint -- command
 
-lint-all: lint-mypy lint-pyright lint-pytype
-
-lint-mypy lint-pyright lint-pytype: environment/lint.yaml
+lint-mypy lint-pyright lint-pytype lint-all lint-command: environment/lint.yaml
 
 ## distribution
 .PHONY: dist-pypi-build dist-pypi-testrelease dist-pypi-release dist-pypi-command
 
-posargs?=
-dist-pypi-build: ## build dist, can pass posargs=... and tox_posargs=...
-	$(TOX) -e dist-pypi -- build $(posargs)
-dist-pypi-testrelease: ## test release o
-	$(TOX) -e dist-pypi -- testrelease $(posargs)
+dist-pypi-build: ## build dist
+	$(TOX) -e dist-pypi -- build
+dist-pypi-testrelease: ## test release on testpypi
+	$(TOX) -e dist-pypi -- testrelease
 dist-pypi-release: ## release to pypi, can pass posargs=...
-	$(TOX) -e dist-pypi -- release $(posargs)
+	$(TOX) -e dist-pypi -- release
 dist-pypi-command: ## run command with command=...
-	$(TOX) -e dist-pypi -- command $(posargs)
+	$(TOX) -e dist-pypi -- command
 dist-pypi-build dist-pypi-testrelease dist-pypi-release dist-pypi-command: environment/dist-pypi.yaml
 
 .PHONY: dist-conda-recipe dist-conda-build dist-conda-command
 dist-conda-recipe: ## build conda recipe can pass posargs=...
-	$(TOX) -e dist-conda -- recipe $(posargs)
+	$(TOX) -e dist-conda -- recipe
 dist-conda-build: ## build conda recipe can pass posargs=...
-	$(TOX) -e dist-conda -- build $(posargs)
+	$(TOX) -e dist-conda -- build
 dist-conda-command: ## run command with command=...
-	$(TOX) -e dist-conda -- command $(posargs)
+	$(TOX) -e dist-conda -- command
 dist-conda-build dist-conda-recipe dist-conda-command: environment/dist-conda.yaml
 
 
@@ -286,22 +281,17 @@ dist-conda-build dist-conda-recipe dist-conda-command: environment/dist-conda.ya
 py?=310
 testdist-pypi-remote: ## test pypi install, can run as `make test-dist-pypi-remote py=39` to run test-dist-pypi-local-py39
 	$(TOX) -e $@-py$(py) -- $(posargs)
-
 testdist-conda-remote: ## test conda install, can run as `make test-dist-conda-remote py=39` to run test-dist-conda-local-py39
 	$(TOX) -e $@-py$(py) -- $(poasargs)
-
 testdist-pypi-local: ## test pypi install, can run as `make test-dist-pypi-local py=39` to run test-dist-pypi-local-py39
 	$(TOX) -e $@-py$(py) -- $(posargs)
-
 testdist-conda-local: ## test conda install, can run as `make test-dist-conda-local py=39` to run test-dist-conda-local-py39
 	$(TOX) -e $@-py$(py) -- $(poasargs)
 
-testdist-pypi: environment/test.yaml
-
+testdist-pypi-remote testdist-conda-remote testdist-pypi-local testdist-conda-local: environment/test.yaml
 
 ## list all options
 .PHONY: tox-list
-
 tox-list:
 	$(TOX) -a
 
