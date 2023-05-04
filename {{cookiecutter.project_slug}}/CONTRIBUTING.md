@@ -390,3 +390,13 @@ Versioning is handled with [setuptools_scm].The pacakge version is set by the
 git tag. For convenience, you can override the version in the makefile (calling
 tox) by setting `version=v{major}.{minor}.{micro}`. This is useful for updating
 the docs, etc.
+
+
+
+## Creating conda recipe
+
+[grayskull]: https://github.com/conda/grayskull
+
+For the most part, we use [grayskull] to create the conda recipe.  However, I've had
+issues getting it to play nice with `pyproject.toml` for some of the 'extra' variables.
+So, we use grayskull to build the majority of the recipe, and append the file `.recipe-append.yaml`.  For some edge cases (install name different from package name, etc), you'll need to manually edit this file to create the final recipe.

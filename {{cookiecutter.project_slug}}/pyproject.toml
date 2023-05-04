@@ -3,10 +3,10 @@ requires = ["setuptools>=61.2", "setuptools_scm[toml]>=7.0"]
 build-backend = "setuptools.build_meta"
 
 {%- set license_classifiers = {
-    'NIST license': 'License :: Public Domain',
-    'MIT license': 'License :: OSI Approved :: MIT License',
-    'BSD license': 'License :: OSI Approved :: BSD License',
-    'ISC license': 'License :: OSI Approved :: ISC License (ISCL)',
+    'NIST-PD': 'License :: Public Domain',
+    'MIT': 'License :: OSI Approved :: MIT License',
+    'BSD': 'License :: OSI Approved :: BSD License',
+    'ISC': 'License :: OSI Approved :: ISC License (ISCL)',
     'Apache Software License 2.0': 'License :: OSI Approved :: Apache Software License',
     'GNU General Public License v3': 'License :: OSI Approved :: GNU General Public License v3 (GPLv3)'
 } %}
@@ -53,16 +53,14 @@ test = ["pytest"]
 {{ cookiecutter.project_slug }} = "{{ cookiecutter.project_slug}}.cli:main"
 
 {%- endif %}
-## Defer this to setup.cfg
-## Will transition when everything works (grayskull in particular)
-## and will remove setup.py
-# [tool.setuptools]
-# zip-safe = true # if using mypy, must be False
-# include-package-data = true
-# license-files = ["LICENSE"]
-# [tool.setuptools.packages.find]
-# namespaces = true
-# where = ["src"]
+## grayskull still messes some things up, but use scripts/recipe-append.sh for this
+[tool.setuptools]
+zip-safe = true # if using mypy, must be False
+include-package-data = true
+license-files = ["LICENSE"]
+[tool.setuptools.packages.find]
+namespaces = true
+where = ["src"]
 ## include = []
 ## exclude = []
 ##
