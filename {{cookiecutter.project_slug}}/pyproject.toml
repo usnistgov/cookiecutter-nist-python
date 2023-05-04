@@ -3,19 +3,29 @@ requires = ["setuptools>=61.2", "setuptools_scm[toml]>=7.0"]
 build-backend = "setuptools.build_meta"
 
 {%- set license_classifiers = {
-    'NIST-PD': 'License :: Public Domain',
-    'MIT': 'License :: OSI Approved :: MIT License',
-    'BSD': 'License :: OSI Approved :: BSD License',
-    'ISC': 'License :: OSI Approved :: ISC License (ISCL)',
+    'NIST license': 'License :: Public Domain',
+    'MIT license': 'License :: OSI Approved :: MIT License',
+    'BSD license': 'License :: OSI Approved :: BSD License',
+    'ISC license': 'License :: OSI Approved :: ISC License (ISCL)',
     'Apache Software License 2.0': 'License :: OSI Approved :: Apache Software License',
     'GNU General Public License v3': 'License :: OSI Approved :: GNU General Public License v3 (GPLv3)'
 } %}
+
+{%- set license_names = {
+    'NIST license': 'NIST-PD',
+    'MIT license': 'MIT',
+    'BSD license': 'BSD',
+    'ISC license': 'ISC',
+    'Apache Software License 2.0': 'Apache Software License 2.0',
+    'GNU General Public License v3': 'GNU General Public License v3'
+} %}
+
 
 [project]
 name = "{{ cookiecutter.project_slug }}"
 authors = [{ name = "{{ cookiecutter.full_name.replace('\"', '\\\"') }}", email = "{{ cookiecutter.email }}" }]
 {%- if cookiecutter.open_source_license in license_classifiers %}
-license = { text = "{{ cookiecutter.open_source_license }}" }
+license = { text = "{{ license_names[cookiecutter.open_source_license] }}" }
 {%- endif %}
 description = "{{ cookiecutter.project_short_description }}"
 # if using markdown

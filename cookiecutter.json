@@ -13,8 +13,8 @@
         "docs/_templates/autodocsumm/*.rst",
         "docs/_static/css/*",
         "docs/_static/js/*",
-        "changelog.d/templates/*",
-        "changelog.d/templates/auto-changlog/*"
+        "changelog.d/templates/*.j2",
+        "changelog.d/templates/auto-changelog/*.jinja2"
     ],
     "project_short_description": "Python Boilerplate contains all the boilerplate you need to create a Python package.",
 
@@ -29,10 +29,10 @@
     ],
     "create_author_file": "y",
     "open_source_license": [
-        "NIST-PD",
-        "MIT",
-        "BSD",
-        "ISC",
+        "NIST license",
+        "MIT license",
+        "BSD license",
+        "ISC license",
         "Apache Software License 2.0",
         "GNU General Public License v3",
         "Not open source"
