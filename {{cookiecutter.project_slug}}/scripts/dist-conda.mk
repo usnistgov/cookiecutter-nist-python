@@ -1,4 +1,6 @@
+
 project_name?={{ cookiecutter.project_name }}
+sdist_path?=$(project_name)
 
 .PHONY: help clean-recipe clean-build recipe build command
 
@@ -11,7 +13,7 @@ clean-build:
 	rm -rf build
 
 recipe: clean-recipe
-	grayskull pypi $(project_name)     && \
+	grayskull pypi $(sdist_path)     && \
 	cat $(project_name)/meta.yaml
 
 build: clean-build
