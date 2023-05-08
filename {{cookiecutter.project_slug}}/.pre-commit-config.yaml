@@ -51,7 +51,7 @@ repos:
       - id: blacken-docs
         additional_dependencies:
           - black==23.3.0
-        exclude: ^README.md
+        # exclude: ^README.md
   - repo: https://github.com/nbQA-dev/nbQA
     rev: 1.7.0
     hooks:
