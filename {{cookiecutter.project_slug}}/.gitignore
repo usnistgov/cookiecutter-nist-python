@@ -110,3 +110,4 @@ pyrightconfig.json
 /monkeytype.sqlite3
 /dist-conda/*
 !/dist-conda/Makefile
+/{{ cookiecutter.project_name }}-feedstock*/
