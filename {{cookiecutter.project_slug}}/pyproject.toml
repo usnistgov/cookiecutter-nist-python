@@ -47,17 +47,92 @@ classifiers = [
 ]
 dynamic = ["readme", "version"]
 requires-python = ">=3.8"
-dependencies = [] # additional packages
+dependencies = [
+  {%- if cookiecutter.command_line_interface|lower == 'click' -%}
+  "Click",{% endif %}
+  {%- if cookiecutter.command_line_interface|lower == 'fire' -%}
+  "fire",{% endif %}
+] # additional packages
 
 [project.urls]
 homepage = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name}}"
 documentation = "https://pages.nist.gov/{{ cookiecutter.project_name }}/"
 
 [project.optional-dependencies]
-test = ["pytest"]
+test = ["pytest", "python-xdist", "pytest-cov", "pytest-sugar"]
+dev-extras = [
+    "ipython",
+    "ipykernel",
+    "setuptools-scm",
+    "pytest-accept", # p2c: -p
+]
+typing-extras = [
+    "mypy",
+    "pytype",
+    "pandas-stubs",
+]
+typing = [
+    "{{ cookiecutter.project_name }}[typing-extras]",
+    "{{ cookiecutter.project_name }}[test]",
 
-# dev = []
-# docs = []
+nox = [
+    "nox",
+    "noxopt", # p2c: -p
+    "ruamel.yaml",
+]
+dev = [
+    "{{ cookiecutter.project_name }}[test]",
+    "{{ cookiecutter.project_name }}[typing-extras]",
+    "{{ cookiecutter.project_name }}[dev-extras]",
+]
+tools = [
+  "pre-commit",
+  "cruft",
+  "scriv",
+]
+dev-complete = [
+    "{{ cookiecutter.project_name }}[dev]",
+    "{{ cookiecutter.project_name }}[tools]",
+    "{{ cookiecutter.project_name }}[nox]",
+]
+docs = [
+    "setuptools-scm",
+    "ipython",
+    "matplotlib",
+    "pandas",
+    "pyenchant",
+    "ghp-import",
+    "sphinx",
+    "sphinx-copybutton",
+    "sphinxcontrib-spelling",
+    "sphinx-autobuild",
+    "myst-nb",
+    {% if cookiecutter.sphinx_theme == 'furo' -%}
+    "furo",
+    {%- elif cookiecutter.sphinx_theme == "sphinx_book_theme" -%}
+    "sphinx-book-theme",
+    {%- endif %}
+    {%- if cookiecutter.sphinx_use_autodocsumm == "y" %}
+    "autodocsumm",
+    {%- endif %}
+]
+
+
+[tool.pyproject2conda]
+channels = ["conda-forge"]
+
+[tool.pyproject2conda.isolated-dependencies]
+dist-pypi = ["twine", "build"]
+dist-conda = [
+    "anaconda-client",
+    "grayskull",
+    "conda-build",
+    "conda-verify",
+    "boa",
+    "setuptools-scm",
+]
+
+
 {%- if 'no' not in cookiecutter.command_line_interface|lower %}
 [project.scripts]
 {{ cookiecutter.project_slug }} = "{{ cookiecutter.project_slug}}.cli:main"
