@@ -1,9 +1,7 @@
 """Config file for nox"""
 from __future__ import annotations
 
-# isort:skip  # noqa
 import shutil
-import tempfile
 from dataclasses import replace  # noqa
 from pathlib import Path
 from textwrap import dedent
@@ -906,7 +904,7 @@ def _open_webpage(path=None, url=None):
 #     force_reinstall: FORCE_REINSTALL_CLI = False,
 # ):
 #     """Merge environments using conda-merge."""
-
+#     import tempfile
 #     session_install_envs(
 #         session,
 #         reqs=["conda-merge", "ruamel.yaml"],
