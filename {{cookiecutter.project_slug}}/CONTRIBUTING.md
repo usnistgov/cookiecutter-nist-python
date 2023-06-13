@@ -157,7 +157,8 @@ local development.
     make mamba-dev
     ```
 
-    This will create a conda environment '{{ cookiecutter.project_slug }}-env' in the default location.
+    This will create a conda environment '{{ cookiecutter.project_slug }}-env'
+    in the default location.
 
     To install (an editable version) of the current package:
 
@@ -391,22 +392,25 @@ git tag. For convenience, you can override the version in the makefile (calling
 tox) by setting `version=v{major}.{minor}.{micro}`. This is useful for updating
 the docs, etc.
 
-
-
 ## Creating conda recipe
 
 [grayskull]: https://github.com/conda/grayskull
 
-For the most part, we use [grayskull] to create the conda recipe.  However, I've had
-issues getting it to play nice with `pyproject.toml` for some of the 'extra' variables.
-So, we use grayskull to build the majority of the recipe, and append the file `.recipe-append.yaml`.  For some edge cases (install name different from package name, etc), you'll need to manually edit this file to create the final recipe.
-
+For the most part, we use [grayskull] to create the conda recipe. However, I've
+had issues getting it to play nice with `pyproject.toml` for some of the 'extra'
+variables. So, we use grayskull to build the majority of the recipe, and append
+the file `.recipe-append.yaml`. For some edge cases (install name different from
+package name, etc), you'll need to manually edit this file to create the final
+recipe.
 
 ## Using [nox] instead of [tox]
 
-
-The repo is setup to use either [tox] or [nox].  One downside of using [tox] with this particular workflow is the need for multiple scripts/makefiles,
-while with [nox], most everything is self contained in the file `noxfile.py`. But both tools are fantastic.  To use nox, you'll need to bootstrap a development environment.  This can be done either by creating a seperate virtual env/conda env or using condax/pipx.  If using pipx, install the following:
+The repo is setup to use either [tox] or [nox]. One downside of using [tox] with
+this particular workflow is the need for multiple scripts/makefiles, while with
+[nox], most everything is self contained in the file `noxfile.py`. But both
+tools are fantastic. To use nox, you'll need to bootstrap a development
+environment. This can be done either by creating a seperate virtual env/conda
+env or using condax/pipx. If using pipx, install the following:
 
 ```bash
 pipx install nox
@@ -414,7 +418,8 @@ pipx inject nox ruamel.yaml
 pipx inject nox noxopt
 ```
 
-Note that if using condax, you'll need to do some extra work to install [noxopt], as it is only available via pip.  You can do it with the following:
+Note that if using condax, you'll need to do some extra work to install
+[noxopt], as it is only available via pip. You can do it with the following:
 
 ```bash
 condax install nox
@@ -437,30 +442,31 @@ nox -s conda-merge -- [--conda-merge-force]
 ```
 
 To create conda-lock files, run (experimental):
+
 ```bash
 nox -s conda-lock -- [--conda-lock-force]
 ```
 
-
 To run tests, use:
+
 ```bash
 nox -s test
 ```
 
 To run type checkers (mypy, etc) run:
+
 ```bash
 nox -s typing -- [--typing-cmd mypy ]
 ```
 
 To make docs, run:
+
 ```bash
 nox -s docs -- [--docs-cmd clean html ...]
 ```
 
 [nox]: https://github.com/wntrblm/nox
 [noxopt]: https://github.com/rmorshea/noxopt
-
-
 
 ## Serving the documentation
 

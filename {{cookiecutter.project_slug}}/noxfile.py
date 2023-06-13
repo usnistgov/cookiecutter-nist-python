@@ -55,6 +55,8 @@ SESSION_ALL_KWS = {"python": PYTHON_ALL_VERSIONS, "venv_backend": CONDA_BACKEND}
 # --- Set PATH to find all python versions ---------------------------------------------
 
 DEFAULTS: dict[str, Any] = {}
+
+
 def load_nox_config():
     path = Path(".") / ".noxconfig.toml"
     if not path.exists():
@@ -80,9 +82,7 @@ def load_nox_config():
         pass
 
     # extras:
-    extras = {
-        "dev": ["nox", "dev"]
-    }
+    extras = {"dev": ["nox", "dev"]}
     try:
         for k, v in data["nox"]["extras"].items():
             extras[k] = v
@@ -91,7 +91,6 @@ def load_nox_config():
 
     DEFAULTS["environment-extras"] = extras
 
-
     # for py in PYTHON_ALL_VERSIONS:
     #     print(f"which python{py}", shutil.which(f"python{py}"))
 
@@ -99,8 +98,6 @@ def load_nox_config():
 
 
 load_nox_config()
-
-
 
 
 # --- noxopt ---------------------------------------------------------------------------
@@ -266,14 +263,14 @@ def dev(
 
 @group.session(python=PYTHON_DEFAULT_VERSION)
 def pyproject2conda(
-        session: Session,
-        force_reinstall: FORCE_REINSTALL_CLI = False,
-        pyproject2conda_force: bool = False,
+    session: Session,
+    force_reinstall: FORCE_REINSTALL_CLI = False,
+    pyproject2conda_force: bool = False,
 ):
     """Create environment.yaml files from pyproject.toml using pyproject2conda."""
     session_install_envs(
         session,
-        reqs = ["pyproject2conda>=0.3.2"],
+        reqs=["pyproject2conda>=0.3.2"],
         force_reinstall=force_reinstall,
     )
 
@@ -286,10 +283,7 @@ def pyproject2conda(
             return prepend_flag(flag, val)
 
         if pyproject2conda_force or update_target(output, "pyproject.toml"):
-            args = (
-                ["yaml", "-o", output] +
-                _to_args("-e", extras)
-            )
+            args = ["yaml", "-o", output] + _to_args("-e", extras)
 
             if python:
                 args.extend(["--python-include", python])
@@ -299,21 +293,20 @@ def pyproject2conda(
 
             session.run("pyproject2conda", *args)
         else:
-            session.log(f"{output} up to data.  Pass --pyproject2conda-force to force recreation")
-
+            session.log(
+                f"{output} up to data.  Pass --pyproject2conda-force to force recreation"
+            )
 
     # create root environment
-    create_env('environment/base.yaml')
+    create_env("environment/base.yaml")
 
     extras = DEFAULTS["environment-extras"]
-    for k in ["test","typing","docs", "dev"]:
+    for k in ["test", "typing", "docs", "dev"]:
         create_env(f"environment/{k}.yaml", extras=extras.get(k, k), base=True)
 
     # isolated
-    for k in ["dist-pypi","dist-conda"]:
+    for k in ["dist-pypi", "dist-conda"]:
         create_env(f"environment/{k}.yaml", extras=k, base=False)
-
-
 
 
 @DEFAULT_SESSION
@@ -471,7 +464,6 @@ def test_pip(
         log_session=log_session,
         style="pip",
     )
-
 
     run = test_run
     session_run_commands(session, run)
