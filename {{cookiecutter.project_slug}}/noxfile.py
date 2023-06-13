@@ -270,7 +270,7 @@ def pyproject2conda(
     """Create environment.yaml files from pyproject.toml using pyproject2conda."""
     session_install_envs(
         session,
-        reqs=["pyproject2conda>=0.3.2"],
+        reqs=["pyproject2conda>=0.4.0"],
         force_reinstall=force_reinstall,
     )
 
