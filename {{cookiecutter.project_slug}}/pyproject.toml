@@ -22,7 +22,7 @@ build-backend = "setuptools.build_meta"
 
 
 [project]
-name = "{{ cookiecutter.project_slug }}"
+name = "{{ cookiecutter.project_name }}"
 authors = [{ name = "{{ cookiecutter.full_name.replace('\"', '\\\"') }}", email = "{{ cookiecutter.email }}" }]
 {%- if cookiecutter.open_source_license in license_classifiers %}
 license = { text = "{{ license_names[cookiecutter.open_source_license] }}" }
@@ -113,12 +113,7 @@ docs = [
     "autodocsumm",
     {%- endif %}
 ]
-
-
-[tool.pyproject2conda]
-channels = ["conda-forge"]
-
-[tool.pyproject2conda.isolated-dependencies]
+# to be parsed with pyproject2conda with --no-base option
 dist-pypi = ["twine", "build"]
 dist-conda = [
     "anaconda-client",
@@ -129,6 +124,9 @@ dist-conda = [
     "setuptools-scm",
 ]
 
+
+[tool.pyproject2conda]
+channels = ["conda-forge"]
 
 {%- if 'no' not in cookiecutter.command_line_interface|lower %}
 [project.scripts]
