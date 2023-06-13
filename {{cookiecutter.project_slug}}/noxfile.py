@@ -273,11 +273,11 @@ def pyproject2conda(
     """Create environment.yaml files from pyproject.toml using pyproject2conda."""
     session_install_envs(
         session,
-        reqs = ["pyproject2conda>=0.3.1"],
+        reqs = ["pyproject2conda>=0.3.2"],
         force_reinstall=force_reinstall,
     )
 
-    def create_env(output, extras=None, isolated=None, python="get"):
+    def create_env(output, extras=None, python="get", base=True):
         def _to_args(flag, val):
             if val is None:
                 return []
@@ -288,12 +288,15 @@ def pyproject2conda(
         if pyproject2conda_force or update_target(output, "pyproject.toml"):
             args = (
                 ["yaml", "-o", output] +
-                _to_args("-e", extras) +
-                _to_args("-i", isolated)
+                _to_args("-e", extras)
             )
 
             if python:
                 args.extend(["--python-include", python])
+
+            if not base:
+                args.append("--no-base")
+
             session.run("pyproject2conda", *args)
         else:
             session.log(f"{output} up to data.  Pass --pyproject2conda-force to force recreation")
@@ -304,11 +307,11 @@ def pyproject2conda(
 
     extras = DEFAULTS["environment-extras"]
     for k in ["test","typing","docs", "dev"]:
-        create_env(f"environment/{k}.yaml", extras=extras.get(k, k))
+        create_env(f"environment/{k}.yaml", extras=extras.get(k, k), base=True)
 
     # isolated
     for k in ["dist-pypi","dist-conda"]:
-        create_env(f"environment/{k}.yaml", isolated=k)
+        create_env(f"environment/{k}.yaml", extras=k, base=False)
 
 
 
