@@ -43,7 +43,7 @@ clean-pyc: ## remove Python file artifacts
 	find . -name '__pycache__' -exec rm -fr {} +
 
 clean-test: ## remove test and coverage artifacts
-	rm -fr .tox/
+	rm -fr .nox/
 	rm -f .coverage
 	rm -fr htmlcov/
 	rm -fr .pytest_cache
@@ -103,7 +103,7 @@ pre-commit-codespell: ## run codespell. Note that this imports allowed words fro
 ################################################################################
 .PHONY: user-venv user-autoenv-zsh user-all
 user-venv: ## create .venv file with name of conda env
-	echo $${PWD}/.tox/dev > .venv
+	echo $${PWD}/.nox/dev > .venv
 
 user-autoenv-zsh: ## create .autoenv.zsh files
 	echo conda activate $$(cat .venv) > .autoenv.zsh
@@ -181,7 +181,7 @@ dev-env: environment/dev.yaml ## create development environment using tox
 
 ## testing
 .PHONY: test-all
-test-all: environment/test.yaml ## run tests on every Python version with tox.  can pass posargs=...
+test-all: environment/test.yaml ## run tests on every Python version with nox.
 	$(NOX) -s test
 
 ## docs
@@ -193,10 +193,10 @@ docs-clean: ## clean docs
 	rm -rf docs/generated/*
 	rm -rf docs/reference/generated/*
 docs-clean-build: docs-clean docs-build ## clean and build
-docs-release: ## release docs.  use release_args=... to override stuff
+docs-release: ## release docs.
 	$(NOX) -s docs -- release
 docs-command: ## run arbitrary command with command=...
-	$(NOX) -s docs -- --docs-run command
+	$(NOX) -s docs -- --docs-run $(command)
 
 .PHONY: .docs-spelling docs-nist-pages docs-open docs-livehtml docs-clean-build docs-linkcheck
 docs-spelling: ## run spell check with sphinx
@@ -221,7 +221,7 @@ typing-pytype: ## run pytype pytype_args=...
 typing-all:
 	$(NOX) -s typing -- -m mypy pyright pytype
 typing-command:
-	$(NOX) -s typing -- --typing-run command
+	$(NOX) -s typing -- --typing-run $(command)
 typing-mypy typing-pyright typing-pytype typing-all typing-command: environment/typing.yaml
 
 ## distribution
@@ -234,7 +234,7 @@ dist-pypi-testrelease: ## test release on testpypi
 dist-pypi-release: ## release to pypi, can pass posargs=...
 	$(NOX) -s dist-pypi -- -p release
 dist-pypi-command: ## run command with command=...
-	$(NOX) -s dist-pypi -- --dist-pypi-run command
+	$(NOX) -s dist-pypi -- --dist-pypi-run $(command)
 dist-pypi-build dist-pypi-testrelease dist-pypi-release dist-pypi-command: environment/dist-pypi.yaml
 
 .PHONY: dist-conda-recipe dist-conda-build dist-conda-command
@@ -243,7 +243,7 @@ dist-conda-recipe: ## build conda recipe can pass posargs=...
 dist-conda-build: ## build conda recipe can pass posargs=...
 	$(NOX) -s dist-conda -- -c build
 dist-conda-command: ## run command with command=...
-	$(NOX) -s dist-conda -- -c command
+	$(NOX) -s dist-conda -- -dist-conda-run $(command)
 dist-conda-build dist-conda-recipe dist-conda-command: environment/dist-conda.yaml
 
 
