@@ -414,7 +414,7 @@ pipx inject nox ruamel.yaml
 pipx inject nox noxopt
 ```
 
-Note that if using condax, you'll need to do some extra work to install noxopt, as it is only available via pip.  You can do it with the following:
+Note that if using condax, you'll need to do some extra work to install [noxopt], as it is only available via pip.  You can do it with the following:
 
 ```bash
 condax install nox

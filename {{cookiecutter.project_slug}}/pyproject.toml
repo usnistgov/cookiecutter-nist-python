@@ -69,12 +69,11 @@ dev-extras = [
 typing-extras = [
     "mypy",
     # "pytype; python_version < '3.11'",
-    "pandas-stubs",
 ]
 typing = [
     "{{ cookiecutter.project_name }}[typing-extras]",
     "{{ cookiecutter.project_name }}[test]",
-
+]
 nox = [
     "nox",
     "noxopt", # p2c: -p
@@ -98,8 +97,6 @@ dev-complete = [
 docs = [
     "setuptools-scm",
     "ipython",
-    "matplotlib",
-    "pandas",
     "pyenchant",
     "ghp-import",
     "sphinx",
