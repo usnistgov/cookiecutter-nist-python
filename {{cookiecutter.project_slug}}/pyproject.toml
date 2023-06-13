@@ -68,7 +68,7 @@ dev-extras = [
 ]
 typing-extras = [
     "mypy",
-    "pytype",
+    # "pytype; python_version < '3.11'",
     "pandas-stubs",
 ]
 typing = [
