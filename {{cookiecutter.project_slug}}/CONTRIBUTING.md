@@ -59,7 +59,6 @@ If you are proposing a feature:
 [nox]: https://github.com/wntrblm/nox
 [noxopt]: https://github.com/rmorshea/noxopt
 [tox]: https://tox.wiki/en/latest/
-[tox-conda]: https://github.com/tox-dev/tox-conda
 [cruft]: https://github.com/cruft/cruft
 [cog]: https://github.com/nedbat/cog
 [git-flow]: https://github.com/nvie/gitflow
