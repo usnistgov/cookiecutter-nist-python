@@ -205,7 +205,7 @@ local development.
   pytest
   ```
 
-  To test against multiple python versions, use tox:
+  To test against multiple python versions, use [nox]:
 
   ```bash
   nox -s test
@@ -244,7 +244,7 @@ local development.
 
 ### Dependency management
 
-We use [pyproject2conda] to handle conda `environment.yaml` files.  This extracts the 
+We use [pyproject2conda] to handle conda `environment.yaml` files.  This extracts the
 dependencies from `pyproject.toml`.  See [pyproject2conda] for info.  To make the `environment.yaml` files, run:
 
 ```bash
@@ -355,7 +355,7 @@ Run:
 ```bash
 nox -s testdist-pypi -- --version [version]
 ```
-to test a specific version from pypi and 
+to test a specific version from pypi and
 ```bash
 nox -s testdist-conda -- --version [version]
 ```
@@ -375,17 +375,17 @@ nox -s typing -- -m [commands] [options]
 
 [setuptools_scm]: https://github.com/pypa/setuptools_scm
 
-Versioning is handled with [setuptools_scm].The pacakge version is set by the
-git tag. For convenience, you can override the version in the makefile (calling
-tox) by setting `version=v{major}.{minor}.{micro}`. This is useful for updating
-the docs, etc.
+Versioning is handled with [setuptools_scm].The package version is set by the
+git tag. For convenience, you can override the version with nox setting `--version ...`.
+This is useful for updating the docs, etc.
 
 
 ## Notes on [nox]
 
 One downside of using [tox] with
 this particular workflow is the need for multiple scripts/makefiles, while with
-[nox], most everything is self contained in the file `noxfile.py`. Both
+[nox], most everything is self contained in the file `noxfile.py`. [nox] also is allows for a
+mix of conda and virtualenv environments.
 
 
 
