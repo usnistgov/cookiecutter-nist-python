@@ -83,15 +83,15 @@ Additional tools are:
 - [scriv]
 - [commitizen] (optional)
 - [pyproject2conda] (optional)
-
-These are setup using the following:
+- [cog] (optional) These are setup using the following:
 
 ```console
-condax install pre-commit
-condax install cruft
-condax install commitizen # optional
+condax/pipx install pre-commit
+condax/pipx install cruft
+condax/pipx install commitizen # optional
 pipx install scriv
 pipx install pyproject2conda # optional
+condax/pipx install cogapp # optional
 ```
 
 if using pipx, nox can be installed with:
@@ -141,7 +141,8 @@ local development.
 - Create development environment. There are two options to create the
   development environment.
 
-  - The recommended method is to use nox.  First you'll need to create the environment files using:
+  - The recommended method is to use nox. First you'll need to create the
+    environment files using:
 
     ```bash
     nox -e pyproject2conda
@@ -152,6 +153,7 @@ local development.
     ```bash
     nox -e dev
     ```
+
     This create a development environment located at `.nox/dev`.
 
   - Alternativley, you can create centrally located conda environmentment using
@@ -244,14 +246,15 @@ local development.
 
 ### Dependency management
 
-We use [pyproject2conda] to handle conda `environment.yaml` files.  This extracts the
-dependencies from `pyproject.toml`.  See [pyproject2conda] for info.  To make the `environment.yaml` files, run:
+We use [pyproject2conda] to handle conda `environment.yaml` files. This extracts
+the dependencies from `pyproject.toml`. See [pyproject2conda] for info. To make
+the `environment.yaml` files, run:
 
 ```bash
 nox -s pyproject2conda -- [--pyproject2conda-force]
 ```
-Where the option in brackets is optional.
 
+Where the option in brackets is optional.
 
 ## Pull Request Guidelines
 
@@ -263,6 +266,11 @@ Before you submit a pull request, check that it meets these guidelines:
   list in CHANGELOG.md. You should use [scriv] for this.
 - The pull request should work for Python 3.8, 3.9, 3.10.
 
+## ipykernel
+
+The environments created by nox `dev` and `docs` will try to add meaningful
+display names for ipykernel (assuming you're using [nb_conda_kernels])
+
 ## Building the docs
 
 We use [nox] to isolate the documentation build. Specific tasks can be run with
@@ -270,6 +278,7 @@ We use [nox] to isolate the documentation build. Specific tasks can be run with
 ```bash
 nox -s docs -- -d [commands]
 ```
+
 where commands can be one of:
 
 - clean : remove old doc build
@@ -277,10 +286,10 @@ where commands can be one of:
 - spelling : check spelling
 - linkcheck : check the links
 - symlink : rebuild symlinks from `examples` to `docs/examples`
-- release : make pages branch for documentation hosting (using [ghp-import](https://github.com/c-w/ghp-import))
+- release : make pages branch for documentation hosting (using
+  [ghp-import](https://github.com/c-w/ghp-import))
 - livehtml : Live documentation updates
 - open : open the documentation in a web browser
-
 
 ## Testing with nox
 
@@ -290,15 +299,14 @@ The basic command is:
 nox -s test -- [--test-opts] [--no-cov]
 ```
 
-where you can pass in additional pytest options (properly escaped) via `--test-opts`.
-For example:
+where you can pass in additional pytest options (properly escaped) via
+`--test-opts`. For example:
 
 ```bash
 nox -s test -- --test-opts "'-v'"
 # or
 nox -s test -- --test-opts "\-v"
 ```
-
 
 ## Building distribution for conda
 
@@ -310,7 +318,6 @@ variables. So, we use grayskull to build the majority of the recipe, and append
 the file `.recipe-append.yaml`. For some edge cases (install name different from
 package name, etc), you'll need to manually edit this file to create the final
 recipe.
-
 
 The basic command is:
 
@@ -330,7 +337,6 @@ To upload the recipe, you'll need to run an external command like:
 nox -s dist-conda -- --dist-conda-run "anaconda upload PATH-TO-TARBALL"
 ```
 
-
 ## Building distribution for pypi
 
 The basic command is:
@@ -346,8 +352,6 @@ where `command` is one of:
 - testrelease : upload to testpypi
 - release : upload to pypi
 
-
-
 ## Testing pypi or conda installs
 
 Run:
@@ -355,12 +359,14 @@ Run:
 ```bash
 nox -s testdist-pypi -- --version [version]
 ```
+
 to test a specific version from pypi and
+
 ```bash
 nox -s testdist-conda -- --version [version]
 ```
-to to likewise from conda.
 
+to to likewise from conda.
 
 ## Type checking
 
@@ -370,24 +376,20 @@ Run:
 nox -s typing -- -m [commands] [options]
 ```
 
-
 ## Package version
 
 [setuptools_scm]: https://github.com/pypa/setuptools_scm
 
 Versioning is handled with [setuptools_scm].The package version is set by the
-git tag. For convenience, you can override the version with nox setting `--version ...`.
-This is useful for updating the docs, etc.
-
+git tag. For convenience, you can override the version with nox setting
+`--version ...`. This is useful for updating the docs, etc.
 
 ## Notes on [nox]
 
-One downside of using [tox] with
-this particular workflow is the need for multiple scripts/makefiles, while with
-[nox], most everything is self contained in the file `noxfile.py`. [nox] also is allows for a
-mix of conda and virtualenv environments.
-
-
+One downside of using [tox] with this particular workflow is the need for
+multiple scripts/makefiles, while with [nox], most everything is self contained
+in the file `noxfile.py`. [nox] also is allows for a mix of conda and virtualenv
+environments.
 
 ## Serving the documentation
 
