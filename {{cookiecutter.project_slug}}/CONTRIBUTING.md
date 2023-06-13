@@ -83,7 +83,9 @@ Additional tools are:
 - [scriv]
 - [commitizen] (optional)
 - [pyproject2conda] (optional)
-- [cog] (optional) These are setup using the following:
+- [cog] (optional)
+
+These are setup using the following:
 
 ```console
 condax/pipx install pre-commit
