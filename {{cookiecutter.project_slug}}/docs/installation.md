@@ -22,7 +22,6 @@ will always install the most recent stable release.
 The sources for {{ cookiecutter.project_name }} can be downloaded from the
 [Github repo].
 
-
 You can either clone the public repository:
 
 ```bash
@@ -50,7 +49,7 @@ pip/pipx install pyproject2conda
 pyproject2conda yaml -o environment/base.yaml
 ```
 
-
-where options in brackets are options (for environment name, and editable install, repectively).
+where options in brackets are options (for environment name, and editable
+install, repectively).
 
 [github repo]: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_name}}
