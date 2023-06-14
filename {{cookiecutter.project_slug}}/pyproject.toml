@@ -20,7 +20,6 @@ build-backend = "setuptools.build_meta"
     'GNU General Public License v3': 'GNU General Public License v3'
 } %}
 
-
 [project]
 name = "{{ cookiecutter.project_name }}"
 authors = [{ name = "{{ cookiecutter.full_name.replace('\"', '\\\"') }}", email = "{{ cookiecutter.email }}" }]
@@ -142,12 +141,13 @@ channels = ["conda-forge"]
 zip-safe = true # if using mypy, must be False
 include-package-data = true
 license-files = ["LICENSE"]
+
 [tool.setuptools.packages.find]
 namespaces = true
 where = ["src"]
+
 ## include = []
 ## exclude = []
-##
 [tool.setuptools.dynamic]
 readme = { file = [
     "README.md",

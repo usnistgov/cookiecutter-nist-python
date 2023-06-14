@@ -115,10 +115,10 @@ pip install noxopt
 
 ### Getting the repo
 
-Ready to contribute? Here's how to set up `{{ cookiecutter.project_slug }}` for
+Ready to contribute? Here's how to set up `{{ cookiecutter.project_name }}` for
 local development.
 
-- Fork the `{{ cookiecutter.project_slug }}` repo on GitHub.
+- Fork the `{{ cookiecutter.project_name }}` repo on GitHub.
 
 - Clone your fork locally:
 
