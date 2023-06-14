@@ -133,7 +133,7 @@ def run_annotated(**kwargs):
 
 LOCK_CLI = Annotated[bool, LOCK_OPT]
 RUN_CLI = Annotated[list[list[str]], RUN_OPT]
-TEST_OPTS_CLI = opts_annotated(help="extra arguments/flags to pytest")  # type: ignore
+TEST_OPTS_CLI = opts_annotated(help="extra arguments/flags to pytest")
 
 # CMD_CLI = Annotated[list[str], CMD_OPT]
 
@@ -273,7 +273,7 @@ def pyproject2conda(
         force_reinstall=force_reinstall,
     )
 
-    def create_env(output, extras=None, python="get", base=True):
+    def create_env(output, extras=None, python="get", base=True, cmd="yaml"):
         def _to_args(flag, val):
             if val is None:
                 return []
@@ -284,7 +284,7 @@ def pyproject2conda(
         if pyproject2conda_force or update_target(output, "pyproject.toml"):
             args = ["yaml", "-o", output] + _to_args("-e", extras)
 
-            if python:
+            if python and cmd == "yaml":
                 args.extend(["--python-include", python])
 
             if not base:
@@ -448,7 +448,7 @@ def test(
 
 
 @group.session(python=PYTHON_ALL_VERSIONS)  # type: ignore
-def test_pip(
+def test_venv(
     session: Session,
     test_no_pytest: bool = False,
     test_opts: TEST_OPTS_CLI = (),  # type: ignore
