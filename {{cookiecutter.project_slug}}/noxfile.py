@@ -282,7 +282,7 @@ def pyproject2conda(
             return prepend_flag(flag, val)
 
         if pyproject2conda_force or update_target(output, "pyproject.toml"):
-            args = ["yaml", "-o", output] + _to_args("-e", extras)
+            args = [cmd, "-o", output] + _to_args("-e", extras)
 
             if python and cmd == "yaml":
                 args.extend(["--python-include", python])
