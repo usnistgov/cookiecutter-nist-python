@@ -89,9 +89,9 @@ dev = [
     "{{ cookiecutter.project_name }}[dev-extras]",
 ]
 tools = [
-  "pre-commit", #
-  "cruft",
-  "scriv",
+    "pre-commit", #
+    "cruft",
+    "scriv",
 ]
 dev-complete = [
     "{{ cookiecutter.project_name }}[dev]", #
@@ -130,12 +130,10 @@ dist-conda = [
 
 [tool.pyproject2conda]
 channels = ["conda-forge"]
-
-{%- if 'no' not in cookiecutter.command_line_interface|lower %}
+{% if 'no' not in cookiecutter.command_line_interface|lower %}
 [project.scripts]
 {{ cookiecutter.project_slug }} = "{{ cookiecutter.project_slug}}.cli:main"
-
-{%- endif %}
+{% endif %}
 ## grayskull still messes some things up, but use scripts/recipe-append.sh for this
 [tool.setuptools]
 zip-safe = true # if using mypy, must be False
