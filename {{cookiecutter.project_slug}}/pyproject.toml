@@ -59,19 +59,24 @@ homepage = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutte
 documentation = "https://pages.nist.gov/{{ cookiecutter.project_name }}/"
 
 [project.optional-dependencies]
-test = ["pytest", "python-xdist", "pytest-cov", "pytest-sugar"]
+test = [
+    "pytest", #
+    "python-xdist",
+    "pytest-cov",
+    "pytest-sugar",
+]
 dev-extras = [
+    "pytest-accept", # p2c: -p
+    "setuptools-scm",
     "ipython",
     "ipykernel",
-    "setuptools-scm",
-    "pytest-accept", # p2c: -p
 ]
 typing-extras = [
-    "mypy",
     # "pytype; python_version < '3.11'",
+    "mypy",
 ]
 typing = [
-    "{{ cookiecutter.project_name }}[typing-extras]",
+    "{{ cookiecutter.project_name }}[typing-extras]", #
     "{{ cookiecutter.project_name }}[test]",
 ]
 nox = [
@@ -80,7 +85,7 @@ nox = [
     "ruamel.yaml",
 ]
 dev = [
-    "{{ cookiecutter.project_name }}[test]",
+    "{{ cookiecutter.project_name }}[test]", #
     "{{ cookiecutter.project_name }}[typing-extras]",
     "{{ cookiecutter.project_name }}[dev-extras]",
 ]
@@ -90,12 +95,12 @@ tools = [
   "scriv",
 ]
 dev-complete = [
-    "{{ cookiecutter.project_name }}[dev]",
+    "{{ cookiecutter.project_name }}[dev]", #
     "{{ cookiecutter.project_name }}[tools]",
     "{{ cookiecutter.project_name }}[nox]",
 ]
 docs = [
-    "setuptools-scm",
+    "setuptools-scm", #
     "ipython",
     "pyenchant",
     "ghp-import",
@@ -116,14 +121,13 @@ docs = [
 # to be parsed with pyproject2conda with --no-base option
 dist-pypi = ["twine", "build"]
 dist-conda = [
-    "anaconda-client",
+    "anaconda-client", #
     "grayskull",
     "conda-build",
     "conda-verify",
     "boa",
     "setuptools-scm",
 ]
-
 
 [tool.pyproject2conda]
 channels = ["conda-forge"]
