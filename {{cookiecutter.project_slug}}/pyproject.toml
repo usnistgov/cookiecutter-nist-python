@@ -90,7 +90,7 @@ dev = [
     "{{ cookiecutter.project_name }}[dev-extras]",
 ]
 tools = [
-  "pre-commit",
+  "pre-commit", #
   "cruft",
   "scriv",
 ]
