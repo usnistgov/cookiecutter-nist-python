@@ -201,7 +201,6 @@ select = [
     # "ISC",
     # # type-checking imports
     "TCH",
-
 ]
 # Allow autofix for all enabled rules (when `--fix`) is provided.
 # fixable = ["A", "B", "C", "D", "E", "F", "..."]
