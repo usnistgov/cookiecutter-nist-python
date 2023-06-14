@@ -21,7 +21,7 @@
 [docs-link]: https://pages.nist.gov/{{ cookiecutter.project_name }}/
 [repo-badge]: https://img.shields.io/badge/--181717?logo=github&logoColor=ffffff
 [repo-link]: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}
-[conda-badge]:https://img.shields.io/conda/v/{{ cookiecutter.conda_channel }}/{{ cookiecutter.project_name }}
+[conda-badge]: https://img.shields.io/conda/v/{{ cookiecutter.conda_channel }}/{{ cookiecutter.project_name }}
 [conda-link]: https://anaconda.org/{{ cookiecutter.conda_channel }}/{{ cookiecutter.project_name }}
 [license-badge]: https://img.shields.io/pypi/l/cmomy?color=informational
 [license-link]: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/blob/main/LICENSE
