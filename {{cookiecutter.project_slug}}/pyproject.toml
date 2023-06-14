@@ -160,7 +160,7 @@ fallback_version = "999"
 test = "pytest"
 
 [tool.pytest.ini_options]
-addopts = "--verbose --doctest-modules --doctest-glob='*.md'"
+addopts = "--doctest-modules --doctest-glob='*.md'"
 testpaths = ["tests", "README.md"]
 
 [tool.isort]
