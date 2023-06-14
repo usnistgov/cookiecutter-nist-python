@@ -60,7 +60,7 @@ documentation = "https://pages.nist.gov/{{ cookiecutter.project_name }}/"
 [project.optional-dependencies]
 test = [
     "pytest", #
-    "python-xdist",
+    "pytest-xdist",
     "pytest-cov",
     "pytest-sugar",
 ]

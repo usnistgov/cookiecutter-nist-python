@@ -190,6 +190,7 @@ def parse_envs(
     channels: Collection[str] | None = None,
 ) -> tuple[set[str], set[str], set[str], str | None]:
     """Parse an `environment.yaml` file."""
+    import re
 
     def _default(x) -> set[str]:
         if x is None:
@@ -202,6 +203,8 @@ def parse_envs(
     deps = _default(deps)
     reqs = _default(reqs)
     name = None
+
+    python_match = re.compile(r"\s*(python)\s*[~<=>].*")
 
     def _get_context(path):
         if hasattr(path, "readline"):
@@ -223,7 +226,7 @@ def parse_envs(
             if isinstance(d, dict):
                 reqs.update(cast(list[str], d.get("pip")))
             else:
-                if remove_python and d[: len("python")] != "python":
+                if remove_python and not python_match.match(d):
                     deps.add(d)
 
     return channels, deps, reqs, name

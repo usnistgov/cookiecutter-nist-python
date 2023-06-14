@@ -74,8 +74,8 @@ def load_nox_config():
         for p in data["nox"]["python"]["paths"]:
             paths.extend(glob(os.path.expanduser(p)))
 
-        paths = ":".join(map(str, paths))
-        os.environ["PATH"] = paths + ":" + os.environ["PATH"]
+        paths_str = ":".join(map(str, paths))
+        os.environ["PATH"] = paths_str + ":" + os.environ["PATH"]
     except KeyError:
         pass
 
@@ -133,7 +133,7 @@ def run_annotated(**kwargs):
 
 LOCK_CLI = Annotated[bool, LOCK_OPT]
 RUN_CLI = Annotated[list[list[str]], RUN_OPT]
-TEST_OPTS_CLI = opts_annotated(help="extra arguments/flags to pytest")
+TEST_OPTS_CLI = opts_annotated(help="extra arguments/flags to pytest") # type: ignore
 
 # CMD_CLI = Annotated[list[str], CMD_OPT]
 
@@ -198,7 +198,8 @@ def install_requirements(
             lockfile=f"./environment/lock/py{py}-{name}-conda-lock.yml",
             display_name=display_name,
             force_reinstall=force_reinstall,
-            install_package=install_package**kwargs,
+            install_package=install_package,
+            **kwargs,
         )
 
     elif style == "conda":
@@ -259,7 +260,7 @@ def dev(
     session_run_commands(session, dev_run)
 
 
-@group.session(python=PYTHON_DEFAULT_VERSION)
+@group.session(python=PYTHON_DEFAULT_VERSION) # type: ignore
 def pyproject2conda(
     session: Session,
     force_reinstall: FORCE_REINSTALL_CLI = False,
@@ -306,17 +307,22 @@ def pyproject2conda(
     for k in ["dist-pypi", "dist-conda"]:
         create_env(f"environment/{k}.yaml", extras=k, base=False)
 
+    # need an isolated set of test requirements
+    create_env("environment/test-extras.yaml", extras="test", base=False)
+
+
+
 
 @DEFAULT_SESSION
 def conda_lock(
     session: Session,
     force_reinstall: FORCE_REINSTALL_CLI = False,
-    conda_lock_channel: cmd_annotated(help="conda channels to use") = (),
-    conda_lock_platform: cmd_annotated(
+    conda_lock_channel: cmd_annotated(help="conda channels to use") = (), # type: ignore
+    conda_lock_platform: cmd_annotated( # type: ignore
         help="platforms to build lock files for",
         choices=["osx-64", "linux-64", "win-64", "all"],
     ) = (),
-    conda_lock_cmd: cmd_annotated(
+    conda_lock_cmd: cmd_annotated( # type: ignore
         help="lock files to create",
         choices=["test", "typing", "dev", "dist-pypi", "dist-conda", "all"],
     ) = (),
@@ -408,7 +414,7 @@ def conda_lock(
 def test(
     session: Session,
     test_no_pytest: bool = False,
-    test_opts: TEST_OPTS_CLI = (),
+    test_opts: TEST_OPTS_CLI = (), # type: ignore
     test_run: RUN_CLI = [],  # noqa
     lock: LOCK_CLI = False,
     force_reinstall: FORCE_REINSTALL_CLI = False,
@@ -440,11 +446,11 @@ def test(
         session.run("pytest", *opts)
 
 
-@group.session(python=PYTHON_ALL_VERSIONS)
+@group.session(python=PYTHON_ALL_VERSIONS) # type: ignore
 def test_pip(
     session: Session,
     test_no_pytest: bool = False,
-    test_opts: TEST_OPTS_CLI = (),
+    test_opts: TEST_OPTS_CLI = (), # type: ignore
     test_run: RUN_CLI = [],  # noqa
     lock: LOCK_CLI = False,
     force_reinstall: FORCE_REINSTALL_CLI = False,
@@ -476,14 +482,14 @@ def test_pip(
         session.run("pytest", *opts)
 
 
-@group.session(python=PYTHON_DEFAULT_VERSION)
+@group.session(python=PYTHON_DEFAULT_VERSION) # type: ignore
 def coverage(
     session: Session,
-    coverage_cmd: cmd_annotated(
+    coverage_cmd: cmd_annotated( # type: ignore
         choices=["erase", "combine", "report", "html", "open"]
     ) = (),
     coverage_run: RUN_CLI = [],  # noqa
-    coverage_run_internal: run_annotated(
+    coverage_run_internal: run_annotated( # type: ignore
         help="Arbitrary commands to run within the session"
     ) = [],  # noqa
     force_reinstall: FORCE_REINSTALL_CLI = False,
@@ -517,7 +523,7 @@ def coverage(
 @DEFAULT_SESSION
 def docs(
     session: nox.Session,
-    docs_cmd: cmd_annotated(
+    docs_cmd: cmd_annotated( # type: ignore
         choices=[
             "html",
             "build",
@@ -581,7 +587,7 @@ def docs(
 def dist_pypi(
     session: nox.Session,
     dist_pypi_run: RUN_CLI = [],  # noqa
-    dist_pypi_cmd: cmd_annotated(
+    dist_pypi_cmd: cmd_annotated( # type: ignore
         choices=["clean", "build", "testrelease", "release"],
         flags=("--dist-pypi-cmd", "-p"),
     ) = (),
@@ -636,14 +642,15 @@ def dist_pypi(
 def dist_conda(
     session: nox.Session,
     dist_conda_run: RUN_CLI = [],  # noqa
-    dist_conda_cmd: cmd_annotated(
-        choices=["recipe", "build", "clean", "clean-recipe", "clean-build"],
+    dist_conda_cmd: cmd_annotated( # type: ignore
+        choices=["recipe", "build", "clean", "clean-recipe", "clean-build", "recipe-cat-full"],
         flags=("--dist-conda-cmd", "-c"),
     ) = (),
     lock: LOCK_CLI = False,
     sdist_path: str = "",
     force_reinstall: FORCE_REINSTALL_CLI = False,
     log_session: bool = False,
+    version: VERSION_CLI = "",
 ):
     """Runs make -C dist-conda posargs"""
     install_requirements(
@@ -669,7 +676,13 @@ def dist_conda(
             cmd.extend(["clean-recipe", "clean-build"])
             cmd.remove("clean")
 
-        cmd = sort_like(cmd, ["clean-recipe", "recipe", "clean-build", "build"])
+        cmd = sort_like(cmd, ["recipe-cat-full", "clean-recipe", "recipe", "clean-build", "build"])
+
+        if not sdist_path:
+            sdist_path = PACKAGE_NAME
+            if version:
+                sdist_path = f"{sdist_path}=={version}"
+
 
         for command in cmd:
             if command == "clean-recipe":
@@ -677,8 +690,6 @@ def dist_conda(
             elif command == "clean-build":
                 session.run("rm", "-rf", "dist-conda/build", external=True)
             elif command == "recipe":
-                if sdist_path is None:
-                    sdist_path = PACKAGE_NAME
                 session.run(
                     "grayskull",
                     "pypi",
@@ -697,6 +708,21 @@ def dist_conda(
                 session.run(
                     "cat", f"dist-conda/{PACKAGE_NAME}/meta.yaml", external=True
                 )
+            elif command == "recipe-cat-full":
+                import tempfile
+                with tempfile.TemporaryDirectory() as d:
+                    session.run(
+                        "grayskull",
+                        "pypi",
+                        sdist_path,
+                        "-o",
+                        d,
+                    )
+                    session.run(
+                        "cat",
+                        str(Path(d) / PACKAGE_NAME / "meta.yaml"),
+                        external=True
+                    )
 
             elif command == "build":
                 session.run(
@@ -722,12 +748,12 @@ def _append_recipe(recipe_path, append_path):
 @ALL_SESSION
 def typing(
     session: nox.Session,
-    typing_cmd: cmd_annotated(
+    typing_cmd: cmd_annotated( # type: ignore
         choices=["mypy", "pyright", "pytype"],
         flags=("--typing-cmd", "-m"),
     ) = (),
     typing_run: RUN_CLI = [],  # noqa
-    typing_run_internal: run_annotated(
+    typing_run_internal: run_annotated( # type: ignore
         help="run arbitrary (internal) commands.  For example, --typing-run-internal 'mypy --some-option'",
     ) = [],  # noqa
     lock: LOCK_CLI = False,
@@ -768,7 +794,7 @@ def typing(
 def testdist_conda(
     session: Session,
     test_no_pytest: bool = False,
-    test_opts: TEST_OPTS_CLI = (),
+    test_opts: TEST_OPTS_CLI = (), # type: ignore
     testdist_conda_run: RUN_CLI = [],  # noqa
     force_reinstall: FORCE_REINSTALL_CLI = False,
     version: VERSION_CLI = "",
@@ -802,9 +828,9 @@ def testdist_conda(
 def testdist_pypi(
     session: Session,
     test_no_pytest: bool = False,
-    test_opts: TEST_OPTS_CLI = (),
+    test_opts: TEST_OPTS_CLI = (), # type: ignore
     testdist_pypi_run: RUN_CLI = [],  # noqa
-    testdist_pypi_extras: cmd_annotated(help="extras to install") = (),
+    testdist_pypi_extras: cmd_annotated(help="extras to install") = (), # type: ignore
     force_reinstall: FORCE_REINSTALL_CLI = False,
     version: VERSION_CLI = "",
     log_session: bool = False,
