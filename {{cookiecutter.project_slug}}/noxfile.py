@@ -820,6 +820,7 @@ def testdist_conda(
         deps=[install_str],
         channels=["conda-forge"],
         force_reinstall=force_reinstall,
+        install_package=False,
     )
 
     if log_session:
@@ -859,6 +860,7 @@ def testdist_pypi(
         reqs=[install_str],
         channels=["conda-forge"],
         force_reinstall=force_reinstall,
+        install_package=False,
     )
 
     if log_session:
