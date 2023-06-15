@@ -250,17 +250,6 @@ def session_install_envs(
     if session_skip_install(session):
         return True
 
-    unchanged, hashes = env_unchanged(
-        session,
-        *paths,
-        prefix="env",
-        other=dict(
-            deps=deps, reqs=reqs, channels=channels, install_package=install_package
-        ),
-    )
-    if unchanged and not force_reinstall:
-        return unchanged
-
     channels, deps, reqs, name = parse_envs(
         *paths,
         remove_python=remove_python,
@@ -268,6 +257,21 @@ def session_install_envs(
         reqs=reqs,
         channels=channels,
     )
+
+
+    unchanged, hashes = env_unchanged(
+        session,
+        prefix="env",
+        other=dict(
+            deps=deps,
+            reqs=reqs,
+            channels=channels,
+            install_package=install_package,
+        ),
+    )
+    if unchanged and not force_reinstall:
+        return unchanged
+
 
     if not channels:
         channels = ""
@@ -411,7 +415,7 @@ def env_unchanged(
     prefix: PREFIX_HASH_EXTS,
     verbose: bool = True,
     hashes: dict[str, str] | None = None,
-    other: Any | None = None,
+    other: dict[str, Any] | None = None,
 ) -> tuple[bool, dict[str, str]]:
     hashfile = hashfile_path(session, prefix)
 
@@ -435,17 +439,28 @@ def env_unchanged(
 
 def get_hashes(
     *paths: str | Path,
-    other: str | None = None,
+    other: dict[str, Any] | None = None,
 ) -> dict[str, str]:
     """Get md5 hashes for paths"""
-    out = {str(path): _get_file_hash(path) for path in paths}
+
+    out = {
+        "path": {str(path): _get_file_hash(path) for path in paths}
+    }
 
     if other:
         import hashlib
+        other_hashes = {}
+        for k, v in other.items():
+            if not isinstance(v, str):
+                try:
+                    v = str(sorted(v))
+                except Exception:
+                    v = str(v)
+            other_hashes[k] = hashlib.md5(v.encode("utf-8")).hexdigest()
 
-        out["other"] = hashlib.md5(str(other).encode("utf-8")).hexdigest()
+        out["other"] = other_hashes
+
     return out
-
 
 def hashfile_path(session: nox.Session, prefix: PREFIX_HASH_EXTS) -> Path:
     """Path for hashfile for this session"""
