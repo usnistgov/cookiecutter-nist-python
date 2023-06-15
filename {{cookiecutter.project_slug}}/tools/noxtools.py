@@ -258,7 +258,6 @@ def session_install_envs(
         channels=channels,
     )
 
-
     unchanged, hashes = env_unchanged(
         session,
         prefix="env",
@@ -271,7 +270,6 @@ def session_install_envs(
     )
     if unchanged and not force_reinstall:
         return unchanged
-
 
     if not channels:
         channels = ""
@@ -443,12 +441,11 @@ def get_hashes(
 ) -> dict[str, str]:
     """Get md5 hashes for paths"""
 
-    out = {
-        "path": {str(path): _get_file_hash(path) for path in paths}
-    }
+    out = {"path": {str(path): _get_file_hash(path) for path in paths}}
 
     if other:
         import hashlib
+
         other_hashes = {}
         for k, v in other.items():
             if not isinstance(v, str):
@@ -461,6 +458,7 @@ def get_hashes(
         out["other"] = other_hashes
 
     return out
+
 
 def hashfile_path(session: nox.Session, prefix: PREFIX_HASH_EXTS) -> Path:
     """Path for hashfile for this session"""
