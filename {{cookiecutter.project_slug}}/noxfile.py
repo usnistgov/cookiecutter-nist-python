@@ -292,6 +292,8 @@ def pyproject2conda(
     # isolated
     for k in ["dist-pypi", "dist-conda"]:
         create_env(f"environment/{k}.yaml", extras=k, base=False)
+        if k == "dist-pypi":
+            create_env(f"environment/{k}.txt", extras=k, base=False, cmd="requirements")
 
     # need an isolated set of test requirements
     create_env("environment/test-extras.yaml", extras="test", base=False)
