@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import shlex
-import tempfile
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Iterable, Literal, cast
 
@@ -68,7 +67,7 @@ def prepend_flag(flag: str, *args: str) -> list[str]:
     return sum([[flag, _] for _ in args], [])
 
 
-def open_webpage(path: str | Path | None=None, url: str|None=None):
+def open_webpage(path: str | Path | None = None, url: str | None = None):
     """
     Open webpage from path or url.
 
@@ -102,6 +101,7 @@ def load_nox_config(path: str | Path = "./.noxconfig.toml") -> dict[str, Any]:
     """
     import os
     from glob import glob
+
     import tomli
 
     config = {}
@@ -109,7 +109,6 @@ def load_nox_config(path: str | Path = "./.noxconfig.toml") -> dict[str, Any]:
     path = Path(path)
     if not path.exists():
         return config
-
 
     with path.open("rb") as f:
         data = tomli.load(f)
@@ -197,9 +196,6 @@ def session_install_package(
         command.append("--no-deps")
 
     session.install(*command, *args, **kwargs)
-
-
-
 
 
 # --- Create env from lock -------------------------------------------------------------
@@ -363,10 +359,10 @@ def session_install_envs(
 
 def session_install_pip(
     session: nox.Session,
-    requirement_paths: Collection[str] | None = None,
-    constraint_paths: Collection[str] | None = None,
+    requirement_paths: str | Collection[str] | None = None,
+    constraint_paths: str | Collection[str] | None = None,
     extras: str | Collection[str] | None = None,
-    reqs: Collection[str] | None = None,
+    reqs: str | Collection[str] | None = None,
     display_name: str | None = None,
     force_reinstall: bool = False,
     install_package: bool = False,
@@ -375,10 +371,18 @@ def session_install_pip(
     if session_skip_install(session):
         return True
 
+    def _check_param(x):
+        if x is None:
+            return []
+        elif isinstance(x, str):
+            return [x]
+        else:
+            return x
+
+    extras = _check_param(extras)
     if extras:
         install_package = True
-        if not isinstance(extras, str):
-            extras = ",".join(extras)
+        extras = ",".join(extras)
         install_package_args = ["-e", f".[{extras}]"]
     elif install_package:
         install_package_args = ["-e", "."]
@@ -386,10 +390,10 @@ def session_install_pip(
     if install_package and no_deps:
         install_package_args.append("--no-deps")
 
-    requirement_paths = requirement_paths or ()
-    constraint_paths = constraint_paths or ()
-    reqs = reqs or ()
-    paths = tuple(requirement_paths) + tuple(constraint_paths)
+    requirement_paths = _check_param(requirement_paths)
+    constraint_paths = _check_param(constraint_paths)
+    reqs = _check_param(reqs)
+    paths = list(requirement_paths) + list(constraint_paths)
 
     unchanged, hashes = env_unchanged(
         session,
@@ -417,8 +421,6 @@ def session_install_pip(
 
     session_set_ipykernel_display_name(session, display_name)
     write_hashfile(hashes, session=session, prefix="pip")
-
-
 
 
 # --- Hash environment -----------------------------------------------------------------
@@ -520,8 +522,6 @@ def _get_file_hash(path: str | Path, buff_size=65536) -> str:
                 break
             md5.update(data)
     return md5.hexdigest()
-
-
 
 
 # --- Old stuff ------------------------------------------------------------------------

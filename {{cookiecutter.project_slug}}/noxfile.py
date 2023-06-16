@@ -5,26 +5,24 @@ import shutil
 from dataclasses import replace  # noqa
 from pathlib import Path
 from textwrap import dedent
-from typing import Annotated, Any, Callable, Collection, Literal, TypeVar, cast
+from typing import Annotated, Any, Callable, Collection, TypeVar, cast
 
 import nox
 from noxopt import NoxOpt, Option, Session
 
 from tools.noxtools import (
     combine_list_str,
+    load_nox_config,
+    open_webpage,
     prepend_flag,
     session_install_envs,
     session_install_envs_lock,
     # session_install_package,
     session_install_pip,
     session_run_commands,
-    # session_skip_install,
     sort_like,
     update_target,
-    open_webpage,
-    load_nox_config,
 )
-
 
 # * nox options ------------------------------------------------------------------------
 ROOT = Path(__file__).parent
@@ -66,11 +64,11 @@ C = Callable[[F], F]
 DEFAULT_SESSION = cast(C, group.session(**SESSION_DEFAULT_KWS))  # type: ignore
 ALL_SESSION = cast(C, group.session(**SESSION_ALL_KWS))  # type: ignore
 
-DEFAULT_SESSION_VENV = cast(C, group.session(python=PYTHON_DEFAULT_VERSION)) # type: ignore
-ALL_SESSION_VENV = cast(C, group.session(python=PYTHON_ALL_VERSIONS)) # type: ignore
+DEFAULT_SESSION_VENV = cast(C, group.session(python=PYTHON_DEFAULT_VERSION))  # type: ignore
+ALL_SESSION_VENV = cast(C, group.session(python=PYTHON_ALL_VERSIONS))  # type: ignore
 
 OPTS_OPT = Option(nargs="*", type=str)
-SET_KERNEL_OPT = Option(type=bool, help="If True, try to set the kernel name")
+# SET_KERNEL_OPT = Option(type=bool, help="If True, try to set the kernel name")
 RUN_OPT = Option(
     nargs="*",
     type=str,
@@ -117,42 +115,24 @@ LOG_SESSION_CLI = Annotated[
     ),
 ]
 
+
 # * Installation command ---------------------------------------------------------------
-def session_install_general(
+def pkg_install_condaenv(
     session: nox.Session,
     name: str,
-    style: Literal["conda", "conda-lock", "pip"] | None = None,
     lock: bool = False,
     display_name: str | None = None,
-    set_kernel: bool = True,
     install_package: bool = True,
     force_reinstall: bool = False,
     log_session: bool = False,
     deps: Collection[str] | None = None,
     reqs: Collection[str] | None = None,
-    extras: str | Collection[str] | None = None,
     channels: Collection[str] | None = None,
     **kwargs,
 ):
     """Install requirements.  If need fine control, do it in calling func"""
 
-    if display_name is None and set_kernel:
-        display_name = f"{KERNEL_BASE}-{name}"
-
-    style = style or ("conda-lock" if lock else "conda")
-
-    if style == "pip":
-        session_install_pip(
-            session=session,
-            extras=extras,
-            display_name=display_name,
-            force_reinstall=force_reinstall,
-            reqs=reqs,
-            install_package=install_package,
-            **kwargs,
-        )
-
-    elif style == "conda-lock":
+    if lock:
         py = session.python.replace(".", "")  # type: ignore
         session_install_envs_lock(
             session=session,
@@ -163,7 +143,7 @@ def session_install_general(
             **kwargs,
         )
 
-    elif style == "conda":
+    else:
         session_install_envs(
             session,
             f"./environment/{name}.yaml",
@@ -175,8 +155,40 @@ def session_install_general(
             install_package=install_package,
             **kwargs,
         )
+
+    if log_session:
+        session_log_session(session, install_package)
+
+
+def pkg_install_venv(
+    session: nox.Session,
+    name: str,
+    lock: bool = False,
+    requirement_paths: Collection[str] | None = None,
+    constraint_paths: Collection[str] | None = None,
+    extras: str | Collection[str] | None = None,
+    reqs: Collection[str] | None = None,
+    display_name: str | None = None,
+    force_reinstall: bool = False,
+    install_package: bool = False,
+    no_deps: bool = False,
+    log_session: bool = False,
+):
+    if lock:
+        raise ValueError("lock not yet supported for install_pip")
+
     else:
-        raise ValueError(f"style={style} not recognized")
+        session_install_pip(
+            session=session,
+            requirement_paths=requirement_paths,
+            constraint_paths=constraint_paths,
+            extras=extras,
+            reqs=reqs,
+            display_name=display_name,
+            force_reinstall=force_reinstall,
+            install_package=install_package,
+            no_deps=no_deps,
+        )
 
     if log_session:
         session_log_session(session, install_package)
@@ -202,7 +214,6 @@ def session_log_session(session, has_package=False):
 @DEFAULT_SESSION
 def dev(
     session: Session,
-    # set_kernel: SET_KERNEL_CLI = True,
     dev_run: RUN_CLI = [],  # noqa
     lock: LOCK_CLI = False,
     force_reinstall: FORCE_REINSTALL_CLI = False,
@@ -211,16 +222,17 @@ def dev(
     """Create dev env"""
     # using conda
 
-    session_install_general(
+    pkg_install_condaenv(
         session=session,
         name="dev",
         lock=lock,
-        set_kernel=True,
+        display_name=f"{PACKAGE_NAME}-dev",
         install_package=True,
         force_reinstall=force_reinstall,
         log_session=log_session,
     )
     session_run_commands(session, dev_run)
+
 
 @DEFAULT_SESSION_VENV
 def dev_venv(
@@ -233,17 +245,15 @@ def dev_venv(
     """Create dev env"""
     # using conda
 
-
-    session_install_general(
+    pkg_install_venv(
         session=session,
         name="dev-venv",
-        extras=["dev"],
         lock=lock,
-        set_kernel=True,
+        extras=["dev"],
+        display_name=f"{PACKAGE_NAME}-dev-venv",
         install_package=True,
         force_reinstall=force_reinstall,
         log_session=log_session,
-        style="pip",
     )
     session_run_commands(session, dev_run)
 
@@ -256,8 +266,9 @@ def pyproject2conda(
     pyproject2conda_force: bool = False,
 ):
     """Create environment.yaml files from pyproject.toml using pyproject2conda."""
-    session_install_envs(
-        session,
+    pkg_install_venv(
+        session=session,
+        name="pyporject2conda",
         reqs=["pyproject2conda>=0.4.0"],
         force_reinstall=force_reinstall,
     )
@@ -288,7 +299,7 @@ def pyproject2conda(
     # create root environment
     create_env("environment/base.yaml")
 
-    extras = CONFIG ["environment-extras"]
+    extras = CONFIG["environment-extras"]
     for k in ["test", "typing", "docs", "dev"]:
         create_env(f"environment/{k}.yaml", extras=extras.get(k, k), base=True)
 
@@ -304,8 +315,9 @@ def pyproject2conda(
         "environment/test-extras.txt", extras="test", base=False, cmd="requirements"
     )
 
+
 # ** conda-lock
-@DEFAULT_SESSION
+@DEFAULT_SESSION_VENV
 def conda_lock(
     session: Session,
     force_reinstall: FORCE_REINSTALL_CLI = False,
@@ -324,9 +336,9 @@ def conda_lock(
 ):
     """Create lock files using conda-lock"""
 
-    session_install_envs(
+    pkg_install_venv(
         session,
-        # reqs=["git+https://github.com/conda/conda-lock.git"],
+        name="conda-lock",
         reqs=["conda-lock>=2.0.0"],
         force_reinstall=force_reinstall,
     )
@@ -427,18 +439,21 @@ def test(
 ):
     """Test environments with conda installs"""
 
-    session_install_general(
+    pkg_install_condaenv(
         session=session,
         name="test",
         lock=lock,
-        set_kernel=False,
         install_package=True,
         force_reinstall=force_reinstall,
         log_session=log_session,
     )
 
     _test(
-        session=session, run=test_run, test_no_pytest=test_no_pytest, test_opts=test_opts, no_cov=no_cov
+        session=session,
+        run=test_run,
+        test_no_pytest=test_no_pytest,
+        test_opts=test_opts,
+        no_cov=no_cov,
     )
 
 
@@ -455,18 +470,21 @@ def test_venv(
 ):
     """Test environments virtualenv and pip installs"""
 
-    session_install_general(
+    pkg_install_venv(
         session=session,
         name="test-pip",
         extras="test",
         install_package=True,
         force_reinstall=force_reinstall,
         log_session=log_session,
-        style="pip",
     )
 
     _test(
-        session=session, run=test_run, test_no_pytest=test_no_pytest, test_opts=test_opts, no_cov=no_cov
+        session=session,
+        run=test_run,
+        test_no_pytest=test_no_pytest,
+        test_opts=test_opts,
+        no_cov=no_cov,
     )
 
 
@@ -479,15 +497,15 @@ def _coverage(session, run, cmd, run_internal):
 
     session.log(f"{cmd}")
 
-    for cmd in cmd:
-        if cmd == "combine":
+    for c in cmd:
+        if c == "combine":
             paths = list(Path(".nox").glob("test*/tmp/.coverage"))
             if update_target(".coverage", *paths):
                 session.run("coverage", "combine", "--keep", "-a", *map(str, paths))
-        elif cmd == "open":
+        elif c == "open":
             open_webpage(path="htmlcov/index.html")
         else:
-            session.run("coverage", cmd)
+            session.run("coverage", c)
 
     session_run_commands(session, run_internal, external=False)
 
@@ -504,8 +522,9 @@ def coverage(
     ) = [],  # noqa
     force_reinstall: FORCE_REINSTALL_CLI = False,
 ):
-    session_install_envs(
+    pkg_install_venv(
         session,
+        name="coverage",
         reqs=["coverage[toml]"],
         force_reinstall=force_reinstall,
     )
@@ -514,7 +533,7 @@ def coverage(
         session=session,
         run=coverage_run,
         cmd=coverage_cmd,
-        run_internal=coverage_run_internal
+        run_internal=coverage_run_internal,
     )
 
 
@@ -568,11 +587,11 @@ def docs(
     log_session: bool = False,
 ):
     """Runs make in docs directory. For example, 'nox -s docs -- --docs-cmd html' -> 'make -C docs html'. With 'release' option, you can set the message with 'message=...' in posargs."""
-    session_install_general(
+    pkg_install_condaenv(
         session=session,
         name="docs",
         lock=lock,
-        set_kernel=True,
+        display_name=f"{PACKAGE_NAME}-docs",
         install_package=True,
         force_reinstall=force_reinstall,
         log_session=log_session,
@@ -606,15 +625,14 @@ def docs_venv(
     log_session: bool = False,
 ):
     """Runs make in docs directory. For example, 'nox -s docs -- --docs-cmd html' -> 'make -C docs html'. With 'release' option, you can set the message with 'message=...' in posargs."""
-    session_install_general(
+    pkg_install_venv(
         session=session,
         name="docs-venv",
         lock=lock,
-        set_kernel=True,
+        display_name=f"{PACKAGE_NAME}-docs-venv",
         install_package=True,
         force_reinstall=force_reinstall,
         log_session=log_session,
-        style="pip",
         extras="docs",
     )
 
@@ -663,8 +681,9 @@ def dist_pypi(
 ):
     """Run 'nox -s dist-pypi -- {clean, build, testrelease, release}'"""
 
-    session_install_pip(
+    pkg_install_venv(
         session=session,
+        name="dist-pypi",
         requirement_paths=["environment/dist-pypi.txt"],
         force_reinstall=force_reinstall,
         install_package=False,
@@ -694,10 +713,9 @@ def dist_pypi_condaenv(
     """Run 'nox -s dist_pypi -- {clean, build, testrelease, release}'"""
     # conda
 
-    session_install_general(
+    pkg_install_condaenv(
         session=session,
         name="dist-pypi",
-        set_kernel=False,
         install_package=False,
         force_reinstall=force_reinstall,
         log_session=log_session,
@@ -727,17 +745,16 @@ def dist_conda(
         ],
         flags=("--dist-conda-cmd", "-c"),
     ) = (),
-    lock: LOCK_CLI = False,
+    # lock: LOCK_CLI = False,
     sdist_path: str = "",
     force_reinstall: FORCE_REINSTALL_CLI = False,
     log_session: bool = False,
     version: VERSION_CLI = "",
 ):
     """Runs make -C dist-conda posargs"""
-    session_install_general(
+    pkg_install_condaenv(
         session=session,
         name="dist-conda",
-        set_kernel=False,
         install_package=False,
         force_reinstall=force_reinstall,
         log_session=log_session,
@@ -840,6 +857,7 @@ def _typing(session, run, cmd, run_internal):
             session.run("pytype")
     session_run_commands(session, run_internal, external=False)
 
+
 @ALL_SESSION
 def typing(
     session: nox.Session,
@@ -857,11 +875,10 @@ def typing(
 ):
     """Run type checkers (mypy, pyright, pytype)"""
 
-    session_install_general(
+    pkg_install_condaenv(
         session=session,
         name="typing",
         lock=lock,
-        set_kernel=False,
         install_package=True,
         force_reinstall=force_reinstall,
         log_session=log_session,
@@ -873,6 +890,7 @@ def typing(
         cmd=typing_cmd,
         run_internal=typing_run_internal,
     )
+
 
 @ALL_SESSION_VENV
 def typing_venv(
@@ -891,16 +909,14 @@ def typing_venv(
 ):
     """Run type checkers (mypy, pyright, pytype)"""
 
-    session_install_general(
+    pkg_install_venv(
         session=session,
         name="typing",
         lock=lock,
-        set_kernel=False,
         install_package=True,
         force_reinstall=force_reinstall,
         log_session=log_session,
         extras="typing",
-        style="pip",
     )
 
     _typing(
@@ -969,14 +985,14 @@ def testdist_pypi(
     if version:
         install_str = f"{install_str}=={version}"
 
-    session_install_pip(
+    pkg_install_venv(
         session=session,
+        name="testdist-pypi",
         requirement_paths=["environment/test-extras.txt"],
         reqs=[install_str],
         force_reinstall=force_reinstall,
         install_package=False,
     )
-
 
     if log_session:
         session_log_session(session, False)
