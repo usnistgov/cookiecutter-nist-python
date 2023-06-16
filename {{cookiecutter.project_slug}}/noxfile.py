@@ -580,7 +580,48 @@ def docs(
         log_session=log_session,
     )
 
-    _doc(session=session, cmd=docs_cmd, run=docs_run, version=version)
+    _docs(session=session, cmd=docs_cmd, run=docs_run, version=version)
+
+
+@group.session(python=PYTHON_DEFAULT_VERSION) # type: ignore
+def docs_venv(
+    session: nox.Session,
+    docs_cmd: cmd_annotated(  # type: ignore
+        choices=[
+            "html",
+            "build",
+            "symlink",
+            "clean",
+            "livehtml",
+            "linkcheck",
+            "spelling",
+            "showlinks",
+            "release",
+            "open",
+        ],
+        flags=("--docs-cmd", "-d"),
+    ) = (),
+    docs_run: RUN_CLI = [],  # noqa
+    lock: LOCK_CLI = False,
+    force_reinstall: FORCE_REINSTALL_CLI = False,
+    version: VERSION_CLI = "",
+    log_session: bool = False,
+):
+    """Runs make in docs directory. For example, 'nox -s docs -- --docs-cmd html' -> 'make -C docs html'. With 'release' option, you can set the message with 'message=...' in posargs."""
+    session_install_general(
+        session=session,
+        name="docs-venv",
+        lock=lock,
+        set_kernel=True,
+        install_package=True,
+        force_reinstall=force_reinstall,
+        log_session=log_session,
+        style="pip",
+        extras="docs",
+    )
+
+    _docs(session=session, cmd=docs_cmd, run=docs_run, version=version)
+
 
 
 def _dist_pypi(session, run, cmd, version):
