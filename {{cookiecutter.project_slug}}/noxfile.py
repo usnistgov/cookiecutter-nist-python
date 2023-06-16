@@ -26,7 +26,6 @@ from tools.noxtools import (
 )
 
 
-
 # * nox options ------------------------------------------------------------------------
 ROOT = Path(__file__).parent
 
@@ -48,7 +47,7 @@ if shutil.which("mamba"):
 elif shutil.which("conda"):
     CONDA_BACKEND = "conda"
 else:
-    raise ValueError("neigher conda or mamba found")
+    raise ValueError("neither conda or mamba found")
 
 SESSION_DEFAULT_KWS = {"python": PYTHON_DEFAULT_VERSION, "venv_backend": CONDA_BACKEND}
 SESSION_ALL_KWS = {"python": PYTHON_ALL_VERSIONS, "venv_backend": CONDA_BACKEND}
@@ -62,9 +61,13 @@ CONFIG = load_nox_config()
 group = NoxOpt(auto_tag=True)
 
 F = TypeVar("F", bound=Callable[..., Any])
+C = Callable[[F], F]
 
-DEFAULT_SESSION = cast(Callable[[F], F], group.session(**SESSION_DEFAULT_KWS))  # type: ignore
-ALL_SESSION = cast(Callable[[F], F], group.session(**SESSION_ALL_KWS))  # type: ignore
+DEFAULT_SESSION = cast(C, group.session(**SESSION_DEFAULT_KWS))  # type: ignore
+ALL_SESSION = cast(C, group.session(**SESSION_ALL_KWS))  # type: ignore
+
+DEFAULT_SESSION_VENV = cast(C, group.session(python=PYTHON_DEFAULT_VERSION)) # type: ignore
+ALL_SESSION_VENV = cast(C, group.session(python=PYTHON_ALL_VERSIONS)) # type: ignore
 
 OPTS_OPT = Option(nargs="*", type=str)
 SET_KERNEL_OPT = Option(type=bool, help="If True, try to set the kernel name")
@@ -115,7 +118,6 @@ LOG_SESSION_CLI = Annotated[
 ]
 
 # * Installation command ---------------------------------------------------------------
-
 def session_install_general(
     session: nox.Session,
     name: str,
@@ -220,7 +222,7 @@ def dev(
     )
     session_run_commands(session, dev_run)
 
-@group.session(python=PYTHON_DEFAULT_VERSION) # type: ignore
+@DEFAULT_SESSION_VENV
 def dev_venv(
     session: Session,
     dev_run: RUN_CLI = [],  # noqa
@@ -247,7 +249,7 @@ def dev_venv(
 
 
 # ** pyproject2conda (create environment.yaml and requirement.txt files)
-@group.session(python=PYTHON_DEFAULT_VERSION)  # type: ignore
+@DEFAULT_SESSION_VENV
 def pyproject2conda(
     session: Session,
     force_reinstall: FORCE_REINSTALL_CLI = False,
@@ -440,7 +442,7 @@ def test(
     )
 
 
-@group.session(python=PYTHON_ALL_VERSIONS)  # type: ignore
+@ALL_SESSION_VENV
 def test_venv(
     session: Session,
     test_no_pytest: bool = False,
@@ -490,7 +492,7 @@ def _coverage(session, run, cmd, run_internal):
     session_run_commands(session, run_internal, external=False)
 
 
-@group.session(python=PYTHON_DEFAULT_VERSION)  # type: ignore
+@DEFAULT_SESSION_VENV
 def coverage(
     session: Session,
     coverage_cmd: cmd_annotated(  # type: ignore
@@ -516,12 +518,10 @@ def coverage(
     )
 
 
+# ** Docs
 def _docs(session, run, cmd, version):
     if version:
         session.env["SETUPTOOLS_SCM_PRETEND_VERSION"] = version
-
-    cmd = docs_cmd
-    run = docs_run
 
     session_run_commands(session, run)
 
@@ -537,8 +537,6 @@ def _docs(session, run, cmd, version):
 
     if cmd:
         args = ["make", "-C", "docs"] + combine_list_str(cmd)
-        # if version:
-        #     args.append( f"SETUPTOOLS_SCM_PRETEND_VERSION={version}" )
         session.run(*args, external=True)
 
     if open_page:
@@ -583,7 +581,7 @@ def docs(
     _docs(session=session, cmd=docs_cmd, run=docs_run, version=version)
 
 
-@group.session(python=PYTHON_DEFAULT_VERSION) # type: ignore
+@DEFAULT_SESSION_VENV
 def docs_venv(
     session: nox.Session,
     docs_cmd: cmd_annotated(  # type: ignore
@@ -623,7 +621,7 @@ def docs_venv(
     _docs(session=session, cmd=docs_cmd, run=docs_run, version=version)
 
 
-
+# ** Dist pypi
 def _dist_pypi(session, run, cmd, version):
     if version:
         session.env["SETUPTOOLS_SCM_PRETEND_VERSION"] = version
@@ -648,6 +646,36 @@ def _dist_pypi(session, run, cmd, version):
 
             elif command == "release":
                 session.run("twine", "upload", "dist/*")
+
+
+@DEFAULT_SESSION_VENV
+def dist_pypi(
+    session: nox.Session,
+    dist_pypi_run: RUN_CLI = [],  # noqa
+    dist_pypi_cmd: cmd_annotated(  # type: ignore
+        choices=["clean", "build", "testrelease", "release"],
+        flags=("--dist-pypi-cmd", "-p"),
+    ) = (),
+    lock: LOCK_CLI = False,
+    force_reinstall: FORCE_REINSTALL_CLI = False,
+    version: VERSION_CLI = "",
+    log_session: bool = False,
+):
+    """Run 'nox -s dist-pypi -- {clean, build, testrelease, release}'"""
+
+    session_install_pip(
+        session=session,
+        requirement_paths=["environment/dist-pypi.txt"],
+        force_reinstall=force_reinstall,
+        install_package=False,
+    )
+
+    _dist_pypi(
+        session=session,
+        run=dist_pypi_run,
+        cmd=dist_pypi_cmd,
+        version=version,
+    )
 
 
 @DEFAULT_SESSION
@@ -683,36 +711,7 @@ def dist_pypi_condaenv(
     )
 
 
-@group.session(python=PYTHON_DEFAULT_VERSION) # type: ignore
-def dist_pypi(
-    session: nox.Session,
-    dist_pypi_run: RUN_CLI = [],  # noqa
-    dist_pypi_cmd: cmd_annotated(  # type: ignore
-        choices=["clean", "build", "testrelease", "release"],
-        flags=("--dist-pypi-cmd", "-p"),
-    ) = (),
-    lock: LOCK_CLI = False,
-    force_reinstall: FORCE_REINSTALL_CLI = False,
-    version: VERSION_CLI = "",
-    log_session: bool = False,
-):
-    """Run 'nox -s dist-pypi -- {clean, build, testrelease, release}'"""
-
-    session_install_pip(
-        session=session,
-        requirement_paths=["environment/dist-pypi.txt"],
-        force_reinstall=force_reinstall,
-        install_package=False,
-    )
-
-    _dist_pypi(
-        session=session,
-        run=dist_pypi_run,
-        cmd=dist_pypi_cmd,
-        version=version,
-    )
-
-
+# ** Dist conda
 @DEFAULT_SESSION
 def dist_conda(
     session: nox.Session,
@@ -827,6 +826,20 @@ def _append_recipe(recipe_path, append_path):
         f.writelines(recipe + ["\n"] + append)
 
 
+# type checking
+def _typing(session, run, cmd, run_internal):
+    session_run_commands(session, run)
+    if not run and not typing_run_internal and not cmd:
+        cmd = ["mypy"]
+    for c in cmd:
+        if c == "mypy":
+            session.run("mypy", "--color-output")
+        elif c == "pyright":
+            session.run("pyright", external=True)
+        elif c == "pytype":
+            session.run("pytype")
+    session_run_commands(session, run_internal, external=False)
+
 @ALL_SESSION
 def typing(
     session: nox.Session,
@@ -854,24 +867,51 @@ def typing(
         log_session=log_session,
     )
 
-    run, cmd = typing_run, typing_cmd
+    _typing(
+        session=session,
+        run=typing_run,
+        cmd=typing_cmd,
+        run_internal=typing_run_internal,
+    )
 
-    session_run_commands(session, run)
+@ALL_SESSION_VENV
+def typing_venv(
+    session: nox.Session,
+    typing_cmd: cmd_annotated(  # type: ignore
+        choices=["mypy", "pyright", "pytype"],
+        flags=("--typing-cmd", "-m"),
+    ) = (),
+    typing_run: RUN_CLI = [],  # noqa
+    typing_run_internal: run_annotated(  # type: ignore
+        help="run arbitrary (internal) commands.  For example, --typing-run-internal 'mypy --some-option'",
+    ) = [],  # noqa
+    lock: LOCK_CLI = False,
+    force_reinstall: FORCE_REINSTALL_CLI = False,
+    log_session: bool = False,
+):
+    """Run type checkers (mypy, pyright, pytype)"""
 
-    if not run and not typing_run_internal and not cmd:
-        cmd = ["mypy"]
+    session_install_general(
+        session=session,
+        name="typing",
+        lock=lock,
+        set_kernel=False,
+        install_package=True,
+        force_reinstall=force_reinstall,
+        log_session=log_session,
+        extras="typing",
+        style="pip",
+    )
 
-    for c in cmd:
-        if c == "mypy":
-            session.run("mypy", "--color-output")
-        elif c == "pyright":
-            session.run("pyright", external=True)
-        elif c == "pytype":
-            session.run("pytype")
-
-    session_run_commands(session, typing_run_internal, external=False)
+    _typing(
+        session=session,
+        run=typing_run,
+        cmd=typing_cmd,
+        run_internal=typing_run_internal,
+    )
 
 
+# ** testdist conda
 @ALL_SESSION
 def testdist_conda(
     session: Session,
@@ -907,46 +947,8 @@ def testdist_conda(
         session.run("pytest", *opts)
 
 
-@ALL_SESSION
-def testdist_pypi_condaenv(
-    session: Session,
-    test_no_pytest: bool = False,
-    test_opts: TEST_OPTS_CLI = (),  # type: ignore
-    testdist_pypi_run: RUN_CLI = [],  # noqa
-    testdist_pypi_extras: cmd_annotated(help="extras to install") = (),  # type: ignore
-    force_reinstall: FORCE_REINSTALL_CLI = False,
-    version: VERSION_CLI = "",
-    log_session: bool = False,
-):
-    """Test pypi distribution"""
-    extras = testdist_pypi_extras
-    install_str = PACKAGE_NAME
-
-    if extras:
-        install_str = "{}[{}]".format(install_str, ",".join(extras))
-
-    if version:
-        install_str = f"{install_str}=={version}"
-
-    session_install_envs(
-        session,
-        "environment/test-extras.yaml",
-        reqs=[install_str],
-        channels=["conda-forge"],
-        force_reinstall=force_reinstall,
-        install_package=False,
-    )
-
-    if log_session:
-        session_log_session(session, False)
-
-    session_run_commands(session, testdist_pypi_run)
-    if not test_no_pytest:
-        opts = combine_list_str(test_opts)
-        session.run("pytest", *opts)
-
-
-@group.session(python=PYTHON_ALL_VERSIONS)  # type: ignore
+# ** testdist pypi
+@ALL_SESSION_VENV
 def testdist_pypi(
     session: Session,
     test_no_pytest: bool = False,
@@ -979,13 +981,57 @@ def testdist_pypi(
     if log_session:
         session_log_session(session, False)
 
-    session_run_commands(session, testdist_pypi_run)
-    if not test_no_pytest:
-        opts = combine_list_str(test_opts)
-        session.run("pytest", *opts)
+    _test(
+        session=session,
+        run=run,
+        test_no_pytest=test_no_pytest,
+        test_opts=test_opts,
+        no_cov=True,
+    )
 
 
-# --- Utilities ------------------------------------------------------------------------
+@ALL_SESSION
+def testdist_pypi_condaenv(
+    session: Session,
+    test_no_pytest: bool = False,
+    test_opts: TEST_OPTS_CLI = (),  # type: ignore
+    testdist_pypi_run: RUN_CLI = [],  # noqa
+    testdist_pypi_extras: cmd_annotated(help="extras to install") = (),  # type: ignore
+    force_reinstall: FORCE_REINSTALL_CLI = False,
+    version: VERSION_CLI = "",
+    log_session: bool = False,
+):
+    """Test pypi distribution"""
+    extras = testdist_pypi_extras
+    install_str = PACKAGE_NAME
+
+    if extras:
+        install_str = "{}[{}]".format(install_str, ",".join(extras))
+
+    if version:
+        install_str = f"{install_str}=={version}"
+
+    session_install_envs(
+        session,
+        "environment/test-extras.yaml",
+        reqs=[install_str],
+        channels=["conda-forge"],
+        force_reinstall=force_reinstall,
+        install_package=False,
+    )
+    if log_session:
+        session_log_session(session, False)
+
+    _test(
+        session=session,
+        run=run,
+        test_no_pytest=test_no_pytest,
+        test_opts=test_opts,
+        no_cov=True,
+    )
+
+
+# * Utilities --------------------------------------------------------------------------
 def _create_doc_examples_symlinks(session, clean=True):
     """Create symlinks from docs/examples/*.md files to /examples/usage/..."""
 
