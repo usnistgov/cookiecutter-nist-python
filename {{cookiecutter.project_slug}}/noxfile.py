@@ -474,7 +474,7 @@ def test_venv(
 def _coverage(session, run, cmd, run_internal):
     session_run_commands(session, run)
 
-    if not cmd and not run and not coverage_run_internal:
+    if not cmd and not run and not run_internal:
         cmd = ["combine", "report"]
 
     session.log(f"{cmd}")
@@ -829,7 +829,7 @@ def _append_recipe(recipe_path, append_path):
 # type checking
 def _typing(session, run, cmd, run_internal):
     session_run_commands(session, run)
-    if not run and not typing_run_internal and not cmd:
+    if not run and not run_internal and not cmd:
         cmd = ["mypy"]
     for c in cmd:
         if c == "mypy":
@@ -983,7 +983,7 @@ def testdist_pypi(
 
     _test(
         session=session,
-        run=run,
+        run=testdist_pypi_run,
         test_no_pytest=test_no_pytest,
         test_opts=test_opts,
         no_cov=True,
@@ -1024,7 +1024,7 @@ def testdist_pypi_condaenv(
 
     _test(
         session=session,
-        run=run,
+        run=testdist_pypi_run,
         test_no_pytest=test_no_pytest,
         test_opts=test_opts,
         no_cov=True,
