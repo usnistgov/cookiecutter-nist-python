@@ -102,7 +102,7 @@ FORCE_REINSTALL_CLI = Annotated[
     bool,
     Option(
         type=bool,
-        help="If True, force reinstall requirements and package even if environment unchanged"
+        help="If True, force reinstall requirements and package even if environment unchanged",
     ),
 ]
 
