@@ -238,15 +238,27 @@ author = "{{ cookiecutter.full_name }}"
 # The short X.Y version.
 # versioning with scm with editable install has issues.
 # instead, try to use scm if available.
-try:
-    from setuptools_scm import get_version
+# try:
+#     from setuptools_scm import get_version
 
-    version = get_version(root="..", relative_to=__file__)
-    release = version
-except ImportError:
-    version = {{ cookiecutter.project_slug }}.__version__
-    # The full version, including alpha/beta/rc tags.
-    release = {{ cookiecutter.project_slug}}.__version__
+#     version = get_version(root="..", relative_to=__file__)
+#     release = version
+# except ImportError:
+#     version = {{ cookiecutter.project_slug }}.__version__
+#     # The full version, including alpha/beta/rc tags.
+#     release = {{ cookiecutter.project_slug}}.__version__
+
+
+def _get_version():
+    import os
+    version = os.environ.get("SETUPTOOLS_SCM_PRETEND_VERSION", None)
+    if version is None:
+        version = {{ cookiecutter.project_slug }}.__version__
+    return version
+
+
+release = version = _get_version()
+
 
 # if always want to print "latest"
 # release = "latest"
