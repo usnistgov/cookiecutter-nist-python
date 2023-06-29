@@ -264,6 +264,7 @@ def dev_venv(
     session_run_commands(session, dev_run)
 
 
+# ** version report/update
 @DEFAULT_SESSION_VENV
 def version_scm(
         session: Session,
@@ -286,8 +287,6 @@ def version_scm(
         force_reinstall=force_reinstall,
         no_deps=True,
     )
-
-    session.log(f"session.posargs={session.posargs}")
 
     if version:
         session.env["SETUPTOOLS_SCM_PRETEND_VERSION"] = version
