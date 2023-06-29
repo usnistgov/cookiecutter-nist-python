@@ -1100,7 +1100,8 @@ def _create_doc_examples_symlinks(session, clean=True):
 
             os.symlink(target_rel, link)
 
-
+# # If want seperate env for updating/reporting version with setuptools-scm
+# # We do this from dev environment.
 # # ** version report/update
 # @DEFAULT_SESSION_VENV
 # def version_scm(
