@@ -100,7 +100,10 @@ TEST_OPTS_CLI = opts_annotated(help="extra arguments/flags to pytest")
 
 FORCE_REINSTALL_CLI = Annotated[
     bool,
-    Option(type=bool, help="If True, force reinstall requirements and package even if environment unchanged"),
+    Option(
+        type=bool,
+        help="If True, force reinstall requirements and package even if environment unchanged"
+    ),
 ]
 
 VERSION_CLI = Annotated[
@@ -261,9 +264,9 @@ def dev_venv(
 # ** version report/update
 @DEFAULT_SESSION_VENV
 def version_scm(
-        session: Session,
-        version: VERSION_CLI = "",
-        force_reinstall: FORCE_REINSTALL_CLI = False,
+    session: Session,
+    version: VERSION_CLI = "",
+    force_reinstall: FORCE_REINSTALL_CLI = False,
 ):
     """
     Get current version from setuptools-scm
