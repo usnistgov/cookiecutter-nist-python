@@ -275,6 +275,6 @@ commitizen-changelog:
 # tuna analyze load time:
 .PHONY: tuna-analyze
 tuna-import: ## Analyze load time for module
-	python -X importtime -c 'import lnpy' 2> tuna-loadtime.log
+	python -X importtime -c 'import {{ cookiecutter.project_slug }}' 2> tuna-loadtime.log
 	tuna tuna-loadtime.log
 	rm tuna-loadtime.log
