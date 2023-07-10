@@ -87,7 +87,7 @@ Any other stuff to metion....
 
 ## Contact
 
-The author can be reached at wpk@nist.gov.
+The author can be reached at <{{ cookiecutter.email }}>.
 
 ## Credits
 
