@@ -139,13 +139,19 @@ def py_prefix(python_version: Any) -> str:
 
 
 def session_environment_filename(
-    python_version, name: str, ext: str | None = None
+    name: str,
+    ext: str | None = None,
+    python_version=None,
 ) -> str:
     if name is None:
         raise ValueError("must supply name")
+
+    filename = name
     if ext is not None:
-        name = name + ext
-    return f"./environment/{py_prefix(python_version)}-{name}"
+        filename = filename + ext
+    if python_version is not None:
+        filename = f"{py_prefix(python_version)}-{filename}"
+    return f"./environment/{filename}"
 
 
 def pkg_install_condaenv(
@@ -186,7 +192,9 @@ def pkg_install_condaenv(
 
     else:
         filename = filename or session_environment_filename(
-            session.python, name, ".yaml"
+            name=name,
+            ext=".yaml",
+            python_version=session.python,
         )
         session_install_envs(
             session,
@@ -318,7 +326,7 @@ def pyproject2conda(
     )
 
     def create_env(
-        python_version: str,
+        python_version: str | None = None,
         cmd: Literal["yaml", "requirements"] = "yaml",
         name: str | None = None,
         output: str | None = None,
@@ -336,14 +344,17 @@ def pyproject2conda(
         if output is None:
             assert name is not None
             output = session_environment_filename(
-                python_version, name, {"yaml": ".yaml", "requirements": ".txt"}[cmd]
+                python_version=python_version,
+                name=name,
+                ext={"yaml": ".yaml", "requirements": ".txt"}[cmd],
             )
 
         if pyproject2conda_force or update_target(output, "pyproject.toml"):
             args = [cmd, "-o", output] + _to_args("-e", extras)
 
             if cmd == "yaml":
-                args.extend(["--python-version", python_version])
+                if python_version is not None:
+                    args.extend(["--python-version", python_version])
                 if isinstance(python_include, bool) and python_include:
                     python_include = f"python={python_version}"
                 if isinstance(python_include, str):
@@ -358,8 +369,6 @@ def pyproject2conda(
                 f"{output} up to data.  Pass --pyproject2conda-force to force recreation"
             )
 
-    # create root environment
-    # create_env("environment/base.yaml")
     extras = CONFIG["environment-extras"]
 
     # All versions:
@@ -381,28 +390,26 @@ def pyproject2conda(
 
     # need an isolated set of test requirements
     for python_version in PYTHON_ALL_VERSIONS:
-        for cmd in ["yaml", "requirements"]:
-            create_env(
-                name="test-extras",
-                extras="test",
-                base=False,
-                python_version=python_version,
-                cmd=cmd,  # type: ignore[arg-type]
-            )
+        create_env(
+            name="test-extras",
+            extras="test",
+            base=False,
+            python_version=python_version,
+        )
 
     # isolated
-    for env, cmds in {
-        "dist-pypi": ["yaml", "requirements"],
-        "dist-conda": ["yaml"],
-    }.items():
-        for cmd in cmds:
-            create_env(
-                name=f"{env}",
-                extras=env,
-                base=False,
-                python_version=PYTHON_DEFAULT_VERSION,
-                cmd=cmd,  # type: ignore[arg-type]
-            )
+    for env in ["dist-pypi", "dist-conda"]:
+        create_env(
+            name=f"{env}",
+            extras=env,
+            base=False,
+            python_version=PYTHON_DEFAULT_VERSION,
+        )
+
+    # isolated requirement files.
+    # no python versioning for these
+    for env, extras in [("test-extras", "test"), ("dist-pypi", "dist-pypi")]:
+        create_env(name=f"{env}", cmd="requirements", extras=extras, base=False)
 
 
 # ** conda-lock
@@ -773,9 +780,7 @@ def dist_pypi(
     pkg_install_venv(
         session=session,
         name="dist-pypi",
-        requirement_paths=[
-            session_environment_filename(session.python, "dist-pypi.txt")
-        ],
+        requirement_paths=[session_environment_filename(name="dist-pypi.txt")],
         force_reinstall=force_reinstall,
         install_package=False,
     )
@@ -1055,7 +1060,9 @@ def testdist_conda(
 
     session_install_envs(
         session,
-        session_environment_filename(session.python, "test-extras.yaml"),
+        session_environment_filename(
+            python_version=session.python, name="test-extras.yaml"
+        ),
         deps=[install_str],
         channels=["conda-forge"],
         force_reinstall=force_reinstall,
@@ -1097,9 +1104,7 @@ def testdist_pypi(
     pkg_install_venv(
         session=session,
         name="testdist-pypi",
-        requirement_paths=[
-            session_environment_filename(session.python, "test-extras.txt")
-        ],
+        requirement_paths=[session_environment_filename(name="test-extras.txt")],
         reqs=[install_str],
         force_reinstall=force_reinstall,
         install_package=False,
@@ -1140,7 +1145,9 @@ def testdist_pypi_condaenv(
 
     session_install_envs(
         session,
-        session_environment_filename(session.python, "test-extras.yaml"),
+        session_environment_filename(
+            python_version=session.python, name="test-extras.yaml"
+        ),
         reqs=[install_str],
         channels=["conda-forge"],
         force_reinstall=force_reinstall,
