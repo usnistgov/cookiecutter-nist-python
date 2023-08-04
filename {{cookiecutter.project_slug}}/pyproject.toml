@@ -162,6 +162,11 @@ test = "pytest"
 addopts = "--doctest-modules --doctest-glob='*.md'"
 testpaths = ["tests", "README.md"]
 
+[tool.coverage.report]
+exclude_also = ["if TYPE_CHECKING:", "@overload"]
+omit = ["*/vendored/*"]
+include = ["src/*"]
+
 [tool.isort]
 profile = "black"
 skip_gitignore = true
