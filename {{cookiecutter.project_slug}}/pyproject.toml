@@ -72,7 +72,7 @@ dev-extras = [
 ]
 typing-extras = [
     "pytype; python_version < '3.11'", #
-    "mypy",
+    "mypy >= 1.4.1",
 ]
 typing = [
     "{{ cookiecutter.project_name }}[typing-extras]", #
