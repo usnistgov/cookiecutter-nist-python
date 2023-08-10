@@ -158,7 +158,7 @@ local development.
 
     This create a development environment located at `.nox/dev`.
 
-  - Alternativley, you can create centrally located conda environmentment using
+  - Alternatively, you can create centrally located conda environmentment using
     the command:
 
     ```bash
@@ -237,7 +237,7 @@ local development.
   ```
 
   Note that the pre-commit hooks will force the commit message to be in the
-  [conventional sytle][conventional-style]. To assist this, you may want to
+  [conventional style][conventional-style]. To assist this, you may want to
   commit using [commitizen].
 
   ```bash
