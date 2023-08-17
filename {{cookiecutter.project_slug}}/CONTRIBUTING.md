@@ -414,7 +414,7 @@ python version:
 
 ```bash
 $ for version in 3.8 3.9 3.10 3.11; do
-    conda create -n test-3.8 python=3.8
+    conda create -n test-${version} python=${version}
   done
 ```
 
@@ -428,7 +428,7 @@ paths = ["~/.conda/envs/test-3.*/bin"]
 ```
 
 where `~/.conda/envs` should be replaced by whatever prefix you have setup on
-your machine. The noxfile will add this to the search path for python versions
+your machine. The `noxfile.py` will add this to the search path for python versions
 when creating virtualenvs.
 
 ## Serving the documentation
