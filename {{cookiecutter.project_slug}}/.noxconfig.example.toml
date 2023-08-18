@@ -1,8 +1,7 @@
 # This file is an example for setting user specific config
 # for use with nox.  Copy this file to `.noxconfig.toml` in the
 # root of the repo.  The file `.noxconfig.toml` should NOT be tracked.
-
-
+#
 # This should point to (globbed version) of location of python executables
 # to be used in creating of virtualenv.
 # For example, this could be paths = ["~/miniforge3/envs/test-3.*/bin"]
