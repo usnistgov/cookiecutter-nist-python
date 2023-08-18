@@ -429,7 +429,8 @@ paths = ["~/.conda/envs/test-3.*/bin"]
 
 where `~/.conda/envs` should be replaced by whatever prefix you have setup on
 your machine. The `noxfile.py` will add this to the search path for python versions
-when creating virtualenvs.
+when creating virtualenvs.  The file `.noxconfig.toml` should not be tracked by git.
+There is also an example file `.noxconfig.example.toml` to get you started.
 
 ## Serving the documentation
 
