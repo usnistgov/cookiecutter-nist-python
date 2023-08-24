@@ -92,6 +92,7 @@ tools = [
     "pre-commit", #
     "cruft",
     "scriv",
+    "nbqa",
 ]
 dev-complete = [
     "{{ cookiecutter.project_name }}[dev]", #

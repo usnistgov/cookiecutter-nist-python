@@ -278,3 +278,15 @@ tuna-import: ## Analyze load time for module
 	python -X importtime -c 'import {{ cookiecutter.project_slug }}' 2> tuna-loadtime.log
 	tuna tuna-loadtime.log
 	rm tuna-loadtime.log
+
+# nbqa-mypy
+.PHONY: nbqa-mypy nbqa-pyright nbqa-typing
+nbqa-mypy: ## run nbqa mypy
+	nbqa --nbqa-shell mypy examples/usage
+nbqa-pyright: ## run nbqa pyright
+	nbqa --nbqa-shell pyright examples/usage
+nbqa-typing: nbqa-mypy nbqa-pyright ## run nbqa mypy/pyright
+
+.PHONY: pytest-nbval
+pytest-nbval:  ## run pytest --nbval
+	pytest --nbval --current-env --sanitize-with=.nbval.ini examples/usage/ -x
