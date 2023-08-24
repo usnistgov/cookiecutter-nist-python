@@ -1004,7 +1004,15 @@ def _typing(
 def typing(
     session: nox.Session,
     typing_cmd: cmd_annotated(  # type: ignore
-        choices=["mypy", "pyright", "pytype", "all", "nbqa-mypy", "nbqa-pyright", "nbqa-typing"],
+        choices=[
+            "mypy",
+            "pyright",
+            "pytype",
+            "all",
+            "nbqa-mypy",
+            "nbqa-pyright",
+            "nbqa-typing",
+        ],
         flags=("--typing-cmd", "-m"),
     ) = (),
     typing_run: RUN_CLI = [],  # noqa
@@ -1038,7 +1046,15 @@ def typing(
 def typing_venv(
     session: nox.Session,
     typing_cmd: cmd_annotated(  # type: ignore
-        choices=["mypy", "pyright", "pytype", "all", "nbqa-mypy", "nbqa-pyright", "nbqa-typing"],
+        choices=[
+            "mypy",
+            "pyright",
+            "pytype",
+            "all",
+            "nbqa-mypy",
+            "nbqa-pyright",
+            "nbqa-typing",
+        ],
         flags=("--typing-cmd", "-m"),
     ) = (),
     typing_run: RUN_CLI = [],  # noqa
