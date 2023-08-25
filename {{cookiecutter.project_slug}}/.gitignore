@@ -108,7 +108,7 @@ ENV/
 pyrightconfig.json
 .autoenv.zsh
 .autoenv_leave.zsh
-.noxconfig.toml
+.config/noxconfig.toml
 cruft.patch
 /docs/**/generated/
 /monkeytype.sqlite3

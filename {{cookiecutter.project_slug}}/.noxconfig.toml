@@ -1,8 +1,0 @@
-[nox.python]
-paths = ["~/.conda/envs/test-3.*/bin"]
-
-# Extras for environments
-# for example, could have
-# dev = ["dev", "nox", "tools"]
-[nox.extras]
-dev = ["dev", "nox"]
