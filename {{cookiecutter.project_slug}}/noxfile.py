@@ -36,22 +36,23 @@ from tools.noxtools import (
     update_target,
 )
 
+# * Names ------------------------------------------------------------------------------
+
+PACKAGE_NAME = "{{ cookiecutter.project_name }}"
+IMPORT_NAME = "{{ cookiecutter.project_slug }}"
+KERNEL_BASE = "{{ cookiecutter.project_slug }}"
+
 # * nox options ------------------------------------------------------------------------
 ROOT = Path(__file__).parent
 
 nox.options.reuse_existing_virtualenvs = True
 nox.options.sessions = ["test"]
-# Using "envs" instead of ".nox" to store environments.
+# Using ".nox/{project-name}/envs" instead of ".nox" to store environments.
 # This fixes problems with ipykernel/nb_conda_kernel and some other dev tools
 # that expect conda environments to be in something like ".../a/path/miniforge/envs/env".
-nox.options.envdir = "envs"
-
+nox.options.envdir = f".nox/{PACKAGE_NAME}/envs"
 
 # * Options ----------------------------------------------------------------------------
-
-PACKAGE_NAME = "{{ cookiecutter.project_name }}"
-IMPORT_NAME = "{{ cookiecutter.project_slug }}"
-KERNEL_BASE = "{{ cookiecutter.project_slug }}"
 
 PYTHON_ALL_VERSIONS = ["3.8", "3.9", "3.10", "3.11"]
 PYTHON_DEFAULT_VERSION = "3.10"
@@ -615,7 +616,9 @@ def _coverage(
 
     for c in cmd:
         if c == "combine":
-            paths = list(Path("envs").glob("test-3*/tmp/.coverage"))
+            paths = list(
+                Path(session.virtualenv.location).parent.glob("test-3*/tmp/.coverage")
+            )
             if update_target(".coverage", *paths):
                 session.run("coverage", "combine", "--keep", "-a", *map(str, paths))
         elif c == "open":
