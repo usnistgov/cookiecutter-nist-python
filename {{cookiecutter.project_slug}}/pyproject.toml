@@ -69,6 +69,7 @@ dev-extras = [
     "pytest-accept", # p2c: -p
     "ipython",
     "ipykernel",
+    # "nbval",
 ]
 typing-extras = [
     "pytype; python_version < '3.11'", #
@@ -103,7 +104,7 @@ docs = [
     "ipython", #
     "pyenchant",
     "ghp-import",
-    "sphinx",
+    "sphinx >= 5.3.0",
     "sphinx-copybutton",
     "sphinxcontrib-spelling",
     "sphinx-autobuild",
@@ -218,6 +219,7 @@ exclude = [
     ".hg",
     ".mypy_cache",
     ".nox",
+    "envs",
     ".pants.d",
     ".pytype",
     ".ruff_cache",
@@ -327,7 +329,7 @@ show_error_codes = true
 warn_unused_ignores = true
 warn_return_any = true
 warn_unused_configs = true
-exclude = [".eggs", ".tox", "doc", "docs", ".nox"]
+exclude = [".eggs", ".tox", "doc", "docs", ".nox", "envs"]
 check_untyped_defs = true
 
 [[tool.mypy.overrides]]
@@ -340,7 +342,7 @@ module = []
 
 [tool.pyright]
 include = ["src", "tests"]
-exclude = ["**/__pycache__", ".tox/**", ".nox/**", "**/.mypy_cache"]
+exclude = ["**/__pycache__", ".tox/**", ".nox/**", "envs/**", "**/.mypy_cache"]
 pythonVersion = "3.10"
 typeCheckingMode = "basic"
 # enable subset of "strict"

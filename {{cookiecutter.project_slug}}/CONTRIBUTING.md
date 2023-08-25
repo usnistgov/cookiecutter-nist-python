@@ -159,13 +159,18 @@ local development.
     nox -e dev
     ```
 
-    This create a development environment located at `.nox/dev`.
+    This create a development environment located at `envs/dev`.
+    
+    Note that we create nox environments in `envs` instead of `.nox`.  This fixes some issues with
+    things like [nb_conda_kernels], as well as other third party tools that expect conda environment
+    to be located in a directory like `.../miniforge/envs/env-name`.
 
   - Alternatively, you can create centrally located conda environmentment using
     the command:
 
     ```bash
     conda/mamba env create -n {env-name} -f environment/dev.yaml
+    conda activate {environment-name or -p path/to/environment}
     ```
 
     ```bash

@@ -41,6 +41,11 @@ ROOT = Path(__file__).parent
 
 nox.options.reuse_existing_virtualenvs = True
 nox.options.sessions = ["test"]
+# Using "envs" instead of ".nox" to store environments.
+# This fixes problems with ipykernel/nb_conda_kernel and some other dev tools
+# that expect conda environments to be in something like ".../a/path/miniforge/envs/env".
+nox.options.envdir = "envs"
+
 
 # * Options ----------------------------------------------------------------------------
 
@@ -610,7 +615,7 @@ def _coverage(
 
     for c in cmd:
         if c == "combine":
-            paths = list(Path(".nox").glob("test-3*/tmp/.coverage"))
+            paths = list(Path("envs").glob("test-3*/tmp/.coverage"))
             if update_target(".coverage", *paths):
                 session.run("coverage", "combine", "--keep", "-a", *map(str, paths))
         elif c == "open":
