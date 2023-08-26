@@ -86,7 +86,7 @@ def open_webpage(path: str | Path | None = None, url: str | None = None) -> None
 
 
 # --- Load user configuration ----------------------------------------------------------
-def load_nox_config(path: str | Path = "./.meta/noxconfig.toml") -> dict[str, Any]:
+def load_nox_config(path: str | Path = "./config/noxconfig.toml") -> dict[str, Any]:
     """
     Load user toml config file.
 

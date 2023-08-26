@@ -326,9 +326,9 @@ nox -s test -- --test-opts "\-v"
 For the most part, we use [grayskull] to create the conda recipe. However, I've
 had issues getting it to play nice with `pyproject.toml` for some of the 'extra'
 variables. So, we use grayskull to build the majority of the recipe, and append
-the file `.meta/recipe-append.yaml`. For some edge cases (install name different
-from package name, etc), you'll need to manually edit this file to create the
-final recipe.
+the file `config/recipe-append.yaml`. For some edge cases (install name
+different from package name, etc), you'll need to manually edit this file to
+create the final recipe.
 
 The basic command is:
 
@@ -429,7 +429,7 @@ $ for version in 3.8 3.9 3.10 3.11; do
 ```
 
 To tell nox where these environments live, create the file
-`.meta/noxconfig.toml` with the following:
+`config/noxconfig.toml` with the following:
 
 ```toml
 [nox.python]
@@ -438,8 +438,8 @@ paths = ["~/.conda/envs/test-3.*/bin"]
 
 where `~/.conda/envs` should be replaced by whatever prefix you have setup on
 your machine. The `noxfile.py` will add this to the search path for python
-versions when creating virtualenvs. The file `.meta/noxconfig.toml` should not
-be tracked by git. There is also an example file `.meta/noxconfig.example.toml`
+versions when creating virtualenvs. The file `config/noxconfig.toml` should not
+be tracked by git. There is also an example file `config/noxconfig.example.toml`
 to get you started.
 
 ## Serving the documentation

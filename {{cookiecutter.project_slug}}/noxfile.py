@@ -930,7 +930,7 @@ def dist_conda(
                     "dist-conda",
                 )
                 _append_recipe(
-                    f"dist-conda/{PACKAGE_NAME}/meta.yaml", ".recipe-append.yaml"
+                    f"dist-conda/{PACKAGE_NAME}/meta.yaml", "config/recipe-append.yaml"
                 )
                 session.run(
                     "cat", f"dist-conda/{PACKAGE_NAME}/meta.yaml", external=True
