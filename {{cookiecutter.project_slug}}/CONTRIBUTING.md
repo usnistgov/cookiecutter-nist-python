@@ -159,13 +159,12 @@ local development.
     nox -e dev
     ```
 
-    This create a development environment located at `.nox/{{
-    cookiecutter.project_slug }}/envs/dev`.
+    This create a development environment located at `.nox/{project-name}/envs/dev`.
 
-    Note that we create nox environments under `.nox/{{ cookiecutter.project_slug }}`
-    instead of under `.nox`. This fixes some issues with things like
-    [nb_conda_kernels], as well as other third party tools that expect conda
-    environment to be located in a directory like `.../miniforge/envs/env-name`.
+    Note that nox environments are under `.nox/{project-name}/envs` instead of
+    under `.nox`. This fixes some issues with things like [nb_conda_kernels], as
+    well as other third party tools that expect conda environment to be located
+    in a directory like `.../miniforge/envs/env-name`.
 
   - Alternatively, you can create centrally located conda environmentment using
     the command:
@@ -327,9 +326,9 @@ nox -s test -- --test-opts "\-v"
 For the most part, we use [grayskull] to create the conda recipe. However, I've
 had issues getting it to play nice with `pyproject.toml` for some of the 'extra'
 variables. So, we use grayskull to build the majority of the recipe, and append
-the file `.config/recipe-append.yaml`. For some edge cases (install name
-different from package name, etc), you'll need to manually edit this file to
-create the final recipe.
+the file `.meta/recipe-append.yaml`. For some edge cases (install name different
+from package name, etc), you'll need to manually edit this file to create the
+final recipe.
 
 The basic command is:
 
@@ -430,19 +429,18 @@ $ for version in 3.8 3.9 3.10 3.11; do
 ```
 
 To tell nox where these environments live, create the file
-`.config/noxconfig.toml` with the following:
+`.meta/noxconfig.toml` with the following:
 
 ```toml
 [nox.python]
 paths = ["~/.conda/envs/test-3.*/bin"]
-
 ```
 
 where `~/.conda/envs` should be replaced by whatever prefix you have setup on
 your machine. The `noxfile.py` will add this to the search path for python
-versions when creating virtualenvs. The file `.config/noxconfig.toml` should not
-be tracked by git. There is also an example file
-`.config/noxconfig.example.toml` to get you started.
+versions when creating virtualenvs. The file `.meta/noxconfig.toml` should not
+be tracked by git. There is also an example file `.meta/noxconfig.example.toml`
+to get you started.
 
 ## Serving the documentation
 
