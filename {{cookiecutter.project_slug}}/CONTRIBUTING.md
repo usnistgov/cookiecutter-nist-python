@@ -159,7 +159,8 @@ local development.
     nox -e dev
     ```
 
-    This create a development environment located at `.nox/{project-name}/envs/dev`.
+    This create a development environment located at
+    `.nox/{project-name}/envs/dev`.
 
     Note that nox environments are under `.nox/{project-name}/envs` instead of
     under `.nox`. This fixes some issues with things like [nb_conda_kernels], as
@@ -434,6 +435,7 @@ To tell nox where these environments live, create the file
 ```toml
 [nox.python]
 paths = ["~/.conda/envs/test-3.*/bin"]
+
 ```
 
 where `~/.conda/envs` should be replaced by whatever prefix you have setup on
