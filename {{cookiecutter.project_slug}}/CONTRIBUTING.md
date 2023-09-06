@@ -166,13 +166,12 @@ virtualenv, while for development, the default is to create a conda environment.
 
 As discussed below, we need to tell nox where to search for python interpreters
 (if using virtualenvs), and what "extras" from `pyproject.toml` to include in
-the users development environment.
-For this, create the file `config/userconfig.toml`. An example of this file is
-available at `config/userconfig.example.toml`. The variable `nox.python.paths`
-is a list of paths (with optional wildcards) added to the environment variable
-`PATH` to search for python interpreters. The variable `nox.extras.dev` is a
-list of "extras" to include (from `pyproject.toml`) in the development
-environment.
+the users development environment. For this, create the file
+`config/userconfig.toml`. An example of this file is available at
+`config/userconfig.example.toml`. The variable `nox.python.paths` is a list of
+paths (with optional wildcards) added to the environment variable `PATH` to
+search for python interpreters. The variable `nox.extras.dev` is a list of
+"extras" to include (from `pyproject.toml`) in the development environment.
 
 ```toml
 # config/userconfig.toml
@@ -199,10 +198,10 @@ python tools/projectconfig.py  --python-paths ... --dev-extras ...
 
 ### Installing interpreters for virtualenv creation
 
-If using virtualenvs across multiple python versions, you'll need to install
-python interpreters for each version. I've had trouble mixing pyenv with conda.
-Instead, I use conda to create multiple invironments to hold different python
-version:
+If using virtualenvs across multiple python versions (e.g., `test_venv`,
+`typing_venv`, etc), you'll need to install python interpreters for each
+version. I've had trouble mixing pyenv with conda. Instead, I use conda to
+create multiple invironments to hold different python version:
 
 ```bash
 for version in 3.8 3.9 3.10 3.11; do
