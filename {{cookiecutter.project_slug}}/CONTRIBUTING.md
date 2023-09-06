@@ -412,7 +412,11 @@ conda activate {environment-name or -p path/to/environment}
 We recommend installing the following tools with [pipx] or [condax]. If you'd
 like to install them in the development environment instead, include the
 "extras" `tools` in the `nox.extras.dev` section of `config/userconfig.toml`
-file.
+file:
+
+```bash
+nox -s config -- --dev-extras dev nox tools
+```
 
 Additional tools are:
 
@@ -430,11 +434,12 @@ These are setup using the following:
 ```console
 condax/pipx install pre-commit
 condax/pipx install cruft
-condax/pipx install commitizen # optional
 pipx install scriv
-pipx install pyproject2conda # optional
-condax/pipx install cogapp # optional
-condax/pipx install nbqa # optional
+
+# optional packages
+condax/pipx install commitizen
+condax/pipx install cogapp
+condax/pipx install nbqa
 ```
 
 If you'd like to install a central [nox] to be used with this project, use one
