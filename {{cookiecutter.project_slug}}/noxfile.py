@@ -102,19 +102,19 @@ def opts_annotated(**kwargs: Any):  # type: ignore
     return Annotated[list[str], replace(OPTS_OPT, **kwargs)]
 
 
-def cmd_annotated(**kwargs):  # type: ignore
+def cmd_annotated(**kwargs: Any):  # type: ignore
     return Annotated[list[str], replace(CMD_OPT, **kwargs)]
 
 
-def run_annotated(**kwargs):  # type: ignore
+def run_annotated(**kwargs: Any):  # type: ignore
     return Annotated[list[list[str]], replace(RUN_OPT, **kwargs)]
 
 
 LOCK_CLI = Annotated[bool, LOCK_OPT]
 RUN_CLI = Annotated[list[list[str]], RUN_OPT]
 TEST_OPTS_CLI = opts_annotated(help="extra arguments/flags to pytest")
-DEV_EXTRAS_CLI = cmd_annotated(help="extras included in user dev environment")  # type: ignore
-PYTHON_PATHS_CLI = cmd_annotated(help="python paths to append to PATHS")  # type: ignore
+DEV_EXTRAS_CLI = cmd_annotated(help="extras included in user dev environment")
+PYTHON_PATHS_CLI = cmd_annotated(help="python paths to append to PATHS")
 
 
 FORCE_REINSTALL_CLI = Annotated[
@@ -190,8 +190,8 @@ def dev_venv(
 @group.session(python=False)  # type: ignore
 def config(
     session: Session,
-    dev_extras: DEV_EXTRAS_CLI = [],  # type: ignore
-    python_paths: PYTHON_PATHS_CLI = [],  # type: ignore
+    dev_extras: DEV_EXTRAS_CLI = [],  # type: ignore # noqa
+    python_paths: PYTHON_PATHS_CLI = [],  # type: ignore # noqa
 ) -> None:
     """Create the file ./config/userconfig.toml"""
 

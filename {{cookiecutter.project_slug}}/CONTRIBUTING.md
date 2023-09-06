@@ -73,8 +73,8 @@ local development.
   git submodule update --init --recursive
   ```
 
-- Create development environment. See [environment setup](#environment-setup)
-  below.
+- Create development environment. See [](#bootstrap-development-environment) for
+  details.
 
 - Initiate [pre-commit] with:
 
@@ -209,8 +209,7 @@ for version in 3.8 3.9 3.10 3.11; do
 done
 ```
 
-The set the variable `nox.python.paths` as outlined
-[above](#setup-user-configuration).
+Also, set the variable `nox.python.paths` (see [](#setup-user-configuration)).
 
 ### Creating environment.yaml/requirement.txt files
 
@@ -356,9 +355,9 @@ the requirements files, and the development environment.
 nox -s config requirements dev -- --python-paths ... --dev-extras ...
 ```
 
-See [above](#setup-user-configuration) for more info on the flags. You can
-instead just run the session `bootstrap`, which in turn calls `config`,
-`requirements`, and `dev`.
+See [](#setup-user-configuration) for more info on the flags. You can instead
+just run the session `bootstrap`, which in turn calls `config`, `requirements`,
+and `dev`.
 
 To run the above, you first need [nox] installed. You can bootstrap the while
 procedure using [pipx] and the following command:
