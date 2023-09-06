@@ -382,7 +382,7 @@ directory like `.../miniforge/envs/env-name`.
 If instead you'd like to just install directly with conda, you can use:
 
 ```bash
-conda env create -n {env-name} -f environment/dev.yaml
+conda env create [-n {env-name}] -f environment/py{version}-dev-base.yaml
 conda activate {environment-name or -p path/to/environment}
 ```
 
