@@ -108,7 +108,7 @@ ENV/
 pyrightconfig.json
 .autoenv.zsh
 .autoenv_leave.zsh
-config/noxconfig.toml
+config/userconfig.toml
 cruft.patch
 /docs/**/generated/
 /monkeytype.sqlite3
@@ -117,3 +117,4 @@ cruft.patch
 /{{ cookiecutter.project_name }}-feedstock*/
 /src/**/_version.py
 tuna-loadtime.log
+/environment/py*-dev.yaml
