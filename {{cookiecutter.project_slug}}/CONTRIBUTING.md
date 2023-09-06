@@ -465,7 +465,7 @@ Before you submit a pull request, check that it meets these guidelines:
 - The pull request should include tests.
 - If the pull request adds functionality, the docs should be updated. Put your
   new functionality into a function with a docstring, and add the feature to the
-  list in CHANGELOG.md. You should use [scriv] for this.
+  list in `CHANGELOG.md`. You should use [scriv] for this.
 - The pull request should work for Python 3.8, 3.9, 3.10.
 
 ## Package version
