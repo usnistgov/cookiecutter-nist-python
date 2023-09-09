@@ -358,7 +358,7 @@ def conda_lock(
     pkg_install_venv(
         session,
         name="conda-lock",
-        reqs=["conda-lock>=2.0.0"],
+        reqs=["conda-lock>=2.2.0"],
         force_reinstall=force_reinstall,
     )
 
