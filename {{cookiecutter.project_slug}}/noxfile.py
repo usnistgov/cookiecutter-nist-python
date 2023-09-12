@@ -1211,7 +1211,6 @@ def _append_recipe(recipe_path: str, append_path: str) -> None:
         f.writelines(recipe + ["\n"] + append)
 
 
-
 # # If want separate env for updating/reporting version with setuptools-scm
 # # We do this from dev environment.
 # # ** version report/update
