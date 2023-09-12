@@ -382,9 +382,12 @@ directory like `.../miniforge/envs/env-name`.
 If instead you'd like to just install directly with conda, you can use:
 
 ```bash
-conda env create [-n {env-name}] -f environment/py{version}-dev-base.yaml
+conda env create [-n {env-name}] -f environment/py{version}-dev-complete.yaml
 conda activate {environment-name or -p path/to/environment}
 ```
+
+This installs all optional dependencies except those need to build the docs. For
+that, please use nox.
 
 ### Development tools
 
