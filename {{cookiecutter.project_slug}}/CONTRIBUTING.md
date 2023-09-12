@@ -425,7 +425,6 @@ Alternatively, you can just create a conda environment using
 conda env create [-n {env-name}] -f environment/py{version}-dev-complete.yaml
 ```
 
-
 Additional tools are:
 
 - [pre-commit]
