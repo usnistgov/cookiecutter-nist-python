@@ -421,7 +421,7 @@ nox -s config -- --dev-extras dev nox tools
 
 Alternatively, you can just create a conda environment using
 
-``` bash
+```bash
 conda env create [-n {env-name}] -f environment/py{version}-dev-complete.yaml
 ```
 
