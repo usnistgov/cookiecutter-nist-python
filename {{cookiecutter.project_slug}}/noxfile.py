@@ -163,6 +163,7 @@ def dev(
     )
     session_run_commands(session, dev_run)
 
+
 # ** Dev (virtualenv)
 @DEFAULT_SESSION_VENV
 def dev_venv(
@@ -186,6 +187,7 @@ def dev_venv(
         log_session=log_session,
     )
     session_run_commands(session, dev_run)
+
 
 # ** bootstrap
 @group.session(python=False)  # type: ignore
@@ -212,6 +214,7 @@ def config(
         args += ["--python-paths"] + python_paths
 
     session.run("python", "tools/projectconfig.py", *args)
+
 
 # ** requirements
 @group.session(python=False)  # type: ignore
