@@ -413,11 +413,18 @@ that, please use nox.
 We recommend installing the following tools with [pipx] or [condax]. If you'd
 like to install them in the development environment instead, include the
 "extras" `tools` in the `nox.extras.dev` section of `config/userconfig.toml`
-file:
+file, or run:
 
 ```bash
 nox -s config -- --dev-extras dev nox tools
 ```
+
+Alternatively, you can just create a conda environment using
+
+``` bash
+conda env create [-n {env-name}] -f environment/py{version}-dev-complete.yaml
+```
+
 
 Additional tools are:
 
