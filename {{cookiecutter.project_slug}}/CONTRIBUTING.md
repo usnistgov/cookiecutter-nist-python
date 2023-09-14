@@ -382,7 +382,6 @@ If you go this route, you may want to use something like
 [zsh-autoenv](https://github.com/Tarrasch/zsh-autoenv) (if using zsh shell) or
 [autoenv](https://github.com/hyperupcall/autoenv) (if using bash).
 
-
 ### Conda create development environment
 
 If instead you'd like to just install directly with conda, you can use:
@@ -428,7 +427,6 @@ nox -s config -- --dev-extras dev nox tools
 
 Alternatively, you can just create a conda environment using the commands in
 [](#conda-create-development-environment).
-
 
 Additional tools are:
 
