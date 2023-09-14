@@ -379,9 +379,9 @@ Note that nox environments are under `.nox/{project-name}/envs` instead of under
 other third party tools that expect conda environment to be located in a
 directory like `.../miniforge/envs/env-name`.
 
-If you go this route, you may want to use
-something like [zsh-autoenv](https://github.com/Tarrasch/zsh-autoenv) (if using
-zsh shell) or [autoenv](https://github.com/hyperupcall/autoenv) (if using bash).
+If you go this route, you may want to use something like
+[zsh-autoenv](https://github.com/Tarrasch/zsh-autoenv) (if using zsh shell) or
+[autoenv](https://github.com/hyperupcall/autoenv) (if using bash).
 
 If instead you'd like to just install directly with conda, you can use:
 
