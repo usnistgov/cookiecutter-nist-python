@@ -373,7 +373,6 @@ conda activate .nox/{project-name}/envs/dev
 
 This will, in isolation, install nox, and run the `bootstrap` session.
 
-
 Note that nox environments are under `.nox/{project-name}/envs` instead of under
 `.nox`. This fixes some issues with things like [nb_conda_kernels], as well as
 other third party tools that expect conda environment to be located in a
