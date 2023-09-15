@@ -391,7 +391,7 @@ If instead you'd like to just install directly with conda, you can use:
 ```bash
 conda env create [-n {env-name}] -f environment/py{version}-dev-complete.yaml
 conda activate {env-name}
-pip install -e .
+pip install -e . --no-deps
 ```
 
 This installs all optional dependencies except those need to build the docs. For
