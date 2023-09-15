@@ -211,6 +211,28 @@ done
 
 Also, set the variable `nox.python.paths` (see [](#setup-user-configuration)).
 
+### See nox sessions/options
+
+To see all nox session, run:
+
+``` bash
+nox --list
+```
+
+We use [noxopt] to pass command line options to the different sessions. Use the
+following to get help on these options:
+
+``` bash
+nox -- --help
+```
+
+Note that these options should be passed *after* `--`. For exmaple, to build and
+open the documentation, run:
+
+``` bash
+nox -s docs -- -d build open
+```
+
 ### Creating environment.yaml/requirement.txt files
 
 The project is setup to create `environemt.yaml` and `requirement.txt` files
