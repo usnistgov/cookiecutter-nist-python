@@ -118,16 +118,14 @@ TEST_OPTS_CLI = opts_annotated(help="extra arguments/flags to pytest")
 DEV_EXTRAS_CLI = cmd_annotated(help="extras included in user dev environment")
 PYTHON_PATHS_CLI = cmd_annotated(help="python paths to append to PATHS")
 
-
-# FORCE_REINSTALL_CLI = Annotated[
-#     bool,
-#     Option(
-#         type=bool,
-#         help="If True, force reinstall requirements and package even if environment unchanged",
-#     ),
-# ]
-
-UPDATE_CLI = Annotated[bool, Option(type=bool, help="If True, force update of installed packages", flags=("--update", "-U"))]
+UPDATE_CLI = Annotated[
+    bool,
+    Option(
+        type=bool,
+        help="If True, force update of installed packages",
+        flags=("--update", "-U"),
+    ),
+]
 
 VERSION_CLI = Annotated[
     str, Option(type=str, help="Version to substitute or check against")

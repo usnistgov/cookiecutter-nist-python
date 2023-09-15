@@ -215,21 +215,21 @@ Also, set the variable `nox.python.paths` (see [](#setup-user-configuration)).
 
 To see all nox session, run:
 
-``` bash
+```bash
 nox --list
 ```
 
 We use [noxopt] to pass command line options to the different sessions. Use the
 following to get help on these options:
 
-``` bash
+```bash
 nox -- --help
 ```
 
-Note that these options should be passed *after* `--`. For exmaple, to build and
+Note that these options should be passed _after_ `--`. For exmaple, to build and
 open the documentation, run:
 
-``` bash
+```bash
 nox -s docs -- -d build open
 ```
 
