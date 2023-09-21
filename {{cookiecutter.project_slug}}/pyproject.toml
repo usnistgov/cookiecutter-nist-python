@@ -95,7 +95,7 @@ tools = [
     # "cruft",
     "scriv", # p2c: -p
     "nbqa",
-    "{{ cookiecutter.project_name }}[pyright]", #
+    "{{ cookiecutter.project_name }}[pyright]",
 ]
 dev-complete = [
     "{{ cookiecutter.project_name }}[dev]", #
@@ -129,6 +129,43 @@ dist-conda = [
     "conda-verify",
     "boa",
 ]
+
+[tool.pyproject2conda]
+user_config = "config/userconfig.toml"
+template_python = "requirements/py{py}-{env}"
+template = "requirements/{env}"
+# defaults
+python = ["3.10"]
+channels = ["conda-forge"]
+style = ["yaml", "requirements"]
+default_envs = [
+    "test",
+    "typing",
+    "docs",
+    "dev",
+    "dev-complete",
+    "dist-conda",
+    "dist-pypi"
+]
+
+[tool.pyproject2conda.envs.test-extras]
+extras = ["test"]
+
+[tool.pyproject2conda.envs.dev-base]
+extras = ["dev"]
+
+[[tool.pyproject2conda.overrides]]
+envs = ["test-extras", "dist-conda", "dist-pypi"]
+base = false
+
+[[tool.pyproject2conda.overrides]]
+envs = ["test", "typing", "test-extras"]
+python = ["3.8", "3.9", "3.10", "3.11"]
+
+[[tool.pyproject2conda.overrides]]
+envs = ["dist-conda"]
+style = ["yaml"]
+
 
 [tool.pyproject2conda]
 channels = ["conda-forge"]
