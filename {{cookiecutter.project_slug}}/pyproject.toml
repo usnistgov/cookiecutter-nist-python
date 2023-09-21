@@ -89,13 +89,12 @@ dev = [
     "{{ cookiecutter.project_name }}[typing-extras]",
     "{{ cookiecutter.project_name }}[dev-extras]",
 ]
-pyright = ["pyright"]
 tools = [
     "pre-commit", #
     # "cruft",
     "scriv", # p2c: -p
     "nbqa",
-    "{{ cookiecutter.project_name }}[pyright]",
+    "pyright",
 ]
 dev-complete = [
     "{{ cookiecutter.project_name }}[dev]", #
