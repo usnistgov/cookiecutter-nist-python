@@ -206,10 +206,10 @@ Run the latter with `--help` for more options.
 If using virtualenvs across multiple python versions (e.g., `test_venv`,
 `typing_venv`, etc), you'll need to install python interpreters for each
 version. I've had trouble mixing pyenv with conda. Instead, I use conda to
-create multiple invironments to hold different python version.  You can use
-the following script to create the needed conda environments:
+create multiple invironments to hold different python version. You can use the
+following script to create the needed conda environments:
 
-``` bash
+```bash
 python tools/create_pythons.py -p 3.8 3.9 ...
 ```
 
