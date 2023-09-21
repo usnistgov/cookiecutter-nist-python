@@ -54,7 +54,7 @@ clean-test: ## remove test and coverage artifacts
 
 
 ################################################################################
-# Pre-commit
+# * Pre-commit
 ################################################################################
 .PHONY: pre-commit-init pre-commit pre-commit-all
 pre-commit-init: ## install pre-commit
