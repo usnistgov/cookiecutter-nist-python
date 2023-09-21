@@ -194,7 +194,7 @@ more info.
 You can also create this file using either of the following commands:
 
 ```bash
-nox -s config -- --python-paths "~/.conda/envs/test-3.*/bin" --dev-extras dev nox...
+nox -s config -- --python-paths "~/.conda/envs/python-3.*/bin" --dev-extras dev nox...
 # or
 python tools/projectconfig.py  --python-paths ... --dev-extras ...
 ```
@@ -393,7 +393,7 @@ procedure using [pipx] and the following command:
 ```bash
 pipx run --spec git+https://github.com/wpk-nist-gov/nox-bootstrap.git \
      nox -s bootstrap -- \
-     --python-paths "~/.conda/envs/test-3.*/bin" \
+     --python-paths "~/.conda/envs/python-3.*/bin" \
      --dev-extras dev nox
 
 conda activate .nox/{project-name}/envs/dev
