@@ -165,9 +165,6 @@ python = ["3.8", "3.9", "3.10", "3.11"]
 envs = ["dist-conda"]
 style = ["yaml"]
 
-
-[tool.pyproject2conda]
-channels = ["conda-forge"]
 {% if 'no' not in cookiecutter.command_line_interface|lower %}
 [project.scripts]
 {{ cookiecutter.project_slug }} = "{{ cookiecutter.project_slug}}.cli:main"
