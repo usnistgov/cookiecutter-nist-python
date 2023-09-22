@@ -243,7 +243,7 @@ def requirements(
     """
     pkg_install_venv(
         session=session,
-        reqs=["pyproject2conda>=0.6.0"],
+        reqs=["pyproject2conda>=0.6.1"],
         name="reqs",
         update=update,
         log_session=log_session,
