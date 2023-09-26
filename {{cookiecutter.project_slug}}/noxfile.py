@@ -957,7 +957,7 @@ def testdist_conda(
         run=testdist_conda_run,
         test_no_pytest=test_no_pytest,
         test_opts=test_opts,
-        no_cov=True
+        no_cov=True,
     )
 
 
