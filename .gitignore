@@ -3,30 +3,6 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# OSX useful to ignore
-*.DS_Store
-.AppleDouble
-.LSOverride
-
-# Thumbnails
-._*
-
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-.com.apple.timemachine.donotpresent
-
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
-
 # C extensions
 *.so
 
@@ -44,6 +20,7 @@ lib64/
 parts/
 sdist/
 var/
+wheels/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -61,12 +38,14 @@ pip-delete-this-directory.txt
 # Unit test / coverage reports
 htmlcov/
 .tox/
+.nox/
+envs/
 .coverage
 .coverage.*
 .cache
 nosetests.xml
 coverage.xml
-*,cover
+*.cover
 .hypothesis/
 .pytest_cache/
 
@@ -76,26 +55,67 @@ coverage.xml
 
 # Django stuff:
 *.log
+local_settings.py
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
 
 # Sphinx documentation
 docs/_build/
 
-# IntelliJ Idea family of suites
-.idea
-*.iml
-## File-based project format:
-*.ipr
-*.iws
-## mpeltonen/sbt-idea plugin
-.idea_modules/
-
 # PyBuilder
 target/
 
-# Cookiecutter
-output/
-python_boilerplate/
-cookiecutter-pypackage-env/
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# celery beat schedule file
+celerybeat-schedule
+
+# SageMath parsed files
+*.sage.py
+
+# dotenv
+.env
+
+# virtualenv
+.venv
+venv/
+ENV/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
 
 # IDE settings
 .vscode/
+pyrightconfig.json
+.autoenv.zsh
+.autoenv_leave.zsh
+config/userconfig.toml
+cruft.patch
+/docs/**/generated/
+/monkeytype.sqlite3
+/dist-conda/
+/tmp/
+/cookiecutter-nist-python-feedstock*/
+/src/**/_version.py
+tuna-loadtime.log
+/requirements/py*-dev.yaml
+/requirements/lock/py*-dev-conda-lock.yml
