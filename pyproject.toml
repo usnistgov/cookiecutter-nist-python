@@ -21,8 +21,6 @@ classifiers = [
 dynamic = ["readme"]
 version = "0.1.0"
 requires-python = ">=3.8"
-dependencies = [
-] # additional packages
 
 [project.urls]
 homepage = "https://github.com/usnistgov/cookiecutter-nist-python"
@@ -90,13 +88,7 @@ template = "requirements/{env}"
 python = ["3.10"]
 channels = ["conda-forge"]
 style = ["yaml", "requirements"]
-default_envs = [
-    "test",
-    "typing",
-    "docs",
-    "dev",
-    "dev-complete",
-]
+default_envs = ["test", "typing", "docs", "dev", "dev-complete"]
 
 [tool.pyproject2conda.envs.test-extras]
 extras = ["test"]

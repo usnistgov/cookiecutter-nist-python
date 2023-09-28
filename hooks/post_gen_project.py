@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""Post generate hooks."""
 from pathlib import Path
 
 PROJECT_PATH = Path.cwd()

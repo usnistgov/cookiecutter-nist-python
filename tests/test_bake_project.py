@@ -7,7 +7,6 @@ from cookiecutter.utils import rmtree
 from pathlib import Path
 
 
-
 @contextmanager
 def inside_dir(dirpath):
     """
@@ -51,6 +50,7 @@ def check_output_inside_dir(command, dirpath):
     with inside_dir(dirpath):
         return subprocess.check_output(shlex.split(command))
 
+
 def project_info(result):
     """Get toplevel dir, project_slug, and project dir from baked cookies"""
     project_path = str(result.project)
@@ -61,7 +61,9 @@ def project_info(result):
 
 # * Actual testing
 # ** Utilities
-def check_directory(path, extra_files=None, extra_directories=None, files=None, directories=None):
+def check_directory(
+    path, extra_files=None, extra_directories=None, files=None, directories=None
+):
     """Check path for files and directories"""
     path = Path(path)
 
@@ -120,15 +122,15 @@ def check_directory(path, extra_files=None, extra_directories=None, files=None, 
     assert set(directories) == set(found_directories)
 
 
-
 def get_python_version():
     import sys
+
     return "{}.{}".format(*sys.version_info[:2])
+
 
 def run_nox_tests(path, test=True, docs=True, lint=True):
     path = str(path)
     py = get_python_version()
-
 
     run_inside_dir("nox -s requirements", path)
 
@@ -143,11 +145,11 @@ def run_nox_tests(path, test=True, docs=True, lint=True):
     if docs and py == "3.10":
         run_inside_dir(f"nox -s docs-venv -- -d symlink docs", path)
 
+
 # ** fixtures
 # @pytest.fixture
 # def result_default(cookies):
 #     return cookies.bake()
-
 
 
 # ** tests
@@ -160,11 +162,10 @@ def test_bake_and_run_tests_default(cookies):
     run_nox_tests(result.project_path)
 
 
-
-
-
 def test_bake_and_run_tests_with_furo(cookies):
-    result = cookies.bake(extra_context={"sphinx_theme": "furo", "command_line_interface": "Click"})
+    result = cookies.bake(
+        extra_context={"sphinx_theme": "furo", "command_line_interface": "Click"}
+    )
 
     # test directory structure
     check_directory(result.project_path)

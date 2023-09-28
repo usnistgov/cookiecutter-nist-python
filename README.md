@@ -1,6 +1,7 @@
 <!-- markdownlint-disable MD041 -->
 
 [![Repo][repo-badge]][repo-link] [![Docs][docs-badge]][docs-link]
+[![PyPI license][license-badge]][license-link]
 [![Code style: black][black-badge]][black-link]
 
 <!--
@@ -17,7 +18,8 @@
 [repo-badge]: https://img.shields.io/badge/--181717?logo=github&logoColor=ffffff
 [repo-link]: https://github.com/usnistgov/cookiecutter-nist-python
 [license-badge]: https://img.shields.io/pypi/l/cmomy?color=informational
-[license-link]: https://github.com/usnistgov/cookiecutter-nist-python/blob/main/LICENSE
+[license-link]:
+  https://github.com/usnistgov/cookiecutter-nist-python/blob/main/LICENSE
 
 <!-- other links -->
 
@@ -31,7 +33,8 @@
 [furo]: https://pradyunsg.me/furo/
 [sphinx-book-theme]: https://sphinx-book-theme.readthedocs.io/
 [nist-pages]: https://pages.nist.gov/pages-root/
-[cookiecutter-pypackage]: https://github.com/audreyfeldroy/cookiecutter-pypackage/
+[cookiecutter-pypackage]:
+  https://github.com/audreyfeldroy/cookiecutter-pypackage/
 [conda]: https://docs.conda.io/en/latest/
 [virtualenv]: https://virtualenv.pypa.io/en/latest/
 [pyproject2conda]: https://github.com/usnistgov/pyproject2conda
@@ -40,22 +43,23 @@
 
 [Cookiecutter][cookiecutter] template for python packages at [NIST].
 
-
 ## Overview
 
-This template includes all [NIST] specific branding for creating a python package.
+This template includes all [NIST] specific branding for creating a python
+package.
 
 ## Features
-
 
 - Testing with pytest
 - Isolated testing, documentation building, etc, with [nox]
 - Linting with [pre-commit]
-- Documentation with [Sphinx], [MyST], using either the [furo] or [sphinx-book-theme] theme.
+- Documentation with [Sphinx], [MyST], using either the [furo] or
+  [sphinx-book-theme] theme.
 - Simple commands to upload package to [pypi], or a personal conda channel.
 - Simple commands to release documentation to [nist-pages]
 - Works with both [conda] and [virtualenv] based envronments.
-- Handle creation of `requirments.txt` and `environment.yaml` files with [pyproject2conda]
+- Handle creation of `requirments.txt` and `environment.yaml` files with
+  [pyproject2conda]
 
 ## Status
 
@@ -70,23 +74,22 @@ To generate a package using [cookiecutter], run:
 cookiecutter [--checkout BRANCH-NAME] https://github.com/usnistgov/cookiecutter-nist-python.git
 ```
 
-where the optional argument in brackets can be used to specify a specific branch.
+where the optional argument in brackets can be used to specify a specific
+branch.
 
+Alternatively (and highly recommended) is to use [cruft]. This allows for the
+template files to be updated as the template is updated. For this, you can run:
 
-Alternatively (and highly recommended) is to use [cruft].  This allows for the template files
-to be updated as the template is updated.  For this, you can run:
-
-``` bash
+```bash
 cruft create [--checkout BRANCH-NAME] https://github.com/usnistgov/cookiecutter-nist-python.git
 ```
-
 
 <!-- end-docs -->
 
 ## Documentation
 
-See the [documentation][docs-link] for a look at
-`cookiecutter-nist-python` in action.
+See the [documentation][docs-link] for a look at `cookiecutter-nist-python` in
+action.
 
 ## License
 
@@ -103,7 +106,6 @@ The following packages use this template:
 - [`analphipy`](https://github.com/conda-forge/analphipy-feedstock)
 - [`pyproject2conda`](https://github.com/usnistgov/pyproject2conda)
 
-
 ## Other useful templates
 
 - [cookiecutter-pypackage]: The template on which this work is based.
@@ -116,3 +118,7 @@ The author can be reached at <wpk@nist.gov>.
 ## Credits
 
 This template started as a fork of [cookiecutter-pypackage].
+
+## TODO
+
+- [ ] Github actions/automation
