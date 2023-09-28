@@ -12,6 +12,8 @@ channels:
 dependencies:
   - python=3.10
   - cookiecutter
+  - ipykernel
+  - ipython
   - mypy >= 1.4.1
   - pytest
   - pytest-cookies

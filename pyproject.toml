@@ -18,7 +18,8 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Topic :: Scientific/Engineering",
 ]
-dynamic = ["readme", "version"]
+dynamic = ["readme"]
+version = "0.1.0"
 requires-python = ">=3.8"
 dependencies = [
 ] # additional packages
@@ -30,11 +31,14 @@ documentation = "https://pages.nist.gov/cookiecutter-nist-python/"
 [project.optional-dependencies]
 test = [
     "pytest", #
+    "pytest-sugar",
     "pytest-cookies",
     "cookiecutter",
 ]
 dev-extras = [
     "watchdog", #
+    "ipython",
+    "ipykernel",
 ]
 typing-extras = [
     "pytype; python_version < '3.11'", #
@@ -112,7 +116,7 @@ python = ["3.8", "3.9", "3.10", "3.11"]
 test = "pytest"
 
 [tool.pytest.ini_options]
-addopts = "--doctest-modules --doctest-glob='*.md'"
+addopts = "--doctest-modules --doctest-glob='*.md' -rP --basetemp=tmp/baked --keep-baked-projects"
 testpaths = ["tests", "README.md"]
 
 [tool.coverage.report]

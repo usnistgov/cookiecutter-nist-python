@@ -28,10 +28,6 @@
 
 <!-- other links -->
 
-[numpy]: https://numpy.org
-[Numba]: https://numba.pydata.org/
-[xarray]: https://docs.xarray.dev/en/stable/
-
 # `{{ cookiecutter.project_name }}`
 
 A Python package for stuff.
@@ -67,15 +63,13 @@ conda install -c {{ cookiecutter.conda_channel}} {{ cookiecutter.project_name }}
 
 ```python
 import {{ cookiecutter.project_slug }}
-
 ```
 
 <!-- end-docs -->
 
 ## Documentation
 
-See the [documentation][docs-link] for a look at
-`{{ cookiecutter.project_name }}` in action.
+See the [documentation][docs-link] for further details.
 
 ## License
 

@@ -8,6 +8,8 @@
 # Instead edit the corresponding pyproject.toml file.
 #
 cookiecutter
+ipykernel
+ipython
 mypy >= 1.4.1
 nox
 noxopt

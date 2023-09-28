@@ -2,39 +2,17 @@
 requires = ["setuptools>=61.2", "setuptools_scm[toml]>=7.0"]
 build-backend = "setuptools.build_meta"
 
-{%- set license_classifiers = {
-    'NIST license': 'License :: Public Domain',
-    'MIT license': 'License :: OSI Approved :: MIT License',
-    'BSD license': 'License :: OSI Approved :: BSD License',
-    'ISC license': 'License :: OSI Approved :: ISC License (ISCL)',
-    'Apache Software License 2.0': 'License :: OSI Approved :: Apache Software License',
-    'GNU General Public License v3': 'License :: OSI Approved :: GNU General Public License v3 (GPLv3)'
-} %}
-
-{%- set license_names = {
-    'NIST license': 'NIST-PD',
-    'MIT license': 'MIT',
-    'BSD license': 'BSD',
-    'ISC license': 'ISC',
-    'Apache Software License 2.0': 'Apache Software License 2.0',
-    'GNU General Public License v3': 'GNU General Public License v3'
-} %}
-
 [project]
 name = "{{ cookiecutter.project_name }}"
 authors = [{ name = "{{ cookiecutter.full_name.replace('\"', '\\\"') }}", email = "{{ cookiecutter.email }}" }]
-{%- if cookiecutter.open_source_license in license_classifiers %}
-license = { text = "{{ license_names[cookiecutter.open_source_license] }}" }
-{%- endif %}
+license = { text = "NIST-PD" }
 description = "{{ cookiecutter.project_short_description }}"
 # if using markdown
 # long_description_content_type = text/markdown
 keywords = ["{{ cookiecutter.project_name }}"]
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
-{%- if cookiecutter.open_source_license in license_classifiers %}
-    "{{ license_classifiers[cookiecutter.open_source_license] }}",
-{%- endif %}
+    "License :: Public Domain",
     "Operating System :: OS Independent",
     "Intended Audience :: Science/Research",
     "Programming Language :: Python",
@@ -42,16 +20,18 @@ classifiers = [
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "Topic :: Scientific/Engineering",
 ]
 dynamic = ["readme", "version"]
 requires-python = ">=3.8"
 dependencies = [
-  {%- if cookiecutter.command_line_interface|lower == 'click' -%}
-  "Click",{% endif %}
-  {%- if cookiecutter.command_line_interface|lower == 'fire' -%}
-  "fire",{% endif %}
-] # additional packages
+    {%- if cookiecutter.command_line_interface|lower == "click" -%}
+    "Click"
+    {%- elif cookiecutter.command_line_interface|lower == "typer" -%}
+    "typer"
+    {%- endif -%}
+]
 
 [project.urls]
 homepage = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name}}"
@@ -67,9 +47,9 @@ test = [
 dev-extras = [
     "setuptools-scm", #
     "pytest-accept", # p2c: -p
+    # "nbval",
     "ipython",
     "ipykernel",
-    # "nbval",
 ]
 typing-extras = [
     "pytype; python_version < '3.11'", #
@@ -110,13 +90,16 @@ docs = [
     "sphinxcontrib-spelling",
     "sphinx-autobuild",
     "myst-nb",
-    {% if cookiecutter.sphinx_theme == 'furo' -%}
+    {% if cookiecutter.sphinx_theme == "furo" -%}
     "furo",
     {%- elif cookiecutter.sphinx_theme == "sphinx_book_theme" -%}
     "sphinx-book-theme",
     {%- endif %}
     {%- if cookiecutter.sphinx_use_autodocsumm == "y" %}
     "autodocsumm",
+    {%- endif %}
+    {%- if cookiecutter.command_line_interface|lower in ["click", "typer"] %}
+    "sphinx-click",
     {%- endif %}
 ]
 # to be parsed with pyproject2conda with --no-base option
@@ -165,10 +148,12 @@ python = ["3.8", "3.9", "3.10", "3.11"]
 envs = ["dist-conda"]
 style = ["yaml"]
 
-{% if 'no' not in cookiecutter.command_line_interface|lower %}
+{%- if 'no' not in cookiecutter.command_line_interface|lower %}
+
 [project.scripts]
 {{ cookiecutter.project_slug }} = "{{ cookiecutter.project_slug}}.cli:main"
-{% endif %}
+{%- endif %}
+
 ## grayskull still messes some things up, but use scripts/recipe-append.sh for this
 [tool.setuptools]
 zip-safe = true # if using mypy, must be False

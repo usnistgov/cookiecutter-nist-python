@@ -5,20 +5,13 @@ test:
     - pip check
   requires:
     - pip
-{% set license_names = {
-    'NIST license': 'NIST-PD',
-    'MIT license': 'MIT',
-    'BSD license': 'BSD',
-    'ISC license': 'ISC',
-    'Apache Software License 2.0': 'Apache Software License 2.0',
-    'GNU General Public License v3': 'GNU General Public License v3'
-} %}
+
 about:
   home: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name}}
   summary: {{ cookiecutter.project_short_description }}
   description: |
     {{ cookiecutter.project_short_description }}
-  license: {{ license_names[cookiecutter.open_source_license] }}
+  license: NIST-PD
   license_file: LICENSE
 
 extra:

@@ -6,6 +6,14 @@
 .. autosummary::
    :toctree: generated/
 
-   a_function
-   another_func
+   example_function
 ```
+{%- if cookiecutter.command_line_interface|lower in ["click", "typer"] %}
+
+```{eval-rst}
+
+.. click:: {{ cookiecutter.project_slug }}.cli:main
+    :prog: {{ cookiecutter.project_slug }}
+    :nested: full
+```
+{%- endif %}

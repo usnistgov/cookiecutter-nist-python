@@ -31,9 +31,9 @@ and "help wanted" is open to whoever wants to implement it.
 
 ### Write Documentation
 
-`{{ cookiecutter.project_name }}` could always use more documentation, whether
-as part of the official `{{ cookiecutter.project_name }}` docs, in docstrings,
-or even on the web in blog posts, articles, and such.
+This project could always use more documentation, whether as part of the
+official docs, in docstrings, or even on the web in blog posts, articles, and
+such.
 
 ### Submit Feedback
 
@@ -48,8 +48,7 @@ If you are proposing a feature:
 
 ## Making a contribution
 
-Ready to contribute? Here's how to set up `{{ cookiecutter.project_name }}` for
-local development.
+Ready to contribute? Here's how to make a contribution.
 
 - Fork the `{{ cookiecutter.project_name }}` repo on GitHub.
 

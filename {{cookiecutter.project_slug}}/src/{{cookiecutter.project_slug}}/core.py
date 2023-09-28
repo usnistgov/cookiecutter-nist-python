@@ -1,7 +1,7 @@
 """Core functionality"""
 
 
-def another_func(a, b):
+def example_function(a: int, b: int) -> int:
     """
     just a test
 
@@ -9,13 +9,14 @@ def another_func(a, b):
     ----------
     a : int
         an input
-    b : float
+    b : int
         another input
 
+    Returns
+    -------
+    out : int
+        Sum of ``a`` and ``b``.
 
-    See Also
-    --------
-    {{ cookiecutter.project_slug }}.{{ cookiecutter.project_slug }}.a_function
     """
 
     return a + b

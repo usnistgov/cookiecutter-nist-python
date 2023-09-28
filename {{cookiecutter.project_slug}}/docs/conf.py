@@ -60,6 +60,9 @@ extensions = [
     # "sphinx_design"
     ## myst stuff
     "myst_nb",
+    {%- if cookiecutter.command_line_interface|lower in ["click", "typer"] %}
+    "sphinx_click",
+    {%- endif %}
 ]
 
 nitpicky = True

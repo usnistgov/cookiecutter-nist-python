@@ -16,28 +16,13 @@
         "changelog.d/templates/*.j2",
         "changelog.d/templates/auto-changelog/*.jinja2"
     ],
-    "project_short_description": "Python Boilerplate contains all the boilerplate you need to create a Python package.",
-
-    "version": "0.0.1",
-    "use_pytest": "y",
-    "use_pypi_deployment_with_travis": "n",
+    "project_short_description": "All the boilerplate you need to create a Python package.",
     "command_line_interface": [
         "No command-line interface",
         "Click",
-        "Argparse",
-        "fire"
+        "Typer",
+        "Argparse"
     ],
-    "create_author_file": "y",
-    "open_source_license": [
-        "NIST license",
-        "MIT license",
-        "BSD license",
-        "ISC license",
-        "Apache Software License 2.0",
-        "GNU General Public License v3",
-        "Not open source"
-    ],
-    "sphinx_auto": ["automodule", "autosummary", "autodoc"],
     "sphinx_use_autodocsumm": "y",
     "sphinx_theme": ["sphinx_book_theme", "furo"]
 }

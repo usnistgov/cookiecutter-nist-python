@@ -32,6 +32,9 @@
 [sphinx-book-theme]: https://sphinx-book-theme.readthedocs.io/
 [nist-pages]: https://pages.nist.gov/pages-root/
 [cookiecutter-pypackage]: https://github.com/audreyfeldroy/cookiecutter-pypackage/
+[conda]: https://docs.conda.io/en/latest/
+[virtualenv]: https://virtualenv.pypa.io/en/latest/
+[pyproject2conda]: https://github.com/usnistgov/pyproject2conda
 
 # `cookiecutter-nist-python`
 
@@ -51,6 +54,8 @@ This template includes all [NIST] specific branding for creating a python packag
 - Documentation with [Sphinx], [MyST], using either the [furo] or [sphinx-book-theme] theme.
 - Simple commands to upload package to [pypi], or a personal conda channel.
 - Simple commands to release documentation to [nist-pages]
+- Works with both [conda] and [virtualenv] based envronments.
+- Handle creation of `requirments.txt` and `environment.yaml` files with [pyproject2conda]
 
 ## Status
 
