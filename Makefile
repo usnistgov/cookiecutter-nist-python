@@ -294,3 +294,8 @@ watch: bake ## watchmedo bake
 replay: BAKE_OPTIONS=--replay
 replay: watch ## replay watch
 	;
+
+# Can't seem to convert
+.PHONY: README.pdf
+README.pdf: ## create README.pdf
+	pandoc -V colorlinks -V geometry:margin=0.8in README.md -o README.pdf
