@@ -1,35 +1,28 @@
 {
-    "full_name": "William P. Krekelberg",
-    "email": "wpk@nist.gov",
-    "github_username": "wpk-nist-gov",
-    "conda_channel": "wpk-nist",
-    "project_name": "mypackage",
-    "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
-    "_copy_without_render": [
-        "*.html",
-        "docs/_templates/*.rst"
-    ],
-    "project_short_description": "Python Boilerplate contains all the boilerplate you need to create a Python package.",
-    "pypi_username": "wpk-nist",
-    "version": "0.0.1",
-    "use_pytest": "y",
-    "use_pypi_deployment_with_travis": "n",
-    "add_pyup_badge": "n",
-    "command_line_interface": [
-        "No command-line interface",
-        "Click",
-        "Argparse",
-        "fire"
-    ],
-    "create_author_file": "y",
-    "open_source_license": [
-        "NIST license",
-        "MIT license",
-        "BSD license",
-        "ISC license",
-        "Apache Software License 2.0",
-        "GNU General Public License v3",
-        "Not open source"
-    ],
-    "sphinx_auto": ["automodule", "autosummary", "autodoc"]
+  "full_name": "William P. Krekelberg",
+  "email": "wpk@nist.gov",
+  "github_username": "wpk-nist-gov",
+  "pypi_username": "wpk-nist",
+  "conda_channel": "{{ cookiecutter.pypi_username }}",
+  "project_name": "mypackage",
+  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
+  "_copy_without_render": [
+    "*.html",
+    "docs/_templates/*.rst",
+    "docs/_templates/autosummary/*.rst",
+    "docs/_templates/autodocsumm/*.rst",
+    "docs/_static/css/*",
+    "docs/_static/js/*",
+    "changelog.d/templates/*.j2",
+    "changelog.d/templates/auto-changelog/*.jinja2"
+  ],
+  "project_short_description": "All the boilerplate you need to create a Python package.",
+  "command_line_interface": [
+    "No command-line interface",
+    "Click",
+    "Typer",
+    "Argparse"
+  ],
+  "sphinx_use_autodocsumm": "y",
+  "sphinx_theme": ["sphinx_book_theme", "furo"]
 }

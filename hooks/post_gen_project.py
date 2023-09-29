@@ -1,22 +1,11 @@
 #!/usr/bin/env python
-import os
+"""Post generate hooks."""
+from pathlib import Path
 
-PROJECT_DIRECTORY = os.path.realpath(os.path.curdir)
-
-
-def remove_file(filepath):
-    os.remove(os.path.join(PROJECT_DIRECTORY, filepath))
+PROJECT_PATH = Path.cwd()
 
 
-if __name__ == '__main__':
-
-    if '{{ cookiecutter.create_author_file }}' != 'y':
-        remove_file('AUTHORS.rst')
-        remove_file('docs/authors.rst')
-
-    if 'no' in '{{ cookiecutter.command_line_interface|lower }}':
-        cli_file = os.path.join('src', '{{ cookiecutter.project_slug }}', 'cli.py')
-        remove_file(cli_file)
-
-    if 'Not open source' == '{{ cookiecutter.open_source_license }}':
-        remove_file('LICENSE')
+if __name__ == "__main__":
+    if "no" in "{{ cookiecutter.command_line_interface|lower }}":
+        cli_path = PROJECT_PATH / "src" / "{{ cookiecutter.project_slug }}" / "cli.py"
+        cli_path.unlink()

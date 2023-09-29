@@ -1,7 +1,7 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 #
-# cookiecutter-pypackage documentation build configuration file, created by
-# sphinx-quickstart on Sun Dec 13 09:13:01 2015.
+# python_boilerplate documentation build configuration file, created by
+# sphinx-quickstart on Fri Jun  9 13:47:02 2017.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -12,58 +12,253 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys
+# If extensions (or modules to document with autodoc) are in another
+# directory, add these directories to sys.path here. If the directory is
+# relative to the documentation root, use os.path.abspath to make it
+# absolute, like shown here.
+#
+"""Build docs."""
 import os
-import shlex
 
-# If extensions (or modules to document with autodoc) are in another directory,
-# add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
-#sys.path.insert(0, os.path.abspath('.'))
+# import cookiecutter_nist_python
 
-# -- General configuration ------------------------------------------------
+# -- General configuration ---------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
-#needs_sphinx = '1.0'
+#
+# needs_sphinx = '1.0'
 
 # Add any Sphinx extension module names here, as strings. They can be
-# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
-# ones.
+# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.doctest',
-    'sphinx.ext.todo',
-    'sphinx.ext.coverage',
-    'sphinx.ext.viewcode',
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "autodocsumm",
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.mathjax",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.autosectionlabel",
+    "IPython.sphinxext.ipython_directive",
+    "IPython.sphinxext.ipython_console_highlighting",
+    # "nbsphinx",
+    ## easier external links
+    # "sphinx.ext.extlinks",
+    ## view source code on created page
+    # "sphinx.ext.viewcode",
+    ## view source code on github
+    # "sphinx.ext.linkcode",
+    ## add copy button
+    "sphinx_copybutton",
+    ## redirect stuff?
+    # "sphinxext.rediraffe",
+    ## pretty things up?
+    # "sphinx_design"
+    ## myst stuff
+    "myst_nb",
 ]
 
+nitpicky = True
+autosectionlabel_prefix_document = True
+
+# -- myst stuff ---------------------------------------------------------
+myst_enable_extensions = [
+    "dollarmath",
+    "amsmath",
+    "deflist",
+    "fieldlist",
+    "html_admonition",
+    "html_image",
+    "colon_fence",
+    "smartquotes",
+    "replacements",
+    # "linkify",
+    "strikethrough",
+    "substitution",
+    "tasklist",
+    # "attrs_inline",
+    # "attrs_block",
+]
+
+
+myst_heading_anchors = 3
+myst_footnote_transition = True
+myst_dmath_double_inline = True
+myst_enable_checkboxes = True
+myst_substitutions = {
+    "role": "[role](#syntax/roles)",
+    "directive": "[directive](#syntax/directives)",
+}
+# myst_enable_extensions = [
+#     "dollarmath",
+#     "amsmath",
+#     "deflist",
+#     # "html_admonition",
+#     "html_image",
+#     "colon_fence",
+#     # "smartquotes",
+#     # "replacements",
+#     # "linkify",
+#     # "substitution",
+#     "attrs_inline",
+#     "attrs_block",
+# ]
+
+myst_url_schemes = ("http", "https", "mailto")
+
+nb_execution_mode = "cache"
+# nb_execution_mode = "auto"
+
+# set the kernel name
+nb_kernel_rgx_aliases = {"cookiecutter-nist-python.*": "python3", "conda.*": "python3"}
+
+nb_execution_allow_errors = True
+
+# - top level variables --------------------------------------------------------
+# set github_username variable to be subbed later.
+# this makes it easy to switch from wpk -> usnistgov later
+github_username = "usnistgov"
+
+html_context = {
+    "github_user": "usnistgov",
+    "github_repo": "cookiecutter-nist-python",
+    "github_version": "main",
+    "doc_path": "docs",
+}
+
+# -- python3 ---------------------------------------------------------------
+autosummary_generate = True
+# autosummary_generate = False
+autodoc_member_order = "bysource"
+
+# autoclass_content = "both"  # include both class docstring and __init__
+autodoc_default_flags = [
+    # Make sure that any autodoc declarations show the right members
+    "members",
+    "inherited-members",
+    "private-members",
+    "show-inheritance",
+]
+autodoc_typehints = "none"
+
+# -- napoleon ------------------------------------------------------------------
+napoleon_google_docstring = False
+napoleon_numpy_docstring = True
+
+napoleon_use_param = False
+napoleon_use_rtype = False
+napoleon_preprocess_types = True
+napoleon_type_aliases = {
+    # general terms
+    "sequence": ":term:`sequence`",
+    "iterable": ":term:`iterable`",
+    "callable": ":py:func:`callable`",
+    "dict_like": ":term:`dict-like <mapping>`",
+    "dict-like": ":term:`dict-like <mapping>`",
+    "path-like": ":term:`path-like <path-like object>`",
+    "mapping": ":term:`mapping`",
+    "hashable": ":term:`hashable`",
+    "file-like": ":term:`file-like <file-like object>`",
+    # special terms
+    # "same type as caller": "*same type as caller*",  # does not work, yet
+    # "same type as values": "*same type as values*",  # does not work, yet
+    # stdlib type aliases
+    "MutableMapping": "~collections.abc.MutableMapping",
+    "sys.stdout": ":obj:`sys.stdout`",
+    "timedelta": "~datetime.timedelta",
+    "string": ":class:`string <str>`",
+    # numpy terms
+    "array_like": ":term:`array_like`",
+    "array-like": ":term:`array-like <array_like>`",
+    "scalar": ":term:`scalar`",
+    "array": ":term:`array`",
+    # matplotlib terms
+    "color-like": ":py:func:`color-like <matplotlib.colors.is_color_like>`",
+    "matplotlib colormap name": ":doc:`matplotlib colormap name <matplotlib:gallery/color/colormap_reference>`",
+    "matplotlib axes object": ":py:class:`matplotlib axes object <matplotlib.axes.Axes>`",
+    "colormap": ":py:class:`colormap <matplotlib.colors.Colormap>`",
+    # objects without namespace: xarray
+    "DataArray": "~xarray.DataArray",
+    "Dataset": "~xarray.Dataset",
+    "Variable": "~xarray.Variable",
+    "DatasetGroupBy": "~xarray.core.groupby.DatasetGroupBy",
+    "DataArrayGroupBy": "~xarray.core.groupby.DataArrayGroupBy",
+    "CentralMoments": "~cmomy.CentralMoments",
+    "xCentralMoments": "~cmomy.xCentralMoments",
+    # objects without namespace: numpy
+    "ndarray": "~numpy.ndarray",
+    "MaskedArray": "~numpy.ma.MaskedArray",
+    "dtype": "~numpy.dtype",
+    "ComplexWarning": "~numpy.ComplexWarning",
+    # objects without namespace: pandas
+    "Index": "~pandas.Index",
+    "MultiIndex": "~pandas.MultiIndex",
+    "CategoricalIndex": "~pandas.CategoricalIndex",
+    "TimedeltaIndex": "~pandas.TimedeltaIndex",
+    "DatetimeIndex": "~pandas.DatetimeIndex",
+    "Series": "~pandas.Series",
+    "DataFrame": "~pandas.DataFrame",
+    "Categorical": "~pandas.Categorical",
+    "Path": "~~pathlib.Path",
+    # objects with abbreviated namespace (from pandas)
+    "pd.Index": "~pandas.Index",
+    "pd.NaT": "~pandas.NaT",
+}
+
+
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
+#
 # source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
-
-# The encoding of source files.
-#source_encoding = 'utf-8-sig'
+source_suffix = {
+    ".rst": "restructuredtext",
+    ".ipynb": "myst-nb",
+    ".myst": "myst-nb",
+}
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = "index"
 
 # General information about the project.
-project = 'cookiecutter-pypackage'
-copyright = '2015, Audrey Roy Greenfeld'
-author = 'Audrey Roy Greenfeld'
+project = "cookiecutter-nist-python"
+copyright = "2023, William P. Krekelberg"
+author = "William P. Krekelberg"
 
-# The version info for the project you're documenting, acts as replacement for
-# |version| and |release|, also used in various other places throughout the
-# built documents.
+# The version info for the project you're documenting, acts as replacement
+# for |version| and |release|, also used in various other places throughout
+# the built documents.
 #
 # The short X.Y version.
-version = '0.9.0'
-# The full version, including alpha/beta/rc tags.
-release = '0.9.0'
+# versioning with scm with editable install has issues.
+# instead, try to use scm if available.
+# try:
+#     from setuptools_scm import get_version
+
+#     version = get_version(root="..", relative_to=__file__)
+#     release = version
+# except ImportError:
+#     version = cookiecutter_nist_python.__version__
+#     # The full version, including alpha/beta/rc tags.
+#     release = cookiecutter_nist_python.__version__
+# def _get_version():
+#     import os
+
+#     version = os.environ.get("SETUPTOOLS_SCM_PRETEND_VERSION", None)
+#     if version is None:
+#         version = cookiecutter_nist_python.__version__
+#     return version
+
+
+# release = version = _get_version()
+
+release = version = "latest"
+
+
+# if always want to print "latest"
+# release = "latest"
+# version = "latest"
 
 # The language for content autogenerated by Sphinx. Refer to documentation
 # for a list of supported languages.
@@ -72,219 +267,223 @@ release = '0.9.0'
 # Usually you set "language" from the command line for these cases.
 language = None
 
-# There are two options for replacing |today|: either, you set today to some
-# non-false value, then it is used:
-#today = ''
-# Else, today_fmt is used as the format for a strftime call.
-#today_fmt = '%B %d, %Y'
-
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build']
-
-# The reST default role (used for this markup: `text`) to use for all
-# documents.
-#default_role = None
-
-# If true, '()' will be appended to :func: etc. cross-reference text.
-#add_function_parentheses = True
-
-# If true, the current module name will be prepended to all description
-# unit titles (such as .. function::).
-#add_module_names = True
-
-# If true, sectionauthor and moduleauthor directives will be shown in the
-# output. They are ignored by default.
-#show_authors = False
+# This patterns also effect to html_static_path and html_extra_path
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "**.ipynb_checkpoints"]
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
-
-# A list of ignored prefixes for module index sorting.
-#modindex_common_prefix = []
-
-# If true, keep warnings as "system message" paragraphs in the built documents.
-#keep_warnings = False
+pygments_style = "sphinx"
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
-todo_include_todos = True
+todo_include_todos = False
 
 
-# -- Options for HTML output ----------------------------------------------
+# -- Options for HTML output -------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'alabaster'
+#
 
-# Theme options are theme-specific and customize the look and feel of a theme
-# further.  For a list of options available for each theme, see the
-# documentation.
-#html_theme_options = {}
+html_theme = "sphinx_book_theme"
 
-# Add any paths that contain custom themes here, relative to this directory.
-#html_theme_path = []
+html_theme_options = dict(
+    # analytics_id=''  this is configured in rtfd.io
+    # canonical_url="",
+    repository_url=f"https://github.com/{github_username}/cookiecutter-nist-python",
+    repository_branch=html_context["github_version"],
+    path_to_docs=html_context["doc_path"],
+    # use_edit_page_button=True,
+    use_repository_button=True,
+    use_issues_button=True,
+    home_page_in_toc=True,
+    show_toc_level=3,
+    show_navbar_depth=0,
+)
+# handle nist css/js from here.
+html_css_files = [
+    # "css/nist-combined.css",
+    "https://pages.nist.gov/nist-header-footer/css/nist-combined.css",
+    "https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css",
+]
 
-# The name for this set of Sphinx documents.  If None, it defaults to
-# "<project> v<release> documentation".
-#html_title = None
-
-# A shorter title for the navigation bar.  Default is the same as html_title.
-#html_short_title = None
-
-# The name of an image file (relative to this directory) to place at the top
-# of the sidebar.
-#html_logo = None
-
-# The name of an image file (within the static path) to use as favicon of the
-# docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
-# pixels large.
-#html_favicon = None
+html_js_files = [
+    "https://code.jquery.com/jquery-3.6.2.min.js",
+    "https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js",
+    # "js/nist-header-footer.js",
+    "https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js",
+    "js/leave_notice.js",
+    # google stuff:
+    (
+        "https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NIST&subagency=github&pua=UA-66610693-1&yt=true&exts=ppsx,pps,f90,sch,rtf,wrl,txz,m1v,xlsm,msi,xsd,f,tif,eps,mpg,xml,pl,xlt,c",
+        {"async": "async", "id": "_fed_au_ua_tag", "type": "text/javascript"},
+    ),
+]
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ["_static"]
 
-# Add any extra paths that contain custom files (such as robots.txt or
-# .htaccess) here, relative to this directory. These files are copied
-# directly to the root of the documentation.
-#html_extra_path = []
+
+# Sometimes the savefig directory doesn't exist and needs to be created
+# https://github.com/ipython/ipython/issues/8733
+# becomes obsolete when we can pin ipython>=5.2; see ci/requirements/doc.yml
+ipython_savefig_dir = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "_build", "html", "_static"
+)
+if not os.path.exists(ipython_savefig_dir):
+    os.makedirs(ipython_savefig_dir)
+
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
-#html_last_updated_fmt = '%b %d, %Y'
+today_fmt = "%Y-%m-%d"
+html_last_updated_fmt = today_fmt
 
-# If true, SmartyPants will be used to convert quotes and dashes to
-# typographically correct entities.
-#html_use_smartypants = True
 
-# Custom sidebar templates, maps document names to template names.
-#html_sidebars = {}
-
-# Additional templates that should be rendered to pages, maps page names to
-# template names.
-#html_additional_pages = {}
-
-# If false, no module index is generated.
-#html_domain_indices = True
-
-# If false, no index is generated.
-#html_use_index = True
-
-# If true, the index is split into individual pages for each letter.
-#html_split_index = False
-
-# If true, links to the reST sources are added to the pages.
-#html_show_sourcelink = True
-
-# If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
-#html_show_sphinx = True
-
-# If true, "(C) Copyright ..." is shown in the HTML footer. Default is True.
-#html_show_copyright = True
-
-# If true, an OpenSearch description file will be output, and all pages will
-# contain a <link> tag referring to it.  The value of this option must be the
-# base URL from which the finished HTML is served.
-#html_use_opensearch = ''
-
-# This is the file name suffix for HTML files (e.g. ".xhtml").
-#html_file_suffix = None
-
-# Language to be used for generating the HTML full-text search index.
-# Sphinx supports the following languages:
-#   'da', 'de', 'en', 'es', 'fi', 'fr', 'h', 'it', 'ja'
-#   'nl', 'no', 'pt', 'ro', 'r', 'sv', 'tr'
-#html_search_language = 'en'
-
-# A dictionary with options for the search language support, empty by default.
-# Now only 'ja' uses this config value
-#html_search_options = {'type': 'default'}
-
-# The name of a javascript file (relative to the configuration directory) that
-# implements a search results scorer. If empty, the default will be used.
-#html_search_scorer = 'scorer.js'
+# -- Options for HTMLHelp output ---------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'cookiecutter-pypackagedoc'
+htmlhelp_basename = "cookiecutter_nist_pythondoc"
 
-# -- Options for LaTeX output ---------------------------------------------
+
+# -- Options for LaTeX output ------------------------------------------
 
 latex_elements = {
-# The paper size ('letterpaper' or 'a4paper').
-#'papersize': 'letterpaper',
-
-# The font size ('10pt', '11pt' or '12pt').
-#'pointsize': '10pt',
-
-# Additional stuff for the LaTeX preamble.
-#'preamble': '',
-
-# Latex figure (float) alignment
-#'figure_align': 'htbp',
+    # The paper size ('letterpaper' or 'a4paper').
+    #
+    # 'papersize': 'letterpaper',
+    # The font size ('10pt', '11pt' or '12pt').
+    #
+    # 'pointsize': '10pt',
+    # Additional stuff for the LaTeX preamble.
+    #
+    # 'preamble': '',
+    # Latex figure (float) alignment
+    #
+    # 'figure_align': 'htbp',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
-# (source start file, target name, title,
-#  author, documentclass [howto, manual, or own class]).
+# (source start file, target name, title, author, documentclass
+# [howto, manual, or own class]).
 latex_documents = [
-  (master_doc, 'cookiecutter-pypackage.tex', 'cookiecutter-pypackage Documentation',
-   'Audrey Roy Greenfeld', 'manual'),
+    (
+        master_doc,
+        "cookiecutter_nist_python.tex",
+        "cookiecutter-nist-python Documentation",
+        "William P. Krekelberg",
+        "manual",
+    ),
 ]
 
-# The name of an image file (relative to this directory) to place at the top of
-# the title page.
-#latex_logo = None
 
-# For "manual" documents, if this is true, then toplevel headings are parts,
-# not chapters.
-#latex_use_parts = False
-
-# If true, show page references after internal links.
-#latex_show_pagerefs = False
-
-# If true, show URL addresses after external links.
-#latex_show_urls = False
-
-# Documents to append as an appendix to all manuals.
-#latex_appendices = []
-
-# If false, no module index is generated.
-#latex_domain_indices = True
-
-
-# -- Options for manual page output ---------------------------------------
+# -- Options for manual page output ------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'cookiecutter-pypackage', 'cookiecutter-pypackage Documentation',
-     [author], 1)
+    (
+        master_doc,
+        "cookiecutter_nist_python",
+        "cookiecutter-nist-python Documentation",
+        [author],
+        1,
+    ),
 ]
 
-# If true, show URL addresses after external links.
-#man_show_urls = False
 
-
-# -- Options for Texinfo output -------------------------------------------
+# -- Options for Texinfo output ----------------------------------------
 
 # Grouping the document tree into Texinfo files. List of tuples
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  (master_doc, 'cookiecutter-pypackage', 'cookiecutter-pypackage Documentation',
-   author, 'cookiecutter-pypackage', 'One line description of project.',
-   'Miscellaneous'),
+    (
+        master_doc,
+        "cookiecutter_nist_python",
+        "cookiecutter-nist-python Documentation",
+        author,
+        "cookiecutter_nist_python",
+        "One line description of project.",
+        "Miscellaneous",
+    ),
 ]
 
-# Documents to append as an appendix to all manuals.
-#texinfo_appendices = []
+# -- user defined stuff ------------------------------------------------
 
-# If false, no module index is generated.
-#texinfo_domain_indices = True
+# Example configuration for intersphinx: refer to the Python standard library.
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3/", None),
+    "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
+    "numpy": ("https://numpy.org/doc/stable", None),
+    "scipy": ("https://docs.scipy.org/doc/scipy/", None),
+    "numba": ("https://numba.pydata.org/numba-doc/latest", None),
+    # "matplotlib": ("https://matplotlib.org", None),
+    "matplotlib": ("https://matplotlib.org/stable/", None),
+    "dask": ("https://docs.dask.org/en/latest", None),
+    "cftime": ("https://unidata.github.io/cftime", None),
+    "sparse": ("https://sparse.pydata.org/en/latest/", None),
+    "xarray": ("https://docs.xarray.dev/en/stable/", None),
+}
 
-# How to display URL addresses: 'footnote', 'no', or 'inline'.
-#texinfo_show_urls = 'footnote'
+linkcheck_ignore = ["https://doi.org/"]
 
-# If true, do not generate a @detailmenu in the "Top" node's menu.
-#texinfo_no_detailmenu = False
+
+# based on numpy doc/source/conf.py
+# def linkcode_resolve(domain, info):
+#     """Determine the URL corresponding to Python object"""
+#     import inspect
+#     from operator import attrgetter
+
+#     if domain != "py":
+#         return None
+
+#     parent_name, *sub_parts = info["module"].split(".")
+#     parent_mod = sys.modules.get(parent_name)
+
+#     try:
+#         if len(sub_parts) > 0:
+#             sub_name = ".".join(sub_parts)
+#             obj = attrgetter(sub_name)(parent_mod)
+#         else:
+#             obj = parent_mod
+
+#         # get fullname
+#         obj = attrgetter(info["fullname"])(obj)
+
+#     except AttributeError:
+#         return None
+
+#     try:
+#         fn = inspect.getsourcefile(inspect.unwrap(obj))
+#     except TypeError:
+#         fn = None
+#     if not fn:
+#         return None
+
+#     try:
+#         source, lineno = inspect.getsourcelines(obj)
+#     except OSError:
+#         lineno = None
+
+#     if lineno:
+#         linespec = f"#L{lineno}-L{lineno + len(source) - 1}"
+#     else:
+#         linespec = ""
+
+#     fn = os.path.relpath(fn, start=os.path.dirname(cookiecutter_nist_python.__file__))
+
+#     return f"https://github.com/{github_username}/cookiecutter-nist-python/blob/{html_context['github_version']}/src/cookiecutter_nist_python/{fn}{linespec}"
+
+
+# only set spelling stuff if installed:
+try:
+    import sphinxcontrib.spelling  # noqa: F401
+
+    extensions += ["sphinxcontrib.spelling"]
+    spelling_word_list_filename = "spelling_wordlist.txt"
+
+except ImportError:
+    pass
