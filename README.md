@@ -57,7 +57,7 @@ package.
   [sphinx-book-theme] theme.
 - Simple commands to upload package to [pypi], or a personal conda channel.
 - Simple commands to release documentation to [nist-pages]
-- Works with both [conda] and [virtualenv] based envronments.
+- Works with both [conda] and [virtualenv] based environments.
 - Handle creation of `requirments.txt` and `environment.yaml` files with
   [pyproject2conda]
 
@@ -111,7 +111,7 @@ The following packages use this template:
 
 ## Other useful templates
 
-- [cookiecutter-pypackage]: The template on which this work is based.
+- [cookiecutter-pypackage]. The template on which this work is based.
 - [cookiecutter-hypermodern-python](https://github.com/cjolowicz/cookiecutter-hypermodern-python)
 
 ## Contact
