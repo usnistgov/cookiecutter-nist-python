@@ -46,7 +46,7 @@ extensions = [
     ## view source code on created page
     # "sphinx.ext.viewcode",
     ## view source code on github
-    "sphinx.ext.linkcode",
+    # "sphinx.ext.linkcode",
     ## add copy button
     "sphinx_copybutton",
     ## redirect stuff?
