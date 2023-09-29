@@ -68,6 +68,8 @@ request for wanted features and suggestions!
 
 ## Quick start
 
+<!-- start-installation -->
+
 To generate a package using [cookiecutter], run:
 
 ```bash
@@ -84,6 +86,7 @@ template files to be updated as the template is updated. For this, you can run:
 cruft create [--checkout BRANCH-NAME] https://github.com/usnistgov/cookiecutter-nist-python.git
 ```
 
+<!-- end-installation -->
 <!-- end-docs -->
 
 ## Documentation

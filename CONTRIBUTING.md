@@ -161,6 +161,8 @@ everything is self contained in the file `noxfile.py`. [nox] also allows for a
 mix of conda and virtualenv environments. For building the distribution, we use
 virtualenv, while for development, the default is to create a conda environment.
 
+<!-- start-tutorial -->
+
 ### Setup user configuration
 
 As discussed below, we need to tell nox where to search for python interpreters
@@ -502,16 +504,6 @@ conda activate ~/.condax/nox
 pip install noxopt
 ```
 
-## Pull Request Guidelines
-
-Before you submit a pull request, check that it meets these guidelines:
-
-- The pull request should include tests.
-- If the pull request adds functionality, the docs should be updated. Put your
-  new functionality into a function with a docstring, and add the feature to the
-  list in `CHANGELOG.md`. You should use [scriv] for this.
-- The pull request should work for Python 3.8, 3.9, 3.10.
-
 ## Package version
 
 [setuptools_scm]: https://github.com/pypa/setuptools_scm
@@ -542,3 +534,15 @@ python -m http.server -d docs/_build/html
 ```
 
 Then open the address `localhost:8000` in a webbrowser.
+
+<!-- end-tutorial -->
+
+## Pull Request Guidelines
+
+Before you submit a pull request, check that it meets these guidelines:
+
+- The pull request should include tests.
+- If the pull request adds functionality, the docs should be updated. Put your
+  new functionality into a function with a docstring, and add the feature to the
+  list in `CHANGELOG.md`. You should use [scriv] for this.
+- The pull request should work for Python 3.8, 3.9, 3.10.
