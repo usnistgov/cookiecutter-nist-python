@@ -2,7 +2,7 @@
 
 # Changelog
 
-Changelog for `{{ cookiecutter.project_slug }}`
+Changelog for `{{ cookiecutter.project_name }}`
 
 ## Unreleased
 

@@ -17,6 +17,7 @@ pre-commit
 pyright
 pytest
 pytest-cookies
+pytest-sugar
 pytype; python_version < '3.11'
 ruamel.yaml
 scriv

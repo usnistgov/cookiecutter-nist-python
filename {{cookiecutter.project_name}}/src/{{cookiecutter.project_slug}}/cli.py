@@ -1,4 +1,4 @@
-"""Console script for {{cookiecutter.project_slug}}."""
+"""Console script for {{cookiecutter.project_name}}."""
 
 {%- if cookiecutter.command_line_interface|lower == 'argparse' %}
 import argparse

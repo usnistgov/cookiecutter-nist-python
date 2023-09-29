@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Tests for `{{ cookiecutter.project_slug }}` package."""
+"""Tests for `{{ cookiecutter.project_name }}` package."""
 
 import pytest
 {%- if cookiecutter.command_line_interface|lower in ["click", "typer"] %}

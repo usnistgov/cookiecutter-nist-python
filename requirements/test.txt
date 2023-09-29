@@ -10,3 +10,4 @@
 cookiecutter
 pytest
 pytest-cookies
+pytest-sugar

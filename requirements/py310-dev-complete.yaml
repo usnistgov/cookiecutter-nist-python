@@ -20,6 +20,7 @@ dependencies:
   - pyright
   - pytest
   - pytest-cookies
+  - pytest-sugar
   - pytype
   - ruamel.yaml
   - watchdog

@@ -21,6 +21,7 @@ classifiers = [
 dynamic = ["readme"]
 version = "0.1.0"
 requires-python = ">=3.8"
+dependencies = []
 
 [project.urls]
 homepage = "https://github.com/usnistgov/cookiecutter-nist-python"
@@ -108,7 +109,7 @@ python = ["3.8", "3.9", "3.10", "3.11"]
 test = "pytest"
 
 [tool.pytest.ini_options]
-addopts = "--doctest-modules --doctest-glob='*.md' -rP --basetemp=tmp/baked --keep-baked-projects"
+addopts = "--doctest-modules --doctest-glob='*.md' -s -rP --basetemp=tmp/baked --keep-baked-projects"
 testpaths = ["tests", "README.md"]
 
 [tool.coverage.report]

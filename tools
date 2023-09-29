@@ -1,1 +1,1 @@
-{{cookiecutter.project_slug}}/tools
+{{cookiecutter.project_name}}/tools

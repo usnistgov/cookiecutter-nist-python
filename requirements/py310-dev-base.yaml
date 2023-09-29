@@ -17,5 +17,6 @@ dependencies:
   - mypy >= 1.4.1
   - pytest
   - pytest-cookies
+  - pytest-sugar
   - pytype
   - watchdog
