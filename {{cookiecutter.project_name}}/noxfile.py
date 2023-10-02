@@ -423,7 +423,7 @@ def _coverage(
     session_run_commands(session, run)
 
     if not cmd and not run and not run_internal:
-        cmd = ["combine", "report"]
+        cmd = ["combine", "html"]
 
     session.log(f"{cmd}")
 
