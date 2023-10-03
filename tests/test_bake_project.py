@@ -6,6 +6,10 @@ from cookiecutter.utils import rmtree
 
 from pathlib import Path
 
+import pytest
+
+CACHED_EXAMPLES_PATH = (Path(__file__).parent / ".." / "cached_examples").resolve()
+
 
 @contextmanager
 def inside_dir(dirpath):
@@ -29,34 +33,6 @@ def run_inside_dir(command, dirpath):
     """
     with inside_dir(dirpath):
         return subprocess.check_call(shlex.split(command))
-
-
-# @contextmanager
-# def bake_in_temp_dir(cookies, *args, **kwargs):
-#     """
-#     Delete the temporal directory that is created when executing the tests
-#     :param cookies: pytest_cookies.Cookies,
-#         cookie to be baked and its temporal files will be removed
-#     """
-#     result = cookies.bake(*args, **kwargs)
-#     try:
-#         yield result
-#     finally:
-#         rmtree(str(result.project))
-
-
-# def check_output_inside_dir(command, dirpath):
-#     "Run a command from inside a given directory, returning the command output"
-#     with inside_dir(dirpath):
-#         return subprocess.check_output(shlex.split(command))
-
-
-# def project_info(result):
-#     """Get toplevel dir, project_slug, and project dir from baked cookies"""
-#     project_path = str(result.project)
-#     project_slug = os.path.split(project_path)[-1]
-#     project_dir = os.path.join(project_path, project_slug)
-#     return project_path, project_slug, project_dir
 
 
 # * Actual testing
@@ -87,6 +63,10 @@ def check_directory(
 
     if directories is None:
         directories = [
+            # These are added by the example creation
+            ".nox",
+            ".git",
+            # These are created from the template
             ".github",
             "changelog.d",
             "config",
@@ -153,32 +133,31 @@ def run_nox_tests(path, test=True, docs=True, lint=True):
 
 
 # ** tests
-def test_bake_and_run_tests_default(cookies):
-    result = cookies.bake()
+def test_bake_and_run_tests_default():
+    project_path = CACHED_EXAMPLES_PATH / "testpackage-default"
+
     # test directory structure
-    check_directory(result.project_path)
+    check_directory(project_path)
 
     # test nox
-    run_nox_tests(result.project_path)
+    run_nox_tests(project_path)
 
 
 def test_bake_and_run_tests_with_furo(cookies):
-    result = cookies.bake(
-        extra_context={"sphinx_theme": "furo", "command_line_interface": "Click"}
-    )
+    project_path = CACHED_EXAMPLES_PATH / "testpackage-furo"
 
     # test directory structure
-    check_directory(result.project_path)
+    check_directory(project_path)
 
     # test nox
-    run_nox_tests(result.project_path)
+    run_nox_tests(project_path)
 
 
 def test_bake_and_run_tests_with_typer(cookies):
-    result = cookies.bake(extra_context={"command_line_interface": "Typer"})
+    project_path = CACHED_EXAMPLES_PATH / "testpackage-typer"
 
     # test directory structure
-    check_directory(result.project_path)
+    check_directory(project_path)
 
     # test nox
-    run_nox_tests(result.project_path)
+    run_nox_tests(project_path)
