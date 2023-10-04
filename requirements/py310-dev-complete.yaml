@@ -19,8 +19,9 @@ dependencies:
   - pre-commit
   - pyright
   - pytest
-  - pytest-cookies
+  - pytest-cov
   - pytest-sugar
+  - pytest-xdist
   - pytype
   - ruamel.yaml
   - watchdog

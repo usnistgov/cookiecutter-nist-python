@@ -40,7 +40,7 @@ MARKER_MAP = {
     "typer": "Typer",
 }
 
-PARAMS: list[dict[str, Any]] = []
+PARAMS: list[Any] = []
 for theme, cli in SPHINX_THEMES_AND_CLI:
     sphinx_theme, command_line_interface = [MARKER_MAP[k] for k in (theme, cli)]
 
@@ -54,19 +54,39 @@ for theme, cli in SPHINX_THEMES_AND_CLI:
 
     marks = [getattr(pytest.mark, k) for k in (theme, cli)]
     if theme == "book" and cli == "nocli":
-        # add default mark
-        marks.append(pytest.mark.default)
+        # add in default
+        PARAMS.append(pytest.param(d, marks=marks + [pytest.mark.default]))
 
-        # also add in a really long name thing
-        d["project_name"] = f"a-super-long-package-name-{theme}-{cli}"
+        # add in longname
+        d = dict(d, project_name=f"a-super-long-package-name-{theme}-{cli}")
         PARAMS.append(pytest.param(d, marks=marks + [pytest.mark.longname]))
 
-    PARAMS.append(pytest.param(d, marks=marks))
+    else:
+        PARAMS.append(pytest.param(d, marks=marks))
+
+
+# * nox options ------------------------------------------------------------------------
+def pytest_addoption(parser):
+    parser.addoption(
+        "--noxopts",
+        action="store",
+        default="",
+        help="options to be passed to nox calls",
+    )
+    parser.addoption(
+        "--enable",
+        action="store_true",
+        default=False,
+        help="enable some tests turned off by default",
+    )
+
+
+@pytest.fixture(scope="session")
+def noxopts(pytestconfig):
+    return pytestconfig.getoption("noxopts")
 
 
 # * Fixtures ---------------------------------------------------------------------------
-
-
 @pytest.fixture(
     scope="session",
     params=PARAMS,
@@ -96,12 +116,19 @@ def _create_example(project_name: str, extra_context: dict[str, Any]) -> Path:
 
 
 # * Automatic markers on tests ---------------------------------------------------------
-
-
-def pytest_collection_modifyitems(items):
+def pytest_collection_modifyitems(config, items):
     for item in items:
         marker = item.originalname.split("_")[-1]
         item.add_marker(getattr(pytest.mark, marker))
+
+    if config.getoption("--enable"):
+        # allow update version
+        pass
+    else:
+        skip_disabled = pytest.mark.skip(reason="need --enable to run this test")
+        for item in items:
+            if "disable" in item.keywords:
+                item.add_marker(skip_disabled)
 
 
 # * Logging ----------------------------------------------------------------------------
@@ -112,10 +139,6 @@ logger = logging.getLogger(__name__)
 
 
 # * Utilities --------------------------------------------------------------------------
-def _project_name(name: str) -> str:
-    return f"testpackage-{name}"
-
-
 def _clean_directory(directory_path: Path, keep: str | list[str] | None = None) -> None:
     """Remove everything froma  directory path except those in `keep`"""
 
@@ -157,10 +180,13 @@ def _bake_project(
         template = ROOT
     if output_dir is None:
         output_dir = OUTPUT_PATH
+
     if extra_context is None:
         extra_context = {}
+    else:
+        extra_context = extra_context.copy()
 
-    extra_context.setdefault("project_name", project_name)
+    extra_context["project_name"] = project_name
 
     logging.info(f"baking in {output_dir}")
     logging.info(f"project_name: {project_name}")

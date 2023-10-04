@@ -307,7 +307,7 @@ ignore = [
     "E203",
     # module level import not at top of file
     "E402",
-    # line too long - let black worry about that
+    # line t    oo long - let black worry about that
     "E501",
     # do not assign a lambda expression, use a def
     "E731",
@@ -343,7 +343,7 @@ use_shortcuts = true
 [tool.cruft]
 
 [tool.mypy]
-files = ["src/{{ cookiecutter.project_slug }}"]
+files = ["src", "tests", "noxfile.py", "tools"]
 show_error_codes = true
 warn_unused_ignores = true
 warn_return_any = true

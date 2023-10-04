@@ -13,5 +13,6 @@ dependencies:
   - python=3.10
   - cookiecutter
   - pytest
-  - pytest-cookies
+  - pytest-cov
   - pytest-sugar
+  - pytest-xdist

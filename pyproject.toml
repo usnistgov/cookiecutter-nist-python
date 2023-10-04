@@ -32,12 +32,12 @@ documentation = "https://pages.nist.gov/cookiecutter-nist-python/"
 test = [
     "pytest", #
     "pytest-sugar",
-    "pytest-cookies",
+    "pytest-cov",
+    "pytest-xdist",
     "cookiecutter",
 ]
 dev-extras = [
-    "watchdog", #
-    "ipython",
+    "ipython", #
     "ipykernel",
 ]
 typing-extras = [
@@ -123,8 +123,10 @@ markers = [
     "lint: run linting",
     "docs: make docs",
     "typing: run typing checks",
+    "mypystrict: run mypy --strict",
     "create: simple test on path creation",
     "longname: a project with a long name",
+    "disable: test that has been disabled by default",
 ]
 
 [tool.coverage.report]
@@ -286,7 +288,7 @@ use_shortcuts = true
 [tool.cruft]
 
 [tool.mypy]
-files = ["src/cookiecutter_nist_python"]
+files = ["tests", "noxfile.py", "tools"]
 show_error_codes = true
 warn_unused_ignores = true
 warn_return_any = true

@@ -150,8 +150,12 @@ version: version-scm version-import
 requirements: ## rebuild all requirements/environment files
 	nox -s requirements
 
-requirements/%.yaml: pyproject.toml requirements
-requirements/%.txt: pyproject.toml requirements
+requirements/%.yaml: pyproject.toml
+	nox -s requirements
+
+requirements/%.txt: pyproject.toml
+	nox -s requirements
+
 
 ################################################################################
 # * NOX

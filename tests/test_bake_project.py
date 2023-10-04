@@ -100,37 +100,35 @@ def run_nox_tests(path, test=True, docs=True, lint=True):
 
 
 # ** fixtures
-# @pytest.fixture
-# def result_default(cookies):
-#     return cookies.bake()
-
-
 # @pytest.mark.create
 def test_baked_create(example_path: Path) -> None:
     logging.info("in directory {}".format(Path.cwd()))
     assert Path.cwd().resolve() == example_path.resolve()
 
 
+@pytest.mark.disable
 def test_baked_version(example_path: Path) -> None:
     py = get_python_version()
+
     if py == "3.10":
         run_inside_dir(f"nox -s update-version-scm", example_path)
 
 
 # @pytest.mark.test
-def test_baked_test(example_path: Path) -> None:
+def test_baked_test(example_path: Path, noxopts: str) -> None:
     py = get_python_version()
-    run_inside_dir(f"nox -s test-venv-{py}", example_path)
+
+    run_inside_dir(f"nox -s test-venv-{py} -- {noxopts}", example_path)
 
 
 # @pytest.mark.lint
-def test_baked_lint(example_path: Path) -> None:
+def test_baked_lint(example_path: Path, noxopts: str) -> None:
     py = get_python_version()
 
     if py == "3.10":
         run_inside_dir(f"git add .", example_path)
         try:
-            code = run_inside_dir(f"nox -s lint", example_path)
+            code = run_inside_dir(f"nox -s lint -- {noxopts}", example_path)
         except Exception as error:
             logging.info(f"git diff")
             run_inside_dir(f"git diff", example_path)
@@ -138,16 +136,28 @@ def test_baked_lint(example_path: Path) -> None:
 
 
 # @pytest.mark.docs
-def test_baked_docs(example_path: Path) -> None:
+def test_baked_docs(example_path: Path, noxopts: str) -> None:
     py = get_python_version()
 
     if py == "3.10":
-        run_inside_dir(f"nox -s docs-venv -- -d symlink build", example_path)
+        run_inside_dir(f"nox -s docs-venv -- -d symlink build {noxopts}", example_path)
 
 
 # @pytest.mark.typing
-def test_baked_typing(example_path: Path) -> None:
+def test_baked_typing(example_path: Path, noxopts: str) -> None:
     py = get_python_version()
 
     if py == "3.10":
-        run_inside_dir(f"nox -s typing-venv-{py}", example_path)
+        run_inside_dir(
+            f"nox -s typing-venv-{py} -- -m clean mypy pyright {noxopts}", example_path
+        )
+
+
+def test_baked_mypystrict(example_path: Path, noxopts: str) -> None:
+    py = get_python_version()
+
+    if py == "3.10":
+        run_inside_dir(
+            f"nox -s typing-venv-{py} -- --typing-run-internal 'mypy --strict'",
+            example_path,
+        )

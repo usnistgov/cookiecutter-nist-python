@@ -7,6 +7,10 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Iterator
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 @contextmanager
 def inside_dir(dirpath: str | Path) -> Iterator[None]:
@@ -25,4 +29,5 @@ def inside_dir(dirpath: str | Path) -> Iterator[None]:
 def run_inside_dir(command: str, dirpath: str | Path) -> int:
     """Run a command from inside a given directory, returning the exit status"""
     with inside_dir(dirpath):
+        logger.info(f"Run: {command}")
         return subprocess.check_call(shlex.split(command))
