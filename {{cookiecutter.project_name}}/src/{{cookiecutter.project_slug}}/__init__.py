@@ -6,8 +6,8 @@ Top level API (:mod:`{{ cookiecutter.project_slug }}`)
 from .core import example_function
 
 try:
-    from ._version import __version__
-except Exception:
+    from ._version import __version__  # type: ignore[unused-ignore,import]
+except Exception:  # pragma: no cover
     __version__ = "999"
 
 __author__ = """{{ cookiecutter.full_name }}"""

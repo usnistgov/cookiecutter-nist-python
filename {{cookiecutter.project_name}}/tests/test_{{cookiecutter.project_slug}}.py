@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# mypy: disable-error-code="no-untyped-def"
 
 """Tests for `{{ cookiecutter.project_name }}` package."""
 

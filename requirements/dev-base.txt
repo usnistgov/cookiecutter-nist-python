@@ -12,7 +12,8 @@ ipykernel
 ipython
 mypy >= 1.4.1
 pytest
-pytest-cookies
+pytest-cov
 pytest-sugar
+pytest-xdist
 pytype; python_version < '3.11'
 watchdog

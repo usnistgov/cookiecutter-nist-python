@@ -1,5 +1,6 @@
 <!-- markdownlint-disable MD024 -->
-
+<!-- markdownlint-disable MD013 -->
+<!-- prettier-ignore-start -->
 # Changelog
 
 Changelog for `{{ cookiecutter.project_name }}`
@@ -9,5 +10,8 @@ Changelog for `{{ cookiecutter.project_name }}`
 [changelog.d]: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}
 
 See the fragment files in [changelog.d]
+<!-- prettier-ignore-end -->
+
+<!-- markdownlint-enable MD013 -->
 
 <!-- scriv-insert-here -->

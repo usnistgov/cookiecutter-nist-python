@@ -101,15 +101,15 @@ CMD_OPT = Option(nargs="*", type=str, help="cmd to be run")
 LOCK_OPT = Option(type=bool, help="If True, use conda-lock")
 
 
-def opts_annotated(**kwargs: Any):  # type: ignore
+def opts_annotated(**kwargs: Any):  # type: ignore[unused-ignore]
     return Annotated[list[str], replace(OPTS_OPT, **kwargs)]
 
 
-def cmd_annotated(**kwargs: Any):  # type: ignore
+def cmd_annotated(**kwargs: Any):  # type: ignore[unused-ignore]
     return Annotated[list[str], replace(CMD_OPT, **kwargs)]
 
 
-def run_annotated(**kwargs: Any):  # type: ignore
+def run_annotated(**kwargs: Any):  # type: ignore[unused-ignore]
     return Annotated[list[list[str]], replace(RUN_OPT, **kwargs)]
 
 

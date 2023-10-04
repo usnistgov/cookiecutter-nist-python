@@ -1,62 +1,11 @@
-from contextlib import contextmanager
-import shlex
-import os
-import subprocess
-from cookiecutter.utils import rmtree
-
 from pathlib import Path
+import pytest
 
+from utils import run_inside_dir
 
-@contextmanager
-def inside_dir(dirpath):
-    """
-    Execute code from inside the given directory
-    :param dirpath: String, path of the directory the command is being run.
-    """
-    old_path = os.getcwd()
-    try:
-        os.chdir(dirpath)
-        yield
-    finally:
-        os.chdir(old_path)
+import logging
 
-
-def run_inside_dir(command, dirpath):
-    """
-    Run a command from inside a given directory, returning the exit status
-    :param command: Command that will be executed
-    :param dirpath: String, path of the directory the command is being run.
-    """
-    with inside_dir(dirpath):
-        return subprocess.check_call(shlex.split(command))
-
-
-# @contextmanager
-# def bake_in_temp_dir(cookies, *args, **kwargs):
-#     """
-#     Delete the temporal directory that is created when executing the tests
-#     :param cookies: pytest_cookies.Cookies,
-#         cookie to be baked and its temporal files will be removed
-#     """
-#     result = cookies.bake(*args, **kwargs)
-#     try:
-#         yield result
-#     finally:
-#         rmtree(str(result.project))
-
-
-# def check_output_inside_dir(command, dirpath):
-#     "Run a command from inside a given directory, returning the command output"
-#     with inside_dir(dirpath):
-#         return subprocess.check_output(shlex.split(command))
-
-
-# def project_info(result):
-#     """Get toplevel dir, project_slug, and project dir from baked cookies"""
-#     project_path = str(result.project)
-#     project_slug = os.path.split(project_path)[-1]
-#     project_dir = os.path.join(project_path, project_slug)
-#     return project_path, project_slug, project_dir
+logger = logging.getLogger(__name__)
 
 
 # * Actual testing
@@ -87,6 +36,10 @@ def check_directory(
 
     if directories is None:
         directories = [
+            # These are added by the example creation
+            ".nox",
+            ".git",
+            # These are created from the template
             ".github",
             "changelog.d",
             "config",
@@ -147,38 +100,64 @@ def run_nox_tests(path, test=True, docs=True, lint=True):
 
 
 # ** fixtures
-# @pytest.fixture
-# def result_default(cookies):
-#     return cookies.bake()
+# @pytest.mark.create
+def test_baked_create(example_path: Path) -> None:
+    logging.info("in directory {}".format(Path.cwd()))
+    assert Path.cwd().resolve() == example_path.resolve()
 
 
-# ** tests
-def test_bake_and_run_tests_default(cookies):
-    result = cookies.bake()
-    # test directory structure
-    check_directory(result.project_path)
+@pytest.mark.disable
+def test_baked_version(example_path: Path) -> None:
+    py = get_python_version()
 
-    # test nox
-    run_nox_tests(result.project_path)
+    if py == "3.10":
+        run_inside_dir(f"nox -s update-version-scm", example_path)
 
 
-def test_bake_and_run_tests_with_furo(cookies):
-    result = cookies.bake(
-        extra_context={"sphinx_theme": "furo", "command_line_interface": "Click"}
-    )
+# @pytest.mark.test
+def test_baked_test(example_path: Path, noxopts: str) -> None:
+    py = get_python_version()
 
-    # test directory structure
-    check_directory(result.project_path)
-
-    # test nox
-    run_nox_tests(result.project_path)
+    run_inside_dir(f"nox -s test-venv-{py} -- {noxopts}", example_path)
 
 
-def test_bake_and_run_tests_with_typer(cookies):
-    result = cookies.bake(extra_context={"command_line_interface": "Typer"})
+# @pytest.mark.lint
+def test_baked_lint(example_path: Path, noxopts: str) -> None:
+    py = get_python_version()
 
-    # test directory structure
-    check_directory(result.project_path)
+    if py == "3.10":
+        run_inside_dir(f"git add .", example_path)
+        try:
+            code = run_inside_dir(f"nox -s lint -- {noxopts}", example_path)
+        except Exception as error:
+            logging.info(f"git diff")
+            run_inside_dir(f"git diff", example_path)
+            raise error
 
-    # test nox
-    run_nox_tests(result.project_path)
+
+# @pytest.mark.docs
+def test_baked_docs(example_path: Path, noxopts: str) -> None:
+    py = get_python_version()
+
+    if py == "3.10":
+        run_inside_dir(f"nox -s docs-venv -- -d symlink build {noxopts}", example_path)
+
+
+# @pytest.mark.typing
+def test_baked_typing(example_path: Path, noxopts: str) -> None:
+    py = get_python_version()
+
+    if py == "3.10":
+        run_inside_dir(
+            f"nox -s typing-venv-{py} -- -m clean mypy pyright {noxopts}", example_path
+        )
+
+
+def test_baked_mypystrict(example_path: Path, noxopts: str) -> None:
+    py = get_python_version()
+
+    if py == "3.10":
+        run_inside_dir(
+            f"nox -s typing-venv-{py} -- --typing-run-internal 'mypy --strict'",
+            example_path,
+        )

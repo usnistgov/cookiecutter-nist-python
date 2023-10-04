@@ -16,6 +16,7 @@ classifiers = [
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "Topic :: Scientific/Engineering",
 ]
 dynamic = ["readme"]
@@ -31,12 +32,12 @@ documentation = "https://pages.nist.gov/cookiecutter-nist-python/"
 test = [
     "pytest", #
     "pytest-sugar",
-    "pytest-cookies",
+    "pytest-cov",
+    "pytest-xdist",
     "cookiecutter",
 ]
 dev-extras = [
-    "watchdog", #
-    "ipython",
+    "ipython", #
     "ipykernel",
 ]
 typing-extras = [
@@ -109,8 +110,24 @@ python = ["3.8", "3.9", "3.10", "3.11"]
 test = "pytest"
 
 [tool.pytest.ini_options]
-addopts = "--doctest-modules --doctest-glob='*.md' -s -rP --basetemp=tmp/baked --keep-baked-projects"
+addopts = "--doctest-modules --doctest-glob='*.md' -s"
 testpaths = ["tests", "README.md"]
+markers = [
+    "default: default template",
+    "furo: furo theme",
+    "book: sphinx book theme",
+    "nocli: no command-line interface",
+    "click: Click cli",
+    "typer: Typer template",
+    "test: run tests",
+    "lint: run linting",
+    "docs: make docs",
+    "typing: run typing checks",
+    "mypystrict: run mypy --strict",
+    "create: simple test on path creation",
+    "longname: a project with a long name",
+    "disable: test that has been disabled by default",
+]
 
 [tool.coverage.report]
 exclude_also = ["if TYPE_CHECKING:", "@overload"]
@@ -271,7 +288,7 @@ use_shortcuts = true
 [tool.cruft]
 
 [tool.mypy]
-files = ["src/cookiecutter_nist_python"]
+files = ["tests", "noxfile.py", "tools"]
 show_error_codes = true
 warn_unused_ignores = true
 warn_return_any = true

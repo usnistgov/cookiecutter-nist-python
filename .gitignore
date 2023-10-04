@@ -121,3 +121,4 @@ tuna-loadtime.log
 /requirements/lock/py*-dev-conda-lock.yml
 /mypackage/
 /README.pdf
+/cached_examples/

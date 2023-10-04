@@ -17,8 +17,8 @@ from typing import (
     cast,
 )
 
-import nox
-from noxopt import NoxOpt, Option, Session
+import nox  # type: ignore[unused-ignore,import]
+from noxopt import NoxOpt, Option, Session  # type: ignore[unused-ignore,import]
 
 # fmt: off
 sys.path.insert(0, ".")
@@ -88,6 +88,9 @@ ALL_SESSION = cast(C[F], group.session(**SESSION_ALL_KWS))  # type: ignore
 DEFAULT_SESSION_VENV = cast(C[F], group.session(python=PYTHON_DEFAULT_VERSION))  # type: ignore
 ALL_SESSION_VENV = cast(C[F], group.session(python=PYTHON_ALL_VERSIONS))  # type: ignore
 
+NOPYTHON_SESSION = cast(C[F], group.session(python=False))  # type: ignore
+INHERITED_SESSION_VENV = cast(C[F], group.session)  # type: ignore
+
 OPTS_OPT = Option(nargs="*", type=str)
 # SET_KERNEL_OPT = Option(type=bool, help="If True, try to set the kernel name")
 RUN_OPT = Option(
@@ -101,15 +104,15 @@ CMD_OPT = Option(nargs="*", type=str, help="cmd to be run")
 LOCK_OPT = Option(type=bool, help="If True, use conda-lock")
 
 
-def opts_annotated(**kwargs: Any):  # type: ignore
+def opts_annotated(**kwargs: Any):  # type: ignore[unused-ignore,no-untyped-def]
     return Annotated[list[str], replace(OPTS_OPT, **kwargs)]
 
 
-def cmd_annotated(**kwargs: Any):  # type: ignore
+def cmd_annotated(**kwargs: Any):  # type: ignore[unused-ignore,no-untyped-def]
     return Annotated[list[str], replace(CMD_OPT, **kwargs)]
 
 
-def run_annotated(**kwargs: Any):  # type: ignore
+def run_annotated(**kwargs: Any):  # type: ignore[unused-ignore,no-untyped-def]
     return Annotated[list[list[str]], replace(RUN_OPT, **kwargs)]
 
 
@@ -192,8 +195,8 @@ def dev_venv(
 
 
 # ** bootstrap
-@group.session(python=False)  # type: ignore
-def bootstrap(session: Session):
+@NOPYTHON_SESSION
+def bootstrap(session: Session) -> None:
     """Run config, reqs, and dev"""
 
     session.notify("config")
@@ -202,7 +205,7 @@ def bootstrap(session: Session):
 
 
 # ** config
-@group.session(python=False)  # type: ignore
+@NOPYTHON_SESSION
 def config(
     session: Session,
     dev_extras: DEV_EXTRAS_CLI = [],  # type: ignore # noqa
@@ -220,7 +223,7 @@ def config(
 
 
 # ** requirements
-@group.session(python=False)  # type: ignore
+@NOPYTHON_SESSION
 def pyproject2conda(
     session: Session,
     update: UPDATE_CLI = False,
@@ -229,7 +232,7 @@ def pyproject2conda(
     session.notify("requirements")
 
 
-@group.session
+@INHERITED_SESSION_VENV
 def requirements(
     session: Session,
     update: UPDATE_CLI = False,
@@ -423,7 +426,7 @@ def _coverage(
     session_run_commands(session, run)
 
     if not cmd and not run and not run_internal:
-        cmd = ["combine", "report"]
+        cmd = ["combine", "html"]
 
     session.log(f"{cmd}")
 
@@ -755,7 +758,7 @@ def dist_conda(
             elif command == "recipe-cat-full":
                 import tempfile
 
-                with tempfile.TemporaryDirectory() as d:
+                with tempfile.TemporaryDirectory() as d:  # type: ignore[assignment,unused-ignore]
                     session.run(
                         "grayskull",
                         "pypi",
@@ -778,7 +781,7 @@ def dist_conda(
 
 
 # ** lint
-@group.session
+@INHERITED_SESSION_VENV
 def lint(
     session: nox.Session,
     lint_run: RUN_CLI = [],  # noqa
@@ -828,6 +831,15 @@ def _typing(
         session.run("which", cmd, external=True)
         session.run(cmd, "--version", external=True)
 
+    if "clean" in cmd:
+        cmd = [x for x in cmd if x != "clean"]
+
+        for name in [".mypy_cache", ".pytype"]:
+            p = Path(session.create_tmp()) / name
+            if p.exists():
+                session.log(f"removing cache {p}")
+                shutil.rmtree(str(p))
+
     for c in cmd:
         if not c.startswith("nbqa"):
             _run_info(c)
@@ -849,6 +861,7 @@ def typing(
     session: nox.Session,
     typing_cmd: cmd_annotated(  # type: ignore
         choices=[
+            "clean",
             "mypy",
             "pyright",
             "pytype",
@@ -891,6 +904,7 @@ def typing_venv(
     session: nox.Session,
     typing_cmd: cmd_annotated(  # type: ignore
         choices=[
+            "clean",
             "mypy",
             "pyright",
             "pytype",
@@ -1043,6 +1057,42 @@ def testdist_pypi_condaenv(
         test_no_pytest=test_no_pytest,
         test_opts=test_opts,
         no_cov=True,
+    )
+
+
+@DEFAULT_SESSION_VENV
+def update_version_scm(
+    session: Session,
+    version: VERSION_CLI = "",
+    update: UPDATE_CLI = False,
+) -> None:
+    """
+    Get current version from setuptools-scm
+
+    Note that the version of editable installs can get stale.
+    This will show the actual current version.
+    Avoids need to include setuptools-scm in develop/docs/etc.
+    """
+
+    if version:
+        session.env["SETUPTOOLS_SCM_PRETEND_VERSION"] = version
+
+    pkg_install_venv(
+        session=session,
+        name="update-version-scm",
+        install_package=True,
+        # reqs=["setuptools_scm"],
+        update=True,
+        no_deps=True,
+    )
+
+    session.run(
+        "python",
+        "-c",
+        "import sys;"
+        "sys.path.insert(0, 'src');"
+        "from {{cookiecutter.project_slug}}._version import __version__;"
+        "print(__version__);",
     )
 
 

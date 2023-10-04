@@ -19,7 +19,7 @@ PACKAGE = "{{ cookiecutter.project_slug}}"
 
 
 @click.command()
-def main():
+def main() -> int:
     """Console script for {{cookiecutter.project_slug}}."""
     click.echo(f"Replace this message by putting your code into {PACKAGE}.cli.main")
     click.echo("See click documentation at https://click.palletsprojects.com/")
@@ -31,7 +31,7 @@ app = typer.Typer()
 
 
 @app.command()
-def func():
+def func() -> int:
     """Console script for {{cookiecutter.project_slug}}."""
     print(f"Replace this message by putting your code into {PACKAGE}.cli.main")
     print("See click documentation at https://typer.tiangolo.com/")
@@ -45,7 +45,7 @@ main = typer.main.get_command(app)
 {%- elif cookiecutter.command_line_interface|lower == 'argparse' %}
 
 
-def main():
+def main() -> int:
     """Console script for {{cookiecutter.project_slug}}."""
     parser = argparse.ArgumentParser()
     parser.add_argument('_', nargs='*')
