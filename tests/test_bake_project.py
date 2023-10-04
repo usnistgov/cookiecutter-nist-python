@@ -1,38 +1,11 @@
-from contextlib import contextmanager
-import shlex
-import os
-import subprocess
-from cookiecutter.utils import rmtree
-
 from pathlib import Path
-
 import pytest
 
-CACHED_EXAMPLES_PATH = (Path(__file__).parent / ".." / "cached_examples").resolve()
+from utils import run_inside_dir
 
+import logging
 
-@contextmanager
-def inside_dir(dirpath):
-    """
-    Execute code from inside the given directory
-    :param dirpath: String, path of the directory the command is being run.
-    """
-    old_path = os.getcwd()
-    try:
-        os.chdir(dirpath)
-        yield
-    finally:
-        os.chdir(old_path)
-
-
-def run_inside_dir(command, dirpath):
-    """
-    Run a command from inside a given directory, returning the exit status
-    :param command: Command that will be executed
-    :param dirpath: String, path of the directory the command is being run.
-    """
-    with inside_dir(dirpath):
-        return subprocess.check_call(shlex.split(command))
+logger = logging.getLogger(__name__)
 
 
 # * Actual testing
@@ -132,32 +105,49 @@ def run_nox_tests(path, test=True, docs=True, lint=True):
 #     return cookies.bake()
 
 
-# ** tests
-def test_bake_and_run_tests_default():
-    project_path = CACHED_EXAMPLES_PATH / "testpackage-default"
-
-    # test directory structure
-    check_directory(project_path)
-
-    # test nox
-    run_nox_tests(project_path)
+# @pytest.mark.create
+def test_baked_create(example_path: Path) -> None:
+    logging.info("in directory {}".format(Path.cwd()))
+    assert Path.cwd().resolve() == example_path.resolve()
 
 
-def test_bake_and_run_tests_with_furo(cookies):
-    project_path = CACHED_EXAMPLES_PATH / "testpackage-furo"
-
-    # test directory structure
-    check_directory(project_path)
-
-    # test nox
-    run_nox_tests(project_path)
+def test_baked_version(example_path: Path) -> None:
+    py = get_python_version()
+    if py == "3.10":
+        run_inside_dir(f"nox -s update-version-scm", example_path)
 
 
-def test_bake_and_run_tests_with_typer(cookies):
-    project_path = CACHED_EXAMPLES_PATH / "testpackage-typer"
+# @pytest.mark.test
+def test_baked_test(example_path: Path) -> None:
+    py = get_python_version()
+    run_inside_dir(f"nox -s test-venv-{py}", example_path)
 
-    # test directory structure
-    check_directory(project_path)
 
-    # test nox
-    run_nox_tests(project_path)
+# @pytest.mark.lint
+def test_baked_lint(example_path: Path) -> None:
+    py = get_python_version()
+
+    if py == "3.10":
+        run_inside_dir(f"git add .", example_path)
+        try:
+            code = run_inside_dir(f"nox -s lint", example_path)
+        except Exception as error:
+            logging.info(f"git diff")
+            run_inside_dir(f"git diff", example_path)
+            raise error
+
+
+# @pytest.mark.docs
+def test_baked_docs(example_path: Path) -> None:
+    py = get_python_version()
+
+    if py == "3.10":
+        run_inside_dir(f"nox -s docs-venv -- -d symlink build", example_path)
+
+
+# @pytest.mark.typing
+def test_baked_typing(example_path: Path) -> None:
+    py = get_python_version()
+
+    if py == "3.10":
+        run_inside_dir(f"nox -s typing-venv-{py}", example_path)
