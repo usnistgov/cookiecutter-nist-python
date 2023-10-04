@@ -147,10 +147,9 @@ def test_baked_docs(example_path: Path, noxopts: str) -> None:
 def test_baked_typing(example_path: Path, noxopts: str) -> None:
     py = get_python_version()
 
-    if py == "3.10":
-        run_inside_dir(
-            f"nox -s typing-venv-{py} -- -m clean mypy pyright {noxopts}", example_path
-        )
+    run_inside_dir(
+        f"nox -s typing-venv-{py} -- -m clean mypy pyright {noxopts}", example_path
+    )
 
 
 def test_baked_mypystrict(example_path: Path, noxopts: str) -> None:
