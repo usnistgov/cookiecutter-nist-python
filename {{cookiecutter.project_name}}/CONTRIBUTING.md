@@ -7,7 +7,9 @@ You can contribute in many ways:
 
 ## Types of Contributions
 
+<!-- prettier-ignore-start -->
 [issues]: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/issues
+<!-- prettier-ignore-end -->
 
 ### Report Bugs
 
@@ -50,7 +52,7 @@ If you are proposing a feature:
 
 Ready to contribute? Here's how to make a contribution.
 
-- Fork the `{{ cookiecutter.project_name }}` repo on GitHub.
+- Fork the repo on GitHub.
 
 - Clone your fork locally:
 

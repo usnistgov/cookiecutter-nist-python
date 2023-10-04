@@ -1046,6 +1046,42 @@ def testdist_pypi_condaenv(
     )
 
 
+@DEFAULT_SESSION_VENV
+def update_version_scm(
+    session: Session,
+    version: VERSION_CLI = "",
+    update: UPDATE_CLI = False,
+):
+    """
+    Get current version from setuptools-scm
+
+    Note that the version of editable installs can get stale.
+    This will show the actual current version.
+    Avoids need to include setuptools-scm in develop/docs/etc.
+    """
+
+    if version:
+        session.env["SETUPTOOLS_SCM_PRETEND_VERSION"] = version
+
+    pkg_install_venv(
+        session=session,
+        name="update-version-scm",
+        install_package=True,
+        # reqs=["setuptools_scm"],
+        update=True,
+        no_deps=True,
+    )
+
+    session.run(
+        "python",
+        "-c",
+        "import sys;"
+        "sys.path.insert(0, 'src');"
+        "from {{cookiecutter.project_slug}}._version import __version__;"
+        "print(__version__);",
+    )
+
+
 # * Utilities --------------------------------------------------------------------------
 def _create_doc_examples_symlinks(session: nox.Session, clean: bool = True) -> None:
     """Create symlinks from docs/examples/*.md files to /examples/usage/..."""
