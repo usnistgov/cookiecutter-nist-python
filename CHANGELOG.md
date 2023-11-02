@@ -6,7 +6,8 @@ Changelog for `mypackage`
 
 ## Unreleased
 
-[changelog.d]: https://github.com/wpk-nist-gov/mypackage
+[changelog.d]:
+  https://github.com/usnistgov/cookiecutter-nist-python/tree/main/changelog.d
 
 See the fragment files in [changelog.d]
 

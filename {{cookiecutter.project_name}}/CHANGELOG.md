@@ -7,7 +7,7 @@ Changelog for `{{ cookiecutter.project_name }}`
 
 ## Unreleased
 
-[changelog.d]: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}
+[changelog.d]: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/tree/main/changelog.d
 
 See the fragment files in [changelog.d]
 <!-- prettier-ignore-end -->
