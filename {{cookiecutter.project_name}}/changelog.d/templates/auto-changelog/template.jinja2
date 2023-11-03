@@ -1,3 +1,4 @@
+{% raw -%}
 {% import 'macros.jinja2' as macros -%}
 # {{ changelog.title }}
 {% if changelog.description %}
@@ -16,3 +17,4 @@
 Full set of changes: [`{{release.previous_tag}}...{{release.tag}}`]({{release.diff_url}})
 {% endif -%}
 {% endfor -%}
+{%- endraw %}

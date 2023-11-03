@@ -6,7 +6,7 @@
 .. autosummary::
    :toctree: generated/
 
-   example_function
+    example_function
 ```
 {%- if cookiecutter.command_line_interface|lower in ["click", "typer"] %}
 

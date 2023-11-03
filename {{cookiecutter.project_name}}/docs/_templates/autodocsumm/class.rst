@@ -1,3 +1,4 @@
+{% raw -%}
 {{ fullname | escape | underline}}
 
 .. currentmodule:: {{ module }}
@@ -9,3 +10,4 @@
    :show-inheritance:
    :inherited-members:
    :special-members: __call__, __add__, __iadd__, __sub__, __isub__, __mul__, __imul__
+{%- endraw %}

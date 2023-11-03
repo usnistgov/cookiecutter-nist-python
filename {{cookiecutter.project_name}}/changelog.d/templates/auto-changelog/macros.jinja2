@@ -1,3 +1,4 @@
+{% raw -%}
 {% macro section(title, notes) %}
 {%- if notes -%}
 ### {{ title }}
@@ -7,3 +8,4 @@
 {% endfor -%}
 {% endif -%}
 {% endmacro -%}
+{%- endraw %}
