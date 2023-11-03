@@ -1,5 +1,4 @@
-{% raw -%}
-
+{% raw %}
 
 .. automodule:: {{ fullname }}
    :autosummary:
