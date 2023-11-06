@@ -1,4 +1,7 @@
-"""Console script for {{cookiecutter.project_name}}."""
+"""
+Console script (:mod:`~{{cookiecutter.project_slug}}.cli`)
+==========================================================
+"""
 
 {%- if cookiecutter.command_line_interface|lower == 'argparse' %}
 import argparse
