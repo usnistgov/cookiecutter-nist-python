@@ -7,7 +7,9 @@ You can contribute in many ways:
 
 ## Types of Contributions
 
-[issues]: https://github.com/wpk-nist-gov/mypackage/issues
+<!-- prettier-ignore-start -->
+[issues]: https://github.com/usnistgov/cookiecutter-nist-python/issues
+<!-- prettier-ignore-end -->
 
 ### Report Bugs
 
@@ -50,25 +52,25 @@ If you are proposing a feature:
 
 Ready to contribute? Here's how to make a contribution.
 
-- Fork the `mypackage` repo on GitHub.
+- Fork the repo on GitHub.
 
 - Clone your fork locally:
 
   ```bash
-  git clone git@github.com:your_name_here/mypackage.git
+  git clone git@github.com:your_name_here/cookiecutter-nist-python.git
   ```
 
   If the repo includes submodules, you can add them either with the initial
   close using:
 
   ```bash
-  git clone --recursive-submodules git@github.com:your_name_here/mypackage.git
+  git clone --recursive-submodules git@github.com:your_name_here/cookiecutter-nist-python.git
   ```
 
   or after the clone using
 
   ```bash
-  cd mypackage
+  cd cookiecutter-nist-python
   git submodule update --init --recursive
   ```
 
@@ -160,8 +162,6 @@ workflow is the need for multiple scripts/makefiles, while with [nox], most
 everything is self contained in the file `noxfile.py`. [nox] also allows for a
 mix of conda and virtualenv environments. For building the distribution, we use
 virtualenv, while for development, the default is to create a conda environment.
-
-<!-- start-tutorial -->
 
 ### Setup user configuration
 
@@ -504,6 +504,16 @@ conda activate ~/.condax/nox
 pip install noxopt
 ```
 
+## Pull Request Guidelines
+
+Before you submit a pull request, check that it meets these guidelines:
+
+- The pull request should include tests.
+- If the pull request adds functionality, the docs should be updated. Put your
+  new functionality into a function with a docstring, and add the feature to the
+  list in `CHANGELOG.md`. You should use [scriv] for this.
+- The pull request should work for Python 3.8, 3.9, 3.10.
+
 ## Package version
 
 [setuptools_scm]: https://github.com/pypa/setuptools_scm
@@ -534,15 +544,3 @@ python -m http.server -d docs/_build/html
 ```
 
 Then open the address `localhost:8000` in a webbrowser.
-
-<!-- end-tutorial -->
-
-## Pull Request Guidelines
-
-Before you submit a pull request, check that it meets these guidelines:
-
-- The pull request should include tests.
-- If the pull request adds functionality, the docs should be updated. Put your
-  new functionality into a function with a docstring, and add the feature to the
-  list in `CHANGELOG.md`. You should use [scriv] for this.
-- The pull request should work for Python 3.8, 3.9, 3.10.

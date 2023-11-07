@@ -149,13 +149,10 @@ version: version-scm version-import
 .PHONY: requirements
 requirements: ## rebuild all requirements/environment files
 	nox -s requirements
-
 requirements/%.yaml: pyproject.toml
 	nox -s requirements
-
 requirements/%.txt: pyproject.toml
 	nox -s requirements
-
 
 ################################################################################
 # * NOX
