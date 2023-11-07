@@ -1,0 +1,23 @@
+{
+  "template": "https://github.com/usnistgov/cookiecutter-nist-python.git",
+  "commit": "e216a57fbff8458b829095114546bb454c2f51db",
+  "checkout": "develop",
+  "context": {
+    "cookiecutter": {
+      "full_name": "William P. Krekelberg",
+      "email": "wpk@nist.gov",
+      "github_username": "usnistgov",
+      "pypi_username": "wpk-nist",
+      "conda_channel": "usnistgov",
+      "project_name": "cookiecutter-nist-python",
+      "project_slug": "cookiecutter_nist_python",
+      "_copy_without_render": [],
+      "project_short_description": "Cookiecutter template for NIST python packages",
+      "command_line_interface": "No command-line interface",
+      "sphinx_use_autodocsumm": "y",
+      "sphinx_theme": "sphinx_book_theme",
+      "_template": "https://github.com/usnistgov/cookiecutter-nist-python.git"
+    }
+  },
+  "directory": null
+}

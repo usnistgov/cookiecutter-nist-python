@@ -109,7 +109,10 @@ nb_execution_mode = "cache"
 # nb_execution_mode = "auto"
 
 # set the kernel name
-nb_kernel_rgx_aliases = {"cookiecutter-nist-python.*": "python3", "conda.*": "python3"}
+nb_kernel_rgx_aliases = {
+    "cookiecutter-nist-python.*": "python3",
+    "conda.*": "python3",
+}
 
 nb_execution_allow_errors = True
 

@@ -2,7 +2,7 @@
 name = "cookiecutter-nist-python"
 authors = [{ name = "William P. Krekelberg", email = "wpk@nist.gov" }]
 license = { text = "NIST-PD" }
-description = "Cookiecutter template for NIST python package"
+description = "Cookiecutter template for NIST python packages"
 # if using markdown
 # long_description_content_type = text/markdown
 keywords = ["cookiecutter-nist-python"]
@@ -127,6 +127,7 @@ markers = [
     "create: simple test on path creation",
     "longname: a project with a long name",
     "disable: test that has been disabled by default",
+    "version: update-version-scm (disabled by default)"
 ]
 
 [tool.coverage.report]

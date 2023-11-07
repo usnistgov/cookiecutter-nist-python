@@ -1,8 +1,7 @@
 <!-- markdownlint-disable MD041 -->
 
-- Date you used Cookiecutter PyPackage:
-- Cookiecutter version used, if any:
-- Python version, if any:
+- cookiecutter-nist-python version:
+- Python version:
 - Operating System:
 
 ### Description
@@ -14,4 +13,5 @@ wrong, and what you expected to happen.
 
 ```bash
 Paste the command(s) you ran and the output.
+If there was a crash, please include the traceback here.
 ```
