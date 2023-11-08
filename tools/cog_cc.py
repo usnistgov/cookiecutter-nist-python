@@ -45,7 +45,7 @@ class Option:
 
             if "cookiecutter" in d:
                 d = d.replace("cookiecutter.", "")
-                d = f"  default: {d!r}"
+                d = f'  default: "{d}"'
             else:
                 d = f"  default: {d}"
 
