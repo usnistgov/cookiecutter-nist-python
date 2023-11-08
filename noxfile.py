@@ -175,7 +175,7 @@ def dev(
         name="dev",
         lock=lock,
         display_name=f"{PACKAGE_NAME}-dev",
-        install_package=True,
+        install_package=False,
         update=update,
         log_session=log_session,
     )
@@ -200,7 +200,7 @@ def dev_venv(
         lock=lock,
         requirement_paths="dev.txt",
         display_name=f"{PACKAGE_NAME}-dev-venv",
-        install_package=True,
+        install_package=False,
         update=update,
         log_session=log_session,
     )

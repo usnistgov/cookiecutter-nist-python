@@ -35,6 +35,8 @@ test = [
     "pytest-cov",
     "pytest-xdist",
     "cookiecutter",
+    "copier-templates-extensions", # p2c: -p
+    "copier",
 ]
 dev-extras = [
     "ipython", #

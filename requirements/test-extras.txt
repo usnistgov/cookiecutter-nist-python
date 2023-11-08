@@ -8,6 +8,8 @@
 # Instead edit the corresponding pyproject.toml file.
 #
 cookiecutter
+copier
+copier-templates-extensions
 pytest
 pytest-cov
 pytest-sugar

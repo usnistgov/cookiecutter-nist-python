@@ -8,6 +8,8 @@
 # Instead edit the corresponding pyproject.toml file.
 #
 cookiecutter
+copier
+copier-templates-extensions
 ipykernel
 ipython
 mypy >= 1.4.1
@@ -22,4 +24,3 @@ pytest-xdist
 pytype; python_version < '3.11'
 ruamel.yaml
 scriv
-watchdog
