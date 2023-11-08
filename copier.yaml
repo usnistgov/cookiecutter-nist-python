@@ -1,0 +1,103 @@
+# [[[cog
+# from tools.cog_cc import CC
+#
+# cc = CC("cookiecutter.json")
+# ]]]
+# [[[end]]]
+
+# [[[cog
+# print(cc.to_yaml(
+#     "full_name",
+#     "email",
+#     "github_username",
+#     "pypi_username",
+#     "conda_channel",
+#     "project_name",
+#     default=True,
+#   )
+# )
+# ]]]
+full_name:
+  type: str
+  help: full_name
+  default: William P. Krekelberg
+
+email:
+  type: str
+  help: email
+  default: wpk@nist.gov
+
+github_username:
+  type: str
+  help: github_username
+  default: wpk-nist-gov
+
+pypi_username:
+  type: str
+  help: pypi_username
+  default: wpk-nist
+
+conda_channel:
+  type: str
+  help: conda_channel
+  default: "{{ pypi_username }}"
+
+project_name:
+  type: str
+  help: project_name
+  default: mypackage
+# [[[end]]]
+
+# [[[cog
+# print(cc.project_slug.yaml(default=True))
+# ]]]
+project_slug:
+  type: str
+  help: project_slug
+  default: "{{ project_name.lower().replace(' ', '_').replace('-', '_') }}"
+# [[[end]]]
+
+# [[[cog
+# print(cc.to_yaml(
+#     "project_short_description",
+#     "command_line_interface",
+#     "sphinx_use_autodocsumm",
+#     "sphinx_theme",
+#     default=True,
+#    )
+# )
+# ]]]
+project_short_description:
+  type: str
+  help: project_short_description
+  default: All the boilerplate you need to create a Python package.
+
+command_line_interface:
+  help: command_line_interface
+  choices:
+    - No command-line interface
+    - Click
+    - Typer
+    - Argparse
+
+sphinx_use_autodocsumm:
+  help: sphinx_use_autodocsumm
+  choices:
+    - y
+    - n
+
+sphinx_theme:
+  help: sphinx_theme
+  choices:
+    - sphinx_book_theme
+    - furo
+# [[[end]]]
+
+# * Copier options
+_templates_suffix: ""
+
+_subdirectory: "{% raw %}{{cookiecutter.project_name}}{% endraw %}"
+
+_jinja_extensions:
+  - copier_templates_extensions.TemplateExtensionLoader
+  - tools/copier_extensions.py:CookiecutterNamespace
