@@ -10,7 +10,6 @@ class CookiecutterNamespace(ContextHook):
     """Template hooks for copier"""
 
     def hook(self, context: dict[str, Any]) -> dict[str, Any]:
-        context["__year"] = str(datetime.datetime.today().year)
         # context["__project_slug"] = (
         #     context["project_name"].lower().replace("-", "_").replace(".", "_")
         # )
@@ -21,5 +20,6 @@ class CookiecutterNamespace(ContextHook):
         # )
         # context["__answers"] = context["_copier_conf"]["answers_file"]
         # context["__ci"] = "github" if "github.com" in context["url"] else "gitlab"
+        context["__year"] = str(datetime.datetime.today().year)
         context["__answers"] = context["_copier_conf"]["answers_file"]
         return {"cookiecutter": context}
