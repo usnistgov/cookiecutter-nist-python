@@ -101,7 +101,9 @@ def test_baked_create(example_path: Path) -> None:
     logging.info("in directory {}".format(Path.cwd()))
     assert Path.cwd().resolve() == example_path.resolve()
 
-    extra_files = [".copier-answers"] if "copier" in str(example_path.name) else None
+    extra_files = (
+        [".copier-answers.yml"] if "copier" in str(example_path.name) else None
+    )
 
     check_directory(path=example_path, extra_files=extra_files)
 
