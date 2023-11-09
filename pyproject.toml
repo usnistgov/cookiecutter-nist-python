@@ -129,7 +129,9 @@ markers = [
     "create: simple test on path creation",
     "longname: a project with a long name",
     "disable: test that has been disabled by default",
-    "version: update-version-scm (disabled by default)"
+    "version: update-version-scm (disabled by default)",
+    "cookie: cookiecutter",
+    "copier: run copier tests",
 ]
 
 [tool.coverage.report]

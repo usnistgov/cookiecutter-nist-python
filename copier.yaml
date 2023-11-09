@@ -79,18 +79,21 @@ command_line_interface:
     - Click
     - Typer
     - Argparse
+  default: No command-line interface
 
 sphinx_use_autodocsumm:
   help: sphinx_use_autodocsumm
   choices:
     - y
     - n
+  default: y
 
 sphinx_theme:
   help: sphinx_theme
   choices:
     - sphinx_book_theme
     - furo
+  default: sphinx_book_theme
 # [[[end]]]
 
 # * Copier options

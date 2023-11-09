@@ -40,8 +40,16 @@ class Option:
                     else f"    - {choice.name}"
                 )
 
-        elif default and self.default:
-            d = self.default
+            default_val = self.choices[0].name
+
+        else:
+            default_val = self.default
+
+        if default and default_val:
+            assert isinstance(
+                default_val, str
+            ), f"recieved {default_val} of type {type(default_val)}"
+            d = default_val
 
             if "cookiecutter" in d:
                 d = d.replace("cookiecutter.", "")
