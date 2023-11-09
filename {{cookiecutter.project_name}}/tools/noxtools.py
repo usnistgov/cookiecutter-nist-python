@@ -459,9 +459,6 @@ def session_install_envs(
     do_dep = update or (not unchanged)
     do_pkg = install_package and (do_dep or update_package)
 
-    if unchanged and not update:
-        return unchanged
-
     if do_dep:
         if not channels:
             channels = ""

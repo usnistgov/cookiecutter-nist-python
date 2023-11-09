@@ -130,7 +130,7 @@ def test_baked_lint(example_path: Path, nox_opts: str, nox_session_opts: str) ->
     if py == "3.10":
         try:
             code = run_inside_dir(
-                f"nox -N {nox_opts} -s lint -- {nox_session_opts}", example_path
+                f"nox {nox_opts} -s lint -- {nox_session_opts}", example_path
             )
         except Exception as error:
             logging.info(f"git diff")

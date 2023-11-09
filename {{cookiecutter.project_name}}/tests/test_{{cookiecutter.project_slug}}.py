@@ -1,6 +1,5 @@
-# mypy: disable-error-code="no-untyped-def"
-
 """Tests for `{{ cookiecutter.project_name }}` package."""
+from __future__ import annotations
 
 import pytest
 {%- if cookiecutter.command_line_interface|lower in ["click", "typer"] %}
@@ -13,12 +12,18 @@ from {{ cookiecutter.project_slug }} import cli
 {%- endif %}
 
 
+def test_version() -> None:
+    from {{ cookiecutter.project_slug }} import __version__
+
+    assert __version__ != "999"
+
+
 @pytest.fixture
-def response():
+def response() -> tuple[int, int]:
     return 1, 2
 
 
-def test_example_function(response):
+def test_example_function(response: tuple[int, int]) -> None:
     assert example_function(*response) == 3
 {%- if cookiecutter.command_line_interface|lower in ["click", "typer"] %}
 
