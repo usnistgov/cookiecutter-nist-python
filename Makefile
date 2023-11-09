@@ -300,3 +300,9 @@ replay: watch ## replay watch
 .PHONY: README.pdf
 README.pdf: ## create README.pdf
 	pandoc -V colorlinks -V geometry:margin=0.8in README.md -o README.pdf
+
+
+# Cog on files:
+.PHONY: cog
+cog: ## run nox -s cog
+	nox -s cog

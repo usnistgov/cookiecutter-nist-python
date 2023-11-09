@@ -175,7 +175,7 @@ def dev(
         name="dev",
         lock=lock,
         display_name=f"{PACKAGE_NAME}-dev",
-        install_package=True,
+        install_package=False,
         update=update,
         log_session=log_session,
     )
@@ -200,7 +200,7 @@ def dev_venv(
         lock=lock,
         requirement_paths="dev.txt",
         display_name=f"{PACKAGE_NAME}-dev-venv",
-        install_package=True,
+        install_package=False,
         update=update,
         log_session=log_session,
     )
@@ -1125,6 +1125,25 @@ def update_version_scm(
         "from cookiecutter_nist_python._version import __version__;"
         "print(__version__);",
     )
+
+
+# * Project specific sessions
+@INHERITED_SESSION_VENV
+def cog(
+    session: nox.Session, update: UPDATE_CLI = False, log_session: bool = False
+) -> None:
+    """Run cog."""
+
+    pkg_install_venv(
+        session=session,
+        name="cog",
+        reqs=["cogapp"],
+        install_package=False,
+        update=update,
+        log_session=log_session,
+    )
+
+    session.run("cog", "-rP", "copier.yaml")
 
 
 # * Utilities --------------------------------------------------------------------------

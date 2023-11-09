@@ -41,38 +41,57 @@ MARKER_MAP = {
 }
 
 PARAMS: list[Any] = []
-for theme, cli in SPHINX_THEMES_AND_CLI:
-    sphinx_theme, command_line_interface = [MARKER_MAP[k] for k in (theme, cli)]
+for style in ["cookie", "copier"]:
+    for theme, cli in SPHINX_THEMES_AND_CLI:
+        sphinx_theme, command_line_interface = [MARKER_MAP[k] for k in (theme, cli)]
 
-    d = {
-        "project_name": f"testpackage-{theme}-{cli}",
-        "extra_context": {
-            "sphinx_theme": sphinx_theme,
-            "command_line_interface": command_line_interface,
-        },
-    }
+        def _update_project_name(d):
+            if style != "cookie":
+                d["project_name"] = f"{style}-" + d["project_name"]
+            return d
 
-    marks = [getattr(pytest.mark, k) for k in (theme, cli)]
-    if theme == "book" and cli == "nocli":
-        # add in default
-        PARAMS.append(pytest.param(d, marks=marks + [pytest.mark.default]))
+        d = _update_project_name(
+            {
+                "project_name": f"testpackage-{theme}-{cli}",
+                "style": style,
+                "extra_context": {
+                    "sphinx_theme": sphinx_theme,
+                    "command_line_interface": command_line_interface,
+                },
+            }
+        )
 
-        # add in longname
-        d = dict(d, project_name=f"a-super-long-package-name-{theme}-{cli}")
-        PARAMS.append(pytest.param(d, marks=marks + [pytest.mark.longname]))
+        marks = [getattr(pytest.mark, k) for k in (theme, cli, style)]
+        if theme == "book" and cli == "nocli":
+            # add in default
+            PARAMS.append(pytest.param(d, marks=marks + [pytest.mark.default]))
 
-    else:
-        PARAMS.append(pytest.param(d, marks=marks))
+            # add in longname
+            d = _update_project_name(
+                dict(d, project_name=f"a-super-long-package-name-{theme}-{cli}")
+            )
+            PARAMS.append(pytest.param(d, marks=marks + [pytest.mark.longname]))
+
+        else:
+            PARAMS.append(pytest.param(d, marks=marks))
 
 
 # * nox options ------------------------------------------------------------------------
 def pytest_addoption(parser):
     parser.addoption(
-        "--noxopts",
+        "--nox-opts",
         action="store",
         default="",
-        help="options to be passed to nox calls",
+        help="options to be passed to nox",
     )
+
+    parser.addoption(
+        """--nox-session-opts""",
+        action="store",
+        default="",
+        help="option to pass to nox (after --)",
+    )
+
     parser.addoption(
         "--enable",
         action="store_true",
@@ -82,8 +101,13 @@ def pytest_addoption(parser):
 
 
 @pytest.fixture(scope="session")
-def noxopts(pytestconfig):
-    return pytestconfig.getoption("noxopts")
+def nox_opts(pytestconfig):
+    return pytestconfig.getoption("nox_opts")
+
+
+@pytest.fixture(scope="session")
+def nox_session_opts(pytestconfig):
+    return pytestconfig.getoption("nox_session_opts")
 
 
 # * Fixtures ---------------------------------------------------------------------------
@@ -94,8 +118,11 @@ def noxopts(pytestconfig):
 def example_path(request):
     project_name = request.param["project_name"]
     extra_context = request.param["extra_context"]
+    style = request.param["style"]
 
-    path = _create_example(project_name=project_name, extra_context=extra_context)
+    path = _create_example(
+        project_name=project_name, extra_context=extra_context, style=style
+    )
 
     # change to example_path
     old_cwd = Path.cwd()
@@ -105,13 +132,14 @@ def example_path(request):
     os.chdir(old_cwd)
 
 
-def _create_example(project_name: str, extra_context: dict[str, Any]) -> Path:
+def _create_example(
+    project_name: str, style: str, extra_context: dict[str, Any]
+) -> Path:
     path = OUTPUT_PATH / project_name
 
     _clean_directory(path)
-    _bake_project(project_name=project_name, extra_context=extra_context)
+    _bake_project(project_name=project_name, style=style, extra_context=extra_context)
 
-    run_inside_dir(f"nox -s requirements", path)
     return path
 
 
@@ -170,11 +198,10 @@ def _bake_project(
     no_input: bool = True,
     extra_context: dict[str, Any] | None = None,
     overwrite_if_exists: bool = True,
+    style: str = "cookie",
     **kws: Any,
 ) -> None:
     """Bake a cookiecutter"""
-
-    from cookiecutter.main import cookiecutter
 
     if template is None:
         template = ROOT
@@ -191,26 +218,45 @@ def _bake_project(
     logging.info(f"baking in {output_dir}")
     logging.info(f"project_name: {project_name}")
     logging.info(f"extra_context: {extra_context}")
-    cookiecutter(
-        template=str(template),
-        output_dir=str(output_dir),
-        no_input=no_input,
-        extra_context=extra_context,
-        overwrite_if_exists=overwrite_if_exists,
-        **kws,
-    )
+    logging.info(f"style: {style}")
+
+    if style == "cookie":
+        from cookiecutter.main import cookiecutter
+
+        cookiecutter(
+            template=str(template),
+            output_dir=str(output_dir),
+            no_input=no_input,
+            extra_context=extra_context,
+            overwrite_if_exists=overwrite_if_exists,
+            **kws,
+        )
+
+    elif style == "copier":
+        import copier
+
+        copier.run_copy(
+            src_path=str(template),
+            dst_path=str(output_dir / project_name),
+            data=extra_context,
+            vcs_ref="HEAD",
+            unsafe=True,
+            defaults=True,
+        )
 
     # create .nox if doesn't exist
     rendered_dir = Path(output_dir) / project_name
     (rendered_dir / ".nox").mkdir(exist_ok=True)
 
-    # git init?
-    if not (rendered_dir / ".git").exists():
-        run_inside_dir("git init", rendered_dir)
-    run_inside_dir("git add .", rendered_dir)
+    run_inside_dir(f"nox -s requirements", rendered_dir)
 
     # if have userconfig, copy it:
     config = ROOT / "config" / "userconfig.toml"
 
     if config.exists():
         shutil.copy(str(config), str(rendered_dir / "config"))
+
+    # git init?
+    if not (rendered_dir / ".git").exists():
+        run_inside_dir("git init", rendered_dir)
+    run_inside_dir("git add .", rendered_dir)

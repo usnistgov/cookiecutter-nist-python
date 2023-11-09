@@ -12,6 +12,7 @@ channels:
 dependencies:
   - python=3.10
   - cookiecutter
+  - copier
   - ipykernel
   - ipython
   - mypy >= 1.4.1
@@ -24,8 +25,8 @@ dependencies:
   - pytest-xdist
   - pytype
   - ruamel.yaml
-  - watchdog
   - pip
   - pip:
+      - copier-templates-extensions
       - noxopt
       - scriv

@@ -12,7 +12,11 @@ channels:
 dependencies:
   - python=3.8
   - cookiecutter
+  - copier
   - pytest
   - pytest-cov
   - pytest-sugar
   - pytest-xdist
+  - pip
+  - pip:
+      - copier-templates-extensions

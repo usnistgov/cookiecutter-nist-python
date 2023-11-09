@@ -60,7 +60,6 @@ def pkg_install_condaenv(
     display_name: str | None = None,
     install_package: bool = True,
     update: bool = False,
-    update_package: bool = False,
     log_session: bool = False,
     deps: Collection[str] | None = None,
     reqs: Collection[str] | None = None,
@@ -87,7 +86,6 @@ def pkg_install_condaenv(
             lockfile=check_filename(filename),
             display_name=display_name,
             update=update,
-            update_package=update_package,
             install_package=install_package,
             **kwargs,
         )
@@ -98,7 +96,6 @@ def pkg_install_condaenv(
             check_filename(filename),
             display_name=display_name,
             update=update,
-            update_package=update_package,
             deps=deps,
             reqs=reqs,
             channels=channels,
@@ -120,7 +117,6 @@ def pkg_install_venv(
     reqs: Collection[str] | None = None,
     display_name: str | None = None,
     update: bool = False,
-    update_package: bool = False,
     install_package: bool = False,
     no_deps: bool = True,
     log_session: bool = False,
@@ -136,7 +132,6 @@ def pkg_install_venv(
         reqs=reqs,
         display_name=display_name,
         update=update,
-        update_package=update_package,
         install_package=install_package,
         no_deps=no_deps,
         lock=lock,
@@ -322,7 +317,6 @@ def session_install_envs_lock(
     extras: str | list[str] | None = None,
     display_name: str | None = None,
     update: bool = False,
-    update_package: bool = False,
     install_package: bool = False,
 ) -> bool:
     """Install dependencies using conda-lock."""
@@ -333,36 +327,34 @@ def session_install_envs_lock(
     unchanged, hashes = env_unchanged(
         session, lockfile, prefix="lock", other=dict(install_package=install_package)
     )
+    if unchanged and not update:
+        return unchanged
 
-    do_dep = update or (not unchanged)
-    do_pkg = install_package and (do_dep or update_package)
+    if extras:
+        if isinstance(extras, str):
+            extras = extras.split(",")
+        extras = cast(list[str], sum([["--extras", _] for _ in extras], []))
+    else:
+        extras = []
 
-    if do_dep:
-        if extras:
-            if isinstance(extras, str):
-                extras = extras.split(",")
-            extras = cast(list[str], sum([["--extras", _] for _ in extras], []))
-        else:
-            extras = []
+    session.run(
+        "conda-lock",
+        "install",
+        "--mamba",
+        *extras,
+        "-p",
+        str(session.virtualenv.location),
+        str(lockfile),
+        silent=True,
+        external=True,
+    )
 
-        session.run(
-            "conda-lock",
-            "install",
-            "--mamba",
-            *extras,
-            "-p",
-            str(session.virtualenv.location),
-            str(lockfile),
-            silent=True,
-            external=True,
-        )
-
-    if do_pkg:
+    if install_package:
         session_install_package(session)
 
-    if do_dep or do_pkg:
-        session_set_ipykernel_display_name(session, display_name)
-        write_hashfile(hashes, session=session, prefix="lock")
+    session_set_ipykernel_display_name(session, display_name)
+
+    write_hashfile(hashes, session=session, prefix="lock")
 
     return unchanged
 
@@ -429,7 +421,6 @@ def session_install_envs(
     install_kws: dict[str, Any] | None = None,
     display_name: str | None = None,
     update: bool = False,
-    update_package: bool = False,
     install_package: bool = False,
 ) -> bool:
     """Parse and install everything. Pass an already merged yaml file."""
@@ -455,32 +446,30 @@ def session_install_envs(
             install_package=install_package,
         ),
     )
+    if unchanged and not update:
+        return unchanged
 
-    do_dep = update or (not unchanged)
-    do_pkg = install_package and (do_dep or update_package)
+    if not channels:
+        channels = ""
+    if deps:
+        conda_install_kws = conda_install_kws or {}
+        conda_install_kws.update(channel=channels)
+        if update:
+            deps = ["--update-all"] + list(deps)
 
-    if do_dep:
-        if not channels:
-            channels = ""
-        if deps:
-            conda_install_kws = conda_install_kws or {}
-            conda_install_kws.update(channel=channels)
-            if update:
-                deps = ["--update-all"] + list(deps)
+        session.conda_install(*deps, **(conda_install_kws or {}))
 
-            session.conda_install(*deps, **(conda_install_kws or {}))
+    if reqs:
+        if update:
+            reqs = ["--upgrade"] + list(reqs)
+        session.install(*reqs, **(install_kws or {}))
 
-        if reqs:
-            if update:
-                reqs = ["--upgrade"] + list(reqs)
-            session.install(*reqs, **(install_kws or {}))
-
-    if do_pkg:
+    if install_package:
         session_install_package(session)
 
-    if do_dep or do_pkg:
-        session_set_ipykernel_display_name(session, display_name)
-        write_hashfile(hashes, session=session, prefix="env")
+    session_set_ipykernel_display_name(session, display_name)
+
+    write_hashfile(hashes, session=session, prefix="env")
 
     return unchanged
 
@@ -494,7 +483,6 @@ def session_install_pip(
     reqs: str | Collection[str] | None = None,
     display_name: str | None = None,
     update: bool = False,
-    update_package: bool = False,
     install_package: bool = False,
     no_deps: bool = True,
     lock: bool = False,
@@ -557,28 +545,26 @@ def session_install_pip(
         ),
     )
 
-    do_dep = update or (not unchanged)
-    do_pkg = install_package and (do_dep or update_package)
+    if unchanged and not update:
+        return unchanged
 
-    if do_dep:
-        # do install
-        install_args = (
-            prepend_flag("-r", *requirement_paths)
-            + prepend_flag("-c", *constraint_paths)
-            + list(reqs)
-        )
+    # do install
+    install_args = (
+        prepend_flag("-r", *requirement_paths)
+        + prepend_flag("-c", *constraint_paths)
+        + list(reqs)
+    )
 
-        if install_args:
-            if update:
-                install_args = ["--upgrade"] + list(install_args)
-            session.install(*install_args)
+    if install_args:
+        if update:
+            install_args = ["--upgrade"] + list(install_args)
+        session.install(*install_args)
 
-    if do_pkg:
+    if install_package:
         session.install(*install_package_args)
 
-    if do_dep or do_pkg:
-        session_set_ipykernel_display_name(session, display_name)
-        write_hashfile(hashes, session=session, prefix="pip")
+    session_set_ipykernel_display_name(session, display_name)
+    write_hashfile(hashes, session=session, prefix="pip")
 
     return unchanged
 
