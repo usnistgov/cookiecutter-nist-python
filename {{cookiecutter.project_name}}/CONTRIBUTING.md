@@ -279,7 +279,8 @@ where commands can be one of:
   [ghp-import](https://github.com/c-w/ghp-import))
 - livehtml : Live documentation updates
 - open : open the documentation in a web browser
-- serve : Serve the created documentation webpage (Need this to view javescript in created pages).
+- serve : Serve the created documentation webpage (Need this to view javescript
+  in created pages).
 
 ## Testing with nox
 
@@ -527,13 +528,13 @@ Note that the version in a given environment/session can become stale. The
 easiest way to update the installed package version version is to reinstall the
 package. This can be done using the following:
 
-``` bash
+```bash
 pip install -e . --no-deps
 ```
 
 To do this in a given session, use:
 
-``` bash
+```bash
 nox -s {session} -- -P/--update-package
 ```
 
@@ -545,9 +546,9 @@ To view to documentation with js headers/footers, you'll need to serve them:
 python -m http.server -d docs/_build/html
 ```
 
-Then open the address `localhost:8000` in a webbrowser. Alternatively, you can run:
+Then open the address `localhost:8000` in a webbrowser. Alternatively, you can
+run:
 
-``` bash
+```bash
 nox -s docs -- -d serve
 ```
-
