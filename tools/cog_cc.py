@@ -46,13 +46,17 @@ class Option:
             default_val = self.default
 
         if default and default_val:
+            if isinstance(default_val, bool):
+                default_val = "yes" if default_val else "no"
+
             assert isinstance(
                 default_val, str
             ), f"recieved {default_val} of type {type(default_val)}"
             d = default_val
 
-            if "cookiecutter" in d:
-                d = d.replace("cookiecutter.", "")
+            if "{{" in d or "{%" in d:
+                if "cookiecutter" in d:
+                    d = d.replace("cookiecutter.", "")
                 d = f'  default: "{d}"'
             else:
                 d = f"  default: {d}"

@@ -2,98 +2,96 @@
 # from tools.cog_cc import CC
 #
 # cc = CC("cookiecutter.json")
-# ]]]
-# [[[end]]]
-
-# [[[cog
+#
+# print(cc.project_name.yaml(default=True) + "\n")
+#
+# print(cc.project_slug.yaml(default=True) + "\n")
+#
 # print(cc.to_yaml(
+#     "project_short_description",
 #     "full_name",
 #     "email",
 #     "github_username",
 #     "pypi_username",
 #     "conda_channel",
-#     "project_name",
-#     default=True,
-#   )
-# )
-# ]]]
-full_name:
-  type: str
-  help: full_name
-  default: William P. Krekelberg
-
-email:
-  type: str
-  help: email
-  default: wpk@nist.gov
-
-github_username:
-  type: str
-  help: github_username
-  default: wpk-nist-gov
-
-pypi_username:
-  type: str
-  help: pypi_username
-  default: wpk-nist
-
-conda_channel:
-  type: str
-  help: conda_channel
-  default: "{{ pypi_username }}"
-
-project_name:
-  type: str
-  help: project_name
-  default: mypackage
-# [[[end]]]
-
-# [[[cog
-# print(cc.project_slug.yaml(default=True))
-# ]]]
-project_slug:
-  type: str
-  help: project_slug
-  default: "{{ project_name.lower().replace(' ', '_').replace('-', '_') }}"
-# [[[end]]]
-
-# [[[cog
-# print(cc.to_yaml(
-#     "project_short_description",
 #     "command_line_interface",
 #     "sphinx_use_autodocsumm",
 #     "sphinx_theme",
 #     default=True,
-#    )
+#   ) + "\n",
 # )
+#
+# print(cc.year.yaml() + "\n")
+#
+# from datetime import datetime
+# print("  default: {}".format(datetime.now().year))
 # ]]]
+project_name:
+  type: str
+  help: The name of the project
+  default: mypackage
+
+project_slug:
+  type: str
+  help: The name of the python module
+  default: "{{ project_name.lower().replace(' ', '_').replace('-', '_') }}"
+
 project_short_description:
   type: str
-  help: project_short_description
+  help: Short description of the project
   default: All the boilerplate you need to create a Python package.
 
+full_name:
+  type: str
+  help: Author name
+  default: William P. Krekelberg
+
+email:
+  type: str
+  help: Author email
+  default: wpk@nist.gov
+
+github_username:
+  type: str
+  help: github username
+  default: wpk-nist-gov
+
+pypi_username:
+  type: str
+  help: pypi username
+  default: wpk-nist
+
+conda_channel:
+  type: str
+  help: conda channel
+  default: "{{ pypi_username }}"
+
 command_line_interface:
-  help: command_line_interface
+  help: Select command line interface type
   choices:
-    - No command-line interface
-    - Click
-    - Typer
-    - Argparse
-  default: No command-line interface
+    "No command-line interface": none
+    "Click": click
+    "Typer": typer
+    "Argparse": argparse
+  default: none
 
 sphinx_use_autodocsumm:
-  help: sphinx_use_autodocsumm
-  choices:
-    - y
-    - n
-  default: y
+  type: bool
+  help: Use `autodocsumm` sphinx extension
+  default: yes
 
 sphinx_theme:
-  help: sphinx_theme
+  help: Select sphinx theme
   choices:
-    - sphinx_book_theme
-    - furo
+    "Sphinx book theme": sphinx_book_theme
+    "Furo theme": furo
   default: sphinx_book_theme
+
+year:
+  type: str
+  help: Copyright/creation year
+
+  default: 2023
 # [[[end]]]
 
 # * Copier options

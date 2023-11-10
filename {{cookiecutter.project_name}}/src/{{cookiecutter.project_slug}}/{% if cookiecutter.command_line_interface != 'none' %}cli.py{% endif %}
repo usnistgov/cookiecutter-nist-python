@@ -3,22 +3,22 @@ Console script (:mod:`~{{cookiecutter.project_slug}}.cli`)
 ==========================================================
 """
 
-{%- if cookiecutter.command_line_interface|lower == 'argparse' %}
+{%- if cookiecutter.command_line_interface == 'argparse' %}
 import argparse
 {%- endif %}
 import sys
-{%- if cookiecutter.command_line_interface|lower == 'click' %}
+{%- if cookiecutter.command_line_interface == 'click' %}
 
 import click
 {%- endif %}
-{%- if cookiecutter.command_line_interface|lower == 'typer' %}
+{%- if cookiecutter.command_line_interface == 'typer' %}
 
 import typer
 {%- endif %}
 
 PACKAGE = "{{ cookiecutter.project_slug}}"
 
-{%- if cookiecutter.command_line_interface|lower == 'click' %}
+{%- if cookiecutter.command_line_interface == 'click' %}
 
 
 @click.command()
@@ -28,7 +28,7 @@ def main() -> int:
     click.echo("See click documentation at https://click.palletsprojects.com/")
     return 0
 
-{%- elif cookiecutter.command_line_interface|lower == 'typer' %}
+{%- elif cookiecutter.command_line_interface == 'typer' %}
 
 app = typer.Typer()
 
@@ -45,7 +45,7 @@ def func() -> int:
 main = typer.main.get_command(app)
 
 
-{%- elif cookiecutter.command_line_interface|lower == 'argparse' %}
+{%- elif cookiecutter.command_line_interface == 'argparse' %}
 
 
 def main() -> int:

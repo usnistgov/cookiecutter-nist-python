@@ -26,9 +26,9 @@ classifiers = [
 dynamic = ["readme", "version"]
 requires-python = ">=3.8"
 dependencies = [
-    {%- if cookiecutter.command_line_interface|lower == "click" -%}
+    {%- if cookiecutter.command_line_interface == "click" -%}
     "Click"
-    {%- elif cookiecutter.command_line_interface|lower == "typer" -%}
+    {%- elif cookiecutter.command_line_interface == "typer" -%}
     "typer"
     {%- endif -%}
 ]
@@ -95,10 +95,10 @@ docs = [
     {%- elif cookiecutter.sphinx_theme == "sphinx_book_theme" -%}
     "sphinx-book-theme",
     {%- endif %}
-    {%- if cookiecutter.sphinx_use_autodocsumm == "y" %}
+    {%- if cookiecutter.sphinx_use_autodocsumm %}
     "autodocsumm",
     {%- endif %}
-    {%- if cookiecutter.command_line_interface|lower in ["click", "typer"] %}
+    {%- if cookiecutter.command_line_interface in ["click", "typer"] %}
     "sphinx-click",
     {%- endif %}
 ]
@@ -148,7 +148,7 @@ python = ["3.8", "3.9", "3.10", "3.11"]
 envs = ["dist-conda"]
 style = ["yaml"]
 
-{%- if 'no' not in cookiecutter.command_line_interface|lower %}
+{%- if cookiecutter.command_line_interface != "none" %}
 
 [project.scripts]
 {{ cookiecutter.project_slug }} = "{{ cookiecutter.project_slug}}.cli:main"

@@ -2,12 +2,12 @@
 from __future__ import annotations
 
 import pytest
-{%- if cookiecutter.command_line_interface|lower in ["click", "typer"] %}
+{%- if cookiecutter.command_line_interface in ["click", "typer"] %}
 from click.testing import CliRunner
 {%- endif %}
 
 from {{ cookiecutter.project_slug }} import example_function
-{%- if cookiecutter.command_line_interface|lower in ["click", "typer"] %}
+{%- if cookiecutter.command_line_interface in ["click", "typer"] %}
 from {{ cookiecutter.project_slug }} import cli
 {%- endif %}
 
@@ -25,10 +25,10 @@ def response() -> tuple[int, int]:
 
 def test_example_function(response: tuple[int, int]) -> None:
     assert example_function(*response) == 3
-{%- if cookiecutter.command_line_interface|lower in ["click", "typer"] %}
+{%- if cookiecutter.command_line_interface in ["click", "typer"] %}
 
 
-def test_command_line_interface():
+def test_command_line_interface() -> None:
     """Test the CLI."""
     runner = CliRunner()
     result = runner.invoke(cli.main)

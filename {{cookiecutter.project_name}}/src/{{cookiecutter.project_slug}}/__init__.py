@@ -9,7 +9,7 @@ from importlib.metadata import version as _version
 from .core import example_function
 
 try:
-    __version__ = _version("{{ cookiecutter.project_slug }}")
+    __version__ = _version("{{ cookiecutter.project_name }}")
 except PackageNotFoundError:  # pragma: no cover
     __version__ = "999"
 

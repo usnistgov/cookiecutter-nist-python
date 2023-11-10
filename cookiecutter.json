@@ -1,21 +1,40 @@
 {
+  "project_name": "mypackage",
+  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
+  "project_short_description": "All the boilerplate you need to create a Python package.",
   "full_name": "William P. Krekelberg",
   "email": "wpk@nist.gov",
   "github_username": "wpk-nist-gov",
   "pypi_username": "wpk-nist",
   "conda_channel": "{{ cookiecutter.pypi_username }}",
-  "project_name": "mypackage",
-  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
-  "_copy_without_render": [],
-  "project_short_description": "All the boilerplate you need to create a Python package.",
-  "command_line_interface": [
-    "No command-line interface",
-    "Click",
-    "Typer",
-    "Argparse"
-  ],
-  "sphinx_use_autodocsumm": ["y", "n"],
+  "command_line_interface": ["none", "click", "typer", "argparse"],
+  "sphinx_use_autodocsumm": true,
   "sphinx_theme": ["sphinx_book_theme", "furo"],
-  "__year": "{% now 'utc', '%Y' %}",
-  "__answers": ""
+  "year": "{% now 'utc', '%Y' %}",
+  "__answers": "",
+  "_copy_without_render": [],
+  "__prompts__": {
+    "project_name": "The name of the project",
+    "project_slug": "The name of the python module",
+    "project_short_description": "Short description of the project",
+    "full_name": "Author name",
+    "email": "Author email",
+    "github_username": "github username",
+    "pypi_username": "pypi username",
+    "conda_channel": "conda channel",
+    "command_line_interface": {
+      "__prompt__": "Select command line interface type",
+      "none": "No command-line interface",
+      "click": "Click",
+      "typer": "Typer",
+      "argparse": "Argparse"
+    },
+    "sphinx_use_autodocsumm": "Use `autodocsumm` sphinx extension",
+    "sphinx_theme": {
+      "__prompt__": "Select sphinx theme",
+      "sphinx_book_theme": "Sphinx book theme",
+      "furo": "Furo theme"
+    },
+    "year": "Copyright/creation year"
+  }
 }
