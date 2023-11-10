@@ -1,11 +1,11 @@
 {
+  "project_name": "mypackage",
+  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
   "full_name": "William P. Krekelberg",
   "email": "wpk@nist.gov",
   "github_username": "wpk-nist-gov",
   "pypi_username": "wpk-nist",
   "conda_channel": "{{ cookiecutter.pypi_username }}",
-  "project_name": "mypackage",
-  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
   "_copy_without_render": [],
   "project_short_description": "All the boilerplate you need to create a Python package.",
   "command_line_interface": [
