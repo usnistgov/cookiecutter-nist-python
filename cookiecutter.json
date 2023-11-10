@@ -22,18 +22,19 @@
     "github_username": "github username",
     "pypi_username": "pypi username",
     "conda_channel": "conda channel",
-    "sphinx_use_autodocsumm": "Use `autodocsumm` sphinx extension",
-    "sphinx_theme": {
-      "__prompt__": "Select sphinx theme",
-      "sphinx_book_theme": "Sphinx book theme",
-      "furo": "Furo theme"
-    },
     "command_line_interface": {
       "__prompt__": "Select command line interface type",
       "none": "No command-line interface",
       "click": "Click",
       "typer": "Typer",
       "argparse": "Argparse"
-    }
+    },
+    "sphinx_use_autodocsumm": "Use `autodocsumm` sphinx extension",
+    "sphinx_theme": {
+      "__prompt__": "Select sphinx theme",
+      "sphinx_book_theme": "Sphinx book theme",
+      "furo": "Furo theme"
+    },
+    "year": "Copyright/creation year"
   }
 }
