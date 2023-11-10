@@ -21,7 +21,9 @@ b = 2
 print(example_function(a, b))
 ```
 
+<!-- prettier-ignore-start -->
 see, e.g., {py:meth}`~{{ cookiecutter.project_slug }}.example_function`
+<!-- prettier-ignore-end -->
 
 ## Executable
 
