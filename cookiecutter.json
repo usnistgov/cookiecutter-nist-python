@@ -14,8 +14,8 @@
     "Typer",
     "Argparse"
   ],
-  "sphinx_use_autodocsumm": ["y", "n"],
+  "sphinx_use_autodocsumm": true,
   "sphinx_theme": ["sphinx_book_theme", "furo"],
-  "__year": "{% now 'utc', '%Y' %}",
+  "year": "{% now 'utc', '%Y' %}",
   "__answers": ""
 }

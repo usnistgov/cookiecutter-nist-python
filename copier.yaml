@@ -63,6 +63,7 @@ project_slug:
 #     "command_line_interface",
 #     "sphinx_use_autodocsumm",
 #     "sphinx_theme",
+#     "year",
 #     default=True,
 #    )
 # )
@@ -82,11 +83,9 @@ command_line_interface:
   default: No command-line interface
 
 sphinx_use_autodocsumm:
+  type: bool
   help: sphinx_use_autodocsumm
-  choices:
-    - y
-    - n
-  default: y
+  default: yes
 
 sphinx_theme:
   help: sphinx_theme
@@ -94,6 +93,11 @@ sphinx_theme:
     - sphinx_book_theme
     - furo
   default: sphinx_book_theme
+
+year:
+  type: str
+  help: year
+  default: "{% now 'utc', '%Y' %}"
 # [[[end]]]
 
 # * Copier options
