@@ -28,7 +28,7 @@ def test_example_function(response: tuple[int, int]) -> None:
 {%- if cookiecutter.command_line_interface in ["click", "typer"] %}
 
 
-def test_command_line_interface():
+def test_command_line_interface() -> None:
     """Test the CLI."""
     runner = CliRunner()
     result = runner.invoke(cli.main)
