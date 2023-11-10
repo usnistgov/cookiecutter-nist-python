@@ -36,7 +36,7 @@ import {{ cookiecutter.project_slug }}
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
-    {% if cookiecutter.sphinx_use_autodocsumm == "y" -%}
+    {% if cookiecutter.sphinx_use_autodocsumm -%}
     "autodocsumm",
     {% endif -%}
     "sphinx.ext.intersphinx",
@@ -60,7 +60,7 @@ extensions = [
     # "sphinx_design"
     ## myst stuff
     "myst_nb",
-    {%- if cookiecutter.command_line_interface|lower in ["click", "typer"] %}
+    {%- if cookiecutter.command_line_interface in ["click", "typer"] %}
     "sphinx_click",
     {%- endif %}
 ]

@@ -35,9 +35,9 @@ SPHINX_THEMES_AND_CLI = [
 MARKER_MAP = {
     "furo": "furo",
     "book": "sphinx_book_theme",
-    "nocli": "No command-line interface",
-    "click": "Click",
-    "typer": "Typer",
+    "nocli": "none",
+    "click": "click",
+    "typer": "typer",
 }
 
 PARAMS: list[Any] = []
