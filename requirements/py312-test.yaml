@@ -10,23 +10,14 @@
 channels:
   - conda-forge
 dependencies:
-  - python=3.10
+  - python=3.12
   - cookiecutter
   - copier
-  - ipykernel
-  - ipython
-  - mypy >= 1.4.1
-  - nox
-  - pre-commit
-  - pyright
+  - pip
   - pytest
   - pytest-cov
   - pytest-sugar
   - pytest-xdist
-  - pytype
-  - ruamel.yaml
   - pip
   - pip:
       - copier-templates-extensions
-      - noxopt
-      - scriv

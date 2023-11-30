@@ -175,7 +175,7 @@ def _clean_directory(directory_path: Path, keep: str | list[str] | None = None) 
         return
 
     if keep is None:
-        keep = [".nox"]
+        keep = [".nox", "requirements"]
     elif isinstance(keep, str):
         keep = [keep]
 
@@ -248,13 +248,13 @@ def _bake_project(
     rendered_dir = Path(output_dir) / project_name
     (rendered_dir / ".nox").mkdir(exist_ok=True)
 
-    run_inside_dir(f"nox -s requirements", rendered_dir)
-
     # if have userconfig, copy it:
     config = ROOT / "config" / "userconfig.toml"
-
     if config.exists():
         shutil.copy(str(config), str(rendered_dir / "config"))
+
+    # create requirements
+    run_inside_dir(f"nox -s requirements", rendered_dir)
 
     # git init?
     if not (rendered_dir / ".git").exists():

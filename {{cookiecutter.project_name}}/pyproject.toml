@@ -45,7 +45,6 @@ test = [
     "pytest-sugar",
 ]
 dev-extras = [
-    "setuptools-scm>=8.0", #
     "pytest-accept", # p2c: -p
     # "nbval",
     "ipython",
@@ -57,13 +56,9 @@ typing-extras = [
 ]
 typing = [
     "{{ cookiecutter.project_name }}[typing-extras]", #
-    "{{ cookiecutter.project_name }}[test]",
+    "pytest",
 ]
-nox = [
-    "nox",
-    "noxopt", # p2c: -p
-    "ruamel.yaml",
-]
+nox = ["nox", "ruamel.yaml"]
 dev = [
     "{{ cookiecutter.project_name }}[test]", #
     "{{ cookiecutter.project_name }}[typing-extras]",
@@ -71,9 +66,8 @@ dev = [
 ]
 tools = [
     "pre-commit", #
-    # "cruft",
     "scriv", # p2c: -p
-    "nbqa",
+    # "nbqa",
     "pyright",
 ]
 dev-complete = [
@@ -102,51 +96,39 @@ docs = [
     "sphinx-click",
     {%- endif %}
 ]
-# to be parsed with pyproject2conda with --no-base option
-dist-pypi = ["twine", "build"]
-dist-conda = [
-    "anaconda-client", #
-    "grayskull",
-    "conda-build",
-    "conda-verify",
-    "boa",
-]
 
 [tool.pyproject2conda]
 user_config = "config/userconfig.toml"
 template_python = "requirements/py{py}-{env}"
 template = "requirements/{env}"
 # defaults
-python = ["3.10"]
+python = ["3.11"]
 channels = ["conda-forge"]
 style = ["yaml", "requirements"]
-default_envs = [
-    "test",
-    "typing",
-    "docs",
-    "dev",
-    "dev-complete",
-    "dist-conda",
-    "dist-pypi"
-]
+default_envs = ["test", "typing", "docs", "dev", "dev-complete"]
 
 [tool.pyproject2conda.envs.test-extras]
 extras = ["test"]
+base = false
 
 [tool.pyproject2conda.envs.dev-base]
 extras = ["dev"]
 
-[[tool.pyproject2conda.overrides]]
-envs = ["test-extras", "dist-conda", "dist-pypi"]
+[tool.pyproject2conda.envs.build]
+extras = "build-system.requires"
+reqs = ["build"]
 base = false
+style = "requirements"
+
+# make sure pip available to all conda environments
+# that install the package
+[[tool.pyproject2conda.overrides]]
+envs = ["test", "dev", "dev-complete", "dev-base", "docs"]
+deps = ["pip"]
 
 [[tool.pyproject2conda.overrides]]
 envs = ["test", "typing", "test-extras"]
 python = ["3.8", "3.9", "3.10", "3.11"]
-
-[[tool.pyproject2conda.overrides]]
-envs = ["dist-conda"]
-style = ["yaml"]
 
 {%- if cookiecutter.command_line_interface != "none" %}
 
@@ -342,7 +324,7 @@ use_shortcuts = true
 [tool.cruft]
 
 [tool.mypy]
-files = ["src", "tests", "noxfile.py", "tools"]
+files = ["src", "tests"]
 show_error_codes = true
 warn_unused_ignores = true
 warn_return_any = true

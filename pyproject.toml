@@ -89,7 +89,7 @@ user_config = "config/userconfig.toml"
 template_python = "requirements/py{py}-{env}"
 template = "requirements/{env}"
 # defaults
-python = ["3.10"]
+python = ["3.11"]
 channels = ["conda-forge"]
 style = ["yaml", "requirements"]
 default_envs = ["test", "typing", "docs", "dev", "dev-complete"]
@@ -106,7 +106,7 @@ base = false
 
 [[tool.pyproject2conda.overrides]]
 envs = ["test", "typing", "test-extras"]
-python = ["3.8", "3.9", "3.10", "3.11"]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
 [tool.aliases]
 test = "pytest"
@@ -293,7 +293,7 @@ use_shortcuts = true
 [tool.cruft]
 
 [tool.mypy]
-files = ["tests", "noxfile.py", "tools"]
+files = ["tests"]
 show_error_codes = true
 warn_unused_ignores = true
 warn_return_any = true

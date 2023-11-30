@@ -10,14 +10,17 @@
 channels:
   - conda-forge
 dependencies:
-  - python=3.10
-  - autodocsumm
-  - ghp-import
+  - python=3.11
+  - cookiecutter
+  - copier
+  - ipykernel
   - ipython
-  - myst-nb
-  - pyenchant
-  - sphinx >= 5.3.0
-  - sphinx-autobuild
-  - sphinx-book-theme
-  - sphinx-copybutton
-  - sphinxcontrib-spelling
+  - mypy >= 1.4.1
+  - pip
+  - pytest
+  - pytest-cov
+  - pytest-sugar
+  - pytest-xdist
+  - pip
+  - pip:
+      - copier-templates-extensions

@@ -112,24 +112,22 @@ def test_baked_create(example_path: Path) -> None:
 def test_baked_version(example_path: Path) -> None:
     py = get_python_version()
 
-    if py == "3.10":
-        run_inside_dir(f"nox -s update-version-scm", example_path)
+    if py == "3.11":
+        run_inside_dir(f"nox -s build -- ++build version", example_path)
 
 
 # @pytest.mark.test
 def test_baked_test(example_path: Path, nox_opts: str, nox_session_opts: str) -> None:
     py = get_python_version()
 
-    run_inside_dir(
-        f"nox {nox_opts} -s test-venv-{py} -- {nox_session_opts}", example_path
-    )
+    run_inside_dir(f"nox {nox_opts} -s test-{py} -- {nox_session_opts}", example_path)
 
 
 # @pytest.mark.lint
 def test_baked_lint(example_path: Path, nox_opts: str, nox_session_opts: str) -> None:
     py = get_python_version()
 
-    if py == "3.10":
+    if py == "3.11":
         try:
             code = run_inside_dir(
                 f"nox {nox_opts} -s lint -- {nox_session_opts}", example_path
@@ -144,9 +142,9 @@ def test_baked_lint(example_path: Path, nox_opts: str, nox_session_opts: str) ->
 def test_baked_docs(example_path: Path, nox_opts: str, nox_session_opts: str) -> None:
     py = get_python_version()
 
-    if py == "3.10":
+    if py == "3.11":
         run_inside_dir(
-            f"nox {nox_opts} -s docs-venv -- -d symlink build {nox_session_opts}",
+            f"nox {nox_opts} -s docs -- +d symlink build {nox_session_opts}",
             example_path,
         )
 
@@ -156,7 +154,7 @@ def test_baked_typing(example_path: Path, nox_opts: str, nox_session_opts: str) 
     py = get_python_version()
 
     run_inside_dir(
-        f"nox {nox_opts} -s typing-venv-{py} -- -m clean mypy pyright {nox_session_opts}",
+        f"nox {nox_opts} -s typing-{py} -- +m clean mypy pyright {nox_session_opts}",
         example_path,
     )
 
@@ -166,8 +164,8 @@ def test_baked_mypystrict(
 ) -> None:
     py = get_python_version()
 
-    if py == "3.10":
+    if py == "3.11":
         run_inside_dir(
-            f"nox {nox_opts} -s typing-venv-{py} -- -m clean --typing-run-internal 'mypy --strict' {nox_session_opts}",
+            f"nox {nox_opts} -s typing-{py} -- +m clean ++typing-run-internal 'mypy --strict' {nox_session_opts}",
             example_path,
         )

@@ -75,7 +75,7 @@ CONFIG = load_nox_config()
 # * Options ----------------------------------------------------------------------------
 
 PYTHON_ALL_VERSIONS = ["3.8", "3.9", "3.10", "3.11"]
-PYTHON_DEFAULT_VERSION = "3.10"
+PYTHON_DEFAULT_VERSION = "3.11"
 
 # conda/mamba
 if shutil.which("mamba"):
