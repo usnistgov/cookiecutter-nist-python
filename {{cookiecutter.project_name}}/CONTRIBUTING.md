@@ -154,6 +154,16 @@ Ready to contribute? Here's how to make a contribution.
 
 - Submit a pull request through the GitHub website.
 
+## Pull Request Guidelines
+
+Before you submit a pull request, check that it meets these guidelines:
+
+- The pull request should include tests.
+- If the pull request adds functionality, the docs should be updated. Put your
+  new functionality into a function with a docstring, and add the feature to the
+  list in `CHANGELOG.md`. You should use [scriv] for this.
+- The pull request should work for all supported python versions.
+
 <!-- start-tutorial -->
 
 ## Using [pre-commit]
@@ -535,16 +545,6 @@ condax inject nox ruamel.yaml
 conda activate ~/.condax/nox
 pip install noxopt
 ```
-
-## Pull Request Guidelines
-
-Before you submit a pull request, check that it meets these guidelines:
-
-- The pull request should include tests.
-- If the pull request adds functionality, the docs should be updated. Put your
-  new functionality into a function with a docstring, and add the feature to the
-  list in `CHANGELOG.md`. You should use [scriv] for this.
-- The pull request should work for all supported python versions.
 
 ## Package version
 
