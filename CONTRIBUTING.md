@@ -433,7 +433,7 @@ following commands Will create the user config file `config/userconfig.toml`,
 the requirements files, and the development environment.
 
 ```bash
-nox -s config requirements dev -- --python-paths ... --dev-extras ...
+nox -s config requirements dev -- ++python-paths ... ++dev-extras ...
 ```
 
 See [](#setup-user-configuration) for more info on the flags. You can instead
@@ -446,8 +446,8 @@ procedure using [pipx] and the following command:
 ```bash
 pipx run --spec git+https://github.com/wpk-nist-gov/nox-bootstrap.git \
      nox -s bootstrap -- \
-     --python-paths "~/.conda/envs/python-3.*/bin" \
-     --dev-extras dev nox
+     ++python-paths "~/.conda/envs/python-3.*/bin" \
+     ++dev-extras dev nox
 
 conda activate .nox/{project-name}/envs/dev
 ```
@@ -486,7 +486,7 @@ like to install them in the development environment instead, include the
 file, or run:
 
 ```bash
-nox -s config -- --dev-extras dev nox tools
+nox -s config -- ++dev-extras dev nox tools
 ```
 
 Alternatively, you can just create a conda environment using the commands in
@@ -544,7 +544,7 @@ Before you submit a pull request, check that it meets these guidelines:
 - If the pull request adds functionality, the docs should be updated. Put your
   new functionality into a function with a docstring, and add the feature to the
   list in `CHANGELOG.md`. You should use [scriv] for this.
-- The pull request should work for Python 3.8, 3.9, 3.10.
+- The pull request should work for all supported python versions.
 
 ## Package version
 
@@ -565,7 +565,7 @@ pip install -e . --no-deps
 To do this in a given session, use:
 
 ```bash
-nox -s {session} -- -P/--update-package
+nox -s {session} -- +P/++update-package
 ```
 
 [conda]: https://docs.conda.io/en/latest/
