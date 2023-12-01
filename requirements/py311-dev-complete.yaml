@@ -15,9 +15,8 @@ dependencies:
   - copier
   - ipykernel
   - ipython
-  - mypy >= 1.4.1
+  - mypy>=1.4.1
   - nox
-  - pip
   - pre-commit
   - pyright
   - pytest
@@ -28,5 +27,4 @@ dependencies:
   - pip
   - pip:
       - copier-templates-extensions
-      - noxopt
       - scriv

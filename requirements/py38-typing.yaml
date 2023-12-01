@@ -11,14 +11,6 @@ channels:
   - conda-forge
 dependencies:
   - python=3.8
-  - cookiecutter
-  - copier
-  - mypy >= 1.4.1
+  - mypy>=1.4.1
   - pytest
-  - pytest-cov
-  - pytest-sugar
-  - pytest-xdist
   - pytype
-  - pip
-  - pip:
-      - copier-templates-extensions

@@ -118,7 +118,10 @@ cruft.patch
 /src/**/_version.py
 tuna-loadtime.log
 /requirements/py*-dev.yaml
-/requirements/lock/py*-dev-conda-lock.yml
-/mypackage/
+/requirements/dev.txt
+/requirements/lock/py*-dev-conda-lock.yml*
+/requirements/lock/py*-dev.txt*
+
+# Local
 /README.pdf
 /cached_examples/

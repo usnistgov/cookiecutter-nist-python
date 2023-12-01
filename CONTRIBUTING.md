@@ -154,14 +154,48 @@ Ready to contribute? Here's how to make a contribution.
 
 - Submit a pull request through the GitHub website.
 
+<!-- start-tutorial -->
+
+## Using [pre-commit]
+
+It is highly recommended to enable [pre-commit]. To do so, you need to first
+install pre-commit. It is recommended to use [pipx] or [condax]
+
+```bash
+pipx/condax install pre-commit
+```
+
+Alternatively, you can install with your development environment.
+
+Then "install" the hooks with
+
+```bash
+pre-commit install
+```
+
+This will enable a variety of code-checkers (linters) when you add a file to
+commit. Alternatively, you can run the hooks over all files using:
+
+```bash
+pre-commit run --all-files
+```
+
+You can also run [pre-commit] on all files via nox using:
+
+```bash
+nox -s lint
+```
+
 ## Using nox
 
 This project makes extensive use of [nox] to automate testing, typing,
 documentation creation, etc. One downside of using [tox] with this particular
 workflow is the need for multiple scripts/makefiles, while with [nox], most
 everything is self contained in the file `noxfile.py`. [nox] also allows for a
-mix of conda and virtualenv environments. For building the distribution, we use
-virtualenv, while for development, the default is to create a conda environment.
+mix of [conda] and [virtualenv] environments. The default is for the development
+environment to use conda, while all other environments are virtualenvs. There
+are conda sessions for testing (`test-conda`), typing (`typing-conda`), docs
+(`docs-conda`), etc.
 
 ### Setup user configuration
 
@@ -195,7 +229,7 @@ more info.
 You can also create this file using either of the following commands:
 
 ```bash
-nox -s config -- --python-paths "~/.conda/envs/python-3.*/bin" --dev-extras dev nox...
+nox -s config -- ++python-paths "~/.conda/envs/python-3.*/bin" ++dev-extras dev nox...
 # or
 python tools/projectconfig.py  --python-paths ... --dev-extras ...
 ```
@@ -217,7 +251,7 @@ python tools/create_pythons.py -p 3.8 3.9 ...
 Run with `--help` for more options. Then, set the variable `nox.python.paths`
 (see [](#setup-user-configuration)).
 
-### See nox sessions/options
+### Nox session options
 
 To see all nox session, run:
 
@@ -225,18 +259,26 @@ To see all nox session, run:
 nox --list
 ```
 
-We use [noxopt] to pass command line options to the different sessions. Use the
-following to get help on these options:
+To simplify passing options to underlying commands, the options to a particular
+nox session use `+` instead of `-` for options. For example, pass options to
+pytest, use:
 
 ```bash
-nox -- --help
+nox -s test -- ++test-opts -x -v
+```
+
+Using `+` for the session option `++test-opts` means we don't have to escape
+`-x` or `-v`. To see all options:
+
+```bash
+nox -- ++help/+h
 ```
 
 Note that these options should be passed _after_ `--`. For example, to build and
 open the documentation, run:
 
 ```bash
-nox -s docs -- -d build open
+nox -s docs -- +d build open
 ```
 
 ### Creating environment.yaml/requirement.txt files
@@ -255,17 +297,22 @@ requirement files are under something like
 `requirements/py{version}-dev.yaml` is user specific and **should not** be
 tracked by git.
 
+Additionally, requirement files for virtualenvs (e.g., `requirements.txt` like
+files) will be "locked" using `pip-compile`. These files are placed under
+`requirements/lock`.
+
 ## ipykernel
 
-The environments created by nox `dev` and `docs` will try to add meaningful
-display names for ipykernel (assuming you're using [nb_conda_kernels])
+The environments created by nox `dev` and `docs-conda` will try to add
+meaningful display names for ipykernel (assuming you're using
+[nb_conda_kernels])
 
 ## Building the docs
 
 We use [nox] to isolate the documentation build. Specific tasks can be run with
 
 ```bash
-nox -s docs -- -d [commands]
+nox -s docs -- +d [commands]
 ```
 
 where commands can be one of:
@@ -287,17 +334,16 @@ where commands can be one of:
 The basic command is:
 
 ```bash
-nox -s test -- [--test-opts] [--no-cov]
+nox -s test -- [++test-opts] [++no-cov]
 ```
 
-where you can pass in additional pytest options (properly escaped) via
-`--test-opts`. For example:
+where you can pass in additional pytest options via `++test-opts`. For example:
 
 ```bash
-nox -s test -- --test-opts "'-v'"
-# or
-nox -s test -- --test-opts "\-v"
+nox -s test -- ++test-opts -x -v
 ```
+
+Use session `test-conda` to test under a conda environment.
 
 ## Building distribution for conda
 
@@ -310,22 +356,22 @@ the file `config/recipe-append.yaml`. For some edge cases (install name
 different from package name, etc), you'll need to manually edit this file to
 create the final recipe.
 
-The basic command is:
+To build the conda recipe using [grayskull]:
 
 ```bash
-nox -s dist-conda -- -c [command]
+nox -s conda-recipe -- ++conda-recipe [recipe, recipe-full]
 ```
 
-Where `command` is one of:
+To build the conda distribution:
 
-- clean
-- recipe : create recipe via [grayskull]
-- build : build the distribution
+```bash
+nox -s conda-build -- ++conda-build [build,clean]
+```
 
 To upload the recipe, you'll need to run an external command like:
 
 ```bash
-nox -s dist-conda -- --dist-conda-run "anaconda upload PATH-TO-TARBALL"
+nox -s conda-build -- ++conda-build-run "anaconda upload PATH-TO-TARBALL"
 ```
 
 ## Building distribution for pypi
@@ -333,14 +379,16 @@ nox -s dist-conda -- --dist-conda-run "anaconda upload PATH-TO-TARBALL"
 The basic command is:
 
 ```bash
-nox -s dist-pypi -- -p [command]
+nox -s build
 ```
 
-where `command` is one of:
+To upload the pypi distribution:
 
-- clean : clean out old distribution
-- build : build distribution (if specify only this, clean will be called first)
-- testrelease : upload to testpypi
+```bash
+nox -s publish -- +p [release, test]
+```
+
+- test : upload to testpypi
 - release : upload to pypi
 
 ## Testing pypi or conda installs
@@ -348,13 +396,13 @@ where `command` is one of:
 Run:
 
 ```bash
-nox -s testdist-pypi -- --version [version]
+nox -s testdist-pypi -- ++version [version]
 ```
 
 to test a specific version from pypi and
 
 ```bash
-nox -s testdist-conda -- --version [version]
+nox -s testdist-conda -- ++version [version]
 ```
 
 to to likewise from conda.
@@ -364,8 +412,10 @@ to to likewise from conda.
 Run:
 
 ```bash
-nox -s typing -- -m [commands] [options]
+nox -s typing -- +m [commands] [options]
 ```
+
+Use `typing-conda` to test typing in a conda environment.
 
 ## Setup development environment
 
@@ -429,26 +479,6 @@ This installs all optional dependencies except those need to build the docs. For
 that, please use nox.
 
 ### Development tools
-
-[pipx]: https://github.com/pypa/pipx
-[condax]: https://github.com/mariusvniekerk/condax
-[mamba]: https://github.com/mamba-org/mamba
-[conda-fast-setup]:
-  https://www.anaconda.com/blog/a-faster-conda-for-a-growing-community
-[pre-commit]: https://pre-commit.com/
-[nox]: https://github.com/wntrblm/nox
-[noxopt]: https://github.com/rmorshea/noxopt
-[tox]: https://tox.wiki/en/latest/
-[cruft]: https://github.com/cruft/cruft
-[cog]: https://github.com/nedbat/cog
-[git-flow]: https://github.com/nvie/gitflow
-[scriv]: https://github.com/nedbat/scrivl
-[conventional-style]: https://www.conventionalcommits.org/en/v1.0.0/
-[commitizen]: https://github.com/commitizen-tools/commitizen
-[nb_conda_kernels]: https://github.com/Anaconda-Platform/nb_conda_kernels
-[pyproject2conda]: https://github.com/wpk-nist-gov/pyproject2conda
-[nbqa]: https://github.com/nbQA-dev/nbQA
-[pyright]: https://github.com/microsoft/pyright
 
 We recommend installing the following tools with [pipx] or [condax]. If you'd
 like to install them in the development environment instead, include the
@@ -538,17 +568,24 @@ To do this in a given session, use:
 nox -s {session} -- -P/--update-package
 ```
 
-## Serving the documentation
-
-To view to documentation with js headers/footers, you'll need to serve them:
-
-```bash
-python -m http.server -d docs/_build/html
-```
-
-Then open the address `localhost:8000` in a webbrowser. Alternatively, you can
-run:
-
-```bash
-nox -s docs -- -d serve
-```
+[conda]: https://docs.conda.io/en/latest/
+[virtualenv]: https://virtualenv.pypa.io/en/latest/
+[pipx]: https://github.com/pypa/pipx
+[condax]: https://github.com/mariusvniekerk/condax
+[mamba]: https://github.com/mamba-org/mamba
+[conda-fast-setup]:
+  https://www.anaconda.com/blog/a-faster-conda-for-a-growing-community
+[pre-commit]: https://pre-commit.com/
+[nox]: https://github.com/wntrblm/nox
+[noxopt]: https://github.com/rmorshea/noxopt
+[tox]: https://tox.wiki/en/latest/
+[cruft]: https://github.com/cruft/cruft
+[cog]: https://github.com/nedbat/cog
+[git-flow]: https://github.com/nvie/gitflow
+[scriv]: https://github.com/nedbat/scrivl
+[conventional-style]: https://www.conventionalcommits.org/en/v1.0.0/
+[commitizen]: https://github.com/commitizen-tools/commitizen
+[nb_conda_kernels]: https://github.com/Anaconda-Platform/nb_conda_kernels
+[pyproject2conda]: https://github.com/wpk-nist-gov/pyproject2conda
+[nbqa]: https://github.com/nbQA-dev/nbQA
+[pyright]: https://github.com/microsoft/pyright

@@ -154,13 +154,45 @@ Ready to contribute? Here's how to make a contribution.
 
 - Submit a pull request through the GitHub website.
 
+<!-- start-tutorial -->
+
+## Using [pre-commit]
+
+It is highly recommended to enable [pre-commit]. To do so, you need to first
+install pre-commit. It is recommended to use [pipx] or [condax]
+
+```bash
+pipx/condax install pre-commit
+```
+
+Alternatively, you can install with your development environment.
+
+Then "install" the hooks with
+
+```bash
+pre-commit install
+```
+
+This will enable a variety of code-checkers (linters) when you add a file to
+commit. Alternatively, you can run the hooks over all files using:
+
+```bash
+pre-commit run --all-files
+```
+
+You can also run [pre-commit] on all files via nox using:
+
+```bash
+nox -s lint
+```
+
 ## Using nox
 
 This project makes extensive use of [nox] to automate testing, typing,
 documentation creation, etc. One downside of using [tox] with this particular
 workflow is the need for multiple scripts/makefiles, while with [nox], most
 everything is self contained in the file `noxfile.py`. [nox] also allows for a
-mix of conda and virtualenv environments. The default is for the development
+mix of [conda] and [virtualenv] environments. The default is for the development
 environment to use conda, while all other environments are virtualenvs. There
 are conda sessions for testing (`test-conda`), typing (`typing-conda`), docs
 (`docs-conda`), etc.
@@ -401,7 +433,7 @@ following commands Will create the user config file `config/userconfig.toml`,
 the requirements files, and the development environment.
 
 ```bash
-nox -s config requirements dev -- --python-paths ... --dev-extras ...
+nox -s config requirements dev -- ++python-paths ... ++dev-extras ...
 ```
 
 See [](#setup-user-configuration) for more info on the flags. You can instead
@@ -414,8 +446,8 @@ procedure using [pipx] and the following command:
 ```bash
 pipx run --spec git+https://github.com/wpk-nist-gov/nox-bootstrap.git \
      nox -s bootstrap -- \
-     --python-paths "~/.conda/envs/python-3.*/bin" \
-     --dev-extras dev nox
+     ++python-paths "~/.conda/envs/python-3.*/bin" \
+     ++dev-extras dev nox
 
 conda activate .nox/{project-name}/envs/dev
 ```
@@ -448,33 +480,13 @@ that, please use nox.
 
 ### Development tools
 
-[pipx]: https://github.com/pypa/pipx
-[condax]: https://github.com/mariusvniekerk/condax
-[mamba]: https://github.com/mamba-org/mamba
-[conda-fast-setup]:
-  https://www.anaconda.com/blog/a-faster-conda-for-a-growing-community
-[pre-commit]: https://pre-commit.com/
-[nox]: https://github.com/wntrblm/nox
-[noxopt]: https://github.com/rmorshea/noxopt
-[tox]: https://tox.wiki/en/latest/
-[cruft]: https://github.com/cruft/cruft
-[cog]: https://github.com/nedbat/cog
-[git-flow]: https://github.com/nvie/gitflow
-[scriv]: https://github.com/nedbat/scrivl
-[conventional-style]: https://www.conventionalcommits.org/en/v1.0.0/
-[commitizen]: https://github.com/commitizen-tools/commitizen
-[nb_conda_kernels]: https://github.com/Anaconda-Platform/nb_conda_kernels
-[pyproject2conda]: https://github.com/wpk-nist-gov/pyproject2conda
-[nbqa]: https://github.com/nbQA-dev/nbQA
-[pyright]: https://github.com/microsoft/pyright
-
 We recommend installing the following tools with [pipx] or [condax]. If you'd
 like to install them in the development environment instead, include the
 "extras" `tools` in the `nox.extras.dev` section of `config/userconfig.toml`
 file, or run:
 
 ```bash
-nox -s config -- --dev-extras dev nox tools
+nox -s config -- ++dev-extras dev nox tools
 ```
 
 Alternatively, you can just create a conda environment using the commands in
@@ -532,7 +544,7 @@ Before you submit a pull request, check that it meets these guidelines:
 - If the pull request adds functionality, the docs should be updated. Put your
   new functionality into a function with a docstring, and add the feature to the
   list in `CHANGELOG.md`. You should use [scriv] for this.
-- The pull request should work for Python 3.8, 3.9, 3.10.
+- The pull request should work for all supported python versions.
 
 ## Package version
 
@@ -553,5 +565,27 @@ pip install -e . --no-deps
 To do this in a given session, use:
 
 ```bash
-nox -s {session} -- -P/--update-package
+nox -s {session} -- +P/++update-package
 ```
+
+[conda]: https://docs.conda.io/en/latest/
+[virtualenv]: https://virtualenv.pypa.io/en/latest/
+[pipx]: https://github.com/pypa/pipx
+[condax]: https://github.com/mariusvniekerk/condax
+[mamba]: https://github.com/mamba-org/mamba
+[conda-fast-setup]:
+  https://www.anaconda.com/blog/a-faster-conda-for-a-growing-community
+[pre-commit]: https://pre-commit.com/
+[nox]: https://github.com/wntrblm/nox
+[noxopt]: https://github.com/rmorshea/noxopt
+[tox]: https://tox.wiki/en/latest/
+[cruft]: https://github.com/cruft/cruft
+[cog]: https://github.com/nedbat/cog
+[git-flow]: https://github.com/nvie/gitflow
+[scriv]: https://github.com/nedbat/scrivl
+[conventional-style]: https://www.conventionalcommits.org/en/v1.0.0/
+[commitizen]: https://github.com/commitizen-tools/commitizen
+[nb_conda_kernels]: https://github.com/Anaconda-Platform/nb_conda_kernels
+[pyproject2conda]: https://github.com/wpk-nist-gov/pyproject2conda
+[nbqa]: https://github.com/nbQA-dev/nbQA
+[pyright]: https://github.com/microsoft/pyright
