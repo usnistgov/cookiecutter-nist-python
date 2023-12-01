@@ -1,7 +1,7 @@
 {
-  "template": "https://github.com/wpk-nist-gov/cookiecutter-nist-python.git",
-  "commit": "4922e1c37d9e33048cbba25f170e64508e36466a",
-  "checkout": "feature/self-update-cruft",
+  "template": "https://github.com/usnistgov/cookiecutter-nist-python.git",
+  "commit": "6323fcc3704869212a6cfc9885b9ce3ddb1d814d",
+  "checkout": "develop",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",
