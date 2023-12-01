@@ -7,12 +7,6 @@
 # You should not manually edit this file.
 # Instead edit the corresponding pyproject.toml file.
 #
-cookiecutter
-copier
-copier-templates-extensions
-mypy >= 1.4.1
+mypy>=1.4.1
 pytest
-pytest-cov
-pytest-sugar
-pytest-xdist
-pytype; python_version < '3.11'
+pytype;python_version<"3.11"

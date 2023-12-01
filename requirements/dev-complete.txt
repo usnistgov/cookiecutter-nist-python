@@ -12,15 +12,14 @@ copier
 copier-templates-extensions
 ipykernel
 ipython
-mypy >= 1.4.1
+mypy>=1.4.1
 nox
-noxopt
 pre-commit
 pyright
 pytest
 pytest-cov
 pytest-sugar
 pytest-xdist
-pytype; python_version < '3.11'
+pytype;python_version<"3.11"
 ruamel.yaml
 scriv

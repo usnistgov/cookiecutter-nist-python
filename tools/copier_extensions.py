@@ -3,7 +3,7 @@
 import datetime
 from typing import Any
 
-from copier_templates_extensions import ContextHook  # type: ignore
+from copier_templates_extensions import ContextHook  # pyright: ignore
 
 
 class CookiecutterNamespace(ContextHook):

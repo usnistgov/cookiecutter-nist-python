@@ -21,6 +21,7 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering",
 ]
 dynamic = ["readme", "version"]
@@ -128,7 +129,7 @@ deps = ["pip"]
 
 [[tool.pyproject2conda.overrides]]
 envs = ["test", "typing", "test-extras"]
-python = ["3.8", "3.9", "3.10", "3.11"]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
 {%- if cookiecutter.command_line_interface != "none" %}
 

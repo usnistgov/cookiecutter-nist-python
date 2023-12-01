@@ -13,7 +13,6 @@ dependencies:
   - python=3.11
   - cookiecutter
   - copier
-  - pip
   - pytest
   - pytest-cov
   - pytest-sugar

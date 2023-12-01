@@ -17,6 +17,7 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering",
 ]
 dynamic = ["readme"]
@@ -48,13 +49,9 @@ typing-extras = [
 ]
 typing = [
     "cookiecutter-nist-python[typing-extras]", #
-    "cookiecutter-nist-python[test]",
+    "pytest",
 ]
-nox = [
-    "nox",
-    "noxopt", # p2c: -p
-    "ruamel.yaml",
-]
+nox = ["nox", "ruamel.yaml"]
 dev = [
     "cookiecutter-nist-python[test]", #
     "cookiecutter-nist-python[typing-extras]",
@@ -62,7 +59,6 @@ dev = [
 ]
 tools = [
     "pre-commit", #
-    # "cruft",
     "scriv", # p2c: -p
     "pyright",
 ]
@@ -96,13 +92,22 @@ default_envs = ["test", "typing", "docs", "dev", "dev-complete"]
 
 [tool.pyproject2conda.envs.test-extras]
 extras = ["test"]
+base = false
 
 [tool.pyproject2conda.envs.dev-base]
 extras = ["dev"]
 
-[[tool.pyproject2conda.overrides]]
-envs = ["test-extras", "dist-conda", "dist-pypi"]
+[tool.pyproject2conda.envs.build]
+extras = "build-system.requires"
+reqs = ["build"]
 base = false
+style = "requirements"
+
+# make sure pip available to all conda environments
+# that install the package
+[[tool.pyproject2conda.overrides]]
+envs = ["test", "dev", "dev-complete", "dev-base", "docs"]
+deps = ["pip"]
 
 [[tool.pyproject2conda.overrides]]
 envs = ["test", "typing", "test-extras"]
