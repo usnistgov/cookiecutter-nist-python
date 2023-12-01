@@ -273,8 +273,8 @@ pytest-nbval:  ## run pytest --nbval
 
 .PHONY: typing-tools
 typing-tools:
-	mypy noxfile.py tools
-	pyright noxfile.py tools
+	mypy noxfile.py ./tools/*.py
+	pyright noxfile.py tools/*.py
 
 # cookiecutter stuff
 BAKE_OPTIONS=--no-input

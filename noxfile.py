@@ -265,7 +265,7 @@ def dev(
             envname="dev",
             lock=opts.lock,
             update=opts.update,
-            package=".",
+            # package=".",
         )
         .install_all(
             update_package=opts.update_package,
