@@ -169,3 +169,19 @@ def test_baked_mypystrict(
             f"nox {nox_opts} -s typing-{py} -- +m clean ++typing-run-internal 'mypy --strict' {nox_session_opts}",
             example_path,
         )
+
+
+def test_baked_notebook(
+    example_path: Path, nox_opts: str, nox_session_opts: str
+) -> None:
+    py = get_python_version()
+
+    if py == "3.11":
+        run_inside_dir(
+            f"nox {nox_opts} -s typing-{py} -- +m clean typing-notebook {nox_session_opts}",
+            example_path,
+        )
+        run_inside_dir(
+            f"nox {nox_opts} -s test-notebook -- {nox_session_opts}",
+            example_path,
+        )

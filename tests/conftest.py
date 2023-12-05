@@ -115,7 +115,7 @@ def nox_session_opts(pytestconfig):
     scope="session",
     params=PARAMS,
 )
-def example_path(request):
+def example_path(request, nox_opts: str, nox_session_opts: str):
     project_name = request.param["project_name"]
     extra_context = request.param["extra_context"]
     style = request.param["style"]
@@ -123,6 +123,8 @@ def example_path(request):
     path = _create_example(
         project_name=project_name, extra_context=extra_context, style=style
     )
+
+    run_inside_dir(f"nox -s requirements {nox_opts} -- {nox_session_opts}", str(path))
 
     # change to example_path
     old_cwd = Path.cwd()
@@ -253,8 +255,8 @@ def _bake_project(
     if config.exists():
         shutil.copy(str(config), str(rendered_dir / "config"))
 
-    # create requirements
-    run_inside_dir(f"nox -s requirements", rendered_dir)
+    # # create requirements
+    # run_inside_dir(f"nox -s requirements", rendered_dir)
 
     # git init?
     if not (rendered_dir / ".git").exists():

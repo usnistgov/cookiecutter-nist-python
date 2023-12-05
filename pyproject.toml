@@ -137,6 +137,7 @@ markers = [
     "version: update-version-scm (disabled by default)",
     "cookie: cookiecutter",
     "copier: run copier tests",
+    "notebook: run typing/test on notebook",
 ]
 
 [tool.coverage.report]

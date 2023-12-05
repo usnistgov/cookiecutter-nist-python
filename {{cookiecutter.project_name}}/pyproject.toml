@@ -45,9 +45,9 @@ test = [
     "pytest-cov",
     "pytest-sugar",
 ]
+nbval = ["nbval"]
 dev-extras = [
     "pytest-accept", # p2c: -p
-    # "nbval",
     "ipython",
     "ipykernel",
 ]
@@ -61,6 +61,7 @@ typing = [
 ]
 nox = ["nox", "ruamel.yaml"]
 dev = [
+    # "{{ cookiecutter.project_name }}[nbval]", # optional
     "{{ cookiecutter.project_name }}[test]", #
     "{{ cookiecutter.project_name }}[typing-extras]",
     "{{ cookiecutter.project_name }}[dev-extras]",
@@ -68,7 +69,7 @@ dev = [
 tools = [
     "pre-commit", #
     "scriv", # p2c: -p
-    # "nbqa",
+    "nbqa",
     "pyright",
 ]
 dev-complete = [
@@ -130,6 +131,13 @@ deps = ["pip"]
 [[tool.pyproject2conda.overrides]]
 envs = ["test", "typing", "test-extras"]
 python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+[tool.pyproject2conda.test-notebook]
+extras = ["test", "nbval"]
+
+# Project specific
+[tool.pyproject2conda.envs.test-notebook]
+extras = ["test", "nbval"]
 
 {%- if cookiecutter.command_line_interface != "none" %}
 
