@@ -134,6 +134,11 @@ class SessionParams(DataclassParser):
     # dev
     dev_run: RUN_ANNO = None
 
+    # bootstrap
+    bootstrap: list[str] | None = add_option(
+        "-B", "--bootstrap", help="run these sessions under isolated bootstrap session"
+    )
+
     # config
     dev_extras: OPT_TYPE = add_option(help="`extras` to include in dev environment")
     python_paths: OPT_TYPE = add_option(help="paths to python executables")
@@ -282,13 +287,16 @@ nox.session(name="dev", **CONDA_DEFAULT_KWS)(dev)
 
 
 # ** bootstrap
-@nox.session(python=False)
-def bootstrap(session: Session) -> None:
+@nox.session
+@add_opts
+def bootstrap(session: Session, opts: SessionParams) -> None:
     """Run config, reqs, and dev"""
+    session.install("nox", "ruamel.yaml")
 
-    session.notify("config")
-    session.notify("requirements")
-    session.notify("dev")
+    cmds = opts.bootstrap or ["config", "requirements", "dev"]
+
+    for c in cmds:
+        session.run("nox", "-s", c, "--", *session.posargs)
 
 
 # ** config
