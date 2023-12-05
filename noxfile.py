@@ -2,6 +2,7 @@
 # * Imports ----------------------------------------------------------------------------
 from __future__ import annotations
 
+import shlex
 import shutil
 import sys
 from functools import lru_cache, wraps
@@ -196,9 +197,9 @@ class SessionParams(DataclassParser):
             "pyright",
             "pytype",
             "all",
-            "nbqa-mypy",
-            "nbqa-pyright",
-            "nbqa-typing",
+            "mypy-notebook",
+            "pyright-notebook",
+            "typing-notebook",
         ]
     ] = add_option("--typing", "-m")
     typing_run: RUN_ANNO = None
@@ -435,7 +436,7 @@ def pip_compile(
     )
 
     envs_all = ["test", "typing"]
-    envs_dev = ["dev", "dev-complete", "dev-base", "docs"]
+    envs_dev = ["dev", "dev-complete", "dev-base", "docs"]  # , "test-notebook"]
 
     if session.python == PYTHON_DEFAULT_VERSION:
         envs = envs_all + envs_dev
@@ -481,8 +482,8 @@ def _test(
         if not no_cov:
             session.env["COVERAGE_FILE"] = str(Path(session.create_tmp()) / ".coverage")
 
-            if "--cov" not in opts:
-                opts.append("--cov")
+            if not any(o.startswith("--cov") for o in opts):
+                opts.append(f"--cov={IMPORT_NAME}")
 
         # Because we are testing if temporary folders
         # have git or not, we have to make sure we're above the
@@ -522,6 +523,42 @@ def test(
 
 nox.session(name="test", **ALL_KWS)(test)
 nox.session(name="test-conda", **CONDA_ALL_KWS)(test)
+
+
+@nox.session(name="test-notebook", **DEFAULT_KWS)
+@add_opts
+def test_notebook(session: nox.Session, opts: SessionParams) -> None:
+    (
+        Installer.from_envname(
+            session=session,
+            envname="test-notebook",
+            lock=opts.lock,
+            package=".",
+            update=opts.update,
+        ).install_all(log_session=opts.log_session, update_package=opts.update_package)
+    )
+
+    test_nbval_opts = shlex.split(
+        """
+    --nbval
+    --nbval-current-env
+    --nbval-sanitize-with=config/nbval.ini
+    --dist loadscope
+     examples/usage
+   """
+    )
+
+    test_opts = (opts.test_opts or []) + test_nbval_opts
+
+    session.log(f"{test_opts = }")
+
+    _test(
+        session=session,
+        run=opts.test_run,
+        test_no_pytest=opts.test_no_pytest,
+        test_opts=test_opts,
+        no_cov=opts.no_cov,
+    )
 
 
 # *** coverage
@@ -699,6 +736,8 @@ def typing(
             envname="typing",
             lock=opts.lock,
             update=opts.update,
+            # need package for nbqa checks
+            package=".",
         )
         .install_all(log_session=opts.log_session)
         .run_commands(opts.typing_run)
@@ -719,7 +758,7 @@ def typing(
         session.run(cmd, "--version", external=True)
 
     if "clean" in cmd:
-        cmd = [x for x in cmd if x != "clean"]
+        cmd.remove("clean")
 
         for name in [".mypy_cache", ".pytype"]:
             p = Path(session.create_tmp()) / name
@@ -728,16 +767,18 @@ def typing(
                 shutil.rmtree(str(p))
 
     for c in cmd:
-        if not c.startswith("nbqa"):
+        if c.endswith("-notebook"):
+            session.run("make", c, external=True)
+            continue
+        else:
             _run_info(c)
+
         if c == "mypy":
             session.run("mypy", "--color-output")
         elif c == "pyright":
             session.run("pyright", external=True)
         elif c == "pytype":
             session.run("pytype", "-o", str(Path(session.create_tmp()) / ".pytype"))
-        elif c.startswith("nbqa"):
-            session.run("make", c, external=True)
         else:
             session.log(f"skipping unknown command {c}")
 

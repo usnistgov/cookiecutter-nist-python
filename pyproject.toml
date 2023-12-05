@@ -53,6 +53,7 @@ typing = [
 ]
 nox = ["nox", "ruamel.yaml"]
 dev = [
+    # "cookiecutter-nist-python[nbval]", # optional
     "cookiecutter-nist-python[test]", #
     "cookiecutter-nist-python[typing-extras]",
     "cookiecutter-nist-python[dev-extras]",

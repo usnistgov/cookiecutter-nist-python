@@ -241,6 +241,22 @@ install-dev: ## install development version (run clean?)
 
 
 ################################################################################
+# * NOTEBOOK typing/testing
+################################################################################
+NOTEBOOKS ?= examples/usage
+.PHONY: mypy-notebook pyright-notebook typing-notebook
+mypy-notebook: ## run nbqa mypy
+	nbqa --nbqa-shell mypy $(NOTEBOOKS)
+pyright-notebook: ## run nbqa pyright
+	nbqa --nbqa-shell pyright $(NOTEBOOKS)
+typing-notebook: mypy-notebook pyright-notebook ## run nbqa mypy/pyright
+
+.PHONY: pytest-nbval
+pytest-notebook:  ## run pytest --nbval
+	pytest --nbval --current-env --sanitize-with=config/nbval.ini --dist loadscope -x $(NOTEBOOKS)
+
+
+################################################################################
 # * Other tools
 ################################################################################
 
@@ -257,19 +273,6 @@ tuna-import: ## Analyze load time for module
 	python -X importtime -c 'import cookiecutter_nist_python' 2> tuna-loadtime.log
 	tuna tuna-loadtime.log
 	rm tuna-loadtime.log
-
-# nbqa-mypy
-NOTEBOOKS ?= examples/usage
-.PHONY: nbqa-mypy nbqa-pyright nbqa-typing
-nbqa-mypy: ## run nbqa mypy
-	nbqa --nbqa-shell mypy $(NOTEBOOKS)
-nbqa-pyright: ## run nbqa pyright
-	nbqa --nbqa-shell pyright $(NOTEBOOKS)
-nbqa-typing: nbqa-mypy nbqa-pyright ## run nbqa mypy/pyright
-
-.PHONY: pytest-nbval
-pytest-nbval:  ## run pytest --nbval
-	pytest --nbval --current-env --sanitize-with=config/nbval.ini $(NOTEBOOKS) -x
 
 .PHONY: typing-tools
 typing-tools:
