@@ -253,7 +253,7 @@ typing-notebook: mypy-notebook pyright-notebook ## run nbqa mypy/pyright
 
 .PHONY: pytest-nbval
 pytest-notebook:  ## run pytest --nbval
-	pytest --nbval --current-env --sanitize-with=config/nbval.ini --dist loadscope -x $(NOTEBOOKS)
+	pytest --nbval --nbval-current-env --nbval-sanitize-with=config/nbval.ini --dist loadscope -x $(NOTEBOOKS)
 
 
 ################################################################################
