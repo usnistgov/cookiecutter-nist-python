@@ -117,7 +117,7 @@ cruft.patch
 /{{ cookiecutter.project_name }}-feedstock*/
 /src/**/_version.py
 tuna-loadtime.log
-/requirements/py*-dev.yaml
-/requirements/dev.txt
-/requirements/lock/py*-dev-conda-lock.yml*
-/requirements/lock/py*-dev.txt*
+/requirements/py*-dev-user.yaml
+/requirements/dev-user.txt
+/requirements/lock/py*-dev-user-conda-lock.yml*
+/requirements/lock/py*-dev-user.txt*

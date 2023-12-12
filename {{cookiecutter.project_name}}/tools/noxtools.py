@@ -526,6 +526,7 @@ class Installer:
                 envname, ext=".yaml", lock=False, python_version=session.python
             ) + _verify_paths(paths)
 
+            session.log(f"Using yaml files: {paths}")
             channels, conda_deps, pip_deps, _ = parse_envs(
                 *paths,
                 remove_python=remove_python,
@@ -860,13 +861,6 @@ def parse_envs(
 
             return nullcontext(path)  # type: ignore
 
-        # if hasattr(path, "readline"):
-        #     from contextlib import nullcontext
-
-        #     return nullcontext(path)  # type: ignore
-        # else:
-        #     return Path(path).open("r")
-
     for path in paths:
         with _get_context(path) as f:
             data = YAML(typ="safe", pure=True).load(f)
@@ -904,4 +898,4 @@ def load_nox_config(path: str | Path = "./config/userconfig.toml") -> dict[str, 
 
     from .projectconfig import ProjectConfig
 
-    return ProjectConfig.from_path(path).to_nox_config()
+    return ProjectConfig.from_path_and_environ(path).to_nox_config()

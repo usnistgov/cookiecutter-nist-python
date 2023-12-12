@@ -126,6 +126,11 @@ def example_path(request, nox_opts: str, nox_session_opts: str):
 
     run_inside_dir(f"nox -s requirements {nox_opts} -- {nox_session_opts}", str(path))
 
+    # add files to git
+    if not (path / ".git").exists():
+        run_inside_dir("git init", path)
+    run_inside_dir("git add .", path)
+
     # change to example_path
     old_cwd = Path.cwd()
     os.chdir(path)
@@ -251,14 +256,14 @@ def _bake_project(
     (rendered_dir / ".nox").mkdir(exist_ok=True)
 
     # if have userconfig, copy it:
-    config = ROOT / "config" / "userconfig.toml"
-    if config.exists():
-        shutil.copy(str(config), str(rendered_dir / "config"))
+    # config = ROOT / "config" / "userconfig.toml"
+    # if config.exists():
+    #     shutil.copy(str(config), str(rendered_dir / "config"))
 
     # # create requirements
     # run_inside_dir(f"nox -s requirements", rendered_dir)
 
     # git init?
-    if not (rendered_dir / ".git").exists():
-        run_inside_dir("git init", rendered_dir)
-    run_inside_dir("git add .", rendered_dir)
+    # if not (rendered_dir / ".git").exists():
+    #     run_inside_dir("git init", rendered_dir)
+    # run_inside_dir("git add .", rendered_dir)

@@ -128,11 +128,15 @@ class SessionParams(DataclassParser):
     update_package: bool = add_option(
         "--update-package", "-P", help="update package only"
     )
-    log_session: bool = add_option("--log-session", "-L")
+    log_session: bool = add_option("--log-session")
     version: str | None = None
 
     # dev
     dev_run: RUN_ANNO = None
+    dev_envname: Literal["dev", "dev-complete", "dev-user"] = add_option(
+        help="Name of environment to use for development session",
+        default="dev",
+    )
 
     # bootstrap
     bootstrap: list[str] | None = add_option(
@@ -158,6 +162,16 @@ class SessionParams(DataclassParser):
 
     # pip-compile
     pip_compile_force: bool = False
+    pip_compile_upgrade: bool = add_option(
+        "--pip-compile-upgrade",
+        "-L",
+        help="Upgrade all packages in lock file",
+        default=False,
+    )
+    pip_compile_upgrade_package: OPT_TYPE = add_option(
+        help="Upgrade package(s) in lock file", default=None
+    )
+    pip_compile_opts: OPT_TYPE = add_option(help="options to pip-compile")
 
     # test
     test_no_pytest: bool = False
@@ -268,7 +282,7 @@ def dev(
     (
         Installer.from_envname(
             session=session,
-            envname="dev",
+            envname=opts.dev_envname,
             lock=opts.lock,
             update=opts.update,
             package=".",
@@ -443,8 +457,22 @@ def pip_compile(
         ).install_all(log_session=opts.log_session)
     )
 
+    options = opts.pip_compile_opts or []
+
+    force = (
+        opts.pip_compile_force
+        or opts.pip_compile_upgrade
+        or opts.pip_compile_upgrade_package
+    )
+
+    if opts.pip_compile_upgrade:
+        options = options + ["-U"]
+
+    if opts.pip_compile_upgrade_package:
+        options = options + prepend_flag("-P", opts.pip_compile_upgrade_package)
+
     envs_all = ["test", "typing"]
-    envs_dev = ["dev", "dev-complete", "dev-base", "docs", "test-notebook"]
+    envs_dev = ["dev", "dev-complete", "docs", "test-notebook"]
 
     if session.python == PYTHON_DEFAULT_VERSION:
         envs = envs_all + envs_dev
@@ -463,9 +491,10 @@ def pip_compile(
         )
 
         changed, hash_path, hashes = check_hash_path_for_change(lockpath, reqspath)
-        if opts.pip_compile_force or changed:
+        if force or changed:
             session.log(f"Creating {lockpath}")
-            session.run("pip-compile", "-U", "-o", lockpath, reqspath)
+            session.run("pip-compile", *options, "-o", lockpath, reqspath)
+
             write_hashes(hash_path, hashes)
 
         else:

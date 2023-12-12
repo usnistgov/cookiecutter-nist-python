@@ -50,6 +50,8 @@ dev-extras = [
     "pytest-accept", # p2c: -p
     "ipython",
     "ipykernel",
+    "nox",
+    "ruamel.yaml",
 ]
 typing-extras = [
     "pytype; python_version < '3.11'", #
@@ -59,7 +61,6 @@ typing = [
     "{{ cookiecutter.project_name }}[typing-extras]", #
     "pytest",
 ]
-nox = ["nox", "ruamel.yaml"]
 dev = [
     # "{{ cookiecutter.project_name }}[nbval]", # optional
     "{{ cookiecutter.project_name }}[test]", #
@@ -75,7 +76,6 @@ tools = [
 dev-complete = [
     "{{ cookiecutter.project_name }}[dev]", #
     "{{ cookiecutter.project_name }}[tools]",
-    "{{ cookiecutter.project_name }}[nox]",
 ]
 docs = [
     "ipython", #
@@ -113,9 +113,6 @@ default_envs = ["test", "typing", "docs", "dev", "dev-complete"]
 extras = ["test"]
 base = false
 
-[tool.pyproject2conda.envs.dev-base]
-extras = ["dev"]
-
 [tool.pyproject2conda.envs.build]
 extras = "build-system.requires"
 reqs = ["build"]
@@ -125,7 +122,7 @@ style = "requirements"
 # make sure pip available to all conda environments
 # that install the package
 [[tool.pyproject2conda.overrides]]
-envs = ["test", "dev", "dev-complete", "dev-base", "docs"]
+envs = ["test", "docs", "dev", "dev-complete"]
 deps = ["pip"]
 
 [[tool.pyproject2conda.overrides]]

@@ -7,6 +7,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+DEFAULT_PYTHON = "3.11"
+
 
 # * Actual testing
 # ** Utilities
@@ -112,7 +114,7 @@ def test_baked_create(example_path: Path) -> None:
 def test_baked_version(example_path: Path) -> None:
     py = get_python_version()
 
-    if py == "3.11":
+    if py == "DEFAULT_PYTHON":
         run_inside_dir(f"nox -s build -- ++build version", example_path)
 
 
@@ -127,7 +129,7 @@ def test_baked_test(example_path: Path, nox_opts: str, nox_session_opts: str) ->
 def test_baked_lint(example_path: Path, nox_opts: str, nox_session_opts: str) -> None:
     py = get_python_version()
 
-    if py == "3.11":
+    if py == DEFAULT_PYTHON:
         try:
             code = run_inside_dir(
                 f"nox {nox_opts} -s lint -- {nox_session_opts}", example_path
@@ -142,7 +144,7 @@ def test_baked_lint(example_path: Path, nox_opts: str, nox_session_opts: str) ->
 def test_baked_docs(example_path: Path, nox_opts: str, nox_session_opts: str) -> None:
     py = get_python_version()
 
-    if py == "3.11":
+    if py == DEFAULT_PYTHON:
         run_inside_dir(
             f"nox {nox_opts} -s docs -- +d symlink build {nox_session_opts}",
             example_path,
@@ -164,7 +166,7 @@ def test_baked_mypystrict(
 ) -> None:
     py = get_python_version()
 
-    if py == "3.11":
+    if py == DEFAULT_PYTHON:
         run_inside_dir(
             f"nox {nox_opts} -s typing-{py} -- +m clean ++typing-run-internal 'mypy --strict' {nox_session_opts}",
             example_path,
@@ -176,7 +178,7 @@ def test_baked_notebook(
 ) -> None:
     py = get_python_version()
 
-    if py == "3.11":
+    if py == DEFAULT_PYTHON:
         run_inside_dir(
             f"nox {nox_opts} -s typing-{py} -- +m clean typing-notebook {nox_session_opts}",
             example_path,
