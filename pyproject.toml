@@ -81,76 +81,7 @@ docs = [
     "autodocsumm",
 ]
 
-[tool.pyproject2conda]
-user_config = "config/userconfig.toml"
-template_python = "requirements/py{py}-{env}"
-template = "requirements/{env}"
-# defaults
-python = ["3.11"]
-channels = ["conda-forge"]
-style = ["yaml", "requirements"]
-default_envs = ["test", "typing", "docs", "dev", "dev-complete"]
-
-[tool.pyproject2conda.envs.test-extras]
-extras = ["test"]
-base = false
-
-[tool.pyproject2conda.envs.dev-base]
-extras = ["dev"]
-
-[tool.pyproject2conda.envs.build]
-extras = "build-system.requires"
-reqs = ["build"]
-base = false
-style = "requirements"
-
-# make sure pip available to all conda environments
-# that install the package
-[[tool.pyproject2conda.overrides]]
-envs = ["test", "dev", "dev-complete", "dev-base", "docs"]
-deps = ["pip"]
-
-[[tool.pyproject2conda.overrides]]
-envs = ["test", "typing", "test-extras"]
-python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
-
-[tool.aliases]
-test = "pytest"
-
-[tool.pytest.ini_options]
-addopts = "--doctest-modules --doctest-glob='*.md' -s"
-testpaths = ["tests", "README.md"]
-markers = [
-    "default: default template",
-    "furo: furo theme",
-    "book: sphinx book theme",
-    "nocli: no command-line interface",
-    "click: Click cli",
-    "typer: Typer template",
-    "test: run tests",
-    "lint: run linting",
-    "docs: make docs",
-    "typing: run typing checks",
-    "mypystrict: run mypy --strict",
-    "create: simple test on path creation",
-    "longname: a project with a long name",
-    "disable: test that has been disabled by default",
-    "version: update-version-scm (disabled by default)",
-    "cookie: cookiecutter",
-    "copier: run copier tests",
-    "notebook: run typing/test on notebook",
-]
-
-[tool.coverage.report]
-exclude_also = ["if TYPE_CHECKING:", "@overload"]
-omit = ["*/vendored/*"]
-include = ["src/*"]
-
-[tool.isort]
-profile = "black"
-skip_gitignore = true
-known_first_party = ["cookiecutter_nist_python"]
-
+# * Linting
 [tool.ruff]
 fix = true
 line-length = 88
@@ -247,58 +178,40 @@ per-file-ignores = {  }
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
-[tool.ruff.isort]
-known-first-party = ["cookiecutter_nist_python"]
-
-[tool.ruff.mccabe]
-# Unlike Flake8, default to a complexity level of 10.
-max-complexity = 10
-
 [tool.nbqa.addopts]
 ruff = ["--fix", "--extend-ignore=D100,B018"]
 
-[tool.flake8]
-docstring-convention = "numpy"
-ignore = [
-    # # whitespace before ':' - doesn't work well with black
-    "E203",
-    # module level import not at top of file
-    "E402",
-    # line too long - let black worry about that
-    "E501",
-    # do not assign a lambda expression, use a def
-    "E731",
-    # # line break before binary operator
-    "W503",
-    # allow black line after docstring
-    "D202",
-    "D105",
-    "D205",
-    # this leads to errors with placing titles in module
-    # docstrings
-    "D400",
-    "D401",
-    "D415",
-    "D102",
-    "D103",
-    # these are useful, but too many errors
-    # due to use of docfiller
-    "D417",
-    "D107",
-    "D203",
-    "D212",
+# * Testing
+[tool.pytest.ini_options]
+addopts = "--doctest-modules --doctest-glob='*.md' -s"
+testpaths = ["tests", "README.md"]
+markers = [
+    "default: default template",
+    "furo: furo theme",
+    "book: sphinx book theme",
+    "nocli: no command-line interface",
+    "click: Click cli",
+    "typer: Typer template",
+    "test: run tests",
+    "lint: run linting",
+    "docs: make docs",
+    "typing: run typing checks",
+    "mypystrict: run mypy --strict",
+    "create: simple test on path creation",
+    "longname: a project with a long name",
+    "disable: test that has been disabled by default",
+    "version: update-version-scm (disabled by default)",
+    "cookie: cookiecutter",
+    "copier: run copier tests",
+    "notebook: run typing/test on notebook",
 ]
 
-[tool.scriv]
-format = "md"
-md_header_level = "2"
-new_fragment_template = "file: changelog.d/templates/new_fragment.md.j2"
+[tool.coverage.report]
+exclude_also = ["if TYPE_CHECKING:", "@overload"]
+omit = ["*/vendored/*"]
+include = ["src/*"]
 
-[tool.commitizen]
-use_shortcuts = true
-
-[tool.cruft]
-
+# * Typing
 [tool.mypy]
 files = ["tests"]
 show_error_codes = true
@@ -343,3 +256,48 @@ reportUnboundVariable = false
 
 [tool.pytype]
 inputs = ["src", "tests"]
+
+# * Dependency
+[tool.pyproject2conda]
+user_config = "config/userconfig.toml"
+template_python = "requirements/py{py}-{env}"
+template = "requirements/{env}"
+# defaults
+python = ["3.11"]
+channels = ["conda-forge"]
+style = ["yaml", "requirements"]
+default_envs = ["test", "typing", "docs", "dev", "dev-complete"]
+
+[tool.pyproject2conda.envs.test-extras]
+extras = ["test"]
+base = false
+
+[tool.pyproject2conda.envs.dev-base]
+extras = ["dev"]
+
+[tool.pyproject2conda.envs.build]
+extras = "build-system.requires"
+reqs = ["build"]
+base = false
+style = "requirements"
+
+# make sure pip available to all conda environments
+# that install the package
+[[tool.pyproject2conda.overrides]]
+envs = ["test", "dev", "dev-complete", "dev-base", "docs"]
+deps = ["pip"]
+
+[[tool.pyproject2conda.overrides]]
+envs = ["test", "typing", "test-extras"]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+# * Other
+[tool.scriv]
+format = "md"
+md_header_level = "2"
+new_fragment_template = "file: changelog.d/templates/new_fragment.md.j2"
+
+[tool.commitizen]
+use_shortcuts = true
+
+[tool.cruft]
