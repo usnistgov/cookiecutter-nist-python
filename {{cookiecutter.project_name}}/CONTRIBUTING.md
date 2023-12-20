@@ -270,7 +270,7 @@ nox -s docs -- +d build open
 
 ### Creating environment.yaml/requirement.txt files
 
-The project is setup to create `environemt.yaml` and `requirement.txt` files
+The project is setup to create `environment.yaml` and `requirement.txt` files
 from `pyproject.toml`. This can be done using:
 
 ```bash
@@ -318,7 +318,7 @@ where commands can be one of:
   [ghp-import](https://github.com/c-w/ghp-import))
 - livehtml : Live documentation updates
 - open : open the documentation in a web browser
-- serve : Serve the created documentation webpage (Need this to view javescript
+- serve : Serve the created documentation webpage (Need this to view javascript
   in created pages).
 
 ## Testing with nox
@@ -491,6 +491,7 @@ like to install them in the development environment instead, use the
 
 Additional tools are:
 
+- [pip-tools]
 - [pre-commit]
 - [scriv]
 - [nbqa]
@@ -502,6 +503,7 @@ Additional tools are:
 These are setup using the following:
 
 ```console
+condax/pipx install pip-tools
 condax/pipx install pre-commit
 pipx install scriv
 condax/pipx install nbqa
@@ -545,10 +547,11 @@ nox -s {session} -- +P/++update-package
 [cruft]: https://github.com/cruft/cruft
 [git-flow]: https://github.com/nvie/gitflow
 [mamba]: https://github.com/mamba-org/mamba
-[nbval]: https://github.com/computationalmodelling/nbval
 [nb_conda_kernels]: https://github.com/Anaconda-Platform/nb_conda_kernels
 [nbqa]: https://github.com/nbQA-dev/nbQA
+[nbval]: https://github.com/computationalmodelling/nbval
 [nox]: https://github.com/wntrblm/nox
+[pip-tools]: https://github.com/jazzband/pip-tools
 [pipx]: https://github.com/pypa/pipx
 [pre-commit]: https://pre-commit.com/
 [pyenv]: https://github.com/pyenv/pyenv

@@ -47,7 +47,7 @@ for style in ["cookie", "copier"]:
 
         def _update_project_name(d):
             if style != "cookie":
-                d["project_name"] = f"{style}-" + d["project_name"]
+                d["project_name"] = d["project_name"] + f"-{style}"
             return d
 
         d = _update_project_name(
@@ -68,7 +68,7 @@ for style in ["cookie", "copier"]:
 
             # add in longname
             d = _update_project_name(
-                dict(d, project_name=f"a-super-long-package-name-{theme}-{cli}")
+                dict(d, project_name=d["project_name"] + "-long-package-name")
             )
             PARAMS.append(pytest.param(d, marks=marks + [pytest.mark.longname]))
 

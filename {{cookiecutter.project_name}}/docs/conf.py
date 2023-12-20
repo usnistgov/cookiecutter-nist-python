@@ -258,8 +258,7 @@ author = "{{ cookiecutter.full_name }}"
 def _get_version():
     import os
 
-    version = os.environ.get("SETUPTOOLS_SCM_PRETEND_VERSION", None)
-    if version is None:
+    if (version := os.environ.get("SETUPTOOLS_SCM_PRETEND_VERSION")) is None:
         version = {{ cookiecutter.project_slug }}.__version__
     return version
 

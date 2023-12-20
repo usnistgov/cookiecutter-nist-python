@@ -79,7 +79,7 @@ This is free software. See [LICENSE][license-link].
 
 ## Related work
 
-Any other stuff to metion....
+Any other stuff to mention....
 
 ## Contact
 
