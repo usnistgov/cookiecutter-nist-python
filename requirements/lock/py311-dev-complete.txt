@@ -216,10 +216,6 @@ requests==2.31.0
     #   scriv
 rich==13.7.0
     # via cookiecutter
-ruamel-yaml==0.18.5
-    # via -r requirements/dev-complete.txt
-ruamel-yaml-clib==0.2.8
-    # via ruamel-yaml
 scriv==1.5.0
     # via -r requirements/dev-complete.txt
 six==1.16.0

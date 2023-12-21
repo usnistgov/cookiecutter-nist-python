@@ -21,7 +21,6 @@ dependencies:
   - pytest-cov
   - pytest-sugar
   - pytest-xdist
-  - ruamel.yaml
   - pip
   - pip:
       - copier-templates-extensions

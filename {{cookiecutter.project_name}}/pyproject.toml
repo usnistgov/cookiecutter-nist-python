@@ -55,7 +55,6 @@ dev-extras = [
     "ipython",
     "nox",
     "pytest-accept",
-    "ruamel.yaml",
 ]
 docs = [
     {%- if cookiecutter.sphinx_use_autodocsumm %}

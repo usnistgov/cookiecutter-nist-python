@@ -183,10 +183,6 @@ requests==2.31.0
     # via cookiecutter
 rich==13.7.0
     # via cookiecutter
-ruamel-yaml==0.18.5
-    # via -r requirements/dev.txt
-ruamel-yaml-clib==0.2.8
-    # via ruamel-yaml
 six==1.16.0
     # via
     #   asttokens

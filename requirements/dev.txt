@@ -20,4 +20,3 @@ pytest-cov
 pytest-sugar
 pytest-xdist
 pytype;python_version<"3.11"
-ruamel.yaml
