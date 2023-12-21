@@ -35,9 +35,8 @@ clean-build: ## remove build artifacts
 	rm -fr build/
 	rm -fr docs/_build/
 	rm -fr dist/
-	rm -fr .eggs/
-	find . -name '*.egg-info' -exec rm -fr {} +
-	find . -name '*.egg' -exec rm -f {} +
+	rm -fr dist-conda/
+
 
 clean-pyc: ## remove Python file artifacts
 	find . -name '*.pyc' -exec rm -f {} +
@@ -45,8 +44,10 @@ clean-pyc: ## remove Python file artifacts
 	find . -name '*~' -exec rm -f {} +
 	find . -name '__pycache__' -exec rm -fr {} +
 
+clean-nox: ## remove all nox artifacts except dev
+	find .nox -mindepth 3 -maxdepth 3 -name dev -prune -o -exec rm -rf {} +
+
 clean-test: ## remove test and coverage artifacts
-	rm -fr .nox/
 	rm -f .coverage
 	rm -fr htmlcov/
 	rm -fr .pytest_cache
@@ -276,5 +277,5 @@ tuna-import: ## Analyze load time for module
 
 .PHONY: typing-tools
 typing-tools:
-	mypy noxfile.py tools
-	pyright noxfile.py tools
+	mypy --strict noxfile.py tools/*.py
+	pyright noxfile.py tools/*.py

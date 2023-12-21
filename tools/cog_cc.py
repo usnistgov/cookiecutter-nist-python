@@ -51,7 +51,7 @@ class Option:
 
             assert isinstance(
                 default_val, str
-            ), f"recieved {default_val} of type {type(default_val)}"
+            ), f"received {default_val} of type {type(default_val)}"
             d = default_val
 
             if "{{" in d or "{%" in d:
@@ -119,7 +119,7 @@ class CC:
             f"{self.__class__.__name__} object has no attribute {attr}"
         )
 
-    def __getitem__(self, item) -> Option:
+    def __getitem__(self, item: str) -> Option:
         return self.options[item]
 
     def to_yaml(

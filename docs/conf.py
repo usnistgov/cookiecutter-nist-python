@@ -122,7 +122,7 @@ nb_execution_allow_errors = True
 github_username = "usnistgov"
 
 html_context = {
-    "github_user": "usnistgov",
+    "github_user": github_username,
     "github_repo": "cookiecutter-nist-python",
     "github_version": "main",
     "doc_path": "docs",

@@ -47,7 +47,7 @@ for style in ["cookie", "copier"]:
 
         def _update_project_name(d):
             if style != "cookie":
-                d["project_name"] = f"{style}-" + d["project_name"]
+                d["project_name"] = d["project_name"] + f"-{style}"
             return d
 
         d = _update_project_name(
@@ -68,7 +68,7 @@ for style in ["cookie", "copier"]:
 
             # add in longname
             d = _update_project_name(
-                dict(d, project_name=f"a-super-long-package-name-{theme}-{cli}")
+                dict(d, project_name=d["project_name"] + "-long-package-name")
             )
             PARAMS.append(pytest.param(d, marks=marks + [pytest.mark.longname]))
 
@@ -125,6 +125,11 @@ def example_path(request, nox_opts: str, nox_session_opts: str):
     )
 
     run_inside_dir(f"nox -s requirements {nox_opts} -- {nox_session_opts}", str(path))
+
+    # add files to git
+    if not (path / ".git").exists():
+        run_inside_dir("git init", path)
+    run_inside_dir("git add .", path)
 
     # change to example_path
     old_cwd = Path.cwd()
@@ -209,6 +214,7 @@ def _bake_project(
         template = ROOT
     if output_dir is None:
         output_dir = OUTPUT_PATH
+    output_dir = Path(output_dir)
 
     if extra_context is None:
         extra_context = {}
@@ -251,14 +257,14 @@ def _bake_project(
     (rendered_dir / ".nox").mkdir(exist_ok=True)
 
     # if have userconfig, copy it:
-    config = ROOT / "config" / "userconfig.toml"
-    if config.exists():
-        shutil.copy(str(config), str(rendered_dir / "config"))
+    # config = ROOT / "config" / "userconfig.toml"
+    # if config.exists():
+    #     shutil.copy(str(config), str(rendered_dir / "config"))
 
     # # create requirements
     # run_inside_dir(f"nox -s requirements", rendered_dir)
 
     # git init?
-    if not (rendered_dir / ".git").exists():
-        run_inside_dir("git init", rendered_dir)
-    run_inside_dir("git add .", rendered_dir)
+    # if not (rendered_dir / ".git").exists():
+    #     run_inside_dir("git init", rendered_dir)
+    # run_inside_dir("git add .", rendered_dir)

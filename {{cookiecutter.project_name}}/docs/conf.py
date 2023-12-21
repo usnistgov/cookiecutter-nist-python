@@ -63,6 +63,9 @@ extensions = [
     {%- if cookiecutter.command_line_interface in ["click", "typer"] %}
     "sphinx_click",
     {%- endif %}
+    {%- if cookiecutter.command_line_interface == "argparse" %}
+    "sphinxarg.ext"
+    {%- endif %}
 ]
 
 nitpicky = True
@@ -130,7 +133,7 @@ nb_execution_allow_errors = True
 github_username = "{{ cookiecutter.github_username }}"
 
 html_context = {
-    "github_user": "{{ cookiecutter.github_username}}",
+    "github_user": github_username,
     "github_repo": "{{ cookiecutter.project_name}}",
     "github_version": "main",
     "doc_path": "docs",
@@ -258,8 +261,7 @@ author = "{{ cookiecutter.full_name }}"
 def _get_version():
     import os
 
-    version = os.environ.get("SETUPTOOLS_SCM_PRETEND_VERSION", None)
-    if version is None:
+    if (version := os.environ.get("SETUPTOOLS_SCM_PRETEND_VERSION")) is None:
         version = {{ cookiecutter.project_slug }}.__version__
     return version
 
