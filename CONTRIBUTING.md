@@ -479,8 +479,8 @@ Note that you can bootstrap the whole process with [pipx] using:
 
 ```bash
 pipx run --spec nox \
-     nox -s bootstrap -- \
-     +B dev ++dev-envname dev/dev-complete
+     nox -s dev -- \
+     ++dev-envname dev/dev-complete
 ```
 
 ### Development tools
