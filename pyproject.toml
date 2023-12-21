@@ -112,6 +112,7 @@ exclude = [
     "node_modules",
     "venv",
     "tests/",
+    "src/cookiecutter_nist_python/tests",
 ]
 
 [tool.ruff.lint]
@@ -163,7 +164,7 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 # per-file-ignores = {  }
 
 [tool.ruff.lint.isort]
-known-first-party = ["open_notebook"]
+known-first-party = ["cookiecutter_nist_python"]
 
 [tool.ruff.format]
 docstring-code-format = true
