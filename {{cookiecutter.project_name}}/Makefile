@@ -44,8 +44,8 @@ clean-pyc: ## remove Python file artifacts
 	find . -name '*~' -exec rm -f {} +
 	find . -name '__pycache__' -exec rm -fr {} +
 
-clean-nox: ## remove all nox artifacts except dev
-	find .nox -mindepth 3 -maxdepth 3 -name dev -prune -o -exec rm -rf {} +
+clean-nox: ## remove all nox artifacts
+	rm -fr .nox
 
 clean-test: ## remove test and coverage artifacts
 	rm -f .coverage
@@ -103,15 +103,12 @@ pre-commit-codespell: ## run codespell. Note that this imports allowed words fro
 ################################################################################
 # * User setup
 ################################################################################
-.PHONY: user-venv user-autoenv-zsh user-all
-user-venv: ## create .venv file with name of conda env
-	echo $${PWD}/.nox/{{ cookiecutter.project_name }}/envs/dev > .venv
-
+.PHONY: user-autoenv-zsh user-all
 user-autoenv-zsh: ## create .autoenv.zsh files
-	echo conda activate $$(cat .venv) > .autoenv.zsh
+	echo conda activate ./.venv > .autoenv.zsh
 	echo conda deactivate > .autoenv_leave.zsh
 
-user-all: user-venv user-autoenv-zsh ## runs user scripts
+user-all: user-autoenv-zsh ## runs user scripts
 
 
 ################################################################################

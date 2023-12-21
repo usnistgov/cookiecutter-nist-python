@@ -32,6 +32,7 @@ from tools.noxtools import (
     check_for_change_manager,
     combine_list_str,
     factory_conda_backend,
+    factory_virtualenv_backend,
     infer_requirement_path,
     is_conda_session,
     load_nox_config,
@@ -65,10 +66,6 @@ ROOT = Path(__file__).parent
 
 nox.options.reuse_existing_virtualenvs = True
 nox.options.sessions = ["test"]
-# Using ".nox/{project-name}/envs" instead of ".nox" to store environments.
-# This fixes problems with ipykernel/nb_conda_kernel and some other dev tools
-# that expect conda environments to be in something like ".../a/path/miniforge/envs/env".
-nox.options.envdir = f".nox/{PACKAGE_NAME}/envs"
 
 # * User Config ------------------------------------------------------------------------
 
@@ -286,7 +283,7 @@ def dev(
     session: Session,
     opts: SessionParams,
 ) -> None:
-    """Create development environment using either conda (dev) or virtualenv (dev-venv)."""
+    """Create development environment using either conda (dev) or virtualenv (dev-venv) in location ~/.venv"""
 
     (
         Installer.from_envname(
@@ -299,14 +296,22 @@ def dev(
         .install_all(
             update_package=opts.update_package,
             log_session=opts.log_session,
-            display_name=f"{PACKAGE_NAME}-{session.name}",
         )
+        .set_ipykernel_display_name(name=f"{PACKAGE_NAME}-dev", update=True)
         .run_commands(opts.dev_run)
     )
 
 
-nox.session(name="dev-venv", **DEFAULT_KWS)(dev)
-nox.session(name="dev", **CONDA_DEFAULT_KWS)(dev)
+nox.session(
+    name="dev-venv",
+    python=PYTHON_DEFAULT_VERSION,
+    venv_backend=factory_virtualenv_backend(location="./.venv"),
+)(dev)
+nox.session(
+    name="dev",
+    python=PYTHON_DEFAULT_VERSION,
+    venv_backend=factory_conda_backend(backend=CONDA_BACKEND, location="./.venv"),
+)(dev)
 
 
 @nox.session(python=False)
@@ -710,7 +715,6 @@ def docs(
     ).install_all(
         update_package=opts.update_package,
         log_session=opts.log_session,
-        display_name=f"{PACKAGE_NAME}-{session.name}",
     )
 
     if opts.version:

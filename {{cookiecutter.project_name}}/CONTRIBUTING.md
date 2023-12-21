@@ -283,9 +283,9 @@ requirement files are under something like
 `requirements/{env-name}.txt` (virtual environment).
 
 Additionally, requirement files for virtualenvs (e.g., `requirements.txt` like
-files) will be "locked" using `pip-compile`. These files are placed under
-`requirements/lock`. Note the the session `requirements` automatically calls the
-session `pip-compile`.
+files) will be "locked" using `pip-compile` from [pip-tools]. These files are
+placed under `requirements/lock`. Note the the session `requirements`
+automatically calls the session `pip-compile`.
 
 To upgrade the dependencies in the lock, you'll need to pass the option:
 
@@ -296,8 +296,15 @@ nox -s requirements/pip-compile -- +L/++pip-compile-upgrade
 ## ipykernel
 
 The environments created by nox `dev` and `docs-conda` will try to add
-meaningful display names for ipykernel (assuming you're using
-[nb_conda_kernels])
+meaningful display names for ipykernel. These are installed at the user level.
+To cleanup the kernels (meaning, removing installed kernels that point to a
+removed environment), You can use the script `tools/clean_kernelspec.py`. This
+script should be run from the environment of the jupyter server. For example, if
+you run jupyter from a conda environment named `notebook`, run
+
+```bash
+conda run -n notebook python tools/clean_kernelspec.py
+```
 
 ## Building the docs
 
@@ -336,6 +343,11 @@ nox -s test -- ++test-opts -x -v
 ```
 
 Use session `test-conda` to test under a conda environment.
+
+Note that by default, these will install an isolated copy of the package, as
+apposed to installing with `pip install -e . --no-deps`. This is similar to how
+[tox] works. This uses the nox session `build` behind the scenes. This should
+therefore be a fast operation.
 
 ## Building distribution for conda
 
@@ -446,7 +458,10 @@ Run something like the following:
 ```bash
 python -m venv .venv
 source .venv/bin/activate
+# unlocked
 python -m pip install -r requirements/dev.txt
+# locked:
+pip-sync --python-path .venv/bin/python requirements/lock/py{version}-dev.txt
 python -m pip install -e . --no-deps
 ```
 
@@ -464,11 +479,8 @@ nox -s dev -- [++dev-envname dev/dev-complete]
 
 where the option `++dev-envname` (default `dev`) can be used to specify what
 kind of development environment you'd like. This will create a [conda]
-environment under `.nox/{project-name}/envs/dev` instead of under `.nox`. This
-fixes some issues with things like [nb_conda_kernels], as well as other third
-party tools that expect conda environment to be located in a directory like
-`.../miniforge/envs/env-name`. To instead create a [virtualenv] based
-development environment, use `nox -s dev-venv ....`.
+environment under `.venv`. To instead create a [virtualenv] based development
+environment, use `nox -s dev-venv ....`.
 
 If you go this route, you may want to use something like
 [zsh-autoenv](https://github.com/Tarrasch/zsh-autoenv) (if using zsh shell) or
@@ -547,7 +559,6 @@ nox -s {session} -- +P/++update-package
 [cruft]: https://github.com/cruft/cruft
 [git-flow]: https://github.com/nvie/gitflow
 [mamba]: https://github.com/mamba-org/mamba
-[nb_conda_kernels]: https://github.com/Anaconda-Platform/nb_conda_kernels
 [nbqa]: https://github.com/nbQA-dev/nbQA
 [nbval]: https://github.com/computationalmodelling/nbval
 [nox]: https://github.com/wntrblm/nox
