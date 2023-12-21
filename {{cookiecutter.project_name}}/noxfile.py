@@ -286,19 +286,6 @@ def add_opts(
 
 # * Environments------------------------------------------------------------------------
 # ** Dev (conda)
-@nox.session(**CONDA_DEFAULT_KWS)
-@add_opts
-def example(
-    session: Session,
-    opts: SessionParams,
-) -> None:
-    runner = Installer.from_envname(
-        session=session, envname="thing", package=True, update=opts.update
-    ).install_all(update_package=opts.update_package)
-
-    session.log(runner.python_full_path)
-
-
 @add_opts
 def dev(
     session: Session,
@@ -498,15 +485,20 @@ def pip_compile(
 
     envs_all = ["test", "typing"]
     envs_dev = ["dev", "dev-complete", "docs"]
+    envs_dev_optional = ["test-notebook"]
 
     if session.python == PYTHON_DEFAULT_VERSION:
-        envs = envs_all + envs_dev
+        envs = envs_all + envs_dev + envs_dev_optional
     else:
         envs = envs_all
 
     for env in envs:
         assert isinstance(session.python, str)
         reqspath = infer_requirement_path(env, ext=".txt")
+
+        if not reqspath.is_file() and env in envs_dev_optional:
+            continue
+
         lockpath = infer_requirement_path(
             env,
             ext=".txt",

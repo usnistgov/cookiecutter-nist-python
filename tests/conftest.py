@@ -214,6 +214,7 @@ def _bake_project(
         template = ROOT
     if output_dir is None:
         output_dir = OUTPUT_PATH
+    output_dir = Path(output_dir)
 
     if extra_context is None:
         extra_context = {}
