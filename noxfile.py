@@ -144,11 +144,6 @@ class SessionParams(DataclassParser):
         default="dev",
     )
 
-    # bootstrap
-    bootstrap: list[str] | None = add_option(
-        "-B", "--bootstrap", help="run these sessions under isolated bootstrap session"
-    )
-
     # config
     dev_extras: OPT_TYPE = add_option(help="`extras` to include in dev environment")
     python_paths: OPT_TYPE = add_option(help="paths to python executables")
