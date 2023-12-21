@@ -1,6 +1,6 @@
 {
   "template": ".",
-  "commit": "c02629ab60d836312332f8f747b798c1bb93cfcb",
+  "commit": "dee9badeedc91ff1272c40a4bc3ecb0a492f48fe",
   "checkout": "feature/update-dev-envs-format",
   "context": {
     "cookiecutter": {

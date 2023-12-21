@@ -42,7 +42,7 @@ from nox.virtualenv import CondaEnv
 
 if TYPE_CHECKING:
     import sys
-    from typing import Any, Callable, Iterable, Literal, Union
+    from typing import Any, Callable, Iterable, Iterator, Literal, Union
 
     from nox import Session
 
@@ -916,7 +916,7 @@ def check_for_change_manager(
     hash_path: str | Path | None = None,
     target_path: str | Path | None = None,
     force_write: bool = False,
-):
+) -> Iterator[bool]:
     """
     Context manager to look for changes in dependencies.
 
