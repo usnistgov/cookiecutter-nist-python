@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "dee9badeedc91ff1272c40a4bc3ecb0a492f48fe",
-  "checkout": "feature/update-dev-envs-format",
+  "commit": "a936f275edf53d9f2d892b2339308ac13b73d2d3",
+  "checkout": "develop",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",
