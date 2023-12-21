@@ -61,7 +61,7 @@ def factory_conda_backend(
         runner: SessionRunner,
     ) -> CondaEnv:
         # override allowed_globals
-        CondaEnv.allowed_globals = ("conda", "mamba", "micromamba", "conda-lock")
+        CondaEnv.allowed_globals = ("conda", "mamba", "micromamba", "conda-lock")  # type: ignore
 
         assert isinstance(runner.func.python, str)
         return CondaEnv(
@@ -400,18 +400,17 @@ class Installer:
     def python_full_path(self) -> str:
         path = self.session.run_always(
             "python", "-c", "import sys; print(sys.executable)", silent=True
-        )  # type: ignore
-        if path is None:
+        )
+        if not isinstance(path, str):
             raise ValueError("accessing python_full_path with value None")
         return path.strip()
 
     @cached_property
     def skip_install(self) -> bool:
         try:
-            return (
-                self.session._runner.global_config.no_install
-                and self.session._runner.venv._reused  # pyright: ignore
-            )  # type: ignore
+            return self.session._runner.global_config.no_install and getattr(
+                self.session._runner.venv, "_reused", False
+            )
         except Exception:
             return False
 

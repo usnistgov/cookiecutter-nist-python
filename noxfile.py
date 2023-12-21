@@ -494,10 +494,12 @@ def pip_compile(
 
     for env in envs:
         assert isinstance(session.python, str)
-        reqspath = infer_requirement_path(env, ext=".txt")
-
-        if not reqspath.is_file() and env in envs_dev_optional:
-            continue
+        reqspath = infer_requirement_path(env, ext=".txt", check_exists=False)
+        if not reqspath.is_file():
+            if env in envs_dev_optional:
+                continue
+            else:
+                raise ValueError(f"Missing file {reqspath}")
 
         lockpath = infer_requirement_path(
             env,
