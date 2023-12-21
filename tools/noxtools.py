@@ -38,7 +38,7 @@ SessionRunner._create_venv = override_sessionrunner_create_venv  # type: ignore
 # fmt: on
 
 from nox.logger import logger
-from nox.virtualenv import CondaEnv
+from nox.virtualenv import CondaEnv, VirtualEnv
 
 if TYPE_CHECKING:
     import sys
@@ -56,6 +56,7 @@ if TYPE_CHECKING:
 
 def factory_conda_backend(
     backend: Literal["conda", "mamba", "micromamba"] = "conda",
+    location: str | None = None,
 ) -> Callable[..., CondaEnv]:
     def passthrough_venv_backend(
         runner: SessionRunner,
@@ -65,13 +66,34 @@ def factory_conda_backend(
 
         assert isinstance(runner.func.python, str)
         return CondaEnv(
-            location=runner.envdir,
+            location=location or runner.envdir,
             interpreter=runner.func.python,
             reuse_existing=runner.func.reuse_venv
             or runner.global_config.reuse_existing_virtualenvs,
             venv_params=runner.func.venv_params,
             conda_cmd=backend,
         )
+
+    return passthrough_venv_backend
+
+
+def factory_virtualenv_backend(
+    backend: Literal["virtualenv", "venv"] = "virtualenv",
+    location: str | None = None,
+) -> Callable[..., CondaEnv | VirtualEnv]:
+    def passthrough_venv_backend(
+        runner: SessionRunner,
+    ) -> VirtualEnv:
+        venv = VirtualEnv(
+            location=location or runner.envdir,
+            interpreter=runner.func.python,  # type: ignore
+            reuse_existing=runner.func.reuse_venv
+            or runner.global_config.reuse_existing_virtualenvs,
+            venv_params=runner.func.venv_params,
+            venv=(backend == "venv"),
+        )
+        venv.create()
+        return venv
 
     return passthrough_venv_backend
 
@@ -458,19 +480,27 @@ class Installer:
 
     def set_ipykernel_display_name(
         self,
+        name: str,
         display_name: str | None = None,
+        user: bool = True,
         update: bool = False,
     ) -> Self:
-        if not display_name or (not self.is_conda_session()) or self.skip_install:
-            pass
-        elif self.changed or update or self.update:
-            # continue if fails
-            self.session.run(
-                *shlex.split(
-                    f"python -m ipykernel install --sys-prefix --display-name {display_name}"
-                ),
+        if self.changed or update or self.update:
+            if display_name is None:
+                display_name = f"Python [venv: {name}]"
+            self.session.run_always(
+                "python",
+                "-m",
+                "ipykernel",
+                "install",
+                "--user" if user else "--sys-prefix",
+                "--name",
+                name,
+                "--display-name",
+                display_name,
                 success_codes=[0, 1],
             )
+
         return self
 
     def install_all(
@@ -478,7 +508,6 @@ class Installer:
         update_package: bool = False,
         log_session: bool = False,
         save_config: bool = True,
-        display_name: str | None = None,
     ) -> Self:
         if self.create_venv:
             assert self.is_conda_session()
@@ -488,7 +517,6 @@ class Installer:
             (self.conda_install_deps() if self.is_conda_session() else self)
             .pip_install_deps()
             .pip_install_package(update=update_package)
-            .set_ipykernel_display_name(display_name=display_name)
         )
 
         if log_session:
