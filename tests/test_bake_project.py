@@ -1,9 +1,11 @@
-from pathlib import Path
-import pytest
-
-from utils import run_inside_dir
+from __future__ import annotations
 
 import logging
+from pathlib import Path
+from typing import Iterable
+
+import pytest
+from utils import run_inside_dir
 
 logger = logging.getLogger(__name__)
 
@@ -12,14 +14,27 @@ DEFAULT_PYTHON = "3.11"
 
 # * Actual testing
 # ** Utilities
+
+
+def _add_extras(x: list[str], extras: str | Iterable[str] | None) -> list[str]:
+    if extras is None:
+        out = x
+    elif isinstance(extras, str):
+        out = [*x, extras]
+    else:
+        out = x + list(extras)
+
+    return out
+
+
 def check_directory(
-    path,
-    extra_files=None,
-    extra_directories=None,
-    files=None,
-    directories=None,
-    ignore_paths=None,
-):
+    path: str | Path,
+    extra_files: str | Iterable[str] | None = None,
+    extra_directories: str | Iterable[str] | None = None,
+    files: list[str] | None = None,
+    directories: list[str] | None = None,
+    ignore_paths: list[str] | None = None,
+) -> None:
     """Check path for files and directories"""
     path = Path(path)
 
@@ -61,22 +76,11 @@ def check_directory(
             "tools",
         ]
 
-    def _add_extras(x, extras):
-        if extras is None:
-            return x
-        elif isinstance(extras, str):
-            return x + [extras]
-        else:
-            return x + list(extras)
-
     files = _add_extras(files, extra_files)
     directories = _add_extras(directories, extra_directories)
 
-    found_files = []
-    found_directories = []
-
-    if ignore_paths is None:
-        ignore_paths = []
+    found_files: list[str] = []
+    found_directories: list[str] = []
 
     for p in Path(path).iterdir():
         if p.name in ignore_paths:
@@ -91,7 +95,7 @@ def check_directory(
     assert set(directories) == set(found_directories)
 
 
-def get_python_version():
+def get_python_version() -> str:
     import sys
 
     return "{}.{}".format(*sys.version_info[:2])
@@ -100,7 +104,7 @@ def get_python_version():
 # ** fixtures
 # @pytest.mark.create
 def test_baked_create(example_path: Path) -> None:
-    logging.info("in directory {}".format(Path.cwd()))
+    logging.info(f"in directory {Path.cwd()}")
     assert Path.cwd().resolve() == example_path.resolve()
 
     extra_files = (
@@ -110,12 +114,12 @@ def test_baked_create(example_path: Path) -> None:
     check_directory(path=example_path, extra_files=extra_files)
 
 
-@pytest.mark.disable
+@pytest.mark.disable()
 def test_baked_version(example_path: Path) -> None:
     py = get_python_version()
 
     if py == "DEFAULT_PYTHON":
-        run_inside_dir(f"nox -s build -- ++build version", example_path)
+        run_inside_dir("nox -s build -- ++build version", example_path)
 
 
 # @pytest.mark.test
@@ -131,12 +135,12 @@ def test_baked_lint(example_path: Path, nox_opts: str, nox_session_opts: str) ->
 
     if py == DEFAULT_PYTHON:
         try:
-            code = run_inside_dir(
+            run_inside_dir(
                 f"nox {nox_opts} -s lint -- {nox_session_opts}", example_path
             )
         except Exception as error:
-            logging.info(f"git diff")
-            run_inside_dir(f"git diff", example_path)
+            logging.info("git diff")
+            run_inside_dir("git diff", example_path)
             raise error
 
 

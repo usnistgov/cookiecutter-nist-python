@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import dataclasses
 import json
+from itertools import starmap
 from pathlib import Path
 from typing import Any
 
@@ -26,7 +27,7 @@ class Option:
     choices: list[Choice]
 
     def yaml(self, default: bool = False, when: Any = None) -> str:
-        result = [f"{self.name}:"]
+        result: list[str] = [f"{self.name}:"]
         if self.type_:
             result.append(f"  type: {self.type_}")
         result.append(f"  help: {self.prompt}")
@@ -34,7 +35,7 @@ class Option:
         if self.choices:
             result.append("  choices:")
             for choice in self.choices:
-                result.append(
+                result.append(  # noqa: PERF401
                     f'    "{choice.description}": {choice.name}'
                     if choice.description
                     else f"    - {choice.name}"
@@ -86,8 +87,8 @@ class CC:
             prompts = data.get("__prompts__", {}).get(name, name)
             if isinstance(prompts, dict):
                 prompt = prompts.pop("__prompt__")
-                choices = [Choice(k, v) for k, v in prompts.items()]
-                # Hack to enable " thing - thing" alignment:
+                choices = list(starmap(Choice, prompts.items()))
+                # Work around to enable " thing - thing" alignment:
                 for choice in choices[9:]:
                     choice.description = choice.description.replace(" - ", "  - ")
 
@@ -115,9 +116,8 @@ class CC:
     def __getattr__(self, attr: str) -> Any:
         if attr in self.options:
             return self.options[attr]
-        raise AttributeError(
-            f"{self.__class__.__name__} object has no attribute {attr}"
-        )
+        msg = f"{self.__class__.__name__} object has no attribute {attr}"
+        raise AttributeError(msg)
 
     def __getitem__(self, item: str) -> Option:
         return self.options[item]

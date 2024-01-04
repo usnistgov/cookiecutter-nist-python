@@ -66,7 +66,7 @@ docs = [
     "ghp-import",
     "ipython",
     "myst-nb",
-    "pyenchant"     ,
+    "pyenchant",
     "sphinx >= 5.3.0",
     {%- if cookiecutter.command_line_interface == "argparse" %}
     "sphinx-argparse",

@@ -58,7 +58,7 @@ package.
 - Simple commands to upload package to [pypi], or a personal conda channel.
 - Simple commands to release documentation to [nist-pages]
 - Works with both [conda] and [virtualenv] based environments.
-- Handle creation of `requirments.txt` and `environment.yaml` files with
+- Handle creation of `requirements.txt` and `environment.yaml` files with
   [pyproject2conda]
 
 ## Status
