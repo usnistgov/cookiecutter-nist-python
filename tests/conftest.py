@@ -2,15 +2,13 @@
 
 from __future__ import annotations
 
-import os
 import logging
-
+import os
 import shutil
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterator
 
 import pytest
-
 from utils import run_inside_dir
 
 # from itertools import product
@@ -43,9 +41,9 @@ MARKER_MAP = {
 PARAMS: list[Any] = []
 for style in ["cookie", "copier"]:
     for theme, cli in SPHINX_THEMES_AND_CLI:
-        sphinx_theme, command_line_interface = [MARKER_MAP[k] for k in (theme, cli)]
+        sphinx_theme, command_line_interface = (MARKER_MAP[k] for k in (theme, cli))
 
-        def _update_project_name(d):
+        def _update_project_name(d: dict[str, Any], style: str) -> dict[str, Any]:
             if style != "cookie":
                 d["project_name"] = d["project_name"] + f"-{style}"
             return d
@@ -58,26 +56,28 @@ for style in ["cookie", "copier"]:
                     "sphinx_theme": sphinx_theme,
                     "command_line_interface": command_line_interface,
                 },
-            }
+            },
+            style=style,
         )
 
         marks = [getattr(pytest.mark, k) for k in (theme, cli, style)]
         if theme == "book" and cli == "nocli":
             # add in default
-            PARAMS.append(pytest.param(d, marks=marks + [pytest.mark.default]))
+            PARAMS.append(pytest.param(d, marks=[*marks, pytest.mark.default]))
 
             # add in longname
             d = _update_project_name(
-                dict(d, project_name=d["project_name"] + "-long-package-name")
+                dict(d, project_name=d["project_name"] + "-long-package-name"),
+                style=style,
             )
-            PARAMS.append(pytest.param(d, marks=marks + [pytest.mark.longname]))
+            PARAMS.append(pytest.param(d, marks=[*marks, pytest.mark.longname]))
 
         else:
             PARAMS.append(pytest.param(d, marks=marks))
 
 
 # * nox options ------------------------------------------------------------------------
-def pytest_addoption(parser):
+def pytest_addoption(parser: pytest.Parser) -> None:
     parser.addoption(
         "--nox-opts",
         action="store",
@@ -101,13 +101,13 @@ def pytest_addoption(parser):
 
 
 @pytest.fixture(scope="session")
-def nox_opts(pytestconfig):
-    return pytestconfig.getoption("nox_opts")
+def nox_opts(pytestconfig: pytest.Config) -> str:
+    return pytestconfig.getoption("nox_opts")  # type: ignore[no-any-return]
 
 
 @pytest.fixture(scope="session")
-def nox_session_opts(pytestconfig):
-    return pytestconfig.getoption("nox_session_opts")
+def nox_session_opts(pytestconfig: pytest.Config) -> str:
+    return pytestconfig.getoption("nox_session_opts")  # type: ignore[no-any-return]
 
 
 # * Fixtures ---------------------------------------------------------------------------
@@ -115,7 +115,9 @@ def nox_session_opts(pytestconfig):
     scope="session",
     params=PARAMS,
 )
-def example_path(request, nox_opts: str, nox_session_opts: str):
+def example_path(
+    request: pytest.FixtureRequest, nox_opts: str, nox_session_opts: str
+) -> Iterator[Path]:
     project_name = request.param["project_name"]
     extra_context = request.param["extra_context"]
     style = request.param["style"]
@@ -151,10 +153,12 @@ def _create_example(
 
 
 # * Automatic markers on tests ---------------------------------------------------------
-def pytest_collection_modifyitems(config, items):
+def pytest_collection_modifyitems(
+    config: pytest.Config, items: list[pytest.Item]
+) -> None:
     for item in items:
-        marker = item.originalname.split("_")[-1]
-        item.add_marker(getattr(pytest.mark, marker))
+        marker = item.originalname.split("_")[-1]  # type: ignore[attr-defined]
+        item.add_marker(getattr(pytest.mark, marker))  # pyright: ignore[reportUnknownArgumentType]
 
     if config.getoption("--enable"):
         # allow update version
@@ -216,10 +220,7 @@ def _bake_project(
         output_dir = OUTPUT_PATH
     output_dir = Path(output_dir)
 
-    if extra_context is None:
-        extra_context = {}
-    else:
-        extra_context = extra_context.copy()
+    extra_context = {} if extra_context is None else extra_context.copy()
 
     extra_context["project_name"] = project_name
 
@@ -229,7 +230,9 @@ def _bake_project(
     logging.info(f"style: {style}")
 
     if style == "cookie":
-        from cookiecutter.main import cookiecutter
+        from cookiecutter.main import (
+            cookiecutter,  # pyright: ignore[reportMissingTypeStubs, reportMissingImports, reportUnknownVariableType]
+        )
 
         cookiecutter(
             template=str(template),
@@ -241,9 +244,9 @@ def _bake_project(
         )
 
     elif style == "copier":
-        import copier
+        import copier  # pyright: ignore[reportMissingImports]
 
-        copier.run_copy(
+        copier.run_copy(  # pyright: ignore[reportUnknownMemberType]
             src_path=str(template),
             dst_path=str(output_dir / project_name),
             data=extra_context,

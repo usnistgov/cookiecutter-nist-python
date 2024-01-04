@@ -5,10 +5,10 @@ import pytest
 {%- if cookiecutter.command_line_interface in ["click", "typer"] %}
 from click.testing import CliRunner
 {%- endif %}
-
+{% if cookiecutter.command_line_interface in ["click", "typer"] %}
+from {{ cookiecutter.project_slug }} import cli, example_function
+{%- else %}
 from {{ cookiecutter.project_slug }} import example_function
-{%- if cookiecutter.command_line_interface in ["click", "typer"] %}
-from {{ cookiecutter.project_slug }} import cli
 {%- endif %}
 
 
@@ -18,13 +18,14 @@ def test_version() -> None:
     assert __version__ != "999"
 
 
-@pytest.fixture
+@pytest.fixture()
 def response() -> tuple[int, int]:
     return 1, 2
 
 
 def test_example_function(response: tuple[int, int]) -> None:
-    assert example_function(*response) == 3
+    expected = 3
+    assert example_function(*response) == expected
 {%- if cookiecutter.command_line_interface in ["click", "typer"] %}
 
 

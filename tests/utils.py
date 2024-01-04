@@ -1,13 +1,12 @@
 from __future__ import annotations
 
+import logging
 import os
 import shlex
 import subprocess
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Iterator
-
-import logging
 
 logger = logging.getLogger(__name__)
 

@@ -156,7 +156,7 @@ def create_directories(names: str | list[str]) -> None:
 def main() -> None:
     import argparse
 
-    CHOICES = list(EXTRA_CONTEXTS.keys()) + ["all"]
+    choices = [*list(EXTRA_CONTEXTS.keys()), "all"]
 
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(dest="command")
@@ -169,7 +169,7 @@ def main() -> None:
     for v in commands.values():
         v.add_argument(
             "values",
-            choices=CHOICES,
+            choices=choices,
             help="examples to apply to",
             nargs="*",
             default="all",
@@ -180,9 +180,9 @@ def main() -> None:
     if parsed.command is None:
         parser.print_help()
 
-    if parsed.command == "clean" or parsed.command == "recreate":
+    if parsed.command in {"clean", "recreate"}:
         clean_directories(parsed.values)
-    if parsed.command == "create" or parsed.command == "recreate":
+    if parsed.command in {"create", "recreate"}:
         create_directories(parsed.values)
 
 
