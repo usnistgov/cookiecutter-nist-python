@@ -77,7 +77,7 @@ class CC:
 
     def __init__(self, filename: str) -> None:
         with Path(filename).open(encoding="utf-8") as f:
-            data = json.load(f)
+            data: dict[str, Any] = json.load(f)
 
         self.options: dict[str, Option] = {}
 
@@ -86,23 +86,23 @@ class CC:
                 continue
             prompts = data.get("__prompts__", {}).get(name, name)
             if isinstance(prompts, dict):
-                prompt = prompts.pop("__prompt__")
-                choices = list(starmap(Choice, prompts.items()))
+                prompt = prompts.pop("__prompt__")  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
+                choices = list(starmap(Choice, prompts.items()))  # pyright: ignore[reportUnknownArgumentType]
                 # Work around to enable " thing - thing" alignment:
                 for choice in choices[9:]:
                     choice.description = choice.description.replace(" - ", "  - ")
 
             elif isinstance(value, list):
                 prompt = prompts
-                choices = [Choice(v) for v in value]
+                choices = [Choice(v) for v in value]  # pyright: ignore[reportUnknownVariableType, reportUnknownArgumentType]
             else:
                 prompt = prompts
                 choices = []
 
             self.options[name] = Option(
                 name=name,
-                default=value,
-                prompt=prompt,
+                default=value,  # pyright: ignore[reportGeneralTypeIssues]
+                prompt=prompt,  # pyright: ignore[reportUnknownArgumentType]
                 type_=(
                     "str"
                     if isinstance(value, str)

@@ -230,8 +230,8 @@ def _bake_project(
     logging.info(f"style: {style}")
 
     if style == "cookie":
-        from cookiecutter.main import (
-            cookiecutter,  # pyright: ignore[reportMissingTypeStubs, reportMissingImports, reportUnknownVariableType]
+        from cookiecutter.main import (  # pyright: ignore[reportMissingTypeStubs]
+            cookiecutter,  # pyright: ignore[reportUnknownVariableType]
         )
 
         cookiecutter(
