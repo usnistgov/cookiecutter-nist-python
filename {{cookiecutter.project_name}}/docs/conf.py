@@ -131,6 +131,9 @@ nb_kernel_rgx_aliases = {
 
 nb_execution_allow_errors = True
 
+# Whether to remove stderr
+nb_output_stderr = "remove"
+
 # - top level variables --------------------------------------------------------
 # set github_username variable to be subbed later.
 # this makes it easy to switch from wpk -> usnistgov later
