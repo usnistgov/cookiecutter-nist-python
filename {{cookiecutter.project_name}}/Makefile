@@ -253,6 +253,10 @@ typing-notebook: mypy-notebook pyright-notebook ## run nbqa mypy/pyright
 pytest-notebook:  ## run pytest --nbval
 	pytest --nbval --nbval-current-env --nbval-sanitize-with=config/nbval.ini --dist loadscope -x $(NOTEBOOKS)
 
+.PHONY: clean-kernelspec
+clean-kernelspec: ## cleanup unused kernels (assuming notebooks handled by conda environment notebook)
+	conda run -n notebook python tools/clean_kernelspec.py
+
 
 ################################################################################
 # * Other tools
