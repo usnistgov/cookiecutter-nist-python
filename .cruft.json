@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "f0aaaf07322cda669cd4a80fa96cc2a0e7be511c",
-  "checkout": "develop",
+  "commit": "27c12f7bc755d9f93a4bfe3137807043510f6988",
+  "checkout": "feature/to-hatchling",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",

@@ -116,6 +116,9 @@ nb_kernel_rgx_aliases = {
 
 nb_execution_allow_errors = True
 
+# Whether to remove stderr
+nb_output_stderr = "remove"
+
 # - top level variables --------------------------------------------------------
 # set github_username variable to be subbed later.
 # this makes it easy to switch from wpk -> usnistgov later
@@ -234,30 +237,7 @@ author = "William P. Krekelberg"
 # the built documents.
 #
 # The short X.Y version.
-# versioning with scm with editable install has issues.
-# instead, try to use scm if available.
-# try:
-#     from setuptools_scm import get_version
-
-#     version = get_version(root="..", relative_to=__file__)
-#     release = version
-# except ImportError:
-#     version = cookiecutter_nist_python.__version__
-#     # The full version, including alpha/beta/rc tags.
-#     release = cookiecutter_nist_python.__version__
-# def _get_version():
-#     import os
-
-#     version = os.environ.get("SETUPTOOLS_SCM_PRETEND_VERSION", None)
-#     if version is None:
-#         version = cookiecutter_nist_python.__version__
-#     return version
-
-
-# release = version = _get_version()
-
 release = version = "latest"
-
 
 # if always want to print "latest"
 # release = "latest"
