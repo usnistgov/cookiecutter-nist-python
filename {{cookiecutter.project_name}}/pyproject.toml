@@ -13,6 +13,7 @@ keywords = [
     "{{ cookiecutter.project_name }}",
 ]
 license = { text = "NIST-PD" }
+license-files = { paths = ["LICENSE"] }
 authors = [{ name = "{{ cookiecutter.full_name.replace('\"', '\\\"') }}", email = "{{ cookiecutter.email }}" }]
 requires-python = ">=3.8,<=3.12"
 classifiers = [
