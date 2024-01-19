@@ -344,7 +344,7 @@ def get_ipython_savefig_dir() -> str:
     d = Path(__file__).parent / "_build" / "html" / "_static"
     if not d.is_dir():
         d.mkdir(parents=True)
-    return d
+    return str(d)
 
 
 ipython_savefig_dir = get_ipython_savefig_dir()
