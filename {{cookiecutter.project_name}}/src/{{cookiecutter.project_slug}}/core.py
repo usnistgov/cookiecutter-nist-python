@@ -21,5 +21,4 @@ def example_function(a: int, b: int) -> int:
         Sum of ``a`` and ``b``.
 
     """
-
     return a + b
