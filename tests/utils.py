@@ -28,5 +28,5 @@ def inside_dir(dirpath: str | Path) -> Iterator[None]:
 def run_inside_dir(command: str, dirpath: str | Path) -> int:
     """Run a command from inside a given directory, returning the exit status"""
     with inside_dir(dirpath):
-        logger.info(f"Run: {command}")
-        return subprocess.check_call(shlex.split(command))
+        logger.info("Run: %s", command)
+        return subprocess.check_call(shlex.split(command))  # noqa: S603

@@ -47,7 +47,7 @@ def inside_dir(dirpath: str | Path) -> Iterator[None]:
 def run_inside_dir(command: str, dirpath: str | Path) -> int:
     """Run a command from inside a given directory, returning the exit status"""
     with inside_dir(dirpath):
-        return subprocess.check_call(shlex.split(command))
+        return subprocess.check_call(shlex.split(command))  # noqa: S603
 
 
 def clean_directory(directory_path: Path, keep: str | list[str] | None = None) -> None:
@@ -60,12 +60,12 @@ def clean_directory(directory_path: Path, keep: str | list[str] | None = None) -
     for p in directory_path.glob("*"):
         x = p.name
         if x in keep:
-            logging.info(f"skipping {p}")
+            logging.info("skipping %s", p)
         elif p.is_dir():
-            logging.info(f"removing directory {p}")
+            logging.info("removing directory %s", p)
             shutil.rmtree(p)
         else:
-            logging.info(f"removing file {p}")
+            logging.info("removing file %s", p)
             p.unlink()
 
 
@@ -79,7 +79,6 @@ def bake(
     **kws: Any,
 ) -> None:
     """Bake a cookiecutter"""
-
     from cookiecutter.main import cookiecutter
 
     if template is None:
@@ -91,7 +90,7 @@ def bake(
 
     extra_context.setdefault("project_name", _project_name(name))
 
-    logging.info(f"baking {output_dir}")
+    logging.info("baking %s", output_dir)
     cookiecutter(
         template=str(template),
         output_dir=str(output_dir),
@@ -112,14 +111,15 @@ def bake(
 
 
 def clean_directories(names: str | list[str]) -> None:
+    """Clean out directory."""
     if isinstance(names, str):
         names = [names]
 
-    logging.info(f"to clean {names}")
+    logging.info("to clean %s", names)
 
     if "all" in names:
         for d in OUTPUT_PATH.iterdir():
-            logging.info(f"cleaning directory {d}")
+            logging.info("cleaning directory %s", d)
             clean_directory(d)
     else:
         for name in names:
@@ -127,14 +127,15 @@ def clean_directories(names: str | list[str]) -> None:
 
 
 def remove_directories(names: str | list[str]) -> None:
+    """Remove whole directories."""
     if isinstance(names, str):
         names = [names]
 
-    logging.info(f"to remove {names}")
+    logging.info("to remove %s", names)
 
     if "all" in names:
         for d in OUTPUT_PATH.iterdir():
-            logging.info(f"removing directory {d}")
+            logging.info("removing directory %s", d)
             shutil.rmtree(d)
     else:
         for name in names:
@@ -142,18 +143,20 @@ def remove_directories(names: str | list[str]) -> None:
 
 
 def create_directories(names: str | list[str]) -> None:
+    """Create directories."""
     if isinstance(names, str):
         names = [names]
 
     if "all" in names:
         names = ["default", "furo", "typer"]
 
-    logging.info(f"to create {names}")
+    logging.info("to create %s", names)
     for name in names:
         bake(name=name, extra_context=EXTRA_CONTEXTS[name])
 
 
 def main() -> None:
+    """Main runner."""
     import argparse
 
     choices = [*list(EXTRA_CONTEXTS.keys()), "all"]

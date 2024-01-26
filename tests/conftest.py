@@ -9,7 +9,8 @@ from pathlib import Path
 from typing import Any, Iterator
 
 import pytest
-from utils import run_inside_dir
+
+from .utils import run_inside_dir
 
 # from itertools import product
 
@@ -181,7 +182,7 @@ logger = logging.getLogger(__name__)
 def _clean_directory(directory_path: Path, keep: str | list[str] | None = None) -> None:
     """Remove everything froma  directory path except those in `keep`"""
 
-    logging.info(f"cleaning {directory_path}")
+    logging.info("cleaning %s", directory_path)
     if not directory_path.exists():
         return
 
@@ -193,12 +194,12 @@ def _clean_directory(directory_path: Path, keep: str | list[str] | None = None) 
     for p in directory_path.glob("*"):
         x = p.name
         if x in keep:
-            logging.debug(f"skipping {p}")
+            logging.debug("skipping %s", p)
         elif p.is_dir():
-            logging.debug(f"removing directory {p}")
+            logging.debug("removing directory %s", p)
             shutil.rmtree(p)
         else:
-            logging.debug(f"removing file {p}")
+            logging.debug("removing file %s", p)
             p.unlink()
 
 
@@ -224,10 +225,10 @@ def _bake_project(
 
     extra_context["project_name"] = project_name
 
-    logging.info(f"baking in {output_dir}")
-    logging.info(f"project_name: {project_name}")
-    logging.info(f"extra_context: {extra_context}")
-    logging.info(f"style: {style}")
+    logging.info("baking in %s", output_dir)
+    logging.info("project_name: %s", project_name)
+    logging.info("extra_context: %s", extra_context)
+    logging.info("style: %s", style)
 
     if style == "cookie":
         from cookiecutter.main import (  # pyright: ignore[reportMissingTypeStubs]

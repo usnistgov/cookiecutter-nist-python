@@ -27,6 +27,7 @@ class Option:
     choices: list[Choice]
 
     def yaml(self, default: bool = False, when: Any = None) -> str:
+        """Create yaml output"""
         result: list[str] = [f"{self.name}:"]
         if self.type_:
             result.append(f"  type: {self.type_}")
@@ -50,9 +51,10 @@ class Option:
             if isinstance(default_val, bool):
                 default_val = "yes" if default_val else "no"
 
-            assert isinstance(
-                default_val, str
-            ), f"received {default_val} of type {type(default_val)}"
+            if not isinstance(default_val, str):  # pyright: ignore[reportUnnecessaryIsInstance]
+                msg = f"received {default_val} of type {type(default_val)}"
+                raise TypeError(msg)
+
             d = default_val
 
             if "{{" in d or "{%" in d:
@@ -101,7 +103,7 @@ class CC:
 
             self.options[name] = Option(
                 name=name,
-                default=value,  # pyright: ignore[reportGeneralTypeIssues]
+                default=value,  # pyright: ignore[reportGeneralTypeIssues, reportArgumentType]
                 prompt=prompt,  # pyright: ignore[reportUnknownArgumentType]
                 type_=(
                     "str"
@@ -125,6 +127,7 @@ class CC:
     def to_yaml(
         self, *keys: str, join: str = "\n\n", default: bool = False, when: Any = None
     ) -> str:
+        """Create yaml output."""
         out = [self[key].yaml(default=default, when=when) for key in keys]
 
         return join.join(out)

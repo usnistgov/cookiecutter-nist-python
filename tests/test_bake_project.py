@@ -5,7 +5,8 @@ from pathlib import Path
 from typing import Iterable
 
 import pytest
-from utils import run_inside_dir
+
+from .utils import run_inside_dir
 
 logger = logging.getLogger(__name__)
 
@@ -103,7 +104,7 @@ def get_python_version() -> str:
 # ** fixtures
 # @pytest.mark.create
 def test_baked_create(example_path: Path) -> None:
-    logging.info(f"in directory {Path.cwd()}")
+    logging.info("in directory %s", Path.cwd())
     assert Path.cwd().resolve() == example_path.resolve()
 
     extra_files = (
@@ -137,10 +138,10 @@ def test_baked_lint(example_path: Path, nox_opts: str, nox_session_opts: str) ->
             run_inside_dir(
                 f"nox {nox_opts} -s lint -- {nox_session_opts}", example_path
             )
-        except Exception as error:
+        except Exception:
             logging.info("git diff")
             run_inside_dir("git diff", example_path)
-            raise error
+            raise
 
 
 # @pytest.mark.docs
