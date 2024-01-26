@@ -171,6 +171,6 @@ if __name__ == "__main__":
         from pathlib import Path
 
         here = Path(__file__).absolute()
-        __package__ = here.parent.name  # noqa: A001
+        __package__ = here.parent.name
 
     main()
