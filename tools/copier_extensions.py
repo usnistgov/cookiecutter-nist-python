@@ -11,6 +11,7 @@ class CookiecutterNamespace(ContextHook):
     """Template hooks for copier"""
 
     def hook(self, context: dict[str, Any]) -> dict[str, Any]:  # noqa: PLR6301
-        context["__year"] = str(datetime.datetime.today().year)
+        """Hook to create other variables."""
+        context["__year"] = str(datetime.datetime.now(tz=None).year)  # noqa: DTZ005
         context["__answers"] = context["_copier_conf"]["answers_file"]
         return {"cookiecutter": context}

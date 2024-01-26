@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "27c12f7bc755d9f93a4bfe3137807043510f6988",
-  "checkout": "feature/to-hatchling",
+  "commit": "9b7f750a784655c1f91da2bcb8e88753c4946738",
+  "checkout": "feature/update-ruff-rules",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",
