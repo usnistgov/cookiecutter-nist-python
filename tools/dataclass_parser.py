@@ -268,7 +268,7 @@ def _get_dataclass_annotations_and_options(
 ) -> dict[str, tuple[Any, Option]]:
     annotations = get_type_hints(cls, include_extras=True)
 
-    assert is_dataclass(cls)  # noqa: S101
+    assert is_dataclass(cls)
     cls_fields = fields(cls)
 
     out: dict[str, tuple[Any, Any]] = {}

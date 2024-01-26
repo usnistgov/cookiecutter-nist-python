@@ -19,6 +19,6 @@ __email__ = "{{ cookiecutter.email }}"
 
 
 __all__ = [
-    "example_function",
     "__version__",
+    "example_function",
 ]
