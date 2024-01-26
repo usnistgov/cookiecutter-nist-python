@@ -1,6 +1,6 @@
 {
   "template": ".",
-  "commit": "9b7f750a784655c1f91da2bcb8e88753c4946738",
+  "commit": "20a7d139dc6154b1dc5fc93518877c71790df4dc",
   "checkout": "feature/update-ruff-rules",
   "context": {
     "cookiecutter": {
