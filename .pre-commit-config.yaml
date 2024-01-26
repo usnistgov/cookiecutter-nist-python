@@ -76,7 +76,8 @@ repos:
     hooks:
       - id: codespell
         additional_dependencies: [tomli]
-        args: [-I, docs/spelling_wordlist.txt]
+        args: ["-I", "docs/spelling_wordlist.txt"]
+        exclude_types: [jupyter]
 
   # * Notebook formatting
   - repo: https://github.com/nbQA-dev/nbQA
@@ -87,18 +88,22 @@ repos:
         name: nbqa-codespell
         additional_dependencies: [codespell==2.2.6, tomli]
         args:
-          - "codespell"
-          - "--ignore-words=docs/spelling_wordlist.txt"
-          - "--nbqa-shell"
+          [
+            "codespell",
+            "--ignore-words=docs/spelling_wordlist.txt",
+            "--nbqa-shell",
+          ]
       - id: nbqa
         alias: nbqa-codespell
         name: nbqa-codespell-markdown
         additional_dependencies: [codespell==2.2.6, tomli]
         args:
-          - "codespell"
-          - "--ignore-words=docs/spelling_wordlist.txt"
-          - "--nbqa-md"
-          - "--nbqa-shell"
+          [
+            "codespell",
+            "--ignore-words=docs/spelling_wordlist.txt",
+            "--nbqa-md",
+            "--nbqa-shell",
+          ]
 
       # Use ruff for this instead ...
       # - id: nbqa-ruff
