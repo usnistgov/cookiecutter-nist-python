@@ -301,6 +301,6 @@ if __name__ == "__main__":
         # or
         #   $ python tools/create_python.py
         here = Path(__file__).absolute()
-        __package__ = here.parent.name  # noqa: A001
+        __package__ = here.parent.name
 
     main()

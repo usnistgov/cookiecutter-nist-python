@@ -49,6 +49,7 @@ def check_directory(
             ".markdownlint.yaml",
             ".pre-commit-config.yaml",
             ".prettierrc.yaml",
+            ".prettierignore",
             "pyproject.toml",
             "noxfile.py",
             "CHANGELOG.md",
