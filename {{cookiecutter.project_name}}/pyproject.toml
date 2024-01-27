@@ -94,7 +94,6 @@ test = [
 ]
 tools = [
     "nbqa",
-    "pip-tools",
     "pre-commit",
     "pyright",
     "scriv",

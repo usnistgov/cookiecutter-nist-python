@@ -619,8 +619,14 @@ class Installer:
             # # Playing with using pip-sync.
             # # Not sure its worth it?
             if self.lock:
-                self.session.run_always("which", "pip-sync", external=True)
-                self.session.run_always(
+                if not isinstance(self.session.python, str):
+                    raise TypeError
+                self.session.run(
+                    "nox",
+                    "-s",
+                    f"pip-compile-{self.session.python}",
+                    "--",
+                    "++pip-compile-run",
                     "pip-sync",
                     "--python-executable",
                     self.python_full_path,
