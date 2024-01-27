@@ -70,7 +70,6 @@ test = [
     "pytest-xdist",
 ]
 tools = [
-    "pip-tools",
     "pre-commit",
     "pyright",
     "scriv",
