@@ -185,8 +185,15 @@ docstring-code-format = true
 # * Testing --------------------------------------------------------------------
 
 [tool.pytest.ini_options]
-addopts = "--doctest-modules --doctest-glob='*.md' -s"
-testpaths = ["tests", "README.md"]
+addopts = [
+    "--doctest-modules",
+    "--doctest-glob=*.md",
+    "--cov-config=pyproject.toml",
+    "-s",
+]
+testpaths = [
+    "tests",
+]
 markers = [
     "default: default template",
     "furo: furo theme",
@@ -208,7 +215,11 @@ markers = [
     "notebook: run typing/test on notebook",
 ]
 
+[tool.coverage.run]
+branch = true
+
 [tool.coverage.report]
+show_missing = true
 exclude_also = ["if TYPE_CHECKING:", "@overload"]
 omit = ["*/vendored/*"]
 include = ["src/*"]
