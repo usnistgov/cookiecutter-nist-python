@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "8076430aebb51ef7313ea0aa150b9203e18dbf2c",
-  "checkout": "feature/remove-typing-extensions",
+  "commit": "14904759deb440bcadcb40decdba1c17a6e56726",
+  "checkout": "develop",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",
