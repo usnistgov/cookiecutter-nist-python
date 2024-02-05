@@ -214,6 +214,13 @@ testrelease: ## test release on testpypi
 release: ## release to pypi, can pass posargs=...
 	$(NOX) -s publish -- +p release
 
+.PHONY: check-release check-wheel check-dist
+check-release: ## run twine check on dist
+	$(NOX) -s publish -- +p check
+check-wheel: ## Run check-wheel-contents (requires check-wheel-contents to be installed)
+	check-wheel-contents dist/*.whl
+check-dist: check-release check-wheel ## Run check-release and check-wheel
+
 # ** dist conda
 .PHONY: conda-recipe conda-build
 conda-recipe: ## build conda recipe can pass posargs=...

@@ -182,6 +182,10 @@ known-first-party = ["cookiecutter_nist_python"]
 [tool.ruff.format]
 docstring-code-format = true
 
+[tool.check-wheel-contents]
+toplevel = ["cookiecutter_nist_python"]
+src_dir = ["src"]
+
 # * Testing --------------------------------------------------------------------
 
 [tool.pytest.ini_options]
