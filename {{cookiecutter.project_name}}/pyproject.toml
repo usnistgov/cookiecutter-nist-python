@@ -228,10 +228,23 @@ docstring-code-format = true
 # * Testing --------------------------------------------------------------------
 
 [tool.pytest.ini_options]
-addopts = "--doctest-modules --doctest-glob='*.md' --pyargs"
-testpaths = ["{{ cookiecutter.project_slug }}", "tests", "README.md"]
+addopts = [
+    "--doctest-modules",
+    "--doctest-glob=*.md",
+    "--pyargs",
+    "--cov-config=pyproject.toml",
+]
+testpaths = [
+    "README.md",
+    "{{ cookiecutter.project_slug }}",
+    "tests",
+]
+
+[tool.coverage.run]
+branch = true
 
 [tool.coverage.report]
+show_missing = true
 exclude_also = ["if TYPE_CHECKING:", "@overload"]
 omit = ["*/vendored/*", "*/_typing.py"]
 include = ["src/*"]
