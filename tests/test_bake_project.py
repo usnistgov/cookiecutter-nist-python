@@ -45,6 +45,8 @@ def check_directory(
     if files is None:
         files = [
             ".editorconfig",
+            ".git_archival.txt",
+            ".gitattributes",
             ".gitignore",
             ".markdownlint.yaml",
             ".pre-commit-config.yaml",
