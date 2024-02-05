@@ -225,6 +225,10 @@ known-first-party = ["{{ cookiecutter.project_slug }}"]
 [tool.ruff.format]
 docstring-code-format = true
 
+[tool.check-wheel-contents]
+toplevel = ["{{ cookiecutter.project_slug }}"]
+src_dir = ["src"]
+
 # * Testing --------------------------------------------------------------------
 
 [tool.pytest.ini_options]
