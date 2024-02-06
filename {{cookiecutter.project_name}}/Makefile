@@ -220,6 +220,12 @@ check-release: ## run twine check on dist
 check-wheel: ## Run check-wheel-contents (requires check-wheel-contents to be installed)
 	check-wheel-contents dist/*.whl
 check-dist: check-release check-wheel ## Run check-release and check-wheel
+.PHONY:  list-wheel list-sdist list-dist
+list-wheel: ## Cat out contents of wheel
+	unzip -vl dist/*.whl
+list-sdist: ## Cat out contents of sdist
+	tar -tzvf dist/*.tar.gz
+list-dist: list-wheel list-sdist ## Cat out sdist and wheel contents
 
 # ** dist conda
 .PHONY: conda-recipe conda-build
