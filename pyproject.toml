@@ -93,6 +93,7 @@ extend-include = ["*.ipynb"]
 extend-exclude = [
     ".venv",
     "dist-conda",
+    ".numba_cache",
     # "tests/",
     # "src/cookiecutter_nist_python/tests",
 ]
@@ -236,7 +237,7 @@ show_error_codes = true
 warn_unused_ignores = true
 warn_return_any = true
 warn_unused_configs = true
-exclude = [".eggs", ".tox", ".nox", ".venv", "docs"]
+exclude = [".eggs", ".tox", ".nox", ".venv", ".numba_cache", "docs"]
 check_untyped_defs = true
 # strict = true
 
@@ -250,7 +251,7 @@ module = []
 
 [tool.pyright]
 include = ["tests"]
-exclude = ["**/__pycache__", ".tox/**", ".nox/**", ".venv/**", "**/.mypy_cache"]
+exclude = ["**/__pycache__", ".tox/**", ".nox/**", ".venv/**", "**/.mypy_cache", "**/.numba_cache"]
 pythonVersion = "3.11"
 # strict = ["noxfile.py", "tools/*.py"]
 typeCheckingMode = "strict"
