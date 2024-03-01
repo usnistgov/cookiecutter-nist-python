@@ -1,4 +1,5 @@
 """Helpers for creating copier.yml from cookiecutter.json"""
+
 from __future__ import annotations
 
 import dataclasses

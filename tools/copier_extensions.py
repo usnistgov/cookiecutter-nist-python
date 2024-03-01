@@ -1,4 +1,5 @@
 """Hooks for copier"""
+
 from __future__ import annotations
 
 import datetime

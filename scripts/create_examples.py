@@ -1,4 +1,5 @@
 """Script to create example files"""
+
 from __future__ import annotations
 
 import logging

@@ -1,6 +1,5 @@
 """Post generate hooks."""
 
-
 if __name__ == "__main__":
     # PROJECT_PATH = Path.cwd()
 

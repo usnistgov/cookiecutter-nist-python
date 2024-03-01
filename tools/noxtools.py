@@ -1,4 +1,5 @@
 """Utilities to work with nox"""
+
 from __future__ import annotations
 
 import os
@@ -14,6 +15,7 @@ from nox.sessions import SessionRunner
 # * Override SessionRunner._create_venv ------------------------------------------------
 
 _create_venv_super = SessionRunner._create_venv  # pyright: ignore[reportPrivateUsage]
+
 
 def override_sessionrunner_create_venv(self: SessionRunner) -> None:
     """Override SessionRunner._create_venv"""
@@ -32,6 +34,7 @@ def override_sessionrunner_create_venv(self: SessionRunner) -> None:
 
     logger.info("Using nox venv_backend")
     return _create_venv_super(self)
+
 
 SessionRunner._create_venv = override_sessionrunner_create_venv  # type: ignore[method-assign] # pyright: ignore[reportPrivateUsage]
 # fmt: on

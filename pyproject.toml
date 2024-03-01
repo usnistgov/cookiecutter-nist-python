@@ -100,7 +100,6 @@ extend-exclude = [
 unsafe-fixes = true
 
 [tool.ruff.lint]
-# use nbqa for ruff linting
 preview = true
 select = ["ALL"]
 # fixable = ["ALL"]

@@ -1,4 +1,5 @@
 """pre-generate hook"""
+
 import re
 import sys
 
