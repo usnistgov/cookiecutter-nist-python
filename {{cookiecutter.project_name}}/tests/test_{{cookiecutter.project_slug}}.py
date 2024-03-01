@@ -1,4 +1,5 @@
 """Tests for `{{ cookiecutter.project_name }}` package."""
+
 from __future__ import annotations
 
 import pytest

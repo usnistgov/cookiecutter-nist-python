@@ -2,8 +2,7 @@
 Console script (:mod:`~{{cookiecutter.project_slug}}.cli`)
 ==========================================================
 """
-
-{%- if cookiecutter.command_line_interface == 'argparse' %}
+{% if cookiecutter.command_line_interface == 'argparse' %}
 import argparse
 {%- endif %}
 import sys
