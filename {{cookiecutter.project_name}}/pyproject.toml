@@ -55,6 +55,7 @@ dev-complete = [
 dev-extras = [
     "ipykernel",
     "ipython",
+    "nbclient",
     "nox",
     "pytest-accept",
 ]
@@ -103,7 +104,8 @@ typing = [
     "{{ cookiecutter.project_name }}[typing-extras]",
 ]
 typing-extras = [
-    "mypy >= 1.4.1",
+    "mypy >= 1.8.0",
+    "pyright >= 1.1.352",
     "pytype; python_version < '3.11'",
 ]
 [project.urls]
