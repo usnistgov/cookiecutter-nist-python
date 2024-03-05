@@ -82,7 +82,7 @@ repos:
 
   # * Notebook spelling
   - repo: https://github.com/nbQA-dev/nbQA
-    rev: 1.7.1
+    rev: 1.8.3
     hooks:
       - id: nbqa
         alias: nbqa-codespell
@@ -128,7 +128,7 @@ repos:
         stages: [manual]
         args: [--py38-plus]
   - repo: https://github.com/nbQA-dev/nbQA
-    rev: 1.7.1
+    rev: 1.8.3
     hooks:
       - id: nbqa-pyupgrade
         additional_dependencies: [pyupgrade]
@@ -138,13 +138,13 @@ repos:
   # ** typos
   # Probably stick with codespell, but this might also be nice...
   - repo: https://github.com/crate-ci/typos
-    rev: v1.18.2
+    rev: v1.19.0
     hooks:
       - id: typos
         stages: [manual]
         exclude: "[.]ipynb$"
   - repo: https://github.com/nbQA-dev/nbQA
-    rev: 1.7.1
+    rev: 1.8.3
     hooks:
       - id: nbqa
         alias: nbqa-typos

@@ -700,7 +700,7 @@ class Installer:
         )
 
         if cmd != "reuse":
-            extra_params = self._session_runner.func.venv_params or []
+            extra_params: list[str] = self._session_runner.func.venv_params or []
 
             if self.lock and not self.is_micromamba():
                 # use conda-lock

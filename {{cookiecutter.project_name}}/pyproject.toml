@@ -96,7 +96,6 @@ test = [
 tools = [
     "nbqa",
     "pre-commit",
-    "pyright",
     "scriv",
 ]
 typing = [

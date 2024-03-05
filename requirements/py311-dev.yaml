@@ -15,8 +15,10 @@ dependencies:
   - copier
   - ipykernel
   - ipython
-  - mypy>=1.4.1
+  - mypy>=1.8.0
+  - nbclient
   - nox
+  - pyright>=1.1.352
   - pytest
   - pytest-cov
   - pytest-sugar

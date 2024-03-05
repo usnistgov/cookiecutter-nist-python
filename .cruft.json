@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "d5f7a74bcce391385a6ce0cc2e28af8ca516cb2d",
-  "checkout": "feature/update-pre-commit",
+  "commit": "2fdf771ba38d205b99d1931e14c22797f1a9d4d1",
+  "checkout": "feature/add-execute-notebook.py",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",
