@@ -12,11 +12,11 @@ copier
 copier-templates-extensions
 ipykernel
 ipython
-mypy>=1.4.1
+mypy>=1.8.0
+nbclient
 nox
-pip-tools
 pre-commit
-pyright
+pyright>=1.1.352
 pytest
 pytest-accept
 pytest-cov

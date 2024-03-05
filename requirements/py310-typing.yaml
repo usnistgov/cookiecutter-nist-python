@@ -11,6 +11,7 @@ channels:
   - conda-forge
 dependencies:
   - python=3.10
-  - mypy>=1.4.1
+  - mypy>=1.8.0
+  - pyright>=1.1.352
   - pytest
   - pytype
