@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "2fdf771ba38d205b99d1931e14c22797f1a9d4d1",
-  "checkout": "feature/add-execute-notebook.py",
+  "commit": "4b08ee191fa2be2378cfb007529f56d92649b831",
+  "checkout": "develop",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",
