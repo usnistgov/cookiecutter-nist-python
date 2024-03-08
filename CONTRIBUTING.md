@@ -123,13 +123,6 @@ Ready to contribute? Here's how to make a contribution.
   nox -s test
   ```
 
-  Additionally, you should run the following:
-
-  ```bash
-  make pre-commit-lint-markdown
-  make pre-commit-codespell
-  ```
-
 - Create changelog fragment. See [scriv] for more info.
 
   ```bash
@@ -298,12 +291,10 @@ nox -s requirements/pip-compile -- +L/++pip-compile-upgrade
 The environments created by nox `dev` and `docs-conda` will try to add
 meaningful display names for ipykernel. These are installed at the user level.
 To cleanup the kernels (meaning, removing installed kernels that point to a
-removed environment), You can use the script `tools/clean_kernelspec.py`. This
-script should be run from the environment of the jupyter server. For example, if
-you run jupyter from a conda environment named `notebook`, run
+removed environment), You can use the script `tools/clean_kernelspec.py`:
 
 ```bash
-conda run -n notebook python tools/clean_kernelspec.py
+python tools/clean_kernelspec.py
 ```
 
 ## Building the docs
@@ -429,6 +420,11 @@ nox -s typing -- +m [commands] [options]
 
 Use `typing-conda` to test typing in a conda environment.
 
+Note that the repo is setup to use a single install of [mypy] and [pyright]. The
+script `tools/pipxrun.py` will run check if an appropriate version of the
+typecheckers is installed. If not, they will be run (and cached) using
+`pipx run`.
+
 ## Setup development environment
 
 This project uses a host of tools to (hopefully) make development easier. We
@@ -491,7 +487,7 @@ Note that you can bootstrap the whole process with [pipx] using:
 
 ```bash
 pipx run --spec nox \
-     nox -s dev -- \
+     nox -s dev/dev-venv -- \
      ++dev-envname dev/dev-complete
 ```
 
@@ -503,26 +499,30 @@ like to install them in the development environment instead, use the
 
 Additional tools are:
 
+- [pipx]
 - [pre-commit]
-- [scriv]
-- [nbqa]
-- [pyright]
+- [scriv] (optional)
+- [pyright] (optional)
 - [cruft] (optional)
 - [commitizen] (optional)
 - [cog] (optional)
+- [nbqa] (optional)
 
 These are setup using the following:
 
 ```console
+# install pipx using something like ...
+pip install --user pipx
+
 condax/pipx install pre-commit
-pipx install scriv
-condax/pipx install nbqa
-condax/pipx install pyright
 
 # optional packages
+pipx install scriv
+condax/pipx install pyright
 condax/pipx install cruft
 condax/pipx install commitizen
 condax/pipx install cogapp
+condax/pipx install nbqa
 ```
 
 ## Package version
@@ -557,6 +557,7 @@ nox -s {session} -- +P/++update-package
 [cruft]: https://github.com/cruft/cruft
 [git-flow]: https://github.com/nvie/gitflow
 [mamba]: https://github.com/mamba-org/mamba
+[mypy]: https://github.com/python/mypy
 [nbqa]: https://github.com/nbQA-dev/nbQA
 [nbval]: https://github.com/computationalmodelling/nbval
 [nox]: https://github.com/wntrblm/nox

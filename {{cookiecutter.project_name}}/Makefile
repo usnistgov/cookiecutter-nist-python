@@ -125,104 +125,6 @@ requirements/%.txt: pyproject.toml
 	nox -s requirements
 
 ################################################################################
-# * NOX
-###############################################################################
-# NOTE: Below, we use requirement of the form "requirements/dev.txt"
-# Since any of these files will trigger a rebuild of all requirements,
-# the actual "txt" or "yaml" file doesn't matter
-# ** dev
-NOX=nox
-.PHONY: dev-env
-dev-env: requirements/dev.txt ## create development environment using nox
-	$(NOX) -e dev
-
-# ** testing
-.PHONY: test-all
-test-all: requirements/test.txt ## run tests on every Python version with nox.
-	$(NOX) -s test
-
-# ** docs
-.PHONY: docs-build docs-release docs-clean
-docs-build: ## build docs in isolation
-	$(NOX) -s docs -- +d build
-docs-clean: ## clean docs
-	rm -rf docs/_build/*
-	rm -rf docs/generated/*
-	rm -rf docs/reference/generated/*
-docs-clean-build: docs-clean docs-build ## clean and build
-docs-release: ## release docs.
-	$(NOX) -s docs -- +d release
-
-.PHONY: .docs-spelling docs-nist-pages docs-open docs-livehtml docs-clean-build docs-linkcheck
-docs-spelling: ## run spell check with sphinx
-	$(NOX) -s docs -- +d spelling
-docs-livehtml: ## use autobuild for docs
-	$(NOX) -s docs -- +d livehtml
-docs-open: ## open the build
-	$(NOX) -s docs -- +d open
-docs-linkcheck: ## check links
-	$(NOX) -s docs -- +d linkcheck
-
-docs-build docs-release docs-clean docs-livehtml docs-linkcheck: requirements/docs.txt
-
-# ** typing
-.PHONY: typing-mypy typing-pyright typing-pytype typing-all
-typing-mypy: ## run mypy mypy_args=...
-	$(NOX) -s typing -- +m mypy
-typing-pyright: ## run pyright pyright_args=...
-	$(NOX) -s typing -- +m pyright
-typing-pytype: ## run pytype pytype_args=...
-	$(NOX) -s typing -- +m pytype
-typing-all:
-	$(NOX) -s typing -- +m mypy pyright
-typing-mypy typing-pyright typing-pytype typing-all: requirements/typing.txt
-
-# ** dist pypi
-.PHONY: build testrelease release
-build: requirements/build.txt ## build dist
-	$(NOX) -s build
-testrelease: ## test release on testpypi
-	$(NOX) -s publish -- +p test
-release: ## release to pypi, can pass posargs=...
-	$(NOX) -s publish -- +p release
-
-.PHONY: check-release check-wheel check-dist
-check-release: ## run twine check on dist
-	$(NOX) -s publish -- +p check
-check-wheel: ## Run check-wheel-contents (requires check-wheel-contents to be installed)
-	check-wheel-contents dist/*.whl
-check-dist: check-release check-wheel ## Run check-release and check-wheel
-.PHONY:  list-wheel list-sdist list-dist
-list-wheel: ## Cat out contents of wheel
-	unzip -vl dist/*.whl
-list-sdist: ## Cat out contents of sdist
-	tar -tzvf dist/*.tar.gz
-list-dist: list-wheel list-sdist ## Cat out sdist and wheel contents
-
-# ** dist conda
-.PHONY: conda-recipe conda-build
-conda-recipe: ## build conda recipe can pass posargs=...
-	$(NOX) -s conda-recipe
-conda-build: ## build conda recipe can pass posargs=...
-	$(NOX) -s conda-build
-
-# ** list all options
-.PHONY: nox-list
-nox-list:
-	$(NOX) --list
-
-
-################################################################################
-# * Installation
-################################################################################
-.PHONY: install install-dev
-install: ## install the package to the active Python's site-packages (run clean?)
-	pip install . --no-deps
-install-dev: ## install development version (run clean?)
-	pip install -e . --no-deps
-
-
-################################################################################
 # * Typing
 ################################################################################
 PIPXRUN = python tools/pipxrun.py
@@ -239,6 +141,77 @@ typecheck: ## Run mypy and pyright
 typecheck-tools:
 	$(PIPXRUN) $(PIPXRUN_OPTS) -c "mypy --strict" -c pyright -- noxfile.py tools/*.py
 
+################################################################################
+# * NOX
+###############################################################################
+NOX=nox
+# ** docs
+.PHONY: docs-build docs-clean docs-clean-build docs-release
+docs-build: ## build docs in isolation
+	$(NOX) -s docs -- +d build
+docs-clean: ## clean docs
+	rm -rf docs/_build/*
+	rm -rf docs/generated/*
+	rm -rf docs/reference/generated/*
+docs-clean-build: docs-clean docs-build ## clean and build
+docs-release: ## release docs.
+	$(PIPXRUN) $(PIPXRUN_OPTS) -c "ghp-import -o -n -m \"update docs\" -b nist-pages" docs/_build/html
+
+.PHONY: docs-open docs-spelling docs-livehtml docs-linkcheck
+docs-open: ## open the build
+	$(NOX) -s docs -- +d open
+docs-spelling: ## run spell check with sphinx
+	$(NOX) -s docs -- +d spelling
+docs-livehtml: ## use autobuild for docs
+	$(NOX) -s docs -- +d livehtml
+docs-linkcheck: ## check links
+	$(NOX) -s docs -- +d linkcheck
+
+# ** typing
+.PHONY: typing-mypy typing-pyright typing-typecheck
+typing-mypy: ## run mypy mypy_args=...
+	$(NOX) -s typing -- +m mypy
+typing-pyright: ## run pyright pyright_args=...
+	$(NOX) -s typing -- +m pyright
+typing-typecheck:
+	$(NOX) -s typing -- +m mypy pyright
+
+# ** dist pypi
+.PHONY: build testrelease release
+build: ## build dist
+	$(NOX) -s build
+testrelease: ## test release on testpypi
+	$(NOX) -s publish -- +p test
+release: ## release to pypi, can pass posargs=...
+	$(NOX) -s publish -- +p release
+
+# ** dist conda
+.PHONY: conda-recipe conda-build
+conda-recipe: ## build conda recipe can pass posargs=...
+	$(NOX) -s conda-recipe
+conda-build: ## build conda recipe can pass posargs=...
+	$(NOX) -s conda-build
+
+# ** list all options
+.PHONY: nox-list
+nox-list:
+	$(NOX) --list
+
+################################################################################
+# ** sdist/wheel check
+################################################################################
+.PHONY: check-release check-wheel check-dist
+check-release: ## run twine check on dist
+	$(NOX) -s publish -- +p check
+check-wheel: ## Run check-wheel-contents (requires check-wheel-contents to be installed)
+	check-wheel-contents dist/*.whl
+check-dist: check-release check-wheel ## Run check-release and check-wheel
+.PHONY:  list-wheel list-sdist list-dist
+list-wheel: ## Cat out contents of wheel
+	unzip -vl dist/*.whl
+list-sdist: ## Cat out contents of sdist
+	tar -tzvf dist/*.tar.gz
+list-dist: list-wheel list-sdist ## Cat out sdist and wheel contents
 
 ################################################################################
 # * NOTEBOOK typing/testing
@@ -261,7 +234,6 @@ test-notebook:  ## run pytest --nbval
 .PHONY: clean-kernelspec
 clean-kernelspec: ## cleanup unused kernels (assuming notebooks handled by conda environment notebook)
 	python tools/clean_kernelspec.py
-
 
 ################################################################################
 # * Other tools

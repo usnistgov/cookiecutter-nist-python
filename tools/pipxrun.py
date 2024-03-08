@@ -1,4 +1,3 @@
-{% raw -%}
 """
 A script to invoke utilities from either pipx or from local installs.
 
@@ -342,7 +341,7 @@ class Command:
                 "pipx",
                 "run",
                 *self._get_pipx_flags(verbosity=verbosity),
-                *([f"--spec={self.spec}"] if self.spec else []),
+                f"--spec={self.spec}",
                 self.name,
             ]
 
@@ -447,4 +446,3 @@ if __name__ == "__main__":
 #         .decode()
 #         .strip()
 #     )
-{%- endraw %}

@@ -7,9 +7,6 @@
 # You should not manually edit this file.
 # Instead edit the corresponding pyproject.toml file.
 #
-channels:
-  - conda-forge
-dependencies:
-  - python=3.11
-  - packaging
-  - pytest
+mypy>=1.9.0
+nbqa>=1.8.4
+pyright>=1.1.353

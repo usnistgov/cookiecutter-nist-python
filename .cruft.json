@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "4b08ee191fa2be2378cfb007529f56d92649b831",
-  "checkout": "develop",
+  "commit": "bfa3d1be34efc32a5f38e8d4b3f818d52a4d8aab",
+  "checkout": "feature/uv-support",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",

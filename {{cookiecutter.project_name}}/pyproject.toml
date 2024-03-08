@@ -63,9 +63,7 @@ docs = [
     {%- if cookiecutter.sphinx_theme == "furo" %}
     "furo",
     {%- endif %}
-    "ghp-import",
-    "ipython",
-    "myst-nb",
+    "myst-nb", # myst-parser, ipython
     "pyenchant",
     "sphinx >= 5.3.0",
     {%- if cookiecutter.command_line_interface == "argparse" %}
