@@ -44,13 +44,10 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     # "{{ cookiecutter.project_name }}[nbval]",
-    "{{ cookiecutter.project_name }}[test]",
-    "{{ cookiecutter.project_name }}[typing-extras]",
-    "{{ cookiecutter.project_name }}[dev-extras]",
+    "{{ cookiecutter.project_name }}[dev-extras,test,typing,pipxrun,mypy]",
 ]
 dev-complete = [
-    "{{ cookiecutter.project_name }}[dev]",
-    "{{ cookiecutter.project_name }}[tools]",
+    "{{ cookiecutter.project_name }}[dev,tools]",
 ]
 dev-extras = [
     "ipykernel",
@@ -84,8 +81,21 @@ docs = [
     "sphinx-copybutton",
     "sphinxcontrib-spelling",
 ]
+mypy = [
+    "mypy >= 1.9.0",
+]
 nbval = [
     "nbval",
+]
+pipxrun = [
+    # Anything needed to run tools/pipxrun.py
+    "packaging",
+]
+pipxrun-tools = [
+    # these used solely for specking tools to be used with tools/pipxrun.py
+    "nbqa >= 1.8.4",
+    "pyright >= 1.1.353",
+    "{{ cookiecutter.project_name }}[mypy]",
 ]
 test = [
     "pytest",
@@ -94,18 +104,13 @@ test = [
     "pytest-xdist",
 ]
 tools = [
-    "nbqa",
+    "pipx",
     "pre-commit",
     "scriv",
 ]
 typing = [
     "pytest",
-    "{{ cookiecutter.project_name }}[typing-extras]",
-]
-typing-extras = [
-    "mypy >= 1.8.0",
-    "pyright >= 1.1.352",
-    "pytype; python_version < '3.11'",
+    "{{ cookiecutter.project_name }}[pipxrun]",
 ]
 [project.urls]
 Documentation = "https://pages.nist.gov/{{ cookiecutter.project_name }}/"
@@ -325,6 +330,11 @@ scriv = { pip = true }
 [tool.pyproject2conda.envs.build]
 extras = "build-system.requires"
 reqs = ["build"]
+base = false
+style = "requirements"
+
+[tool.pyproject2conda.envs.pipxrun-tools]
+extras = "pipxrun-tools"
 base = false
 style = "requirements"
 

@@ -18,6 +18,7 @@ from pathlib import Path
 from typing import (
     TYPE_CHECKING,
     Annotated,
+    Any,
     Callable,
     Iterable,
     Iterator,
@@ -32,6 +33,7 @@ sys.path.insert(0, ".")
 from tools.dataclass_parser import DataclassParser, add_option, option
 from tools.noxtools import (
     Installer,
+    cached_which,
     check_for_change_manager,
     combine_list_str,
     factory_conda_backend,
@@ -73,6 +75,9 @@ nox.options.sessions = ["test"]
 # * User Config ------------------------------------------------------------------------
 
 CONFIG = load_nox_config()
+# if you'd like to disallow uv.
+# You'll need to import this from tools.noxtools
+# DISALLOW_WHICH.append("uv")
 
 # * Options ---------------------------------------------------------------------------
 
@@ -211,7 +216,6 @@ class SessionParams(DataclassParser):
                 "linkcheck",
                 "spelling",
                 "showlinks",
-                "release",
                 "open",
                 "serve",
             ]
@@ -233,7 +237,7 @@ class SessionParams(DataclassParser):
             "all",
             "mypy-notebook",
             "pyright-notebook",
-            "typing-notebook",
+            "typecheck-notebook",
         ]
     ] = add_option("--typing", "-m")
     typing_run: RUN_ANNO = None
@@ -382,8 +386,11 @@ def requirements(
         )
 
         if not opts.requirements_no_notify and opts.lock:
-            for py in PYTHON_ALL_VERSIONS:
-                session.notify(f"pip-compile-{py}")
+            if cached_which("uv"):
+                session.notify("uv-compile")
+            else:
+                for py in PYTHON_ALL_VERSIONS:
+                    session.notify(f"pip-compile-{py}")
 
 
 # # ** conda-lock
@@ -464,13 +471,88 @@ def conda_lock(
         create_lock(path)
 
 
+def _run_compile_pre(
+    runner: Installer,
+    run: RUN_TYPE,
+    run_internal: RUN_TYPE,
+) -> bool:
+    if run:
+        runner.run_commands(run)
+        return True
+
+    if run_internal:
+        runner.run_commands(run_internal, external=False)
+        return True
+
+    return False
+
+
+def _run_compile_options(
+    options: OPT_TYPE,
+    force: bool,
+    upgrade: bool,
+    upgrade_package: OPT_TYPE,
+) -> tuple[list[str], bool]:
+    options = list(options) if options else []
+    if upgrade:
+        options = [*options, "-U"]
+
+    if upgrade_package:
+        options = [*options, *prepend_flag("-P", upgrade_package)]
+
+    force = force or upgrade or bool(upgrade_package)
+
+    return options, force
+
+
+def _run_compile_env(
+    session: nox.Session,
+    compile_command: Sequence[str],
+    python: str,
+    options: Sequence[str],
+    force: bool,
+    env: str,
+    envs_optional: Sequence[str],
+    **kwargs: Any,
+) -> None:
+    reqspath = infer_requirement_path(env, ext=".txt", check_exists=False)
+    if not reqspath.is_file():
+        if env in envs_optional:
+            return
+        msg = f"Missing file {reqspath}"
+        raise ValueError(msg)
+
+    lockpath = infer_requirement_path(
+        env,
+        ext=".txt",
+        python_version=python,
+        lock=True,
+        check_exists=False,
+    )
+
+    with check_for_change_manager(
+        reqspath,
+        target_path=lockpath,
+        force_write=force,
+    ) as changed:
+        if force or changed:
+            session.log(f"Creating {lockpath}")
+            session.run(
+                *compile_command, *options, "-o", str(lockpath), str(reqspath), **kwargs
+            )
+
+        else:
+            session.log(f"Skipping {lockpath}")
+
+
 @nox.session(name="pip-compile", **ALL_KWS)
 @add_opts
-def pip_compile(  # noqa: C901
+def pip_compile(
     session: Session,
     opts: SessionParams,
 ) -> None:
-    """Run pip-compile.
+    """
+    Run pip-compile.
 
     Note that this session is also used to run pip-sync with correct python version for
     tests/typing/etc.
@@ -481,32 +563,23 @@ def pip_compile(  # noqa: C901
         update=opts.update,
     ).install_all(log_session=opts.log_session)
 
-    if opts.pip_compile_run:
-        # run commands and exit
-        runner.run_commands(opts.pip_compile_run)
+    if not isinstance(session.python, str):
+        msg = "must set python version"
+        raise TypeError(msg)
+
+    if _run_compile_pre(runner, opts.pip_compile_run, opts.pip_compile_run_internal):
         return
 
-    if opts.pip_compile_run_internal:
-        runner.run_commands(opts.pip_compile_run_internal, external=False)
-        return
-
-    options = opts.pip_compile_opts or []
-
-    force = (
-        opts.pip_compile_force
-        or opts.pip_compile_upgrade
-        or bool(opts.pip_compile_upgrade_package)
+    options, force = _run_compile_options(
+        options=opts.pip_compile_opts,
+        force=opts.pip_compile_force,
+        upgrade=opts.pip_compile_upgrade,
+        upgrade_package=opts.pip_compile_upgrade_package,
     )
-
-    if opts.pip_compile_upgrade:
-        options = [*options, "-U"]
-
-    if opts.pip_compile_upgrade_package:
-        options = options + prepend_flag("-P", opts.pip_compile_upgrade_package)
 
     envs_all = ["test", "typing"]
     envs_dev = ["dev", "dev-complete", "docs"]
-    envs_dev_optional = ["test-notebook"]
+    envs_dev_optional = ["test-notebook", "pipxrun-tools"]
 
     if session.python == PYTHON_DEFAULT_VERSION:
         envs = envs_all + envs_dev + envs_dev_optional
@@ -514,36 +587,65 @@ def pip_compile(  # noqa: C901
         envs = envs_all
 
     for env in envs:
-        if not isinstance(session.python, str):
-            msg = "session.python must be a string"
-            raise TypeError(msg)
-
-        reqspath = infer_requirement_path(env, ext=".txt", check_exists=False)
-        if not reqspath.is_file():
-            if env in envs_dev_optional:
-                continue
-            msg = f"Missing file {reqspath}"
-            raise ValueError(msg)
-
-        lockpath = infer_requirement_path(
-            env,
-            ext=".txt",
-            python_version=session.python,
-            lock=True,
-            check_exists=False,
+        _run_compile_env(
+            session=session,
+            compile_command=("pip-compile",),
+            python=session.python,
+            options=options,
+            force=force,
+            env=env,
+            envs_optional=envs_dev_optional,
+            external=False,
         )
 
-        with check_for_change_manager(
-            reqspath,
-            target_path=lockpath,
-            force_write=force,
-        ) as changed:
-            if force or changed:
-                session.log(f"Creating {lockpath}")
-                session.run("pip-compile", *options, "-o", str(lockpath), str(reqspath))
 
-            else:
-                session.log(f"Skipping {lockpath}")
+# ** uv pip compile
+@nox.session(name="uv-compile", python=False)
+@add_opts
+def uv_compile(
+    session: Session,
+    opts: SessionParams,
+) -> None:
+    """Run uv pip compile ..."""
+    uv_path = cached_which("uv")
+    if uv_path is None:
+        session.log("Need to install uv to use it...")
+        return
+
+    options, force = _run_compile_options(
+        options=opts.pip_compile_opts,
+        force=opts.pip_compile_force,
+        upgrade=opts.pip_compile_upgrade,
+        upgrade_package=opts.pip_compile_upgrade_package,
+    )
+
+    envs_all = ["test", "typing"]
+    envs_dev = ["dev", "dev-complete", "docs"]
+    envs_dev_optional = ["test-notebook", "pipxrun-tools"]
+
+    for python in set(PYTHON_ALL_VERSIONS).union({PYTHON_DEFAULT_VERSION}):
+        if python == PYTHON_DEFAULT_VERSION:
+            envs = envs_all + envs_dev + envs_dev_optional
+        else:
+            envs = envs_all
+
+        for env in envs:
+            _run_compile_env(
+                session=session,
+                compile_command=(
+                    uv_path,
+                    "pip",
+                    "compile",
+                    f"--python-version={python}",
+                    "--annotation-style=line",
+                ),
+                python=python,
+                options=options,
+                force=force,
+                env=env,
+                envs_optional=envs_dev_optional,
+                external=True,
+            )
 
 
 # ** testing
@@ -825,7 +927,7 @@ def typing(  # noqa: C901
     opts: SessionParams,
 ) -> None:
     """Run type checkers (mypy, pyright, pytype)."""
-    runner = (
+    (
         Installer.from_envname(
             session=session,
             envname="typing",
@@ -848,10 +950,6 @@ def typing(  # noqa: C901
     # set the cache directory for mypy
     session.env["MYPY_CACHE_DIR"] = str(Path(session.create_tmp()) / ".mypy_cache")
 
-    def _run_info(cmd: str) -> None:
-        session.run("which", cmd, external=True)
-        session.run(cmd, "--version", external=True)
-
     if "clean" in cmd:
         cmd.remove("clean")
 
@@ -861,23 +959,34 @@ def typing(  # noqa: C901
                 session.log(f"removing cache {p}")
                 shutil.rmtree(str(p))
 
+    other_commands: list[str] = []
     for c in cmd:
         if c.endswith("-notebook"):
             session.run("make", c, external=True)
             continue
 
-        _run_info(c)
-
         if c == "mypy":
-            session.run("mypy", "--color-output")
+            other_commands.extend(["--command", "mypy --color-output"])
         elif c == "pyright":
-            session.run("pyright", external=True)
-        elif c == "pytype":
-            session.run("pytype", "-o", str(Path(session.create_tmp()) / ".pytype"))
+            other_commands.extend(["--command", "pyright"])
         else:
-            session.log(f"skipping unknown command {c}")
+            session.log(f"Skipping unknown command {c}")
 
-    runner.run_commands(opts.typing_run_internal, external=False)
+    # run internal commands through pipxrun
+    for c in opts.typing_run_internal or []:
+        other_commands.extend(["--command", " ".join(c)])
+
+    if other_commands:
+        session.run(
+            "python",
+            "tools/pipxrun.py",
+            "-v",
+            "-r",
+            "requirements/lock/py{}-pipxrun-tools.txt".format(
+                PYTHON_DEFAULT_VERSION.replace(".", "")
+            ),
+            *other_commands,
+        )
 
 
 nox.session(name="typing", **ALL_KWS)(typing)
@@ -961,6 +1070,9 @@ def get_package_wheel(
         raise ValueError(msg)
 
     path = str(paths[0])
+
+    if cached_which("uv"):
+        path = f"{PACKAGE_NAME}@{path}"
 
     if extras:
         if not isinstance(extras, str):

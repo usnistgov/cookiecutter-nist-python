@@ -174,7 +174,7 @@ typing-pyright: ## run pyright pyright_args=...
 typing-pytype: ## run pytype pytype_args=...
 	$(NOX) -s typing -- +m pytype
 typing-all:
-	$(NOX) -s typing -- +m mypy pyright pytype
+	$(NOX) -s typing -- +m mypy pyright
 typing-mypy typing-pyright typing-pytype typing-all: requirements/typing.txt
 
 # ** dist pypi
@@ -218,39 +218,60 @@ nox-list:
 .PHONY: install install-dev
 install: ## install the package to the active Python's site-packages (run clean?)
 	pip install . --no-deps
-
 install-dev: ## install development version (run clean?)
 	pip install -e . --no-deps
+
+
+################################################################################
+# * Typing
+################################################################################
+PIPXRUN = python tools/pipxrun.py
+PIPXRUN_OPTS = -r requirements/lock/py311-pipxrun-tools.txt -v
+.PHONY: mypy pyright
+mypy: ## Run mypy
+	$(PIPXRUN) $(PIPXRUN_OPTS) -c mypy
+pyright: ## Run pyright
+	$(PIPXRUN) $(PIPXRUN_OPTS) -c pyright
+typecheck: ## Run mypy and pyright
+	$(PIPXRUN) $(PIPXRUN_OPTS) -c mypy -c pyright
+
+.PHONY: typecheck-tools
+typecheck-tools:
+	$(PIPXRUN) $(PIPXRUN_OPTS) -c "mypy --strict" -c pyright -- noxfile.py tools/*.py
 
 
 ################################################################################
 # * NOTEBOOK typing/testing
 ################################################################################
 NOTEBOOKS ?= examples/usage
-.PHONY: mypy-notebook pyright-notebook typing-notebook
+NBQA = $(PIPXRUN) $(PIPXRUN_OPTS) -c "nbqa --nbqa-shell \"$(PIPXRUN)\" $(NOTEBOOKS) $(PIPXRUN_OPTS) $(_NBQA)"
+.PHONY: mypy-notebook pyright-notebook typecheck-notebook test-notebook
+mypy-notebook: _NBQA = -c mypy
 mypy-notebook: ## run nbqa mypy
-	nbqa --nbqa-shell mypy $(NOTEBOOKS)
+	$(NBQA)
+pyright-notebook: _NBQA = -c pyright
 pyright-notebook: ## run nbqa pyright
-	nbqa --nbqa-shell pyright $(NOTEBOOKS)
-typing-notebook: mypy-notebook pyright-notebook ## run nbqa mypy/pyright
-
-.PHONY: pytest-nbval
-pytest-notebook:  ## run pytest --nbval
+	$(NBQA)
+typecheck-notebook: _NBQA = -c mypy -c pyright
+typecheck-notebook: ## run nbqa mypy/pyright
+	$(NBQA)
+test-notebook:  ## run pytest --nbval
 	pytest --nbval --nbval-current-env --nbval-sanitize-with=config/nbval.ini --dist loadscope -x $(NOTEBOOKS)
 
 .PHONY: clean-kernelspec
 clean-kernelspec: ## cleanup unused kernels (assuming notebooks handled by conda environment notebook)
-	conda run -n notebook python tools/clean_kernelspec.py
+	python tools/clean_kernelspec.py
 
 
 ################################################################################
 # * Other tools
 ################################################################################
-
 # Note that this requires `auto-changelog`, which can be installed with pip(x)
+.PHONY: auto-changelog
 auto-changelog: ## autogenerate changelog and print to stdout
 	auto-changelog -u -r usnistgov -v unreleased --tag-prefix v --stdout --template changelog.d/templates/auto-changelog/template.jinja2
 
+.PHONY:
 commitizen-changelog:
 	cz changelog --unreleased-version unreleased --dry-run --incremental
 
@@ -258,10 +279,5 @@ commitizen-changelog:
 .PHONY: tuna-analyze
 tuna-import: ## Analyze load time for module
 	python -X importtime -c 'import {{ cookiecutter.project_slug }}' 2> tuna-loadtime.log
-	tuna tuna-loadtime.log
+	$(PIPXRUN) -c tuna tuna-loadtime.log
 	rm tuna-loadtime.log
-
-.PHONY: typing-tools
-typing-tools:
-	mypy --strict noxfile.py tools/*.py
-	pyright noxfile.py tools/*.py
