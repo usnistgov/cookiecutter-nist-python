@@ -107,9 +107,10 @@ def _max_output_width() -> int:
 
 def _print_header(name: str = "") -> None:
     if logger.isEnabledFor(logging.WARNING):
-        f"{{:-<{_max_output_width()}}}"
+        fmt = f"{{:=<{_max_output_width()}}}"
         if name:
-            name = f"- {name} "
+            name = f"= {name} "
+        print(fmt.format(name))  # noqa: T201
 
 
 @lru_cache
@@ -173,13 +174,13 @@ def _parse_args(args: Sequence[str] | None = None) -> argparse.Namespace:
         Checkers command. This can include extra flags to the checker. This can
         also be passed multiple times for multiple checkers. This can also
         include a Requirement specification, which overrides any specification
-        from ``--requirements`` or ``--specs``. For example,
+        from ``--requirement`` or ``--spec``. For example,
         ``--command='mypy==1.8.0 --no-incremental' -c pyright``
         """,
     )
     parser.add_argument(
         "-r",
-        "--requirements",
+        "--requirement",
         dest="requirements",
         default=[],
         action="append",
@@ -338,6 +339,7 @@ class Command:
                 commands = [exe_path]
 
         if not commands:
+            logger.warning("Using pipx run %s", self.spec or self.name)
             commands = [
                 "pipx",
                 "run",

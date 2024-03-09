@@ -10,7 +10,7 @@
 cookiecutter
 copier
 copier-templates-extensions
-mypy>=1.9.0
+mypy>=1.8.0
 nox
 packaging
 pytest

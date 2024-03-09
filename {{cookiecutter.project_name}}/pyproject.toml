@@ -80,7 +80,7 @@ docs = [
     "sphinxcontrib-spelling",
 ]
 mypy = [
-    "mypy >= 1.9.0",
+    "mypy >= 1.8.0",
 ]
 nbval = [
     "nbval",
@@ -91,9 +91,12 @@ pipxrun = [
 ]
 pipxrun-tools = [
     # these used solely for specking tools to be used with tools/pipxrun.py
-    "nbqa >= 1.8.4",
+    # these used solely for specking tools to be used with tools/pipxrun.py
+    "conda-lock >= 2.5.5",
+    "grayskull >= 2.5.3",
     "pyright >= 1.1.353",
     "{{ cookiecutter.project_name }}[mypy]",
+    "twine >= 5.0.0",
 ]
 test = [
     "pytest",

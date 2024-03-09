@@ -8,7 +8,6 @@
 # Instead edit the corresponding pyproject.toml file.
 #
 autodocsumm
-ghp-import
 myst-parser
 pyenchant
 sphinx-autobuild

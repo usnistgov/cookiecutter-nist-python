@@ -341,7 +341,7 @@ class Command:
                 "pipx",
                 "run",
                 *self._get_pipx_flags(verbosity=verbosity),
-                f"--spec={self.spec}",
+                *([f"--spec={self.spec}"] if self.spec else []),
                 self.name,
             ]
 

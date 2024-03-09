@@ -54,6 +54,7 @@ extensions = [
     # pretty things up?
     # "sphinx_design"
     # myst stuff
+    # "myst_nb",
     "myst_parser",
 ]
 

@@ -1,6 +1,6 @@
 [project]
 name = "cookiecutter-nist-python"
-version = "0.1.0"
+version = "0.2.0.dev"
 description = "Cookiecutter template for NIST python packages"
 keywords = [
     "cookiecutter-nist-python",
@@ -40,7 +40,6 @@ dev-extras = [
 ]
 docs = [
     "autodocsumm",
-    "ghp-import",
     "myst-parser",
     "pyenchant",
     "sphinx >= 5.3.0",
@@ -50,7 +49,7 @@ docs = [
     "sphinxcontrib-spelling",
 ]
 mypy = [
-    "mypy >= 1.9.0",
+    "mypy >= 1.8.0",
 ]
 nbval = [
     "nbval",

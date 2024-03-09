@@ -79,12 +79,18 @@ CONFIG = load_nox_config()
 # You'll need to import this from tools.noxtools
 # DISALLOW_WHICH.append("uv")
 
+
 # * Options ---------------------------------------------------------------------------
 
 LOCK = True
 
 PYTHON_ALL_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12"]
 PYTHON_DEFAULT_VERSION = "3.11"
+
+PIPXRUN_REQUIREMENTS = "--requirement=requirements/lock/py{}-pipxrun-tools.txt".format(
+    PYTHON_DEFAULT_VERSION.replace(".", "")
+)
+PIPXRUN_REQUIREMENTS_MIN = "--requirement=requirements/pipxrun-tools.txt"
 
 # conda/mamba
 for backend in ["mamba", "micromamba", "conda"]:
@@ -158,7 +164,6 @@ class SessionParams(DataclassParser):
 
     # requirements
     requirements_force: bool = False
-    requirements_run: RUN_ANNO = None
     requirements_no_notify: bool = add_option(
         default=False,
         help="Skip notification of pip-compile",
@@ -170,7 +175,6 @@ class SessionParams(DataclassParser):
         list[Literal["osx-64", "linux-64", "win-64", "osx-arm64", "all"]] | None
     ) = add_option(help="platform(s) to buiuld lock file for.")
     conda_lock_include: OPT_TYPE = add_option(help="lock files to create")
-    conda_lock_run: RUN_ANNO = None
     conda_lock_mamba: bool = False
     conda_lock_force: bool = False
 
@@ -198,8 +202,6 @@ class SessionParams(DataclassParser):
 
     # coverage
     coverage: list[Literal["erase", "combine", "report", "html", "open"]] | None = None
-    coverage_run: RUN_ANNO = None
-    coverage_run_internal: RUN_TYPE = None
 
     # testdist
     testdist_run: RUN_ANNO = None
@@ -223,9 +225,6 @@ class SessionParams(DataclassParser):
         | None
     ) = add_option("--docs", "-d", help="doc commands")
     docs_run: RUN_ANNO = None
-
-    # lint (pre-commit)
-    lint_run: RUN_ANNO = None
 
     # typing
     typing: list[
@@ -257,11 +256,9 @@ class SessionParams(DataclassParser):
     publish: list[Literal["release", "test", "check"]] | None = add_option(
         "-p", "--publish"
     )
-    publish_run: RUN_ANNO = None
 
     # conda-recipe/grayskull
     conda_recipe: list[Literal["recipe", "recipe-full"]] | None = None
-    conda_recipe_run: RUN_ANNO = None
     conda_recipe_sdist_path: str | None = None
 
     # conda-build
@@ -350,15 +347,7 @@ def config(
 
 
 # ** requirements
-@nox.session(python=False)
-def pyproject2conda(
-    session: Session,
-) -> None:
-    """Alias to reqs"""
-    session.notify("requirements")
-
-
-@nox.session
+@nox.session(name="requirements", python=False)
 @add_opts
 def requirements(
     session: Session,
@@ -369,48 +358,33 @@ def requirements(
 
     These will be placed in the directory "./requirements".
     """
-    runner = Installer(
-        session=session,
-        pip_deps="pyproject2conda>=0.11.0",
-        update=opts.update,
-    ).install_all(log_session=opts.log_session)
+    session.run(
+        sys.executable,
+        "tools/pipxrun.py",
+        "-v",
+        "-s",
+        "pyproject2conda>=0.11.0",
+        "-c",
+        "pyproject2conda project --verbose "
+        + ("--overwrite force" if opts.requirements_force else ""),
+    )
 
-    if opts.requirements_run:
-        runner.run_commands(opts.requirements_run)
-    else:
-        session.run(
-            "pyproject2conda",
-            "project",
-            "--verbose",
-            *(["--overwrite", "force"] if opts.requirements_force else []),
-        )
-
-        if not opts.requirements_no_notify and opts.lock:
-            if cached_which("uv"):
-                session.notify("uv-compile")
-            else:
-                for py in PYTHON_ALL_VERSIONS:
-                    session.notify(f"pip-compile-{py}")
+    if not opts.requirements_no_notify and opts.lock:
+        if cached_which("uv"):
+            session.notify("uv-compile")
+        else:
+            for py in PYTHON_ALL_VERSIONS:
+                session.notify(f"pip-compile-{py}")
 
 
 # # ** conda-lock
-@nox.session(name="conda-lock", **DEFAULT_KWS)
+@nox.session(name="conda-lock", python=False)
 @add_opts
 def conda_lock(
     session: Session,
     opts: SessionParams,
 ) -> None:
     """Create lock files using conda-lock."""
-    (
-        Installer(
-            session=session,
-            pip_deps="conda-lock>=2.2.0",
-            update=opts.update,
-        ).install_all()
-    )
-
-    session.run("conda-lock", "--version")
-
     conda_lock_exclude = ["test-extras"]
     conda_lock_include = opts.conda_lock_include or [
         "test",
@@ -456,17 +430,25 @@ def conda_lock(
                 if lockfile.exists():
                     lockfile.unlink()
                 session.run(
-                    "conda-lock",
-                    "--mamba" if opts.conda_lock_mamba else "--no-mamba",
-                    *prepend_flag("-c", *channel),
-                    *prepend_flag("-p", *platform),
-                    *prepend_flag("-f", *deps),
-                    f"--lockfile={lockfile}",
+                    sys.executable,
+                    "tools/pipxrun.py",
+                    PIPXRUN_REQUIREMENTS,
+                    "-v",
+                    "-c",
+                    " ".join(
+                        [
+                            "conda-lock",
+                            "--mamba" if opts.conda_lock_mamba else "--no-mamba",
+                            *prepend_flag("-c", *channel),
+                            *prepend_flag("-p", *platform),
+                            *prepend_flag("-f", *deps),
+                            f"--lockfile={lockfile}",
+                        ]
+                    ),
                 )
             else:
                 session.log(f"Skipping {lockfile} (exists)")
 
-    session_run_commands(session, opts.conda_lock_run)
     for path in (ROOT / "requirements").relative_to(ROOT.cwd()).glob("py*.yaml"):
         create_lock(path)
 
@@ -749,41 +731,50 @@ def test_notebook(session: nox.Session, opts: SessionParams) -> None:
     )
 
 
-# *** coverage
-@nox.session
+@nox.session(python=False)
 @add_opts
 def coverage(
     session: Session,
     opts: SessionParams,
 ) -> None:
     """Run coverage."""
-    runner = Installer(
-        session=session,
-        pip_deps="coverage[toml]",
-        update=opts.update,
-    ).install_all()
+    cmd = opts.coverage or ["combine", "html", "report"]
 
-    runner.run_commands(opts.coverage_run)
-
-    cmd = opts.coverage or []
-    if not cmd and not opts.coverage_run and not opts.coverage_run_internal:
-        cmd = ["combine", "html", "report"]
-
-    session.log(f"{cmd}")
-
+    pipx_commands: list[str] = []
     for c in cmd:
         if c == "combine":
             paths = list(
-                Path(session.virtualenv.location).parent.glob("test-*/tmp/.coverage"),
+                Path(".nox").glob("test-*/tmp/.coverage"),
             )
             if update_target(".coverage", *paths):
-                session.run("coverage", "combine", "--keep", "-a", *map(str, paths))
+                pipx_commands.extend(
+                    [
+                        "-c",
+                        "coverage combine --keep -a {}".format(
+                            " ".join(map(str, paths)),
+                        ),
+                    ]
+                )
         elif c == "open":
-            open_webpage(path="htmlcov/index.html")
+            pass
         else:
-            session.run("coverage", c)
+            pipx_commands.extend(
+                [
+                    "-c",
+                    f"coverage {c}",
+                ]
+            )
 
-    runner.run_commands(opts.coverage_run_internal)
+    session.run(
+        sys.executable,
+        "tools/pipxrun.py",
+        PIPXRUN_REQUIREMENTS,
+        "-v",
+        *pipx_commands,
+    )
+
+    if "open" in cmd:
+        open_webpage(path="htmlcov/index.html")
 
 
 # *** testdist (conda)
@@ -895,11 +886,9 @@ nox.session(name="docs-conda", **CONDA_DEFAULT_KWS)(docs)
 
 
 # ** lint
-@nox.session
-@add_opts
+@nox.session(python=False)
 def lint(
     session: nox.Session,
-    opts: SessionParams,
 ) -> None:
     """
     Run linters with pre-commit.
@@ -908,16 +897,14 @@ def lint(
     To run something else pass, e.g.,
     `nox -s lint -- --lint-run "pre-commit run --hook-stage manual --all-files`
     """
-    runner = Installer(
-        session=session,
-        pip_deps="pre-commit",
-        update=opts.update,
-    ).install_all(log_session=opts.log_session)
-
-    if opts.lint_run:
-        runner.run_commands(opts.lint_run, external=True)
-    else:
-        session.run("pre-commit", "run", "--all-files")
+    session.run(
+        sys.executable,
+        "tools/pipxrun.py",
+        PIPXRUN_REQUIREMENTS,
+        "-v",
+        "-c",
+        "pre-commit run --all-files --show-diff-on-failure",
+    )
 
 
 # ** type checking
@@ -927,7 +914,7 @@ def typing(  # noqa: C901
     opts: SessionParams,
 ) -> None:
     """Run type checkers (mypy, pyright, pytype)."""
-    (
+    runner = (
         Installer.from_envname(
             session=session,
             envname="typing",
@@ -981,12 +968,11 @@ def typing(  # noqa: C901
             "python",
             "tools/pipxrun.py",
             "-v",
-            "-r",
-            "requirements/lock/py{}-pipxrun-tools.txt".format(
-                PYTHON_DEFAULT_VERSION.replace(".", "")
-            ),
+            PIPXRUN_REQUIREMENTS,
             *other_commands,
         )
+
+    runner.run_commands(opts.typing_run_internal, external=False)
 
 
 nox.session(name="typing", **ALL_KWS)(typing)
@@ -1087,53 +1073,40 @@ def get_package_wheel(
     return path
 
 
-@nox.session
+@nox.session(python=False)
 @add_opts
 def publish(session: nox.Session, opts: SessionParams) -> None:
     """Publish the distribution"""
-    (
-        Installer(session=session, pip_deps="twine", update=opts.update)
-        .install_all(log_session=opts.log_session)
-        .run_commands(opts.publish_run)
-    )
-
+    pipx_commands: list[str] = []
     for cmd in opts.publish or []:
         if cmd == "test":
-            session.run("twine", "upload", "--repository", "testpypi", "dist/*")
-
+            pipx_commands.extend(["-c", "twine upload --repository testpypi dist/*"])
         elif cmd == "release":
-            session.run("twine", "upload", "dist/*")
+            pipx_commands.extend(["-c", "twine upload dist/*"])
 
         elif cmd == "check":
-            session.run("twine", "check", "--strict", "dist/*")
+            pipx_commands.extend(["-c", "twine check --strict dist/*"])
+
+    session.run(
+        sys.executable,
+        "tools/pipxrun.py",
+        PIPXRUN_REQUIREMENTS,
+        "-v",
+        *pipx_commands,
+    )
 
 
 # # ** Dist conda
-@nox.session(name="conda-recipe")
+@nox.session(name="conda-recipe", python=False)
 @add_opts
 def conda_recipe(
     session: nox.Session,
     opts: SessionParams,
 ) -> None:
     """Run grayskull to create recipe"""
-    runner = Installer(
-        session=session,
-        pip_deps=["grayskull"],
-        update=opts.update,
-    ).install_all(log_session=opts.log_session)
+    commands = opts.conda_recipe or ["recipe"]
 
-    run, commands = opts.conda_recipe_run, opts.conda_recipe
-
-    runner.run_commands(run)
-
-    if not run and not commands:
-        commands = ["recipe"]
-
-    if not commands:
-        return
-
-    sdist_path = opts.conda_recipe_sdist_path
-    if not sdist_path:
+    if not (sdist_path := opts.conda_recipe_sdist_path):
         sdist_path = PACKAGE_NAME
         if opts.version:
             sdist_path = f"{sdist_path}=={opts.version}"
@@ -1145,16 +1118,12 @@ def conda_recipe(
                 d.mkdir()
 
             session.run(
-                "grayskull",
-                "pypi",
-                sdist_path,
-                "--sections",
-                "package",
-                "source",
-                "build",
-                "requirements",
-                "-o",
-                "dist-conda",
+                sys.executable,
+                "tools/pipxrun.py",
+                PIPXRUN_REQUIREMENTS,
+                "-v",
+                "-c",
+                f"grayskull pypi {sdist_path} --sections package source build requirements -o dist-conda",
             )
             _append_recipe(
                 f"dist-conda/{PACKAGE_NAME}/meta.yaml",
@@ -1167,11 +1136,20 @@ def conda_recipe(
 
             with tempfile.TemporaryDirectory() as d:  # type: ignore[assignment,unused-ignore]
                 session.run(
-                    "grayskull",
-                    "pypi",
-                    sdist_path,
-                    "-o",
-                    str(d),
+                    sys.executable,
+                    "tools/pipxrun.py",
+                    PIPXRUN_REQUIREMENTS,
+                    "-v",
+                    "-c",
+                    " ".join(
+                        [
+                            "grayskull",
+                            "pypi",
+                            sdist_path,
+                            "-o",
+                            str(d),
+                        ]
+                    ),
                 )
                 session.run(
                     "cat",

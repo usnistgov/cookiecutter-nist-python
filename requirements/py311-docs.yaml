@@ -12,7 +12,6 @@ channels:
 dependencies:
   - python=3.11
   - autodocsumm
-  - ghp-import
   - myst-parser
   - pyenchant
   - sphinx-autobuild
