@@ -1,6 +1,6 @@
 [project]
 name = "cookiecutter-nist-python"
-version = "0.1.0"
+version = "0.2.0.dev"
 description = "Cookiecutter template for NIST python packages"
 keywords = [
     "cookiecutter-nist-python",
@@ -30,27 +30,17 @@ dependencies = [
 ]
 [project.optional-dependencies]
 dev = [
-    # "cookiecutter-nist-python[nbval]",
-    "cookiecutter-nist-python[test]",
-    "cookiecutter-nist-python[typing-extras]",
-    "cookiecutter-nist-python[dev-extras]",
+    "cookiecutter-nist-python[dev-extras,test,typing,pipxrun,mypy]",
 ]
 dev-complete = [
-    "cookiecutter-nist-python[dev]",
-    "cookiecutter-nist-python[tools]",
+    "cookiecutter-nist-python[dev,tools]",
 ]
 dev-extras = [
-    "ipykernel",
-    "ipython",
-    "nbclient",
     "nox",
-    "pytest-accept",
 ]
 docs = [
     "autodocsumm",
-    "ghp-import",
-    "ipython",
-    "myst-nb",
+    "myst-parser",
     "pyenchant",
     "sphinx >= 5.3.0",
     "sphinx-autobuild",
@@ -58,8 +48,24 @@ docs = [
     "sphinx-copybutton",
     "sphinxcontrib-spelling",
 ]
+mypy = [
+    "mypy >= 1.8.0",
+]
 nbval = [
     "nbval",
+]
+pipxrun = [
+    # Anything needed to run tools/pipxrun.py
+    "packaging",
+]
+pipxrun-tools = [
+    # these used solely for specking tools to be used with tools/pipxrun.py
+    "conda-lock >= 2.5.5",
+    "cookiecutter-nist-python[mypy]",
+    "grayskull >= 2.5.3",
+    "nbqa >= 1.8.4",
+    "pyright >= 1.1.353",
+    "twine >= 5.0.0",
 ]
 test = [
     "cookiecutter",
@@ -71,17 +77,13 @@ test = [
     "pytest-xdist",
 ]
 tools = [
+    "pipx",
     "pre-commit",
     "scriv",
 ]
 typing = [
-    "cookiecutter-nist-python[typing-extras]",
+    "cookiecutter-nist-python[pipxrun]",
     "pytest",
-]
-typing-extras = [
-    "mypy >= 1.8.0",
-    "pyright >= 1.1.352",
-    "pytype; python_version < '3.11'",
 ]
 [project.urls]
 Documentation = "https://pages.nist.gov/cookiecutter-nist-python/"
@@ -294,6 +296,11 @@ default_envs = ["test", "typing", "docs", "dev", "dev-complete"]
 pytest-accept = { pip = true }
 scriv = { pip = true }
 copier-templates-extensions = { pip = true }
+
+[tool.pyproject2conda.envs.pipxrun-tools]
+extras = "pipxrun-tools"
+base = false
+style = "requirements"
 
 [tool.pyproject2conda.envs.test-extras]
 extras = ["test"]

@@ -41,16 +41,16 @@ b = 2
 print(example_function(a, b))
 ```
 
-### ipython directive
+<!-- ### ipython directive -->
 
-ipython example...
+<!-- ipython example... -->
 
-```{eval-rst}
-.. ipython:: python
+<!-- ```{eval-rst} -->
+<!-- .. ipython:: python -->
 
-    from {{ cookiecutter.project_slug}} import example_function
+<!--     from {{ cookiecutter.project_slug}} import example_function -->
 
-    a = 1
-    b = 2
-    print(example_function(a, b))
-```
+<!--     a = 1 -->
+<!--     b = 2 -->
+<!--     print(example_function(a, b)) -->
+<!-- ``` -->

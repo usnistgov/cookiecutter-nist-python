@@ -13,12 +13,9 @@ dependencies:
   - python=3.11
   - cookiecutter
   - copier
-  - ipykernel
-  - ipython
   - mypy>=1.8.0
-  - nbclient
   - nox
-  - pyright>=1.1.352
+  - packaging
   - pytest
   - pytest-cov
   - pytest-sugar
@@ -26,4 +23,3 @@ dependencies:
   - pip
   - pip:
       - copier-templates-extensions
-      - pytest-accept

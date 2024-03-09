@@ -10,15 +10,10 @@
 cookiecutter
 copier
 copier-templates-extensions
-ipykernel
-ipython
 mypy>=1.8.0
-nbclient
 nox
-pyright>=1.1.352
+packaging
 pytest
-pytest-accept
 pytest-cov
 pytest-sugar
 pytest-xdist
-pytype;python_version<"3.11"

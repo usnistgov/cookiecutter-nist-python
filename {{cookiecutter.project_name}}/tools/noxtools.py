@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import functools
 import os
 import shlex
 from contextlib import contextmanager
@@ -11,6 +12,8 @@ from typing import TYPE_CHECKING, cast
 
 # fmt: off
 from nox.sessions import SessionRunner
+
+DISALLOW_WHICH: list[str] = []
 
 # * Override SessionRunner._create_venv ------------------------------------------------
 
@@ -109,8 +112,24 @@ def factory_virtualenv_backend(
 
 
 # * Top level installation functions ---------------------------------------------------
+@functools.cache
+def cached_which(cmd: str) -> str | None:
+    """
+    Cached lookup of uv path.
+
+    Returns path or None if not installed.
+    """
+    if cmd in DISALLOW_WHICH:
+        return None
+
+    from shutil import which
+
+    return which(cmd)
+
+
 def py_prefix(python_version: Any) -> str:
-    """Get python prefix.
+    """
+    Get python prefix.
 
     `python="3.8` -> "py38"
     """
@@ -275,6 +294,7 @@ class Installer:
     config_path :
         Where to save env config for future comparison.  Defaults to
         `session.virtualenv.location / "tmp" / "env.json"`.
+
     """
 
     def __init__(
@@ -583,6 +603,21 @@ class Installer:
 
         return out
 
+    def uv_install(self, *args: str, **kwargs: Any) -> None:
+        """Run uv pip install if available"""
+        if uv_path := cached_which("uv"):
+            self.session.run_always(
+                uv_path,
+                "pip",
+                "install",
+                f"--python={self.python_full_path}",
+                *args,
+                **kwargs,
+                external=True,
+            )
+        else:
+            self.session.install(*args, **kwargs)
+
     def pip_install_package(
         self,
         *args: Any,
@@ -603,7 +638,7 @@ class Installer:
             if opts:
                 command.extend(combine_list_str(opts))
 
-            self.session.install(*command, *args, **kwargs)
+            self.uv_install(*command, *args, **kwargs)
 
         return self
 
@@ -625,19 +660,30 @@ class Installer:
                 # Using pip-compile-{python_version} session.
                 if not isinstance(self.session.python, str):
                     raise TypeError
-                self.session.run_always(
-                    "nox",
-                    "-s",
-                    f"pip-compile-{self.session.python}",
-                    "--",
-                    "++pip-compile-run-internal",
-                    "pip-sync",
-                    "--python-executable",
-                    self.python_full_path,
-                    *map(str, self.requirements),
-                    silent=True,
-                    external=True,
-                )
+
+                if uv_path := cached_which("uv"):
+                    self.session.run_always(
+                        uv_path,
+                        "pip",
+                        "sync",
+                        f"--python={self.python_full_path}",
+                        *map(str, self.requirements),
+                        external=True,
+                    )
+                else:
+                    self.session.run_always(
+                        "nox",
+                        "-s",
+                        f"pip-compile-{self.session.python}",
+                        "--",
+                        "++pip-compile-run-internal",
+                        "pip-sync",
+                        "--python-executable",
+                        self.python_full_path,
+                        *map(str, self.requirements),
+                        silent=True,
+                        external=True,
+                    )
 
                 # Using central pip-sync
                 # The above fixes an fixes issue with using pip-sync on already
@@ -669,7 +715,7 @@ class Installer:
 
                     if opts:
                         install_args.extend(combine_list_str(opts))
-                    self.session.install(*install_args, *args, **kwargs)
+                    self.uv_install(*install_args, *args, **kwargs)
 
         return self
 
@@ -830,6 +876,7 @@ class Installer:
             Base name for file.  For example, passing
             envname = "dev" will convert to
             `requirements/py{py}-dev.yaml` for `filename`
+
         """
         if envname is not None and conda_yaml is None:
             if not isinstance(session.python, str):
@@ -1041,6 +1088,7 @@ def check_for_change_manager(
     changed: bool
 
     If exit normally, write hashes to hash_path file
+
     """
     try:
         changed, hashes, hash_path = check_hash_path_for_change(

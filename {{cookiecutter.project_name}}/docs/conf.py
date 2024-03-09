@@ -47,8 +47,8 @@ extensions = [
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
     "sphinx.ext.autosectionlabel",
-    "IPython.sphinxext.ipython_directive",
-    "IPython.sphinxext.ipython_console_highlighting",
+    # "IPython.sphinxext.ipython_directive",
+    # "IPython.sphinxext.ipython_console_highlighting",
     # "nbsphinx",
     # - easier external links
     # "sphinx.ext.extlinks",
@@ -64,6 +64,7 @@ extensions = [
     # "sphinx_design"
     # - myst stuff
     "myst_nb",
+    # "myst_parser",
     {%- if cookiecutter.command_line_interface in ["click", "typer"] %}
     "sphinx_click",
     {%- endif %}
