@@ -89,7 +89,7 @@ def factory_conda_backend(
 
 
 def factory_virtualenv_backend(
-    backend: Literal["virtualenv", "venv"] = "virtualenv",
+    backend: Literal["virtualenv", "venv", "uv"] = "virtualenv",
     location: str | None = None,
 ) -> Callable[..., CondaEnv | VirtualEnv]:
     """Factory virtualenv backend."""
@@ -103,7 +103,7 @@ def factory_virtualenv_backend(
             reuse_existing=runner.func.reuse_venv
             or runner.global_config.reuse_existing_virtualenvs,
             venv_params=runner.func.venv_params,
-            venv=(backend == "venv"),
+            venv_backend=backend,
         )
         venv.create()
         return venv

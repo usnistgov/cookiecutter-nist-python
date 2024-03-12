@@ -36,7 +36,7 @@ dev-complete = [
     "cookiecutter-nist-python[dev,tools]",
 ]
 dev-extras = [
-    "nox",
+    "nox >= 2024.3.2",
 ]
 docs = [
     "autodocsumm",
@@ -49,7 +49,7 @@ docs = [
     "sphinxcontrib-spelling",
 ]
 mypy = [
-    "mypy >= 1.8.0",
+    "mypy >= 1.9.0",
 ]
 nbval = [
     "nbval",
@@ -169,7 +169,7 @@ max-public-methods = 30
 [tool.ruff.lint.per-file-ignores]
 "docs/conf.py" = ["INP001"]
 "noxfile.py" = ["RUF009"]
-"tools/*.py" = ["S", "A", "SLF001"]
+"tools/*.py" = ["S", "A", "SLF001", "D102"]
 "tests/*.py" = ["D", "S101"]
 "**/*.ipynb" = ["D100", "B018", "INP001"]
 
