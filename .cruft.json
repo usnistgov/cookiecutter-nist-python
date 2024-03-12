@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "42e2b3b3961d9ee7280fb56a668e8e9e19bd6349",
-  "checkout": "feature/uv-support",
+  "commit": "08bbe7efaebf12097a5d827634eef08bf150d973",
+  "checkout": "feature/update-pipxrun",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",

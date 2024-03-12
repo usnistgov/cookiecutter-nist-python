@@ -501,6 +501,7 @@ Additional tools are:
 
 - [pipx]
 - [pre-commit]
+- [uv] (optional, highly recommended)
 - [scriv] (optional)
 - [pyright] (optional)
 - [cruft] (optional)
@@ -518,12 +519,21 @@ condax/pipx install pre-commit
 
 # optional packages
 pipx install scriv
+condax/pipx install uv
 condax/pipx install pyright
 condax/pipx install cruft
 condax/pipx install commitizen
 condax/pipx install cogapp
 condax/pipx install nbqa
 ```
+
+Note that the repo is setup to automatically use pipx for many of these tools.
+Behind the scenes, the makefile and `noxfile.py` will invoke `tools/pipxrun.py`.
+This will either run the tool with `pipx run tool..`, or, if it is already
+installed (with proper version), run the tool from the install. This prevents
+having to install a bunch of tooling in the "dev" environment, and also avoid
+creating a bunch of through away [nox] environments. This is experimental, and I
+might change back to using small [nox] environments again in the future.
 
 ## Package version
 
@@ -538,7 +548,10 @@ easiest way to update the installed package version version is to reinstall the
 package. This can be done using the following:
 
 ```bash
+# using pip
 pip install -e . --no-deps
+# using uv
+uv pip install -e . --no-deps
 ```
 
 To do this in a given session, use:
@@ -568,5 +581,6 @@ nox -s {session} -- +P/++update-package
 [pyproject2conda]: https://github.com/wpk-nist-gov/pyproject2conda
 [pyright]: https://github.com/microsoft/pyright
 [scriv]: https://github.com/nedbat/scrivl
+[uv]: https://github.com/astral-sh/uv
 [tox]: https://tox.wiki/en/latest/
 [virtualenv]: https://virtualenv.pypa.io/en/latest/
