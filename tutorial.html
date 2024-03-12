@@ -57,7 +57,7 @@
     <link rel="prev" title="cookiecutter-nist-python" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="2024-03-08"/>
+    <meta name="docbuild:last-update" content="2024-03-12"/>
   </head>
   
   
@@ -727,6 +727,7 @@ like to install them in the development environment instead, use the
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/pypa/pipx">pipx</a></p></li>
 <li><p><a class="reference external" href="https://pre-commit.com/">pre-commit</a></p></li>
+<li><p><a class="reference external" href="https://github.com/astral-sh/uv">uv</a> (optional, highly recommended)</p></li>
 <li><p><a class="reference external" href="https://github.com/nedbat/scrivl">scriv</a> (optional)</p></li>
 <li><p><a class="reference external" href="https://github.com/microsoft/pyright">pyright</a> (optional)</p></li>
 <li><p><a class="reference external" href="https://github.com/cruft/cruft">cruft</a> (optional)</p></li>
@@ -742,6 +743,7 @@ like to install them in the development environment instead, use the
 
 <span class="gp"># </span>optional<span class="w"> </span>packages
 <span class="go">pipx install scriv</span>
+<span class="go">condax/pipx install uv</span>
 <span class="go">condax/pipx install pyright</span>
 <span class="go">condax/pipx install cruft</span>
 <span class="go">condax/pipx install commitizen</span>
@@ -749,6 +751,13 @@ like to install them in the development environment instead, use the
 <span class="go">condax/pipx install nbqa</span>
 </pre></div>
 </div>
+<p>Note that the repo is setup to automatically use pipx for many of these tools.
+Behind the scenes, the makefile and <code class="docutils literal notranslate"><span class="pre">noxfile.py</span></code> will invoke <code class="docutils literal notranslate"><span class="pre">tools/pipxrun.py</span></code>.
+This will either run the tool with <code class="docutils literal notranslate"><span class="pre">pipx</span> <span class="pre">run</span> <span class="pre">tool..</span></code>, or, if it is already
+installed (with proper version), run the tool from the install. This prevents
+having to install a bunch of tooling in the “dev” environment, and also avoid
+creating a bunch of through away <a class="reference external" href="https://github.com/wntrblm/nox">nox</a> environments. This is experimental, and I
+might change back to using small <a class="reference external" href="https://github.com/wntrblm/nox">nox</a> environments again in the future.</p>
 </section>
 </section>
 <section id="package-version">
@@ -759,7 +768,10 @@ tag. For convenience, you can override the version with nox setting
 <p>Note that the version in a given environment/session can become stale. The
 easiest way to update the installed package version version is to reinstall the
 package. This can be done using the following:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="w"> </span>--no-deps
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># using pip</span>
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="w"> </span>--no-deps
+<span class="c1"># using uv</span>
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="w"> </span>--no-deps
 </pre></div>
 </div>
 <p>To do this in a given session, use:</p>
@@ -914,7 +926,7 @@ By William P. Krekelberg
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on 2024-03-08.
+  Last updated on 2024-03-12.
   <br/>
 </p>
   </div>
