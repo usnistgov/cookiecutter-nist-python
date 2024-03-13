@@ -52,7 +52,7 @@ dev-complete = [
 dev-extras = [
     "ipykernel",
     "ipython",
-    "nbclient",
+    "nbclient >= 0.10.0",
     "nox >= 2024.3.2",
     "pytest-accept",
 ]
