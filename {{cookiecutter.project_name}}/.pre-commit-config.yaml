@@ -107,6 +107,7 @@ repos:
       - id: nbstripout
         args: [
             --keep-output, # keep output (needed for nbval testing)
+            --keep-count, # Errors with nbval without this...
             --extra-keys, # strip out kernelspec.  If use this, always have to reselect kernel when open a notebook...
             "metadata.kernelspec metadata.kernel_spec",
           ]
