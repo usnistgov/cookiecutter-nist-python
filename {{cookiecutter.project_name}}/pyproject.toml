@@ -91,7 +91,6 @@ pipxrun = [
 ]
 pipxrun-tools = [
     # these used solely for specking tools to be used with tools/pipxrun.py
-    # these used solely for specking tools to be used with tools/pipxrun.py
     "conda-lock >= 2.5.5",
     "grayskull >= 2.5.3",
     "nbqa >= 1.8.4",
