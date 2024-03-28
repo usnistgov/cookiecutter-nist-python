@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "d5f767613ef92981ce6397331e829c9729cea88e",
-  "checkout": "develop",
+  "commit": "8863b55ba1c31d0ce92efe8471e2d8896d800f51",
+  "checkout": "feature/bugfix-noxtools",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",
