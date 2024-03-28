@@ -61,7 +61,7 @@ repos:
         additional_dependencies:
           - black==24.2.0
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.3.2
+    rev: v0.3.4
     hooks:
       - id: ruff
         types_or: &ruff-types-or [python, pyi, jupyter]
@@ -80,7 +80,7 @@ repos:
 
   # * Notebook spelling
   - repo: https://github.com/nbQA-dev/nbQA
-    rev: 1.8.4
+    rev: 1.8.5
     hooks:
       - id: nbqa
         alias: nbqa-codespell
@@ -114,20 +114,20 @@ repos:
 
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v3.18.3
+    rev: v3.20.0
     hooks:
       - id: commitizen
         stages: [commit-msg]
 
   # * Manual Linting ------------------------------------------------------------
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.15.1
+    rev: v3.15.2
     hooks:
       - id: pyupgrade
         stages: [manual]
         args: [--py38-plus]
   - repo: https://github.com/nbQA-dev/nbQA
-    rev: 1.8.4
+    rev: 1.8.5
     hooks:
       - id: nbqa-pyupgrade
         additional_dependencies: [pyupgrade]
@@ -143,7 +143,7 @@ repos:
         stages: [manual]
         exclude: "[.]ipynb$"
   - repo: https://github.com/nbQA-dev/nbQA
-    rev: 1.8.4
+    rev: 1.8.5
     hooks:
       - id: nbqa
         alias: nbqa-typos
