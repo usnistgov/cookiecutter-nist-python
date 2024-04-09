@@ -139,7 +139,7 @@ repos:
   # ** typos
   # Probably stick with codespell, but this might also be nice...
   - repo: https://github.com/crate-ci/typos
-    rev: v1.20.4
+    rev: v1.20.5
     hooks:
       - id: typos
         stages: [manual]
@@ -150,7 +150,7 @@ repos:
       - id: nbqa
         alias: nbqa-typos
         name: nbqa-typos
-        additional_dependencies: &typos-deps [typos==1.20.4] # make sure save version as above.
+        additional_dependencies: &typos-deps [typos==1.20.5] # make sure save version as above.
         stages: [manual]
         args: [typos, --nbqa-shell]
       - id: nbqa
