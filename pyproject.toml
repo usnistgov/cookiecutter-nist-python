@@ -62,10 +62,9 @@ pipxrun-tools = [
     # these used solely for specking tools to be used with tools/pipxrun.py
     "conda-lock >= 2.5.5",
     "cookiecutter-nist-python[mypy]",
-    "cookiecutter-nist-python[mypy]",
     "grayskull >= 2.5.3",
     "nbqa >= 1.8.4",
-    "pyright >= 1.1.356",
+    "pyright >= 1.1.357",
     "twine >= 5.0.0",
 ]
 test = [

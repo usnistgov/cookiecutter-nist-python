@@ -39,5 +39,5 @@ sphinxcontrib-qthelp==1.0.7  # via sphinx
 sphinxcontrib-serializinghtml==1.1.10  # via sphinx
 sphinxcontrib-spelling==8.0.0
 tornado==6.4              # via livereload
-typing-extensions==4.10.0  # via pydata-sphinx-theme
+typing-extensions==4.11.0  # via pydata-sphinx-theme
 urllib3==2.2.1            # via requests
