@@ -61,7 +61,7 @@ repos:
         additional_dependencies:
           - black==24.3.0
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.3.5
+    rev: v0.3.7
     hooks:
       - id: ruff
         types_or: &ruff-types-or [python, pyi, jupyter]
@@ -114,7 +114,7 @@ repos:
 
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v3.21.3
+    rev: v3.22.0
     hooks:
       - id: commitizen
         stages: [commit-msg]
