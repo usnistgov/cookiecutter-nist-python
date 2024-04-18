@@ -28,7 +28,7 @@ repos:
 
   # * Pyproject-fmt
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: 1.7.0
+    rev: 1.8.0
     hooks:
       - id: pyproject-fmt
         args: [--indent=4, --keep-full-version]
@@ -61,7 +61,7 @@ repos:
         additional_dependencies:
           - black==24.3.0
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.3.7
+    rev: v0.4.0
     hooks:
       - id: ruff
         types_or: &ruff-types-or [python, pyi, jupyter]
@@ -114,7 +114,7 @@ repos:
 
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v3.22.0
+    rev: v3.24.0
     hooks:
       - id: commitizen
         stages: [commit-msg]
@@ -137,7 +137,7 @@ repos:
   # ** typos
   # Probably stick with codespell, but this might also be nice...
   - repo: https://github.com/crate-ci/typos
-    rev: v1.20.7
+    rev: v1.20.9
     hooks:
       - id: typos
         stages: [manual]
@@ -148,7 +148,7 @@ repos:
       - id: nbqa
         alias: nbqa-typos
         name: nbqa-typos
-        additional_dependencies: &typos-deps [typos==1.20.7] # make sure save version as above.
+        additional_dependencies: &typos-deps [typos==1.20.9] # make sure save version as above.
         stages: [manual]
         args: [typos, --nbqa-shell]
       - id: nbqa

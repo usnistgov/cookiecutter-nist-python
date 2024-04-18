@@ -94,7 +94,7 @@ pipxrun-tools = [
     "conda-lock >= 2.5.5",
     "grayskull >= 2.5.3",
     "nbqa >= 1.8.4",
-    "pyright >= 1.1.357, != 1.1.358", # skipping 1.1.358.  Breaks module_utilities.cached.
+    "pyright >= 1.1.359",
     "{{ cookiecutter.project_name }}[mypy]",
     "twine >= 5.0.0",
 ]
