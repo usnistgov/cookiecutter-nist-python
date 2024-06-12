@@ -46,7 +46,7 @@ for style in ["cookie", "copier"]:
 
         def _update_project_name(d: dict[str, Any], style: str) -> dict[str, Any]:
             if style != "cookie":
-                d["project_name"] = d["project_name"] + f"-{style}"
+                d["project_name"] += f"-{style}"
             return d
 
         d = _update_project_name(
