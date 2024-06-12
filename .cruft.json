@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "8811c404e43f0311dba54a3f4acdc0fd7d15b311",
-  "checkout": "develop",
+  "commit": "594c1ef9d2df41b289f5bb1368fce08fe2542a41",
+  "checkout": "feature/update-everything",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",

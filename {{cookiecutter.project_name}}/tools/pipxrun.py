@@ -23,6 +23,7 @@ running these tools. It does the following:
 
 from __future__ import annotations
 
+import locale
 import logging
 import os
 import re
@@ -255,7 +256,7 @@ def _get_command_version(name: str, path: str) -> Version:
     # Calling subprocess to get --version (see bottom of file).
     # But it might break on windows...
 
-    with Path(path).open() as f:
+    with Path(path).open(encoding=locale.getpreferredencoding(False)) as f:
         python_executable = f.readline().strip().replace("#!", "")
 
     return Version(
