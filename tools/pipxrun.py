@@ -39,7 +39,9 @@ from packaging.version import Version
 if TYPE_CHECKING:
     import argparse
     from types import ModuleType
-    from typing import IO, Iterable, Iterator, Literal, Mapping, Sequence
+
+    # from typing import IO, Iterable, Iterator, Literal, Mapping, Sequence
+    from typing import Iterable, Iterator, Mapping, Sequence
 
 # Optional imports
 colorlog: ModuleType | None
@@ -367,14 +369,15 @@ class SessionInterfaceTemplate(Protocol):
         *args: str | os.PathLike[str],
         env: Mapping[str, str | None] | None = None,
         include_outer_env: bool = True,
-        silent: bool = False,
-        success_codes: Iterable[int] | None = None,
-        log: bool = True,
-        external: Literal["error", True, False] | None = None,
-        stdout: int | IO[str] | None = None,
-        stderr: int | IO[str] = subprocess.STDOUT,
-        interrupt_timeout: float | None = 0.3,
-        terminate_timeout: float | None = 0.2,
+        # **kwargs: Any,
+        # silent: bool = False,
+        # success_codes: Iterable[int] | None = None,
+        # log: bool = True,
+        # external: Literal["error", True, False] | None = None,
+        # stdout: int | IO[str] | None = None,
+        # stderr: int | IO[str] = subprocess.STDOUT,
+        # interrupt_timeout: float | None = 0.3,
+        # terminate_timeout: float | None = 0.2,
     ) -> Any | None: ...
 
     def log(self, *args: Any, **kwargs: Any) -> None: ...
