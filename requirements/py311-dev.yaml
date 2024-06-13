@@ -14,7 +14,7 @@ dependencies:
   - cookiecutter
   - copier
   - mypy>=1.10.0
-  - nox>=2024.3.2
+  - nox>=2024.4.15
   - packaging
   - pytest
   - pytest-cov

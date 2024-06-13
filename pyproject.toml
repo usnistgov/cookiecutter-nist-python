@@ -39,7 +39,7 @@ optional-dependencies.dev-complete = [
     "cookiecutter-nist-python[dev,tools]",
 ]
 optional-dependencies.dev-extras = [
-    "nox>=2024.3.2",
+    "nox>=2024.4.15",
 ]
 optional-dependencies.docs = [
     "autodocsumm",
