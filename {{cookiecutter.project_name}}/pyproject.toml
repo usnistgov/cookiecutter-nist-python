@@ -56,7 +56,7 @@ optional-dependencies.dev-extras = [
     "ipykernel",
     "ipython",
     "nbclient>=0.10.0",
-    "nox>=2024.3.2",
+    "nox>=2024.4.15",
     "pytest-accept",
 ]
 optional-dependencies.docs = [
