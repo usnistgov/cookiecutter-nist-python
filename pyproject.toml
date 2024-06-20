@@ -12,7 +12,7 @@ license-files = { paths = [
 authors = [
     { name = "William P. Krekelberg", email = "wpk@nist.gov" },
 ]
-requires-python = ">=3.8,<=3.12"
+requires-python = ">=3.8,<3.13"
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Science/Research",

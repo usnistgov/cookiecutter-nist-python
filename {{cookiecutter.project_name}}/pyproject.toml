@@ -19,7 +19,7 @@ license-files = { paths = [
 authors = [
     { name = "{{ cookiecutter.full_name.replace('\"', '\\\"') }}", email = "{{ cookiecutter.email }}" },
 ]
-requires-python = ">=3.8,<=3.12"
+requires-python = ">=3.8,<3.13"
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Science/Research",
