@@ -42,7 +42,7 @@ sphinxcontrib-serializinghtml==1.1.10  # via sphinx
 sphinxcontrib-spelling==8.0.0  # via -r requirements/docs.txt
 starlette==0.37.2         # via sphinx-autobuild
 typing-extensions==4.12.2  # via pydata-sphinx-theme
-urllib3==2.2.1            # via requests
+urllib3==2.2.2            # via requests
 uvicorn==0.30.1           # via sphinx-autobuild
 watchfiles==0.22.0        # via sphinx-autobuild
 websockets==12.0          # via sphinx-autobuild
