@@ -67,7 +67,7 @@ optional-dependencies.pipxrun-tools = [
     "cookiecutter-nist-python[mypy]",
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
-    "pyright>=1.1.369",
+    "pyright>=1.1.370",
     "twine>=5.0.0",
 ]
 optional-dependencies.test = [

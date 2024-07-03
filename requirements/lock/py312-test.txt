@@ -9,10 +9,10 @@ charset-normalizer==3.3.2  # via requests
 click==8.1.7              # via cookiecutter
 colorama==0.4.6           # via copier
 cookiecutter==2.6.0       # via -r requirements/test.txt
-copier==9.2.0             # via copier-templates-extensions, -r requirements/test.txt
+copier==9.3.0             # via copier-templates-extensions, -r requirements/test.txt
 copier-templates-extensions==0.3.0  # via -r requirements/test.txt
-coverage==7.5.3           # via pytest-cov
-dunamai==1.21.1           # via copier
+coverage==7.5.4           # via pytest-cov
+dunamai==1.21.2           # via copier
 execnet==2.1.1            # via pytest-xdist
 funcy==2.0                # via copier
 idna==3.7                 # via requests
@@ -27,8 +27,8 @@ pathspec==0.12.1          # via copier
 pluggy==1.5.0             # via pytest
 plumbum==1.8.3            # via copier
 prompt-toolkit==3.0.36    # via questionary
-pydantic==2.7.4           # via copier
-pydantic-core==2.18.4     # via pydantic
+pydantic==2.8.0           # via copier
+pydantic-core==2.20.0     # via pydantic
 pygments==2.18.0          # via copier, rich
 pytest==8.2.2             # via pytest-cov, pytest-sugar, pytest-xdist, -r requirements/test.txt
 pytest-cov==5.0.0         # via -r requirements/test.txt
