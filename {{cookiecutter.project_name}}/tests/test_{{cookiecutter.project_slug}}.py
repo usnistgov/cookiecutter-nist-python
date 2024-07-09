@@ -19,7 +19,7 @@ def test_version() -> None:
     assert __version__ != "999"
 
 
-@pytest.fixture()
+@pytest.fixture
 def response() -> tuple[int, int]:
     return 1, 2
 
