@@ -65,8 +65,6 @@ class Option:
             else:
                 d = f"  default: {d}"
 
-            # d = f"  default: {self.default}"
-            # d = d.replace("cookiecutter.", "")
             result.append(d)
 
         if when is not None:

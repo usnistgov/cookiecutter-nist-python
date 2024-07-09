@@ -12,17 +12,10 @@ import pytest
 
 from .utils import run_inside_dir
 
-# from itertools import product
-
-
 # * Examples setup ---------------------------------------------------------------------
 ROOT = (Path(__file__).parent / "..").resolve()
 OUTPUT_PATH = ROOT / "cached_examples"
 
-
-# SPHINX_THEMES = ["furo", "book"]
-# COMMAND_LINE_INTERFACE = ["nocli", "click", "typer"]
-# SPHINX_THEMES_AND_CLI = product(SPHINX_THEMES, COMMAND_LINE_INTERFACE)
 
 SPHINX_THEMES_AND_CLI = [
     ("book", "nocli"),
@@ -259,16 +252,3 @@ def _bake_project(
     # create .nox if doesn't exist
     rendered_dir = Path(output_dir) / project_name
     (rendered_dir / ".nox").mkdir(exist_ok=True)
-
-    # if have userconfig, copy it:
-    # config = ROOT / "config" / "userconfig.toml"
-    # if config.exists():
-    #     shutil.copy(str(config), str(rendered_dir / "config"))
-
-    # # create requirements
-    # run_inside_dir(f"nox -s requirements", rendered_dir)
-
-    # git init?
-    # if not (rendered_dir / ".git").exists():
-    #     run_inside_dir("git init", rendered_dir)
-    # run_inside_dir("git add .", rendered_dir)

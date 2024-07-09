@@ -1,6 +1,6 @@
 {
   "template": ".",
-  "commit": "608e005da17881ba6b76165171a344e1e79184c8",
+  "commit": "5fef72f55aa2fbccca817d174f70a9a81d1047ba",
   "checkout": "develop",
   "context": {
     "cookiecutter": {

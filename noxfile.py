@@ -78,7 +78,7 @@ nox.options.default_venv_backend = "uv"
 CONFIG = load_nox_config()
 # if you'd like to disallow uv.
 # You'll need to import this from tools.noxtools
-# DISALLOW_WHICH.append("uv")
+# DISALLOW_WHICH.append("uv")  # noqa: ERA001
 
 
 # * Options ---------------------------------------------------------------------------
@@ -316,10 +316,9 @@ def dev(
             envname=opts.dev_envname,
             lock=opts.lock,
             update=opts.update,
-            # package=True,
+            package=False,
         )
         .install_all(
-            # update_package=opts.update_package,
             log_session=opts.log_session,
         )
         .set_ipykernel_display_name(name=f"{PACKAGE_NAME}-dev", update=True)
@@ -675,9 +674,9 @@ def test(
             envname="test",
             lock=opts.lock,
             # To use editable install
-            # package=True,
+            # package=False,  # noqa: ERA001
             # To use full install
-            # package=get_package_wheel(session, opts="--no-deps --force-reinstall"),
+            # package=get_package_wheel(session, opts="--no-deps --force-reinstall"),  # noqa: ERA001
             update=opts.update,
         ).install_all(log_session=opts.log_session, update_package=opts.update_package)
     )
@@ -828,10 +827,8 @@ def docs(
         session=session,
         envname="docs",
         lock=opts.lock,
-        # package=True,
         update=opts.update,
     ).install_all(
-        # update_package=opts.update_package,
         log_session=opts.log_session,
     )
 
@@ -912,8 +909,6 @@ def typing(  # noqa: C901
             envname="typing",
             lock=opts.lock,
             update=opts.update,
-            # need package for nbqa checks
-            # package=True,
         )
         .install_all(log_session=opts.log_session)
         .run_commands(opts.typing_run)
@@ -963,8 +958,6 @@ def typing(  # noqa: C901
 
     for cmds in combine_list_list_str(opts.typing_run_internal or []):
         run(*cmds)
-
-    # runner.run_commands(opts.typing_run_internal, external=False)
 
 
 nox.session(name="typing", **ALL_KWS)(typing)
@@ -1134,33 +1127,11 @@ def conda_recipe(
                     "-o",
                     str(d),
                 )
-                # session.run(
-                #     sys.executable,
-                #     "tools/pipxrun.py",
-                #     PIPXRUN_REQUIREMENTS,
-                #     "-v",
-                #     "-c",
-                #     " ".join(
-                #         [
-                #             "grayskull",
-                #             "pypi",
-                #             sdist_path,
-                #             "-o",
-                #             str(d),
-                #         ]
-                #     ),
-                # )
                 path = Path(d) / PACKAGE_NAME / "meta.yaml"
                 session.log(f"cat {path}:")
                 with path.open() as f:
                     for line in f:
                         print(line, end="")  # noqa: T201
-
-                # # session.run(
-                # #     "cat",
-                #     str(Path(d) / PACKAGE_NAME / "meta.yaml"),
-                #     external=True,
-                # )
 
 
 @nox.session(name="conda-build", **CONDA_DEFAULT_KWS)

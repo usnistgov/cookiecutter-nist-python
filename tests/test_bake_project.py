@@ -117,7 +117,7 @@ def test_baked_create(example_path: Path) -> None:
     check_directory(path=example_path, extra_files=extra_files)
 
 
-@pytest.mark.disable()
+@pytest.mark.disable
 def test_baked_version(example_path: Path) -> None:
     py = get_python_version()
 

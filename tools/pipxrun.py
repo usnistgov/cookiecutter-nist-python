@@ -165,10 +165,6 @@ def setup_logging(
     level_number = max(0, logging.WARNING - 10 * verbosity)
     root_logger.setLevel(level_number)
 
-    # if verbose:
-    #     root_logger.setLevel(OUTPUT)
-    # else:
-    #     root_logger.setLevel(logging.DEBUG)
     handler = logging.StreamHandler()
 
     handler.setFormatter(_get_formatter(color, add_timestamp))
@@ -178,75 +174,10 @@ def setup_logging(
     logging.getLogger("sh").setLevel(logging.WARNING)
 
 
-# Original
-# class CustomFormatter(logging.Formatter):
-#     """Custom formatter."""
-
-#     def format(self, record: logging.LogRecord) -> str:
-#         """Custom format."""
-#         msg = textwrap.fill(
-#             super().format(record),
-#             width=_max_output_width(),
-#             subsequent_indent=" " * 4,
-#             break_long_words=False,
-#             replace_whitespace=False,
-#             drop_whitespace=False,
-#             break_on_hyphens=False,
-#         ).replace("\n", "\\\n")
-#         if msg.endswith("\\\n"):
-#             msg = msg.rstrip("\\\n") + "\n"
-
-#         return msg
-
-
-# handler = logging.StreamHandler(sys.stdout)
-# handler.setFormatter(
-#     CustomFormatter(
-#         "{name}({levelname}): {message}",
-#         style="{",
-#     )
-# )
-
-# logging.basicConfig(
-#     level=logging.WARNING,
-#     handlers=[
-#         handler,
-#     ],
-# )
-# logger = logging.getLogger("pipxrun")
-
-# def _set_verbosity_level(logger: logging.Logger, verbosity: int) -> None:
-#     """Set verbosity level."""
-#     level_number = max(0, logging.WARNING - 10 * verbosity)
-#     logger.setLevel(level_number)
-
-
 # * Utilities -----------------------------------------------------------------
 @lru_cache
 def _comment_re() -> re.Pattern[str]:
     return re.compile(r"(^|\s+)#.*$")
-
-
-# @lru_cache
-# def _max_output_width() -> int:
-#     import shutil
-
-#     width = shutil.get_terminal_size((80, 20)).columns
-
-#     min_width, max_width = 20, 150
-#     if width > max_width:
-#         width = max_width
-#     if width < min_width:
-#         width = min_width
-#     return width
-
-
-# def _print_header(name: str = "") -> None:
-#     if logger.isEnabledFor(logging.WARNING):
-#         fmt = f"{{:=<{_max_output_width()}}}"
-#         if name:
-#             name = f"= {name} "
-#         print(fmt.format(name))
 
 
 @lru_cache
@@ -367,15 +298,6 @@ class SessionInterfaceTemplate(Protocol):
         *args: str | os.PathLike[str],
         env: Mapping[str, str | None] | None = None,
         include_outer_env: bool = True,
-        # **kwargs: Any,
-        # silent: bool = False,
-        # success_codes: Iterable[int] | None = None,
-        # log: bool = True,
-        # external: Literal["error", True, False] | None = None,
-        # stdout: int | IO[str] | None = None,
-        # stderr: int | IO[str] = subprocess.STDOUT,
-        # interrupt_timeout: float | None = 0.3,
-        # terminate_timeout: float | None = 0.2,
     ) -> Any | None: ...
 
     def log(self, *args: Any, **kwargs: Any) -> None: ...
@@ -556,8 +478,6 @@ class Command:
         **kwargs: Any,
     ) -> Any:
         """Run the command"""
-        # _print_header(self.name)
-
         command = self.command(
             session=session,
             python_executable=python_executable,
@@ -774,40 +694,3 @@ def main(args: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-
-
-# Alternative method to get command version...
-# @lru_cache
-# def _version_re() -> re.Pattern[str]:
-#     return re.compile(
-#         r"\b([1-9][0-9]*!)?(0|[1-9][0-9]*)"
-#         r"(\.(0|[1-9][0-9]*))*((a|b|rc)(0|[1-9][0-9]*))"
-#         r"?(\.post(0|[1-9][0-9]*))?(\.dev(0|[1-9][0-9]*))?\b"
-#     )
-#
-#
-# @lru_cache
-# def _get_command_version(command: str, flag: str = "--version") -> Version | None:
-#     version_search = _version_re().search(
-#         subprocess.check_output([command, flag])
-#         .decode()
-#         .strip()
-#     )
-#     if version_search:
-#         return Version(version_search.group(0))
-#     return None
-#
-#
-# def _get_site(python_executable: str | Path) -> str:
-#     """Getesite-packages for python path (trying to make pytype work)"""
-#     return (
-#         subprocess.check_output(
-#             [
-#                 python_executable,
-#                 "-c",
-#                 "import sysconfig; print(sysconfig.get_paths()['purelib'])",
-#             ]
-#         )
-#         .decode()
-#         .strip()
-#     )
