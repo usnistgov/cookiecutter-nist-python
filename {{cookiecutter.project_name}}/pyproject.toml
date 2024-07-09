@@ -179,7 +179,6 @@ lint.ignore = [
     "E402",    # - module level import not at top of file
     "E501",    # - line too long - let formatter fix this
     "E731",    # - do not assign a lambda expression, use a def
-    "ERA",     # - eradicate (want to keep some stuff)
     "FBT",     # - bools are ok
     "ISC",     # - flake8-implicit-str-concat
     "PLC0415", # - import should be at top level (leads to issues with imports in func?)
@@ -189,6 +188,7 @@ lint.ignore = [
 lint.extend-ignore = [
     "NPY", # - not using numpy?
     "PD",  # - not using pandas?
+    # "ERA", # - eradicate (want to keep some stuff)
     # * Annotations
     # "SLF001",  # - flake8-self (private access sometimes OK)
     # "ANN",     # - Annotations (just use mypy/pyright)
@@ -207,6 +207,7 @@ lint.per-file-ignores."**/*.ipynb" = [
     "INP001",
 ]
 lint.per-file-ignores."docs/conf.py" = [
+    "ERA",
     "INP001",
 ]
 lint.per-file-ignores."noxfile.py" = [
@@ -224,6 +225,7 @@ lint.per-file-ignores."tools/*.py" = [
 ]
 # lint.fixable = ["ALL"]
 lint.unfixable = [
+    "ERA",
     "PLR6104",
     "T",
 ]
