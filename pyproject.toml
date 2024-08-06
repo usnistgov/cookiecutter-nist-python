@@ -52,7 +52,7 @@ optional-dependencies.docs = [
     "sphinxcontrib-spelling",
 ]
 optional-dependencies.mypy = [
-    "mypy>=1.10.1",
+    "mypy>=1.11.1",
 ]
 optional-dependencies.nbval = [
     "nbval",
@@ -67,7 +67,7 @@ optional-dependencies.pipxrun-tools = [
     "cookiecutter-nist-python[mypy]",
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
-    "pyright>=1.1.370",
+    "pyright>=1.1.374",
     "twine>=5.0.0",
 ]
 optional-dependencies.test = [
@@ -135,8 +135,6 @@ lint.ignore = [
 ]
 # Use extend-ignore for project specific ignores (avoid changing ignore directly)
 lint.extend-ignore = [
-    "NPY", # - not using numpy?
-    "PD",  # - not using pandas?
     # "ERA", # - eradicate (want to keep some stuff)
     # * Annotations
     # "SLF001",  # - flake8-self (private access sometimes OK)
@@ -149,6 +147,11 @@ lint.extend-ignore = [
     # "D102",    # - Missing docstring in public method
     # "D103",    # - Missing docstring in public function
     # "D202",    # - blank line after docstring
+    "DOC201", # - Missing return from documentation
+    "DOC202", # - Missing return from documentation
+    "DOC501", # - Missing raises from documentation
+    "NPY",    # - not using numpy?
+    "PD",     # - not using pandas?
 ]
 lint.per-file-ignores."**/*.ipynb" = [
     "B018",
