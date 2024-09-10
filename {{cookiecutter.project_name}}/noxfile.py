@@ -26,7 +26,7 @@ from typing import (
 
 # fmt: off
 sys.path.insert(0, ".")
-from tools import pipxrun
+from tools import uvxrun
 from tools.dataclass_parser import DataclassParser, add_option, option
 from tools.noxtools import (
     Installer,
@@ -89,17 +89,17 @@ PYTHON_ALL_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12"]
 PYTHON_DEFAULT_VERSION = "3.11"
 
 
-PIPXRUN_LOCK_REQUIREMENTS = "requirements/lock/py{}-pipxrun-tools.txt".format(
+UVXRUN_LOCK_REQUIREMENTS = "requirements/lock/py{}-uvxrun-tools.txt".format(
     PYTHON_DEFAULT_VERSION.replace(".", "")
 )
-PIPXRUN_MIN_REQUIREMENTS = "requirements/pipxrun-tools.txt"
+UVXRUN_MIN_REQUIREMENTS = "requirements/uvxrun-tools.txt"
 
 
 @lru_cache
-def get_pipxrun_specs(requirements: str | None = None) -> pipxrun.Specifications:
-    """Get specs for pipxrun."""
-    requirements = requirements or PIPXRUN_MIN_REQUIREMENTS
-    return pipxrun.Specifications.from_requirements(requirements=requirements)
+def get_uvxrun_specs(requirements: str | None = None) -> uvxrun.Specifications:
+    """Get specs for uvxrun."""
+    requirements = requirements or UVXRUN_MIN_REQUIREMENTS
+    return uvxrun.Specifications.from_requirements(requirements=requirements)
 
 
 for backend in ["mamba", "micromamba", "conda"]:
@@ -367,7 +367,7 @@ def requirements(
 
     These will be placed in the directory "./requirements".
     """
-    pipxrun.run(
+    uvxrun.run(
         "pyproject2conda>=0.11.0",
         "project",
         "--verbose",
@@ -436,14 +436,14 @@ def conda_lock(
                 # insert -f for each arg
                 if lockfile.exists():
                     lockfile.unlink()
-                pipxrun.run(
+                uvxrun.run(
                     "conda-lock",
                     "--mamba" if opts.conda_lock_mamba else "--no-mamba",
                     *prepend_flag("-c", *channel),
                     *prepend_flag("-p", *platform),
                     *prepend_flag("-f", *deps),
                     f"--lockfile={lockfile}",
-                    specs=get_pipxrun_specs(),
+                    specs=get_uvxrun_specs(),
                     session=session,
                     external=True,
                 )
@@ -562,7 +562,7 @@ def pip_compile(
 
     envs_all = ["test", "typing"]
     envs_dev = ["dev", "dev-complete", "docs"]
-    envs_dev_optional = ["test-notebook", "pipxrun-tools"]
+    envs_dev_optional = ["test-notebook", "uvxrun-tools"]
 
     if session.python == PYTHON_DEFAULT_VERSION:
         envs = envs_all + envs_dev + envs_dev_optional
@@ -604,7 +604,7 @@ def uv_compile(
 
     envs_all = ["test", "typing"]
     envs_dev = ["dev", "dev-complete", "docs"]
-    envs_dev_optional = ["test-notebook", "pipxrun-tools"]
+    envs_dev_optional = ["test-notebook", "uvxrun-tools"]
 
     for python in set(PYTHON_ALL_VERSIONS).union({PYTHON_DEFAULT_VERSION}):
         if python == PYTHON_DEFAULT_VERSION:
@@ -741,7 +741,7 @@ def coverage(
     """Run coverage."""
     cmd = opts.coverage or ["combine", "html", "report"]
 
-    run = partial(pipxrun.run, specs=get_pipxrun_specs(), session=session)
+    run = partial(uvxrun.run, specs=get_uvxrun_specs(), session=session)
 
     paths = list(Path(".nox").glob("test-*/tmp/.coverage*"))
 
@@ -890,11 +890,11 @@ def lint(
     To run something else pass, e.g.,
     `nox -s lint -- --lint-run "pre-commit run --hook-stage manual --all-files`
     """
-    pipxrun.run(
+    uvxrun.run(
         "pre-commit",
         "run",
         "--all-files",  # "--show-diff-on-failure",
-        specs=get_pipxrun_specs(),
+        specs=get_uvxrun_specs(),
         session=session,
     )
 
@@ -943,8 +943,8 @@ def typing(  # noqa: C901
         raise TypeError
 
     run = partial(
-        pipxrun.run,
-        specs=get_pipxrun_specs(PIPXRUN_LOCK_REQUIREMENTS),
+        uvxrun.run,
+        specs=get_uvxrun_specs(UVXRUN_LOCK_REQUIREMENTS),
         session=session,
         python_version=session.python,
         python_executable=runner.python_full_path,
@@ -969,37 +969,49 @@ nox.session(name="typing", **ALL_KWS)(typing)
 nox.session(name="typing-conda", **CONDA_ALL_KWS)(typing)
 
 
-# # ** Dist pypi
-@nox.session
+# ** Dist pypi
+# NOTE: you can skip having the build environment and
+# just use uv build, but faster to use environment ...
+USE_ENVIRONMENT_FOR_BUILD = False
+_build_dec = nox.session if USE_ENVIRONMENT_FOR_BUILD else nox.session(python=False)
+
+
+@_build_dec
 @add_opts
-def build(session: nox.Session, opts: SessionParams) -> None:
+def build(session: nox.Session, opts: SessionParams) -> None:  # noqa: C901
     """
     Build the distribution.
 
     Note that default is to not use build isolation.
     Pass `--build-isolation` to use build isolation.
     """
-    runner = Installer.from_envname(
-        session=session,
-        envname="build",
-        update=opts.update,
-    ).install_all(log_session=opts.log_session)
+    if USE_ENVIRONMENT_FOR_BUILD:
+        runner = Installer.from_envname(
+            session=session,
+            envname="build",
+            update=opts.update,
+        ).install_all(log_session=opts.log_session)
 
     if opts.version:
         session.env["SETUPTOOLS_SCM_PRETEND_VERSION"] = opts.version
 
     for cmd in opts.build or ["build"]:
         if cmd == "version":
-            session.run(runner.python_full_path, "-m", "hatchling", "version")
+            if USE_ENVIRONMENT_FOR_BUILD:
+                session.run(runner.python_full_path, "-m", "hatchling", "version")  # pyright: ignore[reportPossiblyUnboundVariable]
+            else:
+                session.run(
+                    "uvx", "--with", "hatch-vcs", "hatchling", "version", external=True
+                )
 
         elif cmd == "build":
             outdir = opts.build_outdir
             if Path(outdir).exists():
                 shutil.rmtree(outdir)
 
-            args = f"{runner.python_full_path} -m build --outdir {outdir}".split()
-            if not opts.build_isolation:
-                args.append("--no-isolation")
+            args = f"uv build --out-dir {outdir}".split()
+            if USE_ENVIRONMENT_FOR_BUILD and not opts.build_isolation:
+                args.append("--no-build-isolation")
 
             if opts.build_opts:
                 args.extend(opts.build_opts)
@@ -1032,7 +1044,7 @@ def get_package_wheel(
     if reuse and getattr(get_package_wheel, "_called", False):
         session.log("Reuse isolated build")
     else:
-        cmd = f"nox -s build -- ++build-outdir {dist_location} ++build-opts -w ++build-silent"
+        cmd = f"nox -s build -- ++build-outdir {dist_location} ++build-opts --wheel ++build-silent"
         session.run_always(*shlex.split(cmd), external=True)
 
         # save that this was called:
@@ -1066,9 +1078,7 @@ def get_package_wheel(
 @add_opts
 def publish(session: nox.Session, opts: SessionParams) -> None:
     """Publish the distribution"""
-    run = partial(
-        pipxrun.run, specs=get_pipxrun_specs(), session=session, external=True
-    )
+    run = partial(uvxrun.run, specs=get_uvxrun_specs(), session=session, external=True)
 
     for cmd in opts.publish or []:
         if cmd == "test":
@@ -1089,7 +1099,7 @@ def conda_recipe(
     """Run grayskull to create recipe"""
     commands = opts.conda_recipe or ["recipe"]
 
-    run = partial(pipxrun.run, specs=get_pipxrun_specs(), session=session)
+    run = partial(uvxrun.run, specs=get_uvxrun_specs(), session=session)
 
     if not (sdist_path := opts.conda_recipe_sdist_path):
         sdist_path = PACKAGE_NAME

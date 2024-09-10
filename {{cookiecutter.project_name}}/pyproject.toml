@@ -47,7 +47,7 @@ dependencies = [
 ]
 optional-dependencies.dev = [
     # "{{ cookiecutter.project_name }}[nbval]",
-    "{{ cookiecutter.project_name }}[dev-extras,test,typing,pipxrun,mypy]",
+    "{{ cookiecutter.project_name }}[dev-extras,test,typing,uvxrun,mypy]",
 ]
 optional-dependencies.dev-complete = [
     "{{ cookiecutter.project_name }}[dev,tools]",
@@ -84,23 +84,10 @@ optional-dependencies.docs = [
     "sphinxcontrib-spelling",
 ]
 optional-dependencies.mypy = [
-    "mypy>=1.11.1",
+    "mypy>=1.11.2",
 ]
 optional-dependencies.nbval = [
     "nbval",
-]
-optional-dependencies.pipxrun = [
-    # Anything needed to run tools/pipxrun.py
-    "packaging",
-]
-optional-dependencies.pipxrun-tools = [
-    # these used solely for specking tools to be used with tools/pipxrun.py
-    "conda-lock>=2.5.5",
-    "grayskull>=2.5.3",
-    "nbqa>=1.8.4",
-    "pyright>=1.1.374",
-    "{{ cookiecutter.project_name }}[mypy]",
-    "twine>=5.0.0",
 ]
 optional-dependencies.test = [
     "pytest",
@@ -109,13 +96,25 @@ optional-dependencies.test = [
     "pytest-xdist",
 ]
 optional-dependencies.tools = [
-    "pipx",
     "pre-commit",
     "scriv",
 ]
 optional-dependencies.typing = [
     "pytest",
-    "{{ cookiecutter.project_name }}[pipxrun]",
+    "{{ cookiecutter.project_name }}[uvxrun]",
+]
+optional-dependencies.uvxrun = [
+    # Anything needed to run tools/uvxrun.py
+    "packaging",
+]
+optional-dependencies.uvxrun-tools = [
+    # these used solely for specking tools to be used with tools/uvxrun.py
+    "conda-lock>=2.5.5",
+    "grayskull>=2.5.3",
+    "nbqa>=1.8.4",
+    "pyright>=1.1.379",
+    "{{ cookiecutter.project_name }}[mypy]",
+    "twine>=5.0.0",
 ]
 urls.Documentation = "https://pages.nist.gov/{{ cookiecutter.project_name }}/"
 urls.Homepage = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name}}"
@@ -223,6 +222,7 @@ lint.per-file-ignores."tests/*.py" = [
 lint.per-file-ignores."tools/*.py" = [
     "A",
     "D102",
+    "DOC402",
     "S",
     "SLF001",
 ]
@@ -408,8 +408,8 @@ reqs = [
 base = false
 style = "requirements"
 
-[tool.pyproject2conda.envs.pipxrun-tools]
-extras = "pipxrun-tools"
+[tool.pyproject2conda.envs.uvxrun-tools]
+extras = "uvxrun-tools"
 base = false
 style = "requirements"
 

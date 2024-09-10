@@ -33,7 +33,8 @@ dynamic = [
 dependencies = [
 ]
 optional-dependencies.dev = [
-    "cookiecutter-nist-python[dev-extras,test,typing,pipxrun,mypy]",
+    # "cookiecutter-nist-python[nbval]",
+    "cookiecutter-nist-python[dev-extras,test,typing,uvxrun,mypy]",
 ]
 optional-dependencies.dev-complete = [
     "cookiecutter-nist-python[dev,tools]",
@@ -52,23 +53,10 @@ optional-dependencies.docs = [
     "sphinxcontrib-spelling",
 ]
 optional-dependencies.mypy = [
-    "mypy>=1.11.1",
+    "mypy>=1.11.2",
 ]
 optional-dependencies.nbval = [
     "nbval",
-]
-optional-dependencies.pipxrun = [
-    # Anything needed to run tools/pipxrun.py
-    "packaging",
-]
-optional-dependencies.pipxrun-tools = [
-    # these used solely for specking tools to be used with tools/pipxrun.py
-    "conda-lock>=2.5.5",
-    "cookiecutter-nist-python[mypy]",
-    "grayskull>=2.5.3",
-    "nbqa>=1.8.4",
-    "pyright>=1.1.374",
-    "twine>=5.0.0",
 ]
 optional-dependencies.test = [
     "cookiecutter",
@@ -80,13 +68,25 @@ optional-dependencies.test = [
     "pytest-xdist",
 ]
 optional-dependencies.tools = [
-    "pipx",
     "pre-commit",
     "scriv",
 ]
 optional-dependencies.typing = [
-    "cookiecutter-nist-python[pipxrun]",
+    "cookiecutter-nist-python[uvxrun]",
     "pytest",
+]
+optional-dependencies.uvxrun = [
+    # Anything needed to run tools/uvxrun.py
+    "packaging",
+]
+optional-dependencies.uvxrun-tools = [
+    # these used solely for specking tools to be used with tools/uvxrun.py
+    "conda-lock>=2.5.5",
+    "cookiecutter-nist-python[mypy]",
+    "grayskull>=2.5.3",
+    "nbqa>=1.8.4",
+    "pyright>=1.1.379",
+    "twine>=5.0.0",
 ]
 urls.Documentation = "https://pages.nist.gov/cookiecutter-nist-python/"
 urls.Homepage = "https://github.com/usnistgov/cookiecutter-nist-python"
@@ -172,6 +172,7 @@ lint.per-file-ignores."tests/*.py" = [
 lint.per-file-ignores."tools/*.py" = [
     "A",
     "D102",
+    "DOC402",
     "S",
     "SLF001",
 ]
@@ -363,8 +364,8 @@ pytest-accept = { pip = true }
 scriv = { pip = true }
 copier-templates-extensions = { pip = true }
 
-[tool.pyproject2conda.envs.pipxrun-tools]
-extras = "pipxrun-tools"
+[tool.pyproject2conda.envs.uvxrun-tools]
+extras = "uvxrun-tools"
 base = false
 style = "requirements"
 

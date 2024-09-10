@@ -127,19 +127,21 @@ requirements/%.txt: pyproject.toml
 ################################################################################
 # * Typing
 ################################################################################
-PIPXRUN = python tools/pipxrun.py
-PIPXRUN_OPTS = -r requirements/lock/py311-pipxrun-tools.txt -v
+UVXRUN = $(shell which python) tools/uvxrun.py
+UVXRUN_OPTS = -r requirements/lock/py311-uvxrun-tools.txt -v
 .PHONY: mypy pyright
 mypy: ## Run mypy
-	$(PIPXRUN) $(PIPXRUN_OPTS) -c mypy
+	$(UVXRUN) $(UVXRUN_OPTS) -c mypy
 pyright: ## Run pyright
-	$(PIPXRUN) $(PIPXRUN_OPTS) -c pyright
+	$(UVXRUN) $(UVXRUN_OPTS) -c pyright
+pyright-watch: ## Run pyright in watch mode
+	$(UVXRUN) $(UVXRUN_OPTS) -c "pyright -w"
 typecheck: ## Run mypy and pyright
-	$(PIPXRUN) $(PIPXRUN_OPTS) -c mypy -c pyright
+	$(UVXRUN) $(UVXRUN_OPTS) -c mypy -c pyright
 
 .PHONY: typecheck-tools
 typecheck-tools:
-	$(PIPXRUN) $(PIPXRUN_OPTS) -c "mypy --strict" -c pyright -- noxfile.py tools/*.py
+	$(UVXRUN) $(UVXRUN_OPTS) -c "mypy --strict" -c pyright -- noxfile.py tools/*.py
 
 ################################################################################
 # * NOX
@@ -155,7 +157,7 @@ docs-clean: ## clean docs
 	rm -rf docs/reference/generated/*
 docs-clean-build: docs-clean docs-build ## clean and build
 docs-release: ## release docs.
-	$(PIPXRUN) $(PIPXRUN_OPTS) -c "ghp-import -o -n -m \"update docs\" -b nist-pages" docs/_build/html
+	$(UVXRUN) $(UVXRUN_OPTS) -c "ghp-import -o -n -m \"update docs\" -b nist-pages" docs/_build/html
 
 .PHONY: docs-open docs-spelling docs-livehtml docs-linkcheck
 docs-open: ## open the build
@@ -204,7 +206,7 @@ nox-list:
 check-release: ## run twine check on dist
 	$(NOX) -s publish -- +p check
 check-wheel: ## Run check-wheel-contents (requires check-wheel-contents to be installed)
-	$(PIPXRUN) -c check-wheel-contents dist/*.whl
+	$(UVXRUN) -c check-wheel-contents dist/*.whl
 check-dist: check-release check-wheel ## Run check-release and check-wheel
 .PHONY:  list-wheel list-sdist list-dist
 list-wheel: ## Cat out contents of wheel
@@ -217,7 +219,7 @@ list-dist: list-wheel list-sdist ## Cat out sdist and wheel contents
 # * NOTEBOOK typing/testing
 ################################################################################
 NOTEBOOKS ?= examples/usage
-NBQA = $(PIPXRUN) $(PIPXRUN_OPTS) -c "nbqa --nbqa-shell \"$(PIPXRUN)\" $(NOTEBOOKS) $(PIPXRUN_OPTS) $(_NBQA)"
+NBQA = $(UVXRUN) $(UVXRUN_OPTS) -c "nbqa --nbqa-shell \"$(UVXRUN)\" $(NOTEBOOKS) $(UVXRUN_OPTS) $(_NBQA)"
 .PHONY: mypy-notebook pyright-notebook typecheck-notebook test-notebook
 mypy-notebook: _NBQA = -c mypy
 mypy-notebook: ## run nbqa mypy
@@ -251,7 +253,7 @@ commitizen-changelog:
 .PHONY: tuna-analyze
 tuna-import: ## Analyze load time for module
 	python -X importtime -c 'import cookiecutter_nist_python' 2> tuna-loadtime.log
-	$(PIPXRUN) -c tuna tuna-loadtime.log
+	$(UVXRUN) -c tuna tuna-loadtime.log
 	rm tuna-loadtime.log
 
 # cookiecutter stuff
