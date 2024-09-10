@@ -24,10 +24,10 @@ for line in sys.stdin:
 endef
 export PRINT_HELP_PYSCRIPT
 
-BROWSER := python -c "$$BROWSER_PYSCRIPT"
+BROWSER := uv run python -c "$$BROWSER_PYSCRIPT"
 
 help:
-	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
+	@uv run python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
@@ -72,6 +72,9 @@ pre-commit-typos:  ## run typos.
 	pre-commit run --all-files --hook-stage manual typos
 	pre-commit run --all-files --hook-stage manual nbqa-typos
 
+pre-commit-ruff-all: ## run ruff lint and format
+	pre-commit run ruff-all --all-files
+
 ################################################################################
 # * User setup
 ################################################################################
@@ -109,7 +112,7 @@ version-scm: ## check/update version of package from scm
 	nox -s build -- ++build version
 
 version-import: ## check version from python import
-	-python -c 'import {{ cookiecutter.project_slug }}; print({{ cookiecutter.project_slug }}.__version__)'
+	-uv run python -c 'import {{ cookiecutter.project_slug }}; print({{ cookiecutter.project_slug }}.__version__)'
 
 version: version-scm version-import
 
@@ -127,7 +130,7 @@ requirements/%.txt: pyproject.toml
 ################################################################################
 # * Typing
 ################################################################################
-UVXRUN = $(shell which python) tools/uvxrun.py
+UVXRUN = uv run tools/uvxrun.py
 UVXRUN_OPTS = -r requirements/lock/py311-uvxrun-tools.txt -v
 .PHONY: mypy pyright
 mypy: ## Run mypy
@@ -252,6 +255,6 @@ commitizen-changelog:
 # tuna analyze load time:
 .PHONY: tuna-analyze
 tuna-import: ## Analyze load time for module
-	python -X importtime -c 'import {{ cookiecutter.project_slug }}' 2> tuna-loadtime.log
+	uv run python -X importtime -c 'import {{ cookiecutter.project_slug }}' 2> tuna-loadtime.log
 	$(UVXRUN) -c tuna tuna-loadtime.log
 	rm tuna-loadtime.log
