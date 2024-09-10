@@ -619,7 +619,6 @@ def uv_compile(
                     "pip",
                     "compile",
                     f"--python-version={python}",
-                    "--annotation-style=line",
                 ),
                 python=python,
                 options=options,
