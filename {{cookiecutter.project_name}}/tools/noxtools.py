@@ -26,7 +26,7 @@ def override_sessionrunner_create_venv(self: SessionRunner) -> None:
         # if passed a callable backend, always use just that
         logger.info("Using custom callable venv_backend")
 
-        self.venv = self.func.venv_backend(self)
+        self.venv = self.func.venv_backend(self)  # pyright: ignore[reportAttributeAccessIssue]
         return None
 
     logger.info("Using nox venv_backend")

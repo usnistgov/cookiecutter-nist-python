@@ -85,7 +85,7 @@ optional-dependencies.uvxrun-tools = [
     "cookiecutter-nist-python[mypy]",
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
-    "pyright>=1.1.379",
+    "pyright>=1.1.381",
     "twine>=5.0.0",
 ]
 urls.Documentation = "https://pages.nist.gov/cookiecutter-nist-python/"
