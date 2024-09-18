@@ -199,21 +199,25 @@ If using virtualenvs across multiple python versions (e.g., `test`, `typing`,
 etc), you'll need to install python interpreters for each version. If using
 [pyenv], you should be good to go.
 
-Instead of using [pyenv], I use conda to create multiple invironments to hold
-different python version. You can use the following script to create the needed
-conda environments:
+Instead of using [pyenv], I use [uv] to manage python versions. For example:
 
 ```bash
-python tools/create_pythons.py -p 3.8 3.9 ...
+uv python install python3.12
 ```
 
-Run with `--help` for more options.
+I also set the global [uv] config file (`~/.config/uv/uv.toml` on mac and linux)
+to use only managed python:
 
-To tell nox where to find python interpreters created like above, define the
-environment variable:
+```toml
+python-preference = "only-managed"
+
+```
+
+To tell nox where to find python interpreters, define the environment variable
+`NOX_PYTHON_PATH` with something like:
 
 ```bash
-NOX_PYTHON_PATH="~/.conda/python-3.*/bin"
+NOX_PYTHON_PATH="~/path-to-pythons/*python-3.*/bin"
 ```
 
 or the user config file `config/userconfig.toml` with:
@@ -221,7 +225,7 @@ or the user config file `config/userconfig.toml` with:
 ```toml
 # config/userconfig.toml
 [nox.python]
-paths = ["~/.conda/envs/python-3.*/bin"]
+paths = ["~/path-to-pythons/*python-3.*/bin"]
 
 ```
 
@@ -229,7 +233,7 @@ The variable `nox.python.paths` is a list of paths (with optional wildcards)
 added to the environment variable `PATH` to search for python interpreters. If
 using the environment variable `NOX_PYTHON_PATH`, paths should be separated with
 the colons (`:`). Either of the above will add the paths
-`~/.conda/envs/python-3.*/bin` to the search path.
+`~/path-to-pythons/*python-3.*/bin` to the search path.
 
 ### Nox session options
 
