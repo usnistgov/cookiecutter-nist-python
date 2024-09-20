@@ -213,27 +213,9 @@ python-preference = "only-managed"
 
 ```
 
-To tell nox where to find python interpreters, define the environment variable
-`NOX_PYTHON_PATH` with something like:
-
-```bash
-NOX_PYTHON_PATH="~/path-to-pythons/*python-3.*/bin"
-```
-
-or the user config file `config/userconfig.toml` with:
-
-```toml
-# config/userconfig.toml
-[nox.python]
-paths = ["~/path-to-pythons/*python-3.*/bin"]
-
-```
-
-The variable `nox.python.paths` is a list of paths (with optional wildcards)
-added to the environment variable `PATH` to search for python interpreters. If
-using the environment variable `NOX_PYTHON_PATH`, paths should be separated with
-the colons (`:`). Either of the above will add the paths
-`~/path-to-pythons/*python-3.*/bin` to the search path.
+The `noxfile.py` is setup to automatically add the python interpreters installed
+by [uv] to the path. Note that the python version needs to be installed before
+it can be used with [nox]
 
 ### Nox session options
 
@@ -463,6 +445,16 @@ python -m pip install -r requirements/dev.txt
 # locked:
 pip-sync --python-path .venv/bin/python requirements/lock/py{version}-dev.txt
 python -m pip install -e . --no-deps
+```
+
+Or if using [uv]:
+
+```bash
+uv venv --python 3.11 .venv
+uv pip install -r requirements/dev.txt
+# or locked
+uv pip sync requirements/lock/py311-dev.txt
+
 ```
 
 If you want to include the extra tools, replace `dev.txt` with
