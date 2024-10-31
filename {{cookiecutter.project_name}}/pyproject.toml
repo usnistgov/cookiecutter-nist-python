@@ -84,7 +84,7 @@ optional-dependencies.docs = [
     "sphinxcontrib-spelling",
 ]
 optional-dependencies.mypy = [
-    "mypy>=1.11.2",
+    "mypy>=1.13.0",
 ]
 optional-dependencies.nbval = [
     "nbval",
@@ -112,7 +112,7 @@ optional-dependencies.uvxrun-tools = [
     "conda-lock>=2.5.5",
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
-    "pyright>=1.1.382",
+    "pyright>=1.1.387",
     "{{ cookiecutter.project_name }}[mypy]",
     "twine>=5.0.0",
 ]

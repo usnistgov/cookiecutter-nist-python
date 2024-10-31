@@ -53,7 +53,7 @@ optional-dependencies.docs = [
     "sphinxcontrib-spelling",
 ]
 optional-dependencies.mypy = [
-    "mypy>=1.11.2",
+    "mypy>=1.13.0",
 ]
 optional-dependencies.nbval = [
     "nbval",
@@ -85,7 +85,7 @@ optional-dependencies.uvxrun-tools = [
     "cookiecutter-nist-python[mypy]",
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
-    "pyright>=1.1.382",
+    "pyright>=1.1.387",
     "twine>=5.0.0",
 ]
 urls.Documentation = "https://pages.nist.gov/cookiecutter-nist-python/"
