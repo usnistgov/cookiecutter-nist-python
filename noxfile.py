@@ -369,7 +369,7 @@ def requirements(
     These will be placed in the directory "./requirements".
     """
     uvxrun.run(
-        "pyproject2conda>=0.11.0",
+        "pyproject2conda>=0.12.0",
         "project",
         "--verbose",
         *(["--overwrite=force"] if opts.requirements_force else []),

@@ -13,10 +13,9 @@ dependencies:
   - python=3.11
   - cookiecutter
   - copier
-  - mypy>=1.11.1
+  - mypy>=1.13.0
   - nox>=2024.4.15
   - packaging
-  - pipx
   - pre-commit
   - pytest
   - pytest-cov

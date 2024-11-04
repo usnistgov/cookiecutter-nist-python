@@ -32,17 +32,28 @@ dynamic = [
 ]
 dependencies = [
 ]
-optional-dependencies.dev = [
-    # "cookiecutter-nist-python[nbval]",
-    "cookiecutter-nist-python[dev-extras,test,typing,uvxrun,mypy]",
+urls.Documentation = "https://pages.nist.gov/cookiecutter-nist-python/"
+urls.Homepage = "https://github.com/usnistgov/cookiecutter-nist-python"
+
+[dependency-groups]
+dev = [
+    # { include-group = "nbval" },
+    { include-group = "dev-extras" },
+    { include-group = "mypy" },
+    { include-group = "test" },
+    { include-group = "typing" },
+    { include-group = "uvxrun" },
 ]
-optional-dependencies.dev-complete = [
-    "cookiecutter-nist-python[dev,tools]",
+test = [
+    "cookiecutter",
+    "copier",
+    "copier-templates-extensions",
+    "pytest",
+    "pytest-cov",
+    "pytest-sugar",
+    "pytest-xdist",
 ]
-optional-dependencies.dev-extras = [
-    "nox>=2024.4.15",
-]
-optional-dependencies.docs = [
+docs = [
     "autodocsumm",
     "myst-parser",
     "pyenchant",
@@ -52,44 +63,40 @@ optional-dependencies.docs = [
     "sphinx-copybutton",
     "sphinxcontrib-spelling",
 ]
-optional-dependencies.mypy = [
+dev-complete = [
+    { include-group = "dev" },
+    { include-group = "tools" },
+]
+dev-extras = [
+    "nox>=2024.4.15",
+]
+mypy = [
     "mypy>=1.13.0",
 ]
-optional-dependencies.nbval = [
+nbval = [
     "nbval",
 ]
-optional-dependencies.test = [
-    "cookiecutter",
-    "copier",
-    "copier-templates-extensions",
-    "pytest",
-    "pytest-cov",
-    "pytest-sugar",
-    "pytest-xdist",
-]
-optional-dependencies.tools = [
+tools = [
     "pre-commit",
     "scriv",
 ]
-optional-dependencies.typing = [
-    "cookiecutter-nist-python[uvxrun]",
+typing = [
     "pytest",
+    { include-group = "uvxrun" },
 ]
-optional-dependencies.uvxrun = [
+uvxrun = [
     # Anything needed to run tools/uvxrun.py
     "packaging",
 ]
-optional-dependencies.uvxrun-tools = [
+uvxrun-tools = [
     # these used solely for specking tools to be used with tools/uvxrun.py
     "conda-lock>=2.5.5",
-    "cookiecutter-nist-python[mypy]",
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
     "pyright>=1.1.387",
     "twine>=5.0.0",
+    { include-group = "mypy" },
 ]
-urls.Documentation = "https://pages.nist.gov/cookiecutter-nist-python/"
-urls.Homepage = "https://github.com/usnistgov/cookiecutter-nist-python"
 
 [tool.ruff]
 line-length = 88
@@ -365,15 +372,15 @@ scriv = { pip = true }
 copier-templates-extensions = { pip = true }
 
 [tool.pyproject2conda.envs.uvxrun-tools]
-extras = "uvxrun-tools"
-base = false
+groups = "uvxrun-tools"
+skip_package = true
 style = "requirements"
 
 [tool.pyproject2conda.envs.test-extras]
-extras = [
+groups = [
     "test",
 ]
-base = false
+skip_pakcage = true
 
 [[tool.pyproject2conda.overrides]]
 # Ensure these have pip in yaml file

@@ -45,21 +45,28 @@ dependencies = [
     "typer",
     {%- endif %}
 ]
-optional-dependencies.dev = [
-    # "{{ cookiecutter.project_name }}[nbval]",
-    "{{ cookiecutter.project_name }}[dev-extras,test,typing,uvxrun,mypy]",
+urls.Documentation = "https://pages.nist.gov/{{ cookiecutter.project_name }}/"
+urls.Homepage = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name}}"
+{%- if cookiecutter.command_line_interface != "none" %}
+scripts.{{ cookiecutter.project_slug }} = "{{ cookiecutter.project_slug}}.cli:main"
+{%- endif %}
+
+[dependency-groups]
+dev = [
+    # { include-group = "nbval" },
+    { include-group = "dev-extras" },
+    { include-group = "mypy" },
+    { include-group = "test" },
+    { include-group = "typing" },
+    { include-group = "uvxrun" },
 ]
-optional-dependencies.dev-complete = [
-    "{{ cookiecutter.project_name }}[dev,tools]",
+test = [
+    "pytest",
+    "pytest-cov",
+    "pytest-sugar",
+    "pytest-xdist",
 ]
-optional-dependencies.dev-extras = [
-    "ipykernel",
-    "ipython",
-    "nbclient>=0.10.0",
-    "nox>=2024.4.15",
-    "pytest-accept",
-]
-optional-dependencies.docs = [
+docs = [
     {%- if cookiecutter.sphinx_use_autodocsumm %}
     "autodocsumm",
     {%- endif %}
@@ -83,44 +90,44 @@ optional-dependencies.docs = [
     "sphinx-copybutton",
     "sphinxcontrib-spelling",
 ]
-optional-dependencies.mypy = [
+dev-complete = [
+    { include-group = "dev" },
+    { include-group = "tools" },
+]
+dev-extras = [
+    "ipykernel",
+    "ipython",
+    "nbclient>=0.10.0",
+    "nox>=2024.4.15",
+    "pytest-accept",
+]
+mypy = [
     "mypy>=1.13.0",
 ]
-optional-dependencies.nbval = [
+nbval = [
     "nbval",
 ]
-optional-dependencies.test = [
-    "pytest",
-    "pytest-cov",
-    "pytest-sugar",
-    "pytest-xdist",
-]
-optional-dependencies.tools = [
+tools = [
     "pre-commit",
     "scriv",
 ]
-optional-dependencies.typing = [
+typing = [
     "pytest",
-    "{{ cookiecutter.project_name }}[uvxrun]",
+    { include-group = "uvxrun" },
 ]
-optional-dependencies.uvxrun = [
+uvxrun = [
     # Anything needed to run tools/uvxrun.py
     "packaging",
 ]
-optional-dependencies.uvxrun-tools = [
+uvxrun-tools = [
     # these used solely for specking tools to be used with tools/uvxrun.py
     "conda-lock>=2.5.5",
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
     "pyright>=1.1.387",
-    "{{ cookiecutter.project_name }}[mypy]",
     "twine>=5.0.0",
+    { include-group = "mypy" },
 ]
-urls.Documentation = "https://pages.nist.gov/{{ cookiecutter.project_name }}/"
-urls.Homepage = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name}}"
-{%- if cookiecutter.command_line_interface != "none" %}
-scripts.{{ cookiecutter.project_slug }} = "{{ cookiecutter.project_slug}}.cli:main"
-{%- endif %}
 
 [tool.hatch.version]
 source = "vcs"
@@ -401,26 +408,26 @@ pytest-accept = { pip = true }
 scriv = { pip = true }
 
 [tool.pyproject2conda.envs.build]
-extras = "build-system.requires"
+groups = "build-system.requires"
 reqs = [
     "build",
 ]
-base = false
+skip_package = true
 style = "requirements"
 
 [tool.pyproject2conda.envs.uvxrun-tools]
-extras = "uvxrun-tools"
-base = false
+groups = "uvxrun-tools"
+skip_package = true
 style = "requirements"
 
 [tool.pyproject2conda.envs.test-extras]
-extras = [
+groups = [
     "test",
 ]
-base = false
+skip_pakcage = true
 
 [tool.pyproject2conda.envs.test-notebook]
-extras = [
+groups = [
     "test",
     "nbval",
 ]
