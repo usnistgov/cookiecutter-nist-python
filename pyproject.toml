@@ -93,6 +93,7 @@ uvxrun-tools = [
     "conda-lock>=2.5.5",
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
+    "pyproject2conda>=0.13.0",
     "pyright>=1.1.387",
     "twine>=5.0.0",
     { include-group = "mypy" },
@@ -364,6 +365,7 @@ default_envs = [
     "docs",
     "dev",
     "dev-complete",
+    "uvxrun-tools",
 ]
 
 [tool.pyproject2conda.dependencies]
@@ -371,16 +373,16 @@ pytest-accept = { pip = true }
 scriv = { pip = true }
 copier-templates-extensions = { pip = true }
 
-[tool.pyproject2conda.envs.uvxrun-tools]
-groups = "uvxrun-tools"
+[tool.pyproject2conda.envs.test-extras]
+groups = "test"
+
+[[tool.pyproject2conda.overrides]]
+envs = [
+    "uvxrun-tools",
+    "test-extras",
+]
 skip_package = true
 style = "requirements"
-
-[tool.pyproject2conda.envs.test-extras]
-groups = [
-    "test",
-]
-skip_pakcage = true
 
 [[tool.pyproject2conda.overrides]]
 # Ensure these have pip in yaml file

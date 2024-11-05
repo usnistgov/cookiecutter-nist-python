@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "c17fcb7725c119c15dd0a2b54cb8c35be5478444",
-  "checkout": "feature/update-p2c",
+  "commit": "7134442e673e80e527cee599f37d9a5cb1d4f5c2",
+  "checkout": "develop",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",

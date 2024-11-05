@@ -370,12 +370,13 @@ def requirements(
     These will be placed in the directory "./requirements".
     """
     uvxrun.run(
-        "pyproject2conda>=0.12.0",
+        "pyproject2conda",
         "project",
         "--verbose",
         *(["--overwrite=force"] if opts.requirements_force else []),
         session=session,
         external=True,
+        specs=get_uvxrun_specs(),
     )
 
     if not opts.requirements_no_notify and opts.lock:
