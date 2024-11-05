@@ -6,9 +6,7 @@ keywords = [
     "cookiecutter-nist-python",
 ]
 license = { text = "NIST-PD" }
-license-files = { paths = [
-    "LICENSE",
-] }
+license-files = { paths = [ "LICENSE" ] }
 authors = [
     { name = "William P. Krekelberg", email = "wpk@nist.gov" },
 ]
@@ -37,9 +35,9 @@ urls.Homepage = "https://github.com/usnistgov/cookiecutter-nist-python"
 
 [dependency-groups]
 dev = [
-    # { include-group = "nbval" },
     { include-group = "dev-extras" },
     { include-group = "mypy" },
+    # { include-group = "nbval" },
     { include-group = "test" },
     { include-group = "typing" },
     { include-group = "uvxrun" },
@@ -70,12 +68,8 @@ dev-complete = [
 dev-extras = [
     "nox>=2024.4.15",
 ]
-mypy = [
-    "mypy>=1.13.0",
-]
-nbval = [
-    "nbval",
-]
+mypy = [ "mypy>=1.13.0" ]
+nbval = [ "nbval" ]
 tools = [
     "pre-commit",
     "scriv",
@@ -84,10 +78,8 @@ typing = [
     "pytest",
     { include-group = "uvxrun" },
 ]
-uvxrun = [
-    # Anything needed to run tools/uvxrun.py
-    "packaging",
-]
+# Anything needed to run tools/uvxrun.py
+uvxrun = [ "packaging" ]
 uvxrun-tools = [
     # these used solely for specking tools to be used with tools/uvxrun.py
     "conda-lock>=2.5.5",
@@ -213,12 +205,8 @@ lint.pylint.max-public-methods = 30
 lint.preview = true
 
 [tool.check-wheel-contents]
-toplevel = [
-    "cookiecutter_nist_python",
-]
-src_dir = [
-    "src",
-]
+toplevel = [ "cookiecutter_nist_python" ]
+src_dir = [ "src" ]
 
 # * Testing --------------------------------------------------------------------
 
@@ -292,14 +280,11 @@ check_untyped_defs = true
 
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
-module = [
-    "cookiecutter.*",
-]
+module = [ "cookiecutter.*" ]
 
 [[tool.mypy.overrides]]
 ignore_errors = true
-module = [
-]
+module = [  ]
 
 [tool.pyright]
 include = [
@@ -392,9 +377,7 @@ envs = [
     "dev",
     "dev-complete",
 ]
-deps = [
-    "pip",
-]
+deps = [ "pip" ]
 
 [[tool.pyproject2conda.overrides]]
 envs = [
