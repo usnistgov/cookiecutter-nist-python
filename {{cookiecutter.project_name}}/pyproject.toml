@@ -13,9 +13,7 @@ keywords = [
     "{{ cookiecutter.project_name }}",
 ]
 license = { text = "NIST-PD" }
-license-files = { paths = [
-    "LICENSE",
-] }
+license-files = { paths = [ "LICENSE" ] }
 authors = [
     { name = "{{ cookiecutter.full_name.replace('\"', '\\\"') }}", email = "{{ cookiecutter.email }}" },
 ]
@@ -53,9 +51,9 @@ scripts.{{ cookiecutter.project_slug }} = "{{ cookiecutter.project_slug}}.cli:ma
 
 [dependency-groups]
 dev = [
-    # { include-group = "nbval" },
     { include-group = "dev-extras" },
     { include-group = "mypy" },
+    # { include-group = "nbval" },
     { include-group = "test" },
     { include-group = "typing" },
     { include-group = "uvxrun" },
@@ -101,12 +99,8 @@ dev-extras = [
     "nox>=2024.4.15",
     "pytest-accept",
 ]
-mypy = [
-    "mypy>=1.13.0",
-]
-nbval = [
-    "nbval",
-]
+mypy = [ "mypy>=1.13.0" ]
+nbval = [ "nbval" ]
 tools = [
     "pre-commit",
     "scriv",
@@ -115,10 +109,8 @@ typing = [
     "pytest",
     { include-group = "uvxrun" },
 ]
-uvxrun = [
-    # Anything needed to run tools/uvxrun.py
-    "packaging",
-]
+# Anything needed to run tools/uvxrun.py
+uvxrun = [ "packaging" ]
 uvxrun-tools = [
     # these used solely for specking tools to be used with tools/uvxrun.py
     "conda-lock>=2.5.5",
@@ -255,12 +247,8 @@ lint.pylint.max-public-methods = 30
 lint.preview = true
 
 [tool.check-wheel-contents]
-toplevel = [
-    "{{ cookiecutter.project_slug }}",
-]
-src_dir = [
-    "src",
-]
+toplevel = [ "{{ cookiecutter.project_slug }}" ]
+src_dir = [ "src" ]
 
 # * Testing --------------------------------------------------------------------
 
@@ -324,13 +312,11 @@ strict = true
 
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
-module = [
-]
+module = [  ]
 
 [[tool.mypy.overrides]]
 ignore_errors = true
-module = [
-]
+module = [  ]
 
 [tool.pyright]
 include = [
@@ -438,9 +424,7 @@ envs = [
     "dev",
     "dev-complete",
 ]
-deps = [
-    "pip",
-]
+deps = [ "pip" ]
 
 [[tool.pyproject2conda.overrides]]
 envs = [
