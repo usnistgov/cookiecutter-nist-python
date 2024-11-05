@@ -400,6 +400,7 @@ groups = "build-system.requires"
 
 [tool.pyproject2conda.envs.test-extras]
 groups = "test"
+skip_package = true
 
 [tool.pyproject2conda.envs.test-notebook]
 groups = [
@@ -411,7 +412,6 @@ groups = [
 envs = [
     "build",
     "uvxrun-tools",
-    "test-extras",
 ]
 skip_package = true
 style = "requirements"

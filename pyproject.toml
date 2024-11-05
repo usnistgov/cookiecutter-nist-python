@@ -360,11 +360,11 @@ copier-templates-extensions = { pip = true }
 
 [tool.pyproject2conda.envs.test-extras]
 groups = "test"
+skip_package = true
 
 [[tool.pyproject2conda.overrides]]
 envs = [
     "uvxrun-tools",
-    "test-extras",
 ]
 skip_package = true
 style = "requirements"
