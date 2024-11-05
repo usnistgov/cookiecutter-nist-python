@@ -101,6 +101,8 @@ UVXRUN_MIN_REQUIREMENTS = "requirements/uvxrun-tools.txt"
 def get_uvxrun_specs(requirements: str | None = None) -> uvxrun.Specifications:
     """Get specs for uvxrun."""
     requirements = requirements or UVXRUN_MIN_REQUIREMENTS
+    if not Path(requirements).exists():
+        requirements = None
     return uvxrun.Specifications.from_requirements(requirements=requirements)
 
 
