@@ -80,8 +80,8 @@ pre-commit-ruff-all: ## run ruff lint and format
 ################################################################################
 .PHONY: user-autoenv-zsh user-all
 user-autoenv-zsh: ## create .autoenv.zsh files
-	echo conda activate ./.venv > .autoenv.zsh
-	echo conda deactivate > .autoenv_leave.zsh
+	echo source ./.venv/bin/activate > .autoenv.zsh
+	echo deactivate > .autoenv_leave.zsh
 
 user-all: user-autoenv-zsh ## runs user scripts
 
