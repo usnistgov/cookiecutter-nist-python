@@ -238,7 +238,7 @@ test-notebook:  ## run pytest --nbval
 
 .PHONY: clean-kernelspec
 clean-kernelspec: ## cleanup unused kernels (assuming notebooks handled by conda environment notebook)
-	python tools/clean_kernelspec.py
+	uv run tools/clean_kernelspec.py
 
 ################################################################################
 # * Other tools
