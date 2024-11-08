@@ -240,6 +240,13 @@ test-notebook:  ## run pytest --nbval
 clean-kernelspec: ## cleanup unused kernels (assuming notebooks handled by conda environment notebook)
 	uv run tools/clean_kernelspec.py
 
+.PHONY: install-kernel
+install-kernel:  ## install kernel
+	uv run python -m ipykernel install --user \
+	--name cookiecutter-nist-python-dev \
+    --display-name "Python [venv: cookiecutter-nist-python-dev]"
+
+
 ################################################################################
 # * Other tools
 ################################################################################
