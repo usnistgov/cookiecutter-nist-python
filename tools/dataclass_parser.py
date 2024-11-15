@@ -60,10 +60,10 @@ from typing import (
 if TYPE_CHECKING:
     from collections.abc import Callable, Container, Sequence
 
-    if sys.version_info < (3, 11):
-        from typing_extensions import Self
-    else:
+    if sys.version_info >= (3, 11):
         from typing import Self
+    else:
+        from typing_extensions import Self
 
 
 _NoneType = type(None)

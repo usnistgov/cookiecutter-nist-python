@@ -50,10 +50,10 @@ if TYPE_CHECKING:
 
     PathLike = Union[str, Path]
 
-    if sys.version_info < (3, 11):
-        from typing_extensions import Self
-    else:
+    if sys.version_info >= (3, 11):
         from typing import Self
+    else:
+        from typing_extensions import Self
 
 
 def factory_conda_backend(

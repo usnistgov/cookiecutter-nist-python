@@ -64,7 +64,7 @@ pydantic-core==2.23.4     # via pydantic
 pygments==2.18.0          # via ipython, readme-renderer, rich
 pylev==1.4.0              # via clikit
 pyproject2conda==0.13.0   # via -r requirements/uvxrun-tools.txt
-pyright==1.1.387          # via -r requirements/uvxrun-tools.txt
+pyright==1.1.389          # via -r requirements/uvxrun-tools.txt
 python-utils==3.9.0       # via progressbar2
 pyyaml==6.0.2             # via conda-lock
 rapidfuzz==3.10.1         # via grayskull

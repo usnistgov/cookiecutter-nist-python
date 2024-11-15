@@ -49,7 +49,7 @@ class Option:
             default_val = self.default
 
         if default and default_val:
-            if isinstance(default_val, bool):
+            if isinstance(default_val, bool):  # pyright: ignore[reportUnnecessaryIsInstance]
                 default_val = "yes" if default_val else "no"
 
             if not isinstance(default_val, str):  # pyright: ignore[reportUnnecessaryIsInstance]
