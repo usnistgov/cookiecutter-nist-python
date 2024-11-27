@@ -152,7 +152,7 @@ repos:
       - id: nbqa
         alias: nbqa-typos
         name: nbqa-typos
-        additional_dependencies: &typos-deps [typos==1.27.3] # make sure save version as above.
+        additional_dependencies: &typos-deps [typos==1.28.1] # make sure save version as above.
         stages: [manual]
         args: [typos, --nbqa-shell]
       - id: nbqa
