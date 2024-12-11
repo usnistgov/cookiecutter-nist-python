@@ -2,7 +2,7 @@
 #    uv pip compile --python-version=3.8 -o requirements/lock/py38-typing.txt requirements/typing.txt
 exceptiongroup==1.2.2     # via pytest
 iniconfig==2.0.0          # via pytest
-packaging==24.1           # via pytest, -r requirements/typing.txt
+packaging==24.2           # via pytest, -r requirements/typing.txt
 pluggy==1.5.0             # via pytest
-pytest==8.3.3             # via -r requirements/typing.txt
-tomli==2.0.2              # via pytest
+pytest==8.3.4             # via -r requirements/typing.txt
+tomli==2.2.1              # via pytest

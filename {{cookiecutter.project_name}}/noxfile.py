@@ -166,7 +166,7 @@ class SessionParams(DataclassParser):
 
     # dev
     dev_run: RUN_ANNO = None
-    dev_envname: Literal["dev", "dev-complete", "dev-user"] = add_option(
+    dev_envname: Literal["dev", "dev-user"] = add_option(
         help="Name of environment to use for development session",
         default="dev",
     )
@@ -401,7 +401,6 @@ def conda_lock(
     conda_lock_include = opts.conda_lock_include or [
         "test",
         "dev",
-        "dev-complete",
         "nox",
     ]
 
@@ -566,7 +565,7 @@ def pip_compile(
     )
 
     envs_all = ["test", "typing"]
-    envs_dev = ["dev", "dev-complete", "docs"]
+    envs_dev = ["dev", "docs"]
     envs_dev_optional = ["test-notebook", "uvxrun-tools"]
 
     if session.python == PYTHON_DEFAULT_VERSION:
@@ -608,7 +607,7 @@ def uv_compile(
     )
 
     envs_all = ["test", "typing"]
-    envs_dev = ["dev", "dev-complete", "docs"]
+    envs_dev = ["dev", "docs"]
     envs_dev_optional = ["test-notebook", "uvxrun-tools"]
 
     for python in set(PYTHON_ALL_VERSIONS).union({PYTHON_DEFAULT_VERSION}):

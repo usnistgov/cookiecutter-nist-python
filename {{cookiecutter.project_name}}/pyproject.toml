@@ -88,10 +88,6 @@ docs = [
     "sphinx-copybutton",
     "sphinxcontrib-spelling",
 ]
-dev-complete = [
-    { include-group = "dev" },
-    { include-group = "tools" },
-]
 dev-extras = [
     "ipykernel",
     "ipython",
@@ -101,9 +97,6 @@ dev-extras = [
 ]
 mypy = [ "mypy>=1.13.0" ]
 nbval = [ "nbval" ]
-tools = [
-    "scriv",
-]
 typing = [
     "pytest",
     { include-group = "uvxrun" },
@@ -118,6 +111,7 @@ uvxrun-tools = [
     "pre-commit",
     "pyproject2conda>=0.13.0",
     "pyright>=1.1.390",
+    "scriv",
     "twine>=5.0.0",
     { include-group = "mypy" },
 ]
@@ -387,7 +381,6 @@ default_envs = [
     "typing",
     "docs",
     "dev",
-    "dev-complete",
     "uvxrun-tools",
 ]
 
@@ -422,7 +415,6 @@ envs = [
     "test",
     "docs",
     "dev",
-    "dev-complete",
 ]
 deps = [ "pip" ]
 

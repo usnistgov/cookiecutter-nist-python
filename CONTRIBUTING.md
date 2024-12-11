@@ -429,10 +429,6 @@ conda activate {env-name}
 pip install -e . --no-deps
 ```
 
-If you want to include some extra tools in the environment (instead of using
-[uvx], [condax], or [pipx]), use `requirements/py{version}-dev-complete.yaml`
-instead.
-
 ### Create development environment with pip
 
 Run something like the following:
@@ -457,22 +453,17 @@ uv pip sync requirements/lock/py311-dev.txt
 
 ```
 
-If you want to include the extra tools, replace `dev.txt` with
-`dev-complete.txt`.
-
 ### Create development environment with nox
 
 If you'd like to use nox to manage your development environment, use the
 following:
 
 ```bash
-nox -s dev -- [++dev-envname dev/dev-complete]
+nox -s dev
 ```
 
-where the option `++dev-envname` (default `dev`) can be used to specify what
-kind of development environment you'd like. This will create a virtual
-environment under `.venv`. To instead create a [conda] based development
-environment, use `nox -s dev-conda ....`.
+This will create a virtual environment under `.venv`. To instead create a
+[conda] based development environment, use `nox -s dev-conda ....`.
 
 If you go this route, you may want to use something like
 [zsh-autoenv](https://github.com/Tarrasch/zsh-autoenv) (if using zsh shell) or
@@ -482,8 +473,7 @@ activate the development environment when in the parent directory.
 Note that you can bootstrap the whole process with [uvx] using:
 
 ```bash
-uvx nox -s dev/dev-conda -- \
-     ++dev-envname dev/dev-complete
+uvx nox -s dev/dev-conda
 ```
 
 ### Development tools
@@ -500,8 +490,7 @@ Additional tools are:
 - [nbqa] (optional)
 
 We recommend installing these tools with [uv], but feel free to use [pipx] or
-[condax]. If you'd like to install them in the development environment instead,
-use the `dev-complete` version of the commands above.
+[condax].
 
 ```console
 uv tool/condax/pipx install pre-commit

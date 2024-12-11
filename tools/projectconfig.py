@@ -164,7 +164,7 @@ class ProjectConfig:
         # paths = ["~/.conda/envs/python-3.*/bin"]
         #
         # [tool.pyproject2conda.envs.dev-user]
-        # extras = ["dev-complete"]
+        # extras = ["uvxrun-tools"]
         """,
         )
 
