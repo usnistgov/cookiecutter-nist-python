@@ -47,7 +47,7 @@ from tools.noxtools import (
 
 sys.path.pop(0)
 
-# make sure these after
+# make sure these afeter
 import nox  # type: ignore[unused-ignore,import]
 
 # fmt: on

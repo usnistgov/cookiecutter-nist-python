@@ -1,8 +1,12 @@
-################################################################################
-# * Utilities
-################################################################################
+# * Utilities ------------------------------------------------------------------
 .PHONY: clean clean-test clean-pyc clean-build help
 .DEFAULT_GOAL := help
+
+UVXRUN = uv run tools/uvxrun.py
+UVXRUN_OPTS = -r requirements/lock/py311-uvxrun-tools.txt -v
+UVXRUN_NO_PROJECT = uv run --with "packaging" --no-project tools/uvxrun.py
+NOX=uvx --from "nox>=2024.10.9" nox
+PRE_COMMIT = uvx pre-commit
 
 define BROWSER_PYSCRIPT
 import os, webbrowser, sys
@@ -39,10 +43,10 @@ clean-build: ## remove build artifacts
 
 
 clean-pyc: ## remove Python file artifacts
-	find . -name '*.pyc' -exec rm -f {} +
-	find . -name '*.pyo' -exec rm -f {} +
-	find . -name '*~' -exec rm -f {} +
-	find . -name '__pycache__' -exec rm -fr {} +
+	find ./src -name '*.pyc' -exec rm -f {} +
+	find ./src -name '*.pyo' -exec rm -f {} +
+	find ./src -name '*~' -exec rm -f {} +
+	find ./src -name '__pycache__' -exec rm -fr {} +
 
 clean-nox: ## remove all nox artifacts
 	rm -fr .nox
@@ -53,31 +57,30 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr .pytest_cache
 
 
-
-################################################################################
-# * Pre-commit
-################################################################################
+# * Pre-commit -----------------------------------------------------------------
 .PHONY: pre-commit-init pre-commit pre-commit-all
 pre-commit-init: ## install pre-commit
-	pre-commit install
+	$(PRE_COMMIT) install
 
 pre-commit-all: ## run pre-commit on all files
-	pre-commit run --all-files
+	$(PRE_COMMIT) run --all-files
 
 pre-commit-codespell: ## run codespell. Note that this imports allowed words from docs/spelling_wordlist.txt
-	pre-commit run --all-files codespell
-	pre-commit run --all-files nbqa-codespell
+	$(PRE_COMMIT) run --all-files codespell
+	$(PRE_COMMIT) run --all-files nbqa-codespell
 
 pre-commit-typos:  ## run typos.
-	pre-commit run --all-files --hook-stage manual typos
-	pre-commit run --all-files --hook-stage manual nbqa-typos
+	$(PRE_COMMIT) run --all-files --hook-stage manual typos
+	$(PRE_COMMIT) run --all-files --hook-stage manual nbqa-typos
 
 pre-commit-ruff-all: ## run ruff lint and format
-	pre-commit run ruff-all --all-files
+	$(PRE_COMMIT) run ruff-all --all-files
 
-################################################################################
-# * User setup
-################################################################################
+pre-commit-checkmake:  ## run checkmake
+	$(PRE_COMMIT) run --all-files --hook-stage manual checkmake
+
+
+# * User setup -----------------------------------------------------------------
 .PHONY: user-autoenv-zsh user-all
 user-autoenv-zsh: ## create .autoenv.zsh files
 	echo source ./.venv/bin/activate > .autoenv.zsh
@@ -86,9 +89,7 @@ user-autoenv-zsh: ## create .autoenv.zsh files
 user-all: user-autoenv-zsh ## runs user scripts
 
 
-################################################################################
-# * Testing
-################################################################################
+# * Testing --------------------------------------------------------------------
 .PHONY: test coverage
 test: ## run tests quickly with the default Python
 	pytest -x -v
@@ -96,16 +97,8 @@ test: ## run tests quickly with the default Python
 test-accept: ## run tests and accept doctest results. (using pytest-accept)
 	DOCFILLER_SUB=False pytest -v --accept
 
-coverage: ## check code coverage quickly with the default Python
-	coverage run --source cookiecutter_nist_python -m pytest
-	coverage report -m
-	coverage html
-	$(BROWSER) htmlcov/index.html
 
-
-################################################################################
-# * Versioning
-################################################################################
+# * Versioning -----------------------------------------------------------------
 # .PHONY: version-scm version-import version
 
 # version-scm: ## check/update version of package with setuptools-scm
@@ -116,22 +109,13 @@ coverage: ## check code coverage quickly with the default Python
 
 # version: version-scm version-import
 
-################################################################################
-# * Requirements/Environment files
-################################################################################
+# * Requirements/Environment files ---------------------------------------------
 .PHONY: requirements
 requirements: ## rebuild all requirements/environment files
-	nox -s requirements
-requirements/%.yaml: pyproject.toml
-	nox -s requirements
-requirements/%.txt: pyproject.toml
-	nox -s requirements
+	$(NOX) -s requirements
 
-################################################################################
-# * Typing
-################################################################################
-UVXRUN = uv run tools/uvxrun.py
-UVXRUN_OPTS = -r requirements/lock/py311-uvxrun-tools.txt -v
+
+# * Typing ---------------------------------------------------------------------
 .PHONY: mypy pyright
 mypy: ## Run mypy
 	$(UVXRUN) $(UVXRUN_OPTS) -c mypy
@@ -146,10 +130,8 @@ typecheck: ## Run mypy and pyright
 typecheck-tools:
 	$(UVXRUN) $(UVXRUN_OPTS) -c "mypy --strict" -c pyright -- noxfile.py tools/*.py
 
-################################################################################
-# * NOX
-###############################################################################
-NOX=nox
+
+# * NOX ------------------------------------------------------------------------
 # ** docs
 .PHONY: docs-build docs-clean docs-clean-build docs-release
 docs-build: ## build docs in isolation
@@ -160,7 +142,7 @@ docs-clean: ## clean docs
 	rm -rf docs/reference/generated/*
 docs-clean-build: docs-clean docs-build ## clean and build
 docs-release: ## release docs.
-	$(UVXRUN) $(UVXRUN_OPTS) -c "ghp-import -o -n -m \"update docs\" -b nist-pages" docs/_build/html
+	$(UVXRUN_NO_PROJECT) $(UVXRUN_OPTS) -c "ghp-import -o -n -m \"update docs\" -b nist-pages" docs/_build/html
 
 .PHONY: docs-open docs-spelling docs-livehtml docs-linkcheck
 docs-open: ## open the build
@@ -202,15 +184,15 @@ conda-build: ## build conda recipe can pass posargs=...
 nox-list:
 	$(NOX) --list
 
-################################################################################
-# ** sdist/wheel check
-################################################################################
+
+# ** sdist/wheel check ---------------------------------------------------------
 .PHONY: check-release check-wheel check-dist
 check-release: ## run twine check on dist
 	$(NOX) -s publish -- +p check
 check-wheel: ## Run check-wheel-contents (requires check-wheel-contents to be installed)
-	$(UVXRUN) -c check-wheel-contents dist/*.whl
+	$(UVXRUN_NO_PROJECT) -c check-wheel-contents dist/*.whl
 check-dist: check-release check-wheel ## Run check-release and check-wheel
+
 .PHONY:  list-wheel list-sdist list-dist
 list-wheel: ## Cat out contents of wheel
 	unzip -vl dist/*.whl
@@ -218,9 +200,8 @@ list-sdist: ## Cat out contents of sdist
 	tar -tzvf dist/*.tar.gz
 list-dist: list-wheel list-sdist ## Cat out sdist and wheel contents
 
-################################################################################
-# * NOTEBOOK typing/testing
-################################################################################
+
+# * NOTEBOOK -------------------------------------------------------------------
 NOTEBOOKS ?= examples/usage
 NBQA = $(UVXRUN) $(UVXRUN_OPTS) -c "nbqa --nbqa-shell \"$(UVXRUN)\" $(NOTEBOOKS) $(UVXRUN_OPTS) $(_NBQA)"
 .PHONY: mypy-notebook pyright-notebook typecheck-notebook test-notebook
@@ -234,7 +215,7 @@ typecheck-notebook: _NBQA = -c mypy -c pyright
 typecheck-notebook: ## run nbqa mypy/pyright
 	$(NBQA)
 test-notebook:  ## run pytest --nbval
-	pytest --nbval --nbval-current-env --nbval-sanitize-with=config/nbval.ini --dist loadscope -x $(NOTEBOOKS)
+	uv run pytest --nbval --nbval-current-env --nbval-sanitize-with=config/nbval.ini --dist loadscope -x $(NOTEBOOKS)
 
 .PHONY: clean-kernelspec
 clean-kernelspec: ## cleanup unused kernels (assuming notebooks handled by conda environment notebook)
@@ -247,23 +228,21 @@ install-kernel:  ## install kernel
     --display-name "Python [venv: cookiecutter-nist-python-dev]"
 
 
-################################################################################
-# * Other tools
-################################################################################
+# * Other tools ----------------------------------------------------------------
 # Note that this requires `auto-changelog`, which can be installed with pip(x)
 .PHONY: auto-changelog
 auto-changelog: ## autogenerate changelog and print to stdout
-	auto-changelog -u -r usnistgov -v unreleased --tag-prefix v --stdout --template changelog.d/templates/auto-changelog/template.jinja2
+	uvx auto-changelog -u -r usnistgov -v unreleased --tag-prefix v --stdout --template changelog.d/templates/auto-changelog/template.jinja2
 
 .PHONY:
 commitizen-changelog:
-	cz changelog --unreleased-version unreleased --dry-run --incremental
+	uvx --from="commitizen" cz changelog --unreleased-version unreleased --dry-run --incremental
 
 # tuna analyze load time:
 .PHONY: tuna-analyze
-tuna-import: ## Analyze load time for module
+tuna-import	: ## Analyze load time for module
 	uv run python -X importtime -c 'import cookiecutter_nist_python' 2> tuna-loadtime.log
-	$(UVXRUN) -c tuna tuna-loadtime.log
+	uvx tuna tuna-loadtime.log
 	rm tuna-loadtime.log
 
 # cookiecutter stuff

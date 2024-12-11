@@ -124,7 +124,7 @@ class LoggerWithSuccessAndOutput(logging.getLoggerClass()):  # type: ignore[misc
 
 
 logging.setLoggerClass(LoggerWithSuccessAndOutput)
-logger = cast(LoggerWithSuccessAndOutput, logging.getLogger("uvxrun"))
+logger = cast("LoggerWithSuccessAndOutput", logging.getLogger("uvxrun"))
 
 
 def _get_formatter(color: bool, add_timestamp: bool) -> logging.Formatter:

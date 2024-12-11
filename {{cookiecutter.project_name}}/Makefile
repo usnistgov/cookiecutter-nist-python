@@ -113,7 +113,7 @@ version: version-scm version-import
 # * Requirements/Environment files ---------------------------------------------
 .PHONY: requirements
 requirements: ## rebuild all requirements/environment files
-	(NOX) -s requirements
+	$(NOX) -s requirements
 
 
 # * Typing ---------------------------------------------------------------------
@@ -193,6 +193,7 @@ check-release: ## run twine check on dist
 check-wheel: ## Run check-wheel-contents (requires check-wheel-contents to be installed)
 	$(UVXRUN_NO_PROJECT) -c check-wheel-contents dist/*.whl
 check-dist: check-release check-wheel ## Run check-release and check-wheel
+
 .PHONY:  list-wheel list-sdist list-dist
 list-wheel: ## Cat out contents of wheel
 	unzip -vl dist/*.whl
@@ -201,7 +202,7 @@ list-sdist: ## Cat out contents of sdist
 list-dist: list-wheel list-sdist ## Cat out sdist and wheel contents
 
 
-# * NOTEBOOK typing/testing ----------------------------------------------------
+# * NOTEBOOK -------------------------------------------------------------------
 NOTEBOOKS ?= examples/usage
 NBQA = $(UVXRUN) $(UVXRUN_OPTS) -c "nbqa --nbqa-shell \"$(UVXRUN)\" $(NOTEBOOKS) $(UVXRUN_OPTS) $(_NBQA)"
 .PHONY: mypy-notebook pyright-notebook typecheck-notebook test-notebook
@@ -236,11 +237,11 @@ auto-changelog: ## autogenerate changelog and print to stdout
 
 .PHONY:
 commitizen-changelog:
-	uvx cz changelog --unreleased-version unreleased --dry-run --incremental
+	uvx --from="commitizen" cz changelog --unreleased-version unreleased --dry-run --incremental
 
 # tuna analyze load time:
 .PHONY: tuna-analyze
 tuna-import	: ## Analyze load time for module
 	uv run python -X importtime -c 'import {{ cookiecutter.project_slug }}' 2> tuna-loadtime.log
-	$(UVXRUN) -c tuna tuna-loadtime.log
+	uvx tuna tuna-loadtime.log
 	rm tuna-loadtime.log
