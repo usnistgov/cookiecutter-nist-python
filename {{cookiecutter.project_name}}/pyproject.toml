@@ -102,7 +102,6 @@ dev-extras = [
 mypy = [ "mypy>=1.13.0" ]
 nbval = [ "nbval" ]
 tools = [
-    "pre-commit",
     "scriv",
 ]
 typing = [
@@ -116,8 +115,9 @@ uvxrun-tools = [
     "conda-lock>=2.5.5",
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
+    "pre-commit",
     "pyproject2conda>=0.13.0",
-    "pyright>=1.1.389",
+    "pyright>=1.1.390",
     "twine>=5.0.0",
     { include-group = "mypy" },
 ]

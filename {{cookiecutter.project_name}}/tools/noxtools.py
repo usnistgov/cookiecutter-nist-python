@@ -456,7 +456,7 @@ class Installer:
     @property
     def python_version(self) -> str:
         """Python version for session."""
-        return cast(str, self.session.python)
+        return cast("str", self.session.python)
 
     def is_conda_session(self) -> bool:
         """Whether session is conda session."""

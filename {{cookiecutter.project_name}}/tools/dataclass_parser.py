@@ -69,7 +69,7 @@ if TYPE_CHECKING:
 _NoneType = type(None)
 
 UNDEFINED = cast(
-    Any,
+    "Any",
     type("Undefined", (), {"__repr__": lambda self: "UNDEFINED"})(),  # pyright: ignore[reportUnknownLambdaType]  # noqa: ARG005
 )
 
