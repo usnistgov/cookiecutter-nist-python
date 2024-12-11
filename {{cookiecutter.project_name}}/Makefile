@@ -4,6 +4,11 @@
 .PHONY: clean clean-test clean-pyc clean-build help
 .DEFAULT_GOAL := help
 
+UVXRUN = uv run tools/uvxrun.py
+UVXRUN_OPTS = -r requirements/lock/py311-uvxrun-tools.txt -v
+NOX=uv run nox
+PRE_COMMIT = uvx pre-commit
+
 define BROWSER_PYSCRIPT
 import os, webbrowser, sys
 
@@ -59,21 +64,21 @@ clean-test: ## remove test and coverage artifacts
 ################################################################################
 .PHONY: pre-commit-init pre-commit pre-commit-all
 pre-commit-init: ## install pre-commit
-	pre-commit install
+	$(PRE_COMMIT) install
 
 pre-commit-all: ## run pre-commit on all files
-	pre-commit run --all-files
+	$(PRE_COMMIT) run --all-files
 
 pre-commit-codespell: ## run codespell. Note that this imports allowed words from docs/spelling_wordlist.txt
-	pre-commit run --all-files codespell
-	pre-commit run --all-files nbqa-codespell
+	$(PRE_COMMIT) run --all-files codespell
+	$(PRE_COMMIT) run --all-files nbqa-codespell
 
 pre-commit-typos:  ## run typos.
-	pre-commit run --all-files --hook-stage manual typos
-	pre-commit run --all-files --hook-stage manual nbqa-typos
+	$(PRE_COMMIT) run --all-files --hook-stage manual typos
+	$(PRE_COMMIT) run --all-files --hook-stage manual nbqa-typos
 
 pre-commit-ruff-all: ## run ruff lint and format
-	pre-commit run ruff-all --all-files
+	$(PRE_COMMIT) run ruff-all --all-files
 
 ################################################################################
 # * User setup
@@ -96,20 +101,13 @@ test: ## run tests quickly with the default Python
 test-accept: ## run tests and accept doctest results. (using pytest-accept)
 	DOCFILLER_SUB=False pytest -v --accept
 
-coverage: ## check code coverage quickly with the default Python
-	coverage run --source {{ cookiecutter.project_slug }} -m pytest
-	coverage report -m
-	coverage html
-	$(BROWSER) htmlcov/index.html
-
-
 ################################################################################
 # * Versioning
 ################################################################################
 .PHONY: version-scm version-import version
 
 version-scm: ## check/update version of package from scm
-	nox -s build -- ++build version
+	$(NOX) -s build -- ++build version
 
 version-import: ## check version from python import
 	-uv run python -c 'import {{ cookiecutter.project_slug }}; print({{ cookiecutter.project_slug }}.__version__)'
@@ -121,17 +119,11 @@ version: version-scm version-import
 ################################################################################
 .PHONY: requirements
 requirements: ## rebuild all requirements/environment files
-	nox -s requirements
-requirements/%.yaml: pyproject.toml
-	nox -s requirements
-requirements/%.txt: pyproject.toml
-	nox -s requirements
+	uvx --from "nox>=2024.10.9" nox -s requirements
 
 ################################################################################
 # * Typing
 ################################################################################
-UVXRUN = uv run tools/uvxrun.py
-UVXRUN_OPTS = -r requirements/lock/py311-uvxrun-tools.txt -v
 .PHONY: mypy pyright
 mypy: ## Run mypy
 	$(UVXRUN) $(UVXRUN_OPTS) -c mypy
@@ -149,7 +141,6 @@ typecheck-tools:
 ################################################################################
 # * NOX
 ###############################################################################
-NOX=nox
 # ** docs
 .PHONY: docs-build docs-clean docs-clean-build docs-release
 docs-build: ## build docs in isolation
@@ -253,11 +244,11 @@ install-kernel:  ## install kernel
 # Note that this requires `auto-changelog`, which can be installed with pip(x)
 .PHONY: auto-changelog
 auto-changelog: ## autogenerate changelog and print to stdout
-	auto-changelog -u -r usnistgov -v unreleased --tag-prefix v --stdout --template changelog.d/templates/auto-changelog/template.jinja2
+	uvx auto-changelog -u -r usnistgov -v unreleased --tag-prefix v --stdout --template changelog.d/templates/auto-changelog/template.jinja2
 
 .PHONY:
 commitizen-changelog:
-	cz changelog --unreleased-version unreleased --dry-run --incremental
+	uvx cz changelog --unreleased-version unreleased --dry-run --incremental
 
 # tuna analyze load time:
 .PHONY: tuna-analyze
