@@ -92,10 +92,10 @@ user-all: user-autoenv-zsh ## runs user scripts
 # * Testing --------------------------------------------------------------------
 .PHONY: test coverage
 test: ## run tests quickly with the default Python
-	pytest -x -v
+	uv run pytest -x -v
 
 test-accept: ## run tests and accept doctest results. (using pytest-accept)
-	DOCFILLER_SUB=False pytest -v --accept
+	DOCFILLER_SUB=False uv run pytest -v --accept
 
 
 # * Versioning -----------------------------------------------------------------
