@@ -136,6 +136,12 @@ repos:
         additional_dependencies: [pyupgrade]
         stages: [manual]
         args: [--py38-plus]
+  - repo: https://github.com/mrtazz/checkmake.git
+    # Or another commit hash or version
+    rev: 0.2.2
+    hooks:
+      - id: checkmake
+        stages: [manual]
 
   # ** typos
   # Probably stick with codespell, but this might also be nice...

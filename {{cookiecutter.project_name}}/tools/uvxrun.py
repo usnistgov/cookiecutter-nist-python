@@ -1,10 +1,4 @@
 {% raw -%}
-# /// script
-# requires-python = ">=3.11"
-# dependencies = [
-#     "packaging",
-# ]
-# ///
 """
 A script to invoke utilities from either uvx or from local installs.
 
