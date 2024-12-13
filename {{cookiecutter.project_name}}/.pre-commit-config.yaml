@@ -62,7 +62,7 @@ repos:
         additional_dependencies:
           - black==24.4.2
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.2
+    rev: v0.8.3
     hooks:
       - id: ruff
         alias: ruff-all
@@ -146,7 +146,7 @@ repos:
   # ** typos
   # Probably stick with codespell, but this might also be nice...
   - repo: https://github.com/crate-ci/typos
-    rev: v1.28.2
+    rev: v1.28.3
     hooks:
       - id: typos
         stages: [manual]
@@ -157,7 +157,7 @@ repos:
       - id: nbqa
         alias: nbqa-typos
         name: nbqa-typos
-        additional_dependencies: &typos-deps [typos==1.28.2] # make sure save version as above.
+        additional_dependencies: &typos-deps [typos==1.28.3] # make sure save version as above.
         stages: [manual]
         args: [typos, --nbqa-shell]
       - id: nbqa
