@@ -179,6 +179,7 @@ lint.extend-per-file-ignores."scripts/*.py" = [
 ]
 # Project specific ignores (avoid changing per-file-ignores directly)
 lint.extend-per-file-ignores."tests/*.py" = [
+    "LOG015",
     "S404",
 ]
 # fixable = ["ALL"]

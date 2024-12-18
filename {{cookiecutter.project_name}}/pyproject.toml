@@ -17,7 +17,7 @@ license-files = { paths = [ "LICENSE" ] }
 authors = [
     { name = "{{ cookiecutter.full_name.replace('\"', '\\\"') }}", email = "{{ cookiecutter.email }}" },
 ]
-requires-python = ">=3.8,<3.13"
+requires-python = ">=3.8,<3.14"
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Science/Research",
@@ -30,6 +30,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering",
 ]
 dynamic = [
@@ -71,7 +72,7 @@ docs = [
     {%- if cookiecutter.sphinx_theme == "furo" %}
     "furo",
     {%- endif %}
-    "myst-nb",
+    "myst-nb; python_version>'3.9'",
     # myst-parser, ipython,
     "pyenchant",
     "sphinx>=5.3.0",
@@ -109,7 +110,7 @@ uvxrun-tools = [
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
     "pre-commit",
-    "pyproject2conda>=0.13.0",
+    "pyproject2conda>=0.15.0",
     "pyright>=1.1.390",
     "scriv",
     "twine>=5.0.0",
@@ -366,9 +367,7 @@ inputs = [
 user_config = "config/userconfig.toml"
 template_python = "requirements/py{py}-{env}"
 template = "requirements/{env}"
-python = [
-    "3.11",
-]
+python = "default"
 channels = [
     "conda-forge",
 ]
@@ -424,13 +423,7 @@ envs = [
     "typing",
     "test-extras",
 ]
-python = [
-    "3.8",
-    "3.9",
-    "3.10",
-    "3.11",
-    "3.12",
-]
+python = "all"
 
 # * pip-tools (keeping for legacy) ---------------------------------------------
 
@@ -441,7 +434,9 @@ strip-extras = true
 # * uv -------------------------------------------------------------------------
 
 [tool.uv]
-managed = false
+managed = true
+default-groups = [ "dev" ]
+fork-strategy = "requires-python"
 
 [tool.uv.pip]
 annotation-style = "line"

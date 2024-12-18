@@ -52,6 +52,7 @@ def check_directory(
             ".pre-commit-config.yaml",
             ".prettierrc.yaml",
             ".prettierignore",
+            ".python-version",
             "pyproject.toml",
             "noxfile.py",
             "CHANGELOG.md",

@@ -87,9 +87,12 @@ add_uv_pythons_to_path()
 
 LOCK = True
 
-PYTHON_ALL_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12"]
-PYTHON_DEFAULT_VERSION = "3.11"
-
+PYTHON_ALL_VERSIONS = [
+    c.split()[-1]
+    for c in nox.project.load_toml("pyproject.toml")["project"]["classifiers"]
+    if c.startswith("Programming Language :: Python :: 3.")
+]
+PYTHON_DEFAULT_VERSION = Path(".python-version").read_text(encoding="utf-8").strip()
 
 UVXRUN_LOCK_REQUIREMENTS = "requirements/lock/py{}-uvxrun-tools.txt".format(
     PYTHON_DEFAULT_VERSION.replace(".", "")
@@ -696,6 +699,43 @@ def test(
 
 nox.session(name="test", **ALL_KWS)(test)
 nox.session(name="test-conda", **CONDA_ALL_KWS)(test)
+
+
+@nox.session(name="test-sync", **ALL_KWS)
+@add_opts
+def test_sync(session: Session, opts: SessionParams) -> None:
+    """Run tests using uv sync ..."""
+    session.run_install(
+        "uv",
+        "sync",
+        "--no-dev",
+        "--group",
+        "test",
+        # Handle package install here?
+        # "--no-editable",
+        # "--reinstall-package",
+        # "open-notebook",
+        "--no-install-project",
+        env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
+    )
+
+    # handle package install separately
+    session.run_install(
+        "uv",
+        "pip",
+        "install",
+        get_package_wheel(session),
+        "--no-deps",
+        "--force-reinstall",
+    )
+
+    _test(
+        session=session,
+        run=opts.test_run,
+        test_no_pytest=opts.test_no_pytest,
+        test_opts=opts.test_opts,
+        no_cov=opts.no_cov,
+    )
 
 
 @nox.session(name="test-notebook", **DEFAULT_KWS)
