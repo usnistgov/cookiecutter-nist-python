@@ -2,16 +2,18 @@
 
 from __future__ import annotations
 
+import locale
+import os
 import shlex
+from contextlib import contextmanager
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 from nox.logger import logger
 
 if TYPE_CHECKING:
-    import sys
     from collections.abc import Iterable, Iterator
-    from typing import Any, Callable, Literal, Union
+    from typing import Any, Union
 
     from nox import Session
 
@@ -29,26 +31,6 @@ def py_prefix(python_version: Any) -> str:
         return "py" + python_version.replace(".", "")
     msg = f"passed non-string value {python_version}"
     raise ValueError(msg)
-
-
-def _verify_path(
-    path: PathLike,
-) -> Path:
-    path = Path(path)
-    if not path.is_file():
-        msg = f"Path {path} is not a file"
-        raise ValueError(msg)
-    return path
-
-
-def _verify_paths(
-    paths: PathLike | Iterable[PathLike] | None,
-) -> list[Path]:
-    if paths is None:
-        return []
-    if isinstance(paths, (str, Path)):
-        paths = [paths]
-    return [_verify_path(p) for p in paths]
 
 
 def infer_requirement_path_with_fallback(
@@ -107,7 +89,7 @@ def infer_requirement_path(
     filename = name
     if ext is not None and not filename.endswith(ext):
         filename += ext
-    if ext != ".txt" and python_version is not None:
+    if python_version is not None:
         prefix = py_prefix(python_version)
         if not filename.startswith(prefix):
             filename = f"{prefix}-{filename}"
@@ -133,28 +115,6 @@ def infer_requirement_path(
         raise FileNotFoundError(msg)
 
     return path
-
-
-def _infer_requirement_paths(
-    names: str | Iterable[str] | None,
-    lock: bool = False,
-    ext: str | None = None,
-    python_version: str | None = None,
-) -> list[Path]:
-    if names is None:
-        return []
-
-    if isinstance(names, str):
-        names = [names]
-    return [
-        infer_requirement_path(
-            name,
-            lock=lock,
-            ext=ext,
-            python_version=python_version,
-        )
-        for name in names
-    ]
 
 
 def get_python_full_path(session: Session) -> str:
@@ -213,3 +173,133 @@ def session_run_commands(
         kws.update(external=external)
         for opt in combine_list_list_str(commands):
             session.run(*opt, **kws)
+
+
+# * Caching -------------------------------------------------------------------
+@contextmanager
+def check_for_change_manager(
+    *deps: str | Path,
+    hash_path: str | Path | None = None,
+    target_path: str | Path | None = None,
+    force_write: bool = False,
+) -> Iterator[bool]:
+    """
+    Context manager to look for changes in dependencies.
+
+    Yields
+    ------
+    changed: bool
+
+    If exit normally, write hashes to hash_path file
+
+    """
+    try:
+        changed, hashes, hash_path = check_hash_path_for_change(
+            *deps,
+            target_path=target_path,
+            hash_path=hash_path,
+        )
+
+        yield changed
+
+    except Exception:  # noqa: TRY203
+        raise
+
+    else:
+        if force_write or changed:
+            logger.info(f"Writing {hash_path}")
+
+            # make sure the parent directory exists:
+            hash_path.parent.mkdir(parents=True, exist_ok=True)
+            write_hashes(hash_path=hash_path, hashes=hashes)
+
+
+def check_hash_path_for_change(
+    *deps: str | Path,
+    target_path: str | Path | None = None,
+    hash_path: str | Path | None = None,
+) -> tuple[bool, dict[str, str], Path]:
+    """
+    Checks a json file `hash_path` for hashes of `other_paths`.
+
+    if specify target_path and no hash_path, set `hash_path=target_path.parent / (target_path.name + ".hash.json")`.
+    if specify hash_path and no target, set
+
+    Parameters
+    ----------
+    *deps :
+        files on which target_path/hash_path depends.
+    hash_path :
+        Path of file containing hashes of `deps`.
+    target_path :
+        Target file (i.e., the final file to be created).
+        Defaults to hash_path.
+
+
+    Returns
+    -------
+    changed : bool
+    hashes : dict[str, str]
+    hash_path : Path
+
+    """
+    import json
+
+    msg = "Must specify target_path or hash_path"
+
+    if target_path is None:
+        if hash_path is None:
+            raise ValueError(msg)
+        target_path = hash_path = Path(hash_path)
+    else:
+        target_path = Path(target_path)
+        if hash_path is None:
+            hash_path = target_path.parent / (target_path.name + ".hash.json")
+        else:
+            hash_path = Path(hash_path)
+
+    hashes: dict[str, str] = {
+        os.path.relpath(k, hash_path.parent): _get_file_hash(k) for k in deps
+    }
+
+    if not target_path.is_file():
+        changed = True
+
+    elif hash_path.is_file():
+        with hash_path.open() as f:
+            previous_hashes: dict[str, Any] = json.load(f)
+
+        changed = False
+        for k, h in hashes.items():
+            previous = previous_hashes.get(k)
+            if previous is None or previous != h:
+                changed = True
+                hashes = {**previous_hashes, **hashes}
+                break
+
+    else:
+        changed = True
+
+    return changed, hashes, hash_path
+
+
+def write_hashes(hash_path: str | Path, hashes: dict[str, Any]) -> None:
+    """Write hashes to json file."""
+    import json
+
+    with Path(hash_path).open("w", encoding=locale.getpreferredencoding(False)) as f:
+        json.dump(hashes, f, indent=2)
+        f.write("\n")
+
+
+def _get_file_hash(path: str | Path, buff_size: int = 65536) -> str:
+    import hashlib
+
+    md5 = hashlib.md5()
+    with Path(path).open("rb") as f:
+        while True:
+            data = f.read(buff_size)
+            if not data:
+                break
+            md5.update(data)
+    return md5.hexdigest()

@@ -436,6 +436,8 @@ strip-extras = true
 [tool.uv]
 managed = false
 default-groups = [ "dev" ]
+# problems using uv lock over old versions sometimes
+# environments = [ "python_version >= '3.11'" ]
 fork-strategy = "requires-python"
 
 [tool.uv.pip]

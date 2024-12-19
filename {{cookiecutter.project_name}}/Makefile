@@ -2,8 +2,10 @@
 .PHONY: clean clean-test clean-pyc clean-build help
 .DEFAULT_GOAL := help
 
-UVXRUN = uv run tools/uvxrun.py
-UVXRUN_OPTS = -r requirements/lock/uvxrun-tools.txt -v
+
+_PY_DEFAULT = 312
+UVXRUN = uv run --no-config tools/uvxrun.py
+UVXRUN_OPTS = -r requirements/lock/py$(_PY_DEFAULT)-uvxrun-tools.txt -v
 UVXRUN_NO_PROJECT = uv run --with "packaging" --no-project tools/uvxrun.py
 NOX=uvx --from "nox>=2024.10.9" nox
 PRE_COMMIT = uvx pre-commit
@@ -93,8 +95,8 @@ user-all: user-autoenv-zsh ## runs user scripts
 .PHONY: _dev
 _dev:
 	uv venv .venv
-	uv pip sync requirements/lock/dev.txt
-	uv pip install -e .
+	uv pip sync -p .venv/bin/python requirements/lock/py$(_PY_DEFAULT)-dev.txt
+	uv pip install -p .venv/bin/python -e .
 
 dev: _dev install-kernel
 
