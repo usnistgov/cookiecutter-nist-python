@@ -434,7 +434,7 @@ strip-extras = true
 # * uv -------------------------------------------------------------------------
 
 [tool.uv]
-managed = true
+managed = false
 default-groups = [ "dev" ]
 fork-strategy = "requires-python"
 

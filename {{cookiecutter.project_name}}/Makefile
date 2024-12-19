@@ -3,7 +3,7 @@
 .DEFAULT_GOAL := help
 
 UVXRUN = uv run tools/uvxrun.py
-UVXRUN_OPTS = -r requirements/lock/py311-uvxrun-tools.txt -v
+UVXRUN_OPTS = -r requirements/lock/uvxrun-tools.txt -v
 UVXRUN_NO_PROJECT = uv run --with "packaging" --no-project tools/uvxrun.py
 NOX=uvx --from "nox>=2024.10.9" nox
 PRE_COMMIT = uvx pre-commit
@@ -81,13 +81,22 @@ pre-commit-checkmake:  ## run checkmake
 
 
 # * User setup -----------------------------------------------------------------
-.PHONY: user-autoenv-zsh user-all
+.PHONY: user-autoenv-zsh dev user-all
 user-autoenv-zsh: ## create .autoenv.zsh files
 	echo source ./.venv/bin/activate > .autoenv.zsh
 	echo deactivate > .autoenv_leave.zsh
 
 user-all: user-autoenv-zsh ## runs user scripts
 
+
+# * Dev environment ------------------------------------------------------------
+.PHONY: _dev
+_dev:
+	uv venv .venv
+	uv pip sync requirements/lock/dev.txt
+	uv pip install -e .
+
+dev: _dev install-kernel
 
 # * Testing --------------------------------------------------------------------
 .PHONY: test coverage
