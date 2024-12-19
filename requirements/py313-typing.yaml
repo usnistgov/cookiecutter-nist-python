@@ -7,12 +7,9 @@
 # You should not manually edit this file.
 # Instead edit the corresponding pyproject.toml file.
 #
-conda-lock>=2.5.5
-grayskull>=2.5.3
-mypy>=1.13.0
-nbqa>=1.8.4
-pre-commit
-pyproject2conda>=0.15.0
-pyright>=1.1.390
-scriv
-twine>=5.0.0
+channels:
+  - conda-forge
+dependencies:
+  - python=3.13
+  - packaging
+  - pytest

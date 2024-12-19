@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "e9736c0efdb025694f86a5676a2eb30c5f9cc95c",
-  "checkout": "develop",
+  "commit": "8ce759f8db7651a156cd742695368da798eaccec",
+  "checkout": "feature/better-uv-support",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",

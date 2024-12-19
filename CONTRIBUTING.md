@@ -449,32 +449,21 @@ Or if using [uv]:
 uv venv --python 3.11 .venv
 uv pip install -r requirements/dev.txt
 # or locked
-uv pip sync requirements/lock/py311-dev.txt
+uv pip sync requirements/lock/py{version}-dev.txt
 
 ```
 
-### Create development environment with nox
-
-If you'd like to use nox to manage your development environment, use the
-following:
+Or you can simply use:
 
 ```bash
-nox -s dev
+make dev
 ```
 
-This will create a virtual environment under `.venv`. To instead create a
-[conda] based development environment, use `nox -s dev-conda ....`.
-
-If you go this route, you may want to use something like
+which will create a virtual environment under `.venv`. If you go this route, you
+may want to use something like
 [zsh-autoenv](https://github.com/Tarrasch/zsh-autoenv) (if using zsh shell) or
 [autoenv](https://github.com/hyperupcall/autoenv) (if using bash) to auto
 activate the development environment when in the parent directory.
-
-Note that you can bootstrap the whole process with [uvx] using:
-
-```bash
-uvx nox -s dev/dev-conda
-```
 
 ### Development tools
 
