@@ -81,6 +81,7 @@ UVXRUN_LOCK_REQUIREMENTS = "requirements/lock/py{}-uvxrun-tools.txt".format(
     PYTHON_DEFAULT_VERSION.replace(".", "")
 )
 UVXRUN_MIN_REQUIREMENTS = "requirements/uvxrun-tools.txt"
+PIP_COMPILE_CONFIG = "requirements/uv.toml"
 
 
 @lru_cache
@@ -251,15 +252,23 @@ def add_opts(
     return wrapped
 
 
-def install_dependencies(session: Session, name: str, opts: SessionParams) -> None:
+def install_dependencies(
+    session: Session,
+    *args: str,
+    name: str,
+    opts: SessionParams,
+    python_version: str | None = None,
+) -> None:
     """General dependencies installer"""
-    assert isinstance(session.python, str)  # noqa: S101
+    if python_version is None:
+        assert isinstance(session.python, str)  # noqa: S101
+        python_version = session.python
 
     if isinstance(session.virtualenv, CondaEnv):
         environment_file = infer_requirement_path(
             name,
             ext=".yaml",
-            python_version=session.python,
+            python_version=python_version,
             lock=False,
         )
         with check_for_change_manager(
@@ -277,6 +286,7 @@ def install_dependencies(session: Session, name: str, opts: SessionParams) -> No
                     environment_file,
                     "--prefix",
                     session.virtualenv.location,
+                    *args,
                 )
             else:
                 session.log("Using cached install")
@@ -286,16 +296,82 @@ def install_dependencies(session: Session, name: str, opts: SessionParams) -> No
             "uv",
             "pip",
             "sync",
+            f"--config-file={PIP_COMPILE_CONFIG}",
             infer_requirement_path(
                 name,
                 ext=".txt",
-                python_version=session.python,
+                python_version=python_version,
                 lock=True,
             ),
+            *args,
         )
 
 
+def install_package(
+    session: Session,
+    *args: str,
+    editable: bool = False,
+    update: bool = True,
+) -> None:
+    """Install current package"""
+    if editable:
+        run = session.run if update else session.run_install
+        opts = [*args, "-e", "."]
+    else:
+        run = session.run
+        opts = [*args, get_package_wheel(session)]
+
+    run(
+        "uv",
+        "pip",
+        "install",
+        *opts,
+        "--no-deps",
+        "--force-reinstall",
+    )
+
+
 # * Environments------------------------------------------------------------------------
+# ** dev
+@nox.session(name="dev", python=False)
+@add_opts
+def dev(
+    session: Session,
+    opts: SessionParams,
+) -> None:
+    """Create development environment"""
+    session.run("uv", "venv", ".venv")
+    python_opt = "--python=.venv/bin/python"
+
+    install_dependencies(
+        session,
+        python_opt,
+        name="dev",
+        opts=opts,
+        python_version=PYTHON_DEFAULT_VERSION,
+    )
+
+    install_package(
+        session,
+        python_opt,
+        editable=True,
+        update=True,
+    )
+
+    session.run(
+        "uv",
+        "run",
+        python_opt,
+        "python",
+        "-m",
+        "ipykernel",
+        "install",
+        "--user",
+        "--name={{ cookiecutter.project_name }}-dev",
+        "--display-name='Python [venv: {{ cookiecutter.project_name }}-dev]'",
+    )
+
+
 # ** requirements
 @nox.session(name="requirements", python=False)
 @add_opts
@@ -361,6 +437,7 @@ def lock(
                         "pip",
                         "compile",
                         "--universal",
+                        f"--config-file={PIP_COMPILE_CONFIG}",
                         "-q",
                         "-p",
                         python_version,
@@ -411,16 +488,8 @@ def test(
     opts: SessionParams,
 ) -> None:
     """Test environments with conda installs."""
-    install_dependencies(session, "test", opts)
-    session.run(
-        "uv",
-        "pip",
-        "install",
-        get_package_wheel(session),
-        "--no-deps",
-        "--force-reinstall",
-        external=True,
-    )
+    install_dependencies(session, name="test", opts=opts)
+    install_package(session, editable=False, update=True)
 
     _test(
         session=session,
@@ -454,14 +523,7 @@ def test_sync(session: Session, opts: SessionParams) -> None:
     )
 
     # handle package install separately
-    session.run(
-        "uv",
-        "pip",
-        "install",
-        get_package_wheel(session),
-        "--no-deps",
-        "--force-reinstall",
-    )
+    install_package(session, editable=False, update=True)
 
     _test(
         session=session,
@@ -476,15 +538,8 @@ def test_sync(session: Session, opts: SessionParams) -> None:
 @add_opts
 def test_notebook(session: nox.Session, opts: SessionParams) -> None:
     """Run pytest --nbval."""
-    install_dependencies(session, "test-notebook", opts)
-    session.run_always(
-        "uv",
-        "pip",
-        "install",
-        get_package_wheel(session),
-        "--no-deps",
-        "--force-reinstall",
-    )
+    install_dependencies(session, name="test-notebook", opts=opts)
+    install_package(session, editable=False, update=True)
 
     test_nbval_opts = shlex.split(
         """
@@ -558,7 +613,7 @@ def testdist(
     if opts.version:
         install_str = f"{install_str}=={opts.version}"
 
-    install_dependencies(session, "test-extras", opts)
+    install_dependencies(session, name="test-extras", opts=opts)
 
     if isinstance(session.virtualenv, CondaEnv):
         session.conda_install(install_str)
@@ -592,8 +647,8 @@ def docs(
     calls 'make -C docs html'. With 'release' option, you can set the
     message with 'message=...' in posargs.
     """
-    install_dependencies(session, "docs", opts)
-    session.install("-e", ".", "--no-deps")
+    install_dependencies(session, name="docs", opts=opts)
+    install_package(session, editable=True, update=True)
 
     if opts.version:
         session.env["SETUPTOOLS_SCM_PRETEND_VERSION"] = opts.version
@@ -662,8 +717,8 @@ def typing(  # noqa: C901
     opts: SessionParams,
 ) -> None:
     """Run type checkers (mypy, pyright, pytype)."""
-    install_dependencies(session, "typing", opts)
-    session.install("-e", ".", "--no-deps")
+    install_dependencies(session, name="typing", opts=opts)
+    install_package(session, editable=True, update=True)
 
     session_run_commands(session, opts.typing_run)
 
@@ -730,7 +785,7 @@ def build(session: nox.Session, opts: SessionParams) -> None:  # noqa: C901
     Pass `--build-isolation` to use build isolation.
     """
     if USE_ENVIRONMENT_FOR_BUILD:
-        install_dependencies(session, "build", opts)
+        install_dependencies(session, name="build", opts=opts)
 
     if opts.version:
         session.env["SETUPTOOLS_SCM_PRETEND_VERSION"] = opts.version

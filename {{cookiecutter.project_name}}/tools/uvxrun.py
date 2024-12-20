@@ -173,7 +173,7 @@ def setup_logging(
 # * Utilities -----------------------------------------------------------------
 @lru_cache
 def _comment_re() -> re.Pattern[str]:
-    return re.compile(r"(^|\s+)#.*$")
+    return re.compile(r"(^|\s+)(#|--hash|\\).*$")
 
 
 def _parse_requirements(requirements: Path) -> Iterator[Requirement]:

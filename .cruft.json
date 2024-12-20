@@ -1,6 +1,6 @@
 {
   "template": ".",
-  "commit": "8ce759f8db7651a156cd742695368da798eaccec",
+  "commit": "c58fb528e03a2df92e5fd43a0f96bd43e13d8ead",
   "checkout": "feature/better-uv-support",
   "context": {
     "cookiecutter": {

@@ -10,7 +10,7 @@
 channels:
   - conda-forge
 dependencies:
-  - python=3.11
+  - python=3.12
   - cookiecutter
   - copier
   - mypy>=1.13.0
