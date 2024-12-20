@@ -68,7 +68,8 @@ nox.options.default_venv_backend = "uv"
 
 # * Options ---------------------------------------------------------------------------
 
-LOCK = True
+# if True, use uv lock/sync.  If False, use uv pip compile/sync...
+UV_LOCK = False
 
 PYTHON_ALL_VERSIONS = [
     c.split()[-1]
@@ -234,8 +235,7 @@ def parse_posargs(*posargs: str) -> SessionParams:
     without escaping.
     """
     opts = SessionParams.from_posargs(posargs=posargs, prefix_char="+")
-    opts.lock = opts.lock or LOCK
-
+    opts.lock = opts.lock or UV_LOCK
     return opts
 
 
@@ -258,6 +258,7 @@ def install_dependencies(
     name: str,
     opts: SessionParams,
     python_version: str | None = None,
+    location: str | None = None,
 ) -> None:
     """General dependencies installer"""
     if python_version is None:
@@ -290,6 +291,22 @@ def install_dependencies(
                 )
             else:
                 session.log("Using cached install")
+
+    elif opts.lock:
+        session.run_install(
+            "uv",
+            "sync",
+            "--no-dev",
+            "--group",
+            name,
+            # Handle package install here?
+            # "--no-editable",
+            # "--reinstall-package",
+            # "open-notebook",
+            "--no-install-project",
+            f"--python={python_version}",
+            env={"UV_PROJECT_ENVIRONMENT": location or session.virtualenv.location},
+        )
 
     else:
         session.run_install(
@@ -328,6 +345,7 @@ def install_package(
         *opts,
         "--no-deps",
         "--force-reinstall",
+        external=True,
     )
 
 
@@ -349,6 +367,7 @@ def dev(
         name="dev",
         opts=opts,
         python_version=PYTHON_DEFAULT_VERSION,
+        location=".venv",
     )
 
     install_package(
@@ -394,7 +413,7 @@ def requirements(
         specs=get_uvxrun_specs(),
     )
 
-    if not opts.requirements_no_notify and opts.lock:
+    if not opts.requirements_no_notify:
         session.notify("lock")
 
 
@@ -502,36 +521,6 @@ def test(
 
 nox.session(**ALL_KWS)(test)
 nox.session(name="test-conda", **CONDA_ALL_KWS)(test)
-
-
-@nox.session(name="test-sync", **ALL_KWS)
-@add_opts
-def test_sync(session: Session, opts: SessionParams) -> None:
-    """Run tests using uv sync ..."""
-    session.run_install(
-        "uv",
-        "sync",
-        "--no-dev",
-        "--group",
-        "test",
-        # Handle package install here?
-        # "--no-editable",
-        # "--reinstall-package",
-        # "open-notebook",
-        "--no-install-project",
-        env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
-    )
-
-    # handle package install separately
-    install_package(session, editable=False, update=True)
-
-    _test(
-        session=session,
-        run=opts.test_run,
-        test_no_pytest=opts.test_no_pytest,
-        test_opts=opts.test_opts,
-        no_cov=opts.no_cov,
-    )
 
 
 @nox.session(name="test-notebook", **DEFAULT_KWS)
