@@ -1,6 +1,6 @@
 {
   "template": ".",
-  "commit": "c58fb528e03a2df92e5fd43a0f96bd43e13d8ead",
+  "commit": "e353e649524a23d87d27e84e0b462a3aea1ac809",
   "checkout": "feature/better-uv-support",
   "context": {
     "cookiecutter": {
@@ -18,7 +18,8 @@
       "year": "2023",
       "__answers": "",
       "_copy_without_render": [],
-      "_template": "."
+      "_template": ".",
+      "_commit": "e353e649524a23d87d27e84e0b462a3aea1ac809"
     }
   },
   "directory": null

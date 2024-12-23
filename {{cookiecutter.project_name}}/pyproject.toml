@@ -60,10 +60,7 @@ dev = [
     { include-group = "uvxrun" },
 ]
 test = [
-    "pytest",
-    "pytest-cov",
-    "pytest-sugar",
-    "pytest-xdist",
+    { include-group = "test-extras" },
 ]
 docs = [
     {%- if cookiecutter.sphinx_use_autodocsumm %}
@@ -96,8 +93,18 @@ dev-extras = [
     "nox>=2024.4.15",
     "pytest-accept",
 ]
-mypy = [ "mypy>=1.13.0" ]
+mypy = [ "mypy>=1.14.0" ]
 nbval = [ "nbval" ]
+test-extras = [
+    "pytest",
+    "pytest-cov",
+    "pytest-sugar",
+    "pytest-xdist",
+]
+test-notebook = [
+    { include-group = "nbval" },
+    { include-group = "test-extras" },
+]
 typing = [
     "pytest",
     { include-group = "uvxrun" },
@@ -111,7 +118,7 @@ uvxrun-tools = [
     "nbqa>=1.8.4",
     "pre-commit",
     "pyproject2conda>=0.15.0",
-    "pyright>=1.1.390",
+    "pyright>=1.1.391",
     "scriv",
     "twine>=5.0.0",
     { include-group = "mypy" },
@@ -377,6 +384,7 @@ style = [
 ]
 default_envs = [
     "test",
+    "test-notebook",
     "typing",
     "docs",
     "dev",
@@ -391,14 +399,8 @@ scriv = { pip = true }
 groups = "build-system.requires"
 
 [tool.pyproject2conda.envs.test-extras]
-groups = "test"
+groups = "test-extras"
 skip_package = true
-
-[tool.pyproject2conda.envs.test-notebook]
-groups = [
-    "test",
-    "nbval",
-]
 
 [[tool.pyproject2conda.overrides]]
 envs = [
@@ -424,12 +426,6 @@ envs = [
     "test-extras",
 ]
 python = "all"
-
-# * pip-tools (keeping for legacy) ---------------------------------------------
-
-[tool.pip-tools]
-allow-unsafe = true
-strip-extras = true
 
 # * uv -------------------------------------------------------------------------
 

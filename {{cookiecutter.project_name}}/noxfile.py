@@ -259,6 +259,8 @@ def install_dependencies(
     opts: SessionParams,
     python_version: str | None = None,
     location: str | None = None,
+    no_dev: bool = True,
+    only_group: bool = False,
 ) -> None:
     """General dependencies installer"""
     if python_version is None:
@@ -296,15 +298,21 @@ def install_dependencies(
         session.run_install(
             "uv",
             "sync",
-            "--no-dev",
-            "--group",
+            *(["-U"] if opts.update else []),
+            *(["--no-dev"] if no_dev else []),
+            *(["--only-group"] if only_group else ["--group"]),
             name,
             # Handle package install here?
             # "--no-editable",
             # "--reinstall-package",
             # "open-notebook",
             "--no-install-project",
-            f"--python={python_version}",
+            *(
+                []
+                if any("--python" in a for a in args)
+                else [f"--python={python_version}"]
+            ),
+            *args,
             env={"UV_PROJECT_ENVIRONMENT": location or session.virtualenv.location},
         )
 
@@ -358,7 +366,8 @@ def dev(
     opts: SessionParams,
 ) -> None:
     """Create development environment"""
-    session.run("uv", "venv", ".venv")
+    session.run("uv", "venv", ".venv", "--allow-existing")
+
     python_opt = "--python=.venv/bin/python"
 
     install_dependencies(
@@ -368,6 +377,7 @@ def dev(
         opts=opts,
         python_version=PYTHON_DEFAULT_VERSION,
         location=".venv",
+        no_dev=False,
     )
 
     install_package(
@@ -432,7 +442,7 @@ def lock(
     for path in reqs_path.glob("*.txt"):
         python_versions = (
             PYTHON_ALL_VERSIONS
-            if path.name in {"test.txt", "typing.txt"}
+            if path.name in {"test.txt", "test-extras.txt", "typing.txt"}
             else [PYTHON_DEFAULT_VERSION]
         )
 
@@ -602,7 +612,7 @@ def testdist(
     if opts.version:
         install_str = f"{install_str}=={opts.version}"
 
-    install_dependencies(session, name="test-extras", opts=opts)
+    install_dependencies(session, name="test-extras", only_group=True, opts=opts)
 
     if isinstance(session.virtualenv, CondaEnv):
         session.conda_install(install_str)

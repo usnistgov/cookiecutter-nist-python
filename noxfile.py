@@ -68,7 +68,8 @@ nox.options.default_venv_backend = "uv"
 
 # * Options ---------------------------------------------------------------------------
 
-LOCK = True
+# if True, use uv lock/sync.  If False, use uv pip compile/sync...
+UV_LOCK = True
 
 PYTHON_ALL_VERSIONS = [
     c.split()[-1]
@@ -234,8 +235,7 @@ def parse_posargs(*posargs: str) -> SessionParams:
     without escaping.
     """
     opts = SessionParams.from_posargs(posargs=posargs, prefix_char="+")
-    opts.lock = opts.lock or LOCK
-
+    opts.lock = opts.lock or UV_LOCK
     return opts
 
 
@@ -258,6 +258,9 @@ def install_dependencies(
     name: str,
     opts: SessionParams,
     python_version: str | None = None,
+    location: str | None = None,
+    no_dev: bool = True,
+    only_group: bool = False,
 ) -> None:
     """General dependencies installer"""
     if python_version is None:
@@ -290,6 +293,28 @@ def install_dependencies(
                 )
             else:
                 session.log("Using cached install")
+
+    elif opts.lock:
+        session.run_install(
+            "uv",
+            "sync",
+            *(["-U"] if opts.update else []),
+            *(["--no-dev"] if no_dev else []),
+            *(["--only-group"] if only_group else ["--group"]),
+            name,
+            # Handle package install here?
+            # "--no-editable",
+            # "--reinstall-package",
+            # "open-notebook",
+            "--no-install-project",
+            *(
+                []
+                if any("--python" in a for a in args)
+                else [f"--python={python_version}"]
+            ),
+            *args,
+            env={"UV_PROJECT_ENVIRONMENT": location or session.virtualenv.location},
+        )
 
     else:
         session.run_install(
@@ -330,6 +355,7 @@ def install_package(
         *opts,
         "--no-deps",
         "--force-reinstall",
+        external=True,
     )
 
 
@@ -342,7 +368,8 @@ def dev(
     opts: SessionParams,
 ) -> None:
     """Create development environment"""
-    session.run("uv", "venv", ".venv")
+    session.run("uv", "venv", ".venv", "--allow-existing")
+
     python_opt = "--python=.venv/bin/python"
 
     install_dependencies(
@@ -351,6 +378,8 @@ def dev(
         name="dev",
         opts=opts,
         python_version=PYTHON_DEFAULT_VERSION,
+        location=".venv",
+        no_dev=False,
     )
 
     install_package(
@@ -396,7 +425,7 @@ def requirements(
         specs=get_uvxrun_specs(),
     )
 
-    if not opts.requirements_no_notify and opts.lock:
+    if not opts.requirements_no_notify:
         session.notify("lock")
 
 
@@ -415,7 +444,7 @@ def lock(
     for path in reqs_path.glob("*.txt"):
         python_versions = (
             PYTHON_ALL_VERSIONS
-            if path.name in {"test.txt", "typing.txt"}
+            if path.name in {"test.txt", "test-extras.txt", "typing.txt"}
             else [PYTHON_DEFAULT_VERSION]
         )
 
@@ -506,36 +535,6 @@ nox.session(**ALL_KWS)(test)
 nox.session(name="test-conda", **CONDA_ALL_KWS)(test)
 
 
-@nox.session(name="test-sync", **ALL_KWS)
-@add_opts
-def test_sync(session: Session, opts: SessionParams) -> None:
-    """Run tests using uv sync ..."""
-    session.run_install(
-        "uv",
-        "sync",
-        "--no-dev",
-        "--group",
-        "test",
-        # Handle package install here?
-        # "--no-editable",
-        # "--reinstall-package",
-        # "open-notebook",
-        "--no-install-project",
-        env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
-    )
-
-    # handle package install separately
-    install_package(session, editable=False, update=True)
-
-    _test(
-        session=session,
-        run=opts.test_run,
-        test_no_pytest=opts.test_no_pytest,
-        test_opts=opts.test_opts,
-        no_cov=opts.no_cov,
-    )
-
-
 @nox.session(name="test-notebook", **DEFAULT_KWS)
 @add_opts
 def test_notebook(session: nox.Session, opts: SessionParams) -> None:
@@ -615,7 +614,7 @@ def testdist(
     if opts.version:
         install_str = f"{install_str}=={opts.version}"
 
-    install_dependencies(session, name="test-extras", opts=opts)
+    install_dependencies(session, name="test-extras", only_group=True, opts=opts)
 
     if isinstance(session.virtualenv, CondaEnv):
         session.conda_install(install_str)

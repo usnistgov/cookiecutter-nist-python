@@ -10,7 +10,11 @@ from .utils import run_inside_dir
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_PYTHON = "3.11"
+DEFAULT_PYTHON = (
+    (Path(__file__).parent.absolute().parent / ".python-version")
+    .read_text(encoding="utf-8")
+    .strip()
+)
 
 
 # * Actual testing
