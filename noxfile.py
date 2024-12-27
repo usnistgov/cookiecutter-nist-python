@@ -142,6 +142,11 @@ class SessionParams(DataclassParser):
         "-N",
         help="run `uv sync` without --frozen (default is to use `--frozen`)",
     )
+    reinstall_package: bool = add_option(
+        "--reinstall-package",
+        "-P",
+        help="reinstall package.  Only works with uv sync and editable installs",
+    )
 
     # requirements
     requirements_force: bool = False
@@ -266,6 +271,7 @@ def install_dependencies(
     location: str | None = None,
     no_dev: bool = True,
     only_group: bool = False,
+    include_editable_package: bool = False,
 ) -> None:
     """General dependencies installer"""
     if python_version is None:
@@ -299,6 +305,9 @@ def install_dependencies(
             else:
                 session.log("Using cached install")
 
+        if include_editable_package:
+            install_package(session, editable=True, update=True)
+
     elif opts.lock:
         session.run_install(
             "uv",
@@ -312,7 +321,12 @@ def install_dependencies(
             # "--no-editable",
             # "--reinstall-package",
             # "open-notebook",
-            "--no-install-project",
+            *([] if include_editable_package else ["--no-install-project"]),
+            *(
+                [f"--reinstall-package={PACKAGE_NAME}"]
+                if opts.reinstall_package and include_editable_package
+                else []
+            ),
             *(
                 []
                 if any("--python" in a for a in args)
@@ -336,6 +350,9 @@ def install_dependencies(
             ),
             *args,
         )
+
+        if include_editable_package:
+            install_package(session, editable=True, update=True)
 
 
 def install_package(
@@ -386,18 +403,13 @@ def dev(
         python_version=PYTHON_DEFAULT_VERSION,
         location=".venv",
         no_dev=False,
-    )
-
-    install_package(
-        session,
-        python_opt,
-        editable=True,
-        update=True,
+        include_editable_package=True,
     )
 
     session.run(
         "uv",
         "run",
+        "--frozen",
         python_opt,
         "python",
         "-m",
@@ -654,8 +666,7 @@ def docs(
     calls 'make -C docs html'. With 'release' option, you can set the
     message with 'message=...' in posargs.
     """
-    install_dependencies(session, name="docs", opts=opts)
-    install_package(session, editable=True, update=True)
+    install_dependencies(session, name="docs", opts=opts, include_editable_package=True)
 
     if opts.version:
         session.env["SETUPTOOLS_SCM_PRETEND_VERSION"] = opts.version
@@ -724,9 +735,9 @@ def typing(  # noqa: C901
     opts: SessionParams,
 ) -> None:
     """Run type checkers (mypy, pyright, pytype)."""
-    install_dependencies(session, name="typing", opts=opts)
-    install_package(session, editable=True, update=True)
-
+    install_dependencies(
+        session, name="typing", opts=opts, include_editable_package=True
+    )
     session_run_commands(session, opts.typing_run)
 
     cmd = opts.typing or []
