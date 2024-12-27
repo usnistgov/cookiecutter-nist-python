@@ -127,6 +127,8 @@ def example_path(
         run_inside_dir("git init", path)
     run_inside_dir("git add .", path)
 
+    run_inside_dir("uv lock", str(path), env={"VIRTUAL_ENV": str(path / ".venv")})
+
     # change to example_path
     old_cwd = Path.cwd()
     os.chdir(path)
@@ -180,7 +182,7 @@ def _clean_directory(directory_path: Path, keep: str | list[str] | None = None) 
         return
 
     if keep is None:
-        keep = [".nox", "requirements"]
+        keep = [".nox", "uv.lock", "requirements"]
     elif isinstance(keep, str):
         keep = [keep]
 

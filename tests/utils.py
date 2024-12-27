@@ -25,8 +25,16 @@ def inside_dir(dirpath: str | Path) -> Iterator[None]:
         os.chdir(old_path)
 
 
-def run_inside_dir(command: str, dirpath: str | Path) -> int:
+def run_inside_dir(
+    command: str, dirpath: str | Path, env: dict[str, str] | None = None
+) -> int:
     """Run a command from inside a given directory, returning the exit status"""
+
+    if env is not None:
+        import os
+
+        env = {**os.environ, **env}
+
     with inside_dir(dirpath):
         logger.info("Run: %s", command)
-        return subprocess.check_call(shlex.split(command))  # noqa: S603
+        return subprocess.check_call(shlex.split(command), env=env)  # noqa: S603

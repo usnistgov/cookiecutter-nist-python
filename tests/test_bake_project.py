@@ -65,6 +65,7 @@ def check_directory(
             "Makefile",
             "README.md",
             "AUTHORS.md",
+            "uv.lock",
         ]
 
     if directories is None:

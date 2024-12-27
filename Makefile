@@ -1,10 +1,10 @@
-# * Utilities ------------------------------------------------------------------
+# * Utilities -----------------------------------------------------------------
 .PHONY: clean clean-test clean-pyc clean-build help
 .DEFAULT_GOAL := help
 
 
 _PY_DEFAULT = 312
-UVXRUN = uv run --no-config tools/uvxrun.py
+UVXRUN = uv run --no-config --frozen tools/uvxrun.py
 UVXRUN_OPTS = -r requirements/lock/py$(_PY_DEFAULT)-uvxrun-tools.txt -v
 UVXRUN_NO_PROJECT = uv run --with "packaging" --no-project tools/uvxrun.py
 NOX=uvx --from "nox>=2024.10.9" nox
@@ -30,10 +30,10 @@ for line in sys.stdin:
 endef
 export PRINT_HELP_PYSCRIPT
 
-BROWSER := uv run python -c "$$BROWSER_PYSCRIPT"
+BROWSER := uv run --no-config --frozen python -c "$$BROWSER_PYSCRIPT"
 
 help:
-	@uv run python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
+	@uv run --frozen python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
@@ -103,10 +103,10 @@ dev: _dev install-kernel
 # * Testing --------------------------------------------------------------------
 .PHONY: test coverage
 test: ## run tests quickly with the default Python
-	uv run pytest -x -v
+	uv run --frozen pytest -x -v
 
 test-accept: ## run tests and accept doctest results. (using pytest-accept)
-	DOCFILLER_SUB=False uv run pytest -v --accept
+	DOCFILLER_SUB=False uv run --frozen pytest -v --accept
 
 
 # * Versioning -----------------------------------------------------------------
@@ -226,15 +226,15 @@ typecheck-notebook: _NBQA = -c mypy -c pyright
 typecheck-notebook: ## run nbqa mypy/pyright
 	$(NBQA)
 test-notebook:  ## run pytest --nbval
-	uv run pytest --nbval --nbval-current-env --nbval-sanitize-with=config/nbval.ini --dist loadscope -x $(NOTEBOOKS)
+	uv run --frozen pytest --nbval --nbval-current-env --nbval-sanitize-with=config/nbval.ini --dist loadscope -x $(NOTEBOOKS)
 
 .PHONY: clean-kernelspec
 clean-kernelspec: ## cleanup unused kernels (assuming notebooks handled by conda environment notebook)
-	uv run tools/clean_kernelspec.py
+	uv run --frozen tools/clean_kernelspec.py
 
 .PHONY: install-kernel
 install-kernel:  ## install kernel
-	uv run python -m ipykernel install --user \
+	uv run --frozen python -m ipykernel install --user \
 	--name cookiecutter-nist-python-dev \
     --display-name "Python [venv: cookiecutter-nist-python-dev]"
 
@@ -252,7 +252,7 @@ commitizen-changelog:
 # tuna analyze load time:
 .PHONY: tuna-analyze
 tuna-import	: ## Analyze load time for module
-	uv run python -X importtime -c 'import cookiecutter_nist_python' 2> tuna-loadtime.log
+	uv run --frozen python -X importtime -c 'import cookiecutter_nist_python' 2> tuna-loadtime.log
 	uvx tuna tuna-loadtime.log
 	rm tuna-loadtime.log
 
