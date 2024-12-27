@@ -137,6 +137,11 @@ class SessionParams(DataclassParser):
     update: bool = add_option("--update", "-U", help="update dependencies/package")
     version: str | None = None
     prune: bool = add_option(default=False, help="Pass `--prune` to conda env update")
+    no_frozen: bool = add_option(
+        "--no-frozen",
+        "-N",
+        help="run `uv sync` without --frozen (default is to use `--frozen`)",
+    )
 
     # requirements
     requirements_force: bool = False
@@ -300,6 +305,7 @@ def install_dependencies(
             "sync",
             *(["-U"] if opts.update else []),
             *(["--no-dev"] if no_dev else []),
+            *([] if opts.no_frozen else ["--frozen"]),
             *(["--only-group"] if only_group else ["--group"]),
             name,
             # Handle package install here?
