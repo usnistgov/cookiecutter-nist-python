@@ -396,6 +396,7 @@ def dev(
     session.run(
         "uv",
         "run",
+        "--frozen",
         python_opt,
         "python",
         "-m",
