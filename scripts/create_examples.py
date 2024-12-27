@@ -61,12 +61,12 @@ def clean_directory(directory_path: Path, keep: str | list[str] | None = None) -
     for p in directory_path.glob("*"):
         x = p.name
         if x in keep:
-            logging.info("skipping %s", p)
+            logger.info("skipping %s", p)
         elif p.is_dir():
-            logging.info("removing directory %s", p)
+            logger.info("removing directory %s", p)
             shutil.rmtree(p)
         else:
-            logging.info("removing file %s", p)
+            logger.info("removing file %s", p)
             p.unlink()
 
 
@@ -91,7 +91,7 @@ def bake(
 
     extra_context.setdefault("project_name", _project_name(name))
 
-    logging.info("baking %s", output_dir)
+    logger.info("baking %s", output_dir)
     cookiecutter(
         template=str(template),
         output_dir=str(output_dir),
@@ -116,11 +116,11 @@ def clean_directories(names: str | list[str]) -> None:
     if isinstance(names, str):
         names = [names]
 
-    logging.info("to clean %s", names)
+    logger.info("to clean %s", names)
 
     if "all" in names:
         for d in OUTPUT_PATH.iterdir():
-            logging.info("cleaning directory %s", d)
+            logger.info("cleaning directory %s", d)
             clean_directory(d)
     else:
         for name in names:
@@ -132,11 +132,11 @@ def remove_directories(names: str | list[str]) -> None:
     if isinstance(names, str):
         names = [names]
 
-    logging.info("to remove %s", names)
+    logger.info("to remove %s", names)
 
     if "all" in names:
         for d in OUTPUT_PATH.iterdir():
-            logging.info("removing directory %s", d)
+            logger.info("removing directory %s", d)
             shutil.rmtree(d)
     else:
         for name in names:
@@ -151,7 +151,7 @@ def create_directories(names: str | list[str]) -> None:
     if "all" in names:
         names = ["default", "furo", "typer"]
 
-    logging.info("to create %s", names)
+    logger.info("to create %s", names)
     for name in names:
         bake(name=name, extra_context=EXTRA_CONTEXTS[name])
 

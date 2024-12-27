@@ -10,7 +10,7 @@ license-files = { paths = [ "LICENSE" ] }
 authors = [
     { name = "William P. Krekelberg", email = "wpk@nist.gov" },
 ]
-requires-python = ">=3.8,<3.13"
+requires-python = ">=3.8,<3.14"
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Science/Research",
@@ -23,6 +23,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering",
 ]
 dynamic = [
@@ -43,13 +44,7 @@ dev = [
     { include-group = "uvxrun" },
 ]
 test = [
-    "cookiecutter",
-    "copier",
-    "copier-templates-extensions",
-    "pytest",
-    "pytest-cov",
-    "pytest-sugar",
-    "pytest-xdist",
+    { include-group = "test-extras" },
 ]
 docs = [
     "autodocsumm",
@@ -64,8 +59,21 @@ docs = [
 dev-extras = [
     "nox>=2024.4.15",
 ]
-mypy = [ "mypy>=1.13.0" ]
+mypy = [ "mypy>=1.14.0" ]
 nbval = [ "nbval" ]
+test-extras = [
+    "cookiecutter",
+    "copier",
+    "copier-templates-extensions",
+    "pytest",
+    "pytest-cov",
+    "pytest-sugar",
+    "pytest-xdist",
+]
+test-notebook = [
+    { include-group = "nbval" },
+    { include-group = "test-extras" },
+]
 typing = [
     "pytest",
     { include-group = "uvxrun" },
@@ -78,8 +86,8 @@ uvxrun-tools = [
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
     "pre-commit",
-    "pyproject2conda>=0.13.0",
-    "pyright>=1.1.390",
+    "pyproject2conda>=0.15.0",
+    "pyright>=1.1.391",
     "scriv",
     "twine>=5.0.0",
     { include-group = "mypy" },
@@ -179,6 +187,7 @@ lint.extend-per-file-ignores."scripts/*.py" = [
 ]
 # Project specific ignores (avoid changing per-file-ignores directly)
 lint.extend-per-file-ignores."tests/*.py" = [
+    "LOG015",
     "S404",
 ]
 # fixable = ["ALL"]
@@ -328,22 +337,16 @@ inputs = [
 user_config = "config/userconfig.toml"
 template_python = "requirements/py{py}-{env}"
 template = "requirements/{env}"
-python = [
-    "3.11",
-]
+python = "default"
 channels = [
     "conda-forge",
 ]
 style = [
     "yaml",
-    "requirements",
 ]
 default_envs = [
     "test",
-    "typing",
-    "docs",
     "dev",
-    "uvxrun-tools",
 ]
 
 [tool.pyproject2conda.dependencies]
@@ -351,22 +354,15 @@ pytest-accept = { pip = true }
 scriv = { pip = true }
 copier-templates-extensions = { pip = true }
 
-[tool.pyproject2conda.envs.test-extras]
-groups = "test"
-skip_package = true
-
-[[tool.pyproject2conda.overrides]]
-envs = [
-    "uvxrun-tools",
-]
-skip_package = true
+[tool.pyproject2conda.envs.uvxrun-tools]
+groups = "uvxrun-tools"
 style = "requirements"
+skip_package = true
 
 [[tool.pyproject2conda.overrides]]
 # Ensure these have pip in yaml file
 envs = [
     "test",
-    "docs",
     "dev",
 ]
 deps = [ "pip" ]
@@ -374,27 +370,17 @@ deps = [ "pip" ]
 [[tool.pyproject2conda.overrides]]
 envs = [
     "test",
-    "typing",
-    "test-extras",
 ]
-python = [
-    "3.8",
-    "3.9",
-    "3.10",
-    "3.11",
-    "3.12",
-]
-
-# * pip-tools (keeping for legacy) ---------------------------------------------
-
-[tool.pip-tools]
-allow-unsafe = true
-strip-extras = true
+python = "all"
 
 # * uv -------------------------------------------------------------------------
 
 [tool.uv]
-managed = false
+managed = true
+# problems using uv lock over old versions sometimes
+# environments = [ "python_version >= '3.12'" ]
+default-groups = [ "dev" ]
+fork-strategy = "requires-python"
 
 [tool.uv.pip]
 annotation-style = "line"

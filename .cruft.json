@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "e9736c0efdb025694f86a5676a2eb30c5f9cc95c",
-  "checkout": "develop",
+  "commit": "e353e649524a23d87d27e84e0b462a3aea1ac809",
+  "checkout": "feature/better-uv-support",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",
@@ -18,7 +18,8 @@
       "year": "2023",
       "__answers": "",
       "_copy_without_render": [],
-      "_template": "."
+      "_template": ".",
+      "_commit": "e353e649524a23d87d27e84e0b462a3aea1ac809"
     }
   },
   "directory": null
