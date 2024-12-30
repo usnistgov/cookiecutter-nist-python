@@ -86,6 +86,7 @@ docs = [
     "sphinx-copybutton",
     "sphinxcontrib-spelling",
 ]
+cog = [ "cogapp" ]
 dev-extras = [
     "ipykernel",
     "ipython",
