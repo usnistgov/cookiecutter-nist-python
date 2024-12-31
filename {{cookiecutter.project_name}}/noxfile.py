@@ -381,6 +381,15 @@ def install_package(
 
 
 # * Environments------------------------------------------------------------------------
+# ** test-all
+@nox.session(name="test-all", python=False)
+def test_all(session: Session) -> None:
+    """Run all tests and coverage"""
+    for py in PYTHON_ALL_VERSIONS:
+        session.notify(f"test-{py}")
+    session.notify("coverage")
+
+
 # ** dev
 @nox.session(name="dev", python=False)
 @add_opts

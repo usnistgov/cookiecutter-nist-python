@@ -114,8 +114,6 @@ lint.select = [
     "ALL",
 ]
 lint.ignore = [
-    "ANN101",  # - Leads to issues with methods and self
-    "ANN102",  # - Leads to issues with classmethods and cls
     "ANN401",  # - Any ok sometimes
     "COM",     # - flake8-commas, formatter should take care of this?
     "CPY",     # - Don't require copyright
