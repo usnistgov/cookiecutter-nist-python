@@ -467,6 +467,9 @@ def lock(
     options: list[str] = ["-U"] if opts.lock_upgrade else []
     force = opts.lock_force or opts.lock_upgrade
 
+    if opts.lock and opts.lock_upgrade:
+        session.run("uv", "lock", "--upgrade", env={"VIRTUAL_ENV": ".venv"})
+
     reqs_path = Path("./requirements")
     for path in reqs_path.glob("*.txt"):
         python_versions = (

@@ -120,14 +120,15 @@ def example_path(
         project_name=project_name, extra_context=extra_context, style=style
     )
 
-    run_inside_dir(f"nox -s requirements {nox_opts} -- {nox_session_opts}", str(path))
-
     # add files to git
     if not (path / ".git").exists():
         run_inside_dir("git init", path)
     run_inside_dir("git add .", path)
 
+    run_inside_dir(f"nox -s requirements {nox_opts} -- {nox_session_opts}", str(path))
     run_inside_dir("uv lock", str(path), env={"VIRTUAL_ENV": str(path / ".venv")})
+
+    run_inside_dir("git add .", path)
 
     # change to example_path
     old_cwd = Path.cwd()
