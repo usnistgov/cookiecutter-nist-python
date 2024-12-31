@@ -118,7 +118,7 @@ uvxrun-tools = [
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
     "pre-commit",
-    "pyproject2conda>=0.15.0",
+    "pyproject2conda>=0.16.0",
     "pyright>=1.1.391",
     "scriv",
     "twine>=5.0.0",

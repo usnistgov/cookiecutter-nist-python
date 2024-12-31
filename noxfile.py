@@ -995,7 +995,7 @@ def conda_build(session: nox.Session, opts: SessionParams) -> None:
 
 
 # ** Other utilities
-@nox.session
+@nox.session(**DEFAULT_KWS)
 @add_opts
 def cog(session: nox.Session, opts: SessionParams) -> None:
     """Run cog."""
