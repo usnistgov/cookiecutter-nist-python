@@ -81,18 +81,7 @@ typing = [
 ]
 # Anything needed to run tools/uvxrun.py
 uvxrun = [ "packaging" ]
-uvxrun-tools = [
-    # these used solely for specking tools to be used with tools/uvxrun.py
-    "conda-lock>=2.5.5",
-    "grayskull>=2.5.3",
-    "nbqa>=1.8.4",
-    "pre-commit",
-    "pyproject2conda>=0.16.0",
-    "pyright>=1.1.391",
-    "scriv",
-    "twine>=5.0.0",
-    { include-group = "mypy" },
-]
+# NOTE: uvxrun-tools defined explicitly in tool.pyproject2conda.envs.uvxrun-tools
 
 [tool.ruff]
 line-length = 88
@@ -354,9 +343,20 @@ scriv = { pip = true }
 copier-templates-extensions = { pip = true }
 
 [tool.pyproject2conda.envs.uvxrun-tools]
-groups = "uvxrun-tools"
-style = "requirements"
+reqs = [
+    # these used solely for specking tools to be used with tools/uvxrun.py
+    "conda-lock>=2.5.5",
+    "grayskull>=2.5.3",
+    "nbqa>=1.8.4",
+    "pre-commit",
+    "pyproject2conda>=0.16.0",
+    "pyright>=1.1.391",
+    "scriv",
+    "twine>=5.0.0",
+]
+groups = [ "mypy" ]
 skip_package = true
+style = "requirements"
 
 [[tool.pyproject2conda.overrides]]
 # Ensure these have pip in yaml file
