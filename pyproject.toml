@@ -80,8 +80,8 @@ typing = [
     { include-group = "uvxrun" },
 ]
 # Anything needed to run tools/uvxrun.py
-uvxrun = [ "packaging" ]
 # NOTE: uvxrun-tools defined explicitly in tool.pyproject2conda.envs.uvxrun-tools
+uvxrun = [ "packaging" ]
 
 [tool.ruff]
 line-length = 88
@@ -326,21 +326,22 @@ user_config = "config/userconfig.toml"
 template_python = "requirements/py{py}-{env}"
 template = "requirements/{env}"
 python = "default"
-channels = [
-    "conda-forge",
-]
-style = [
-    "yaml",
-]
-default_envs = [
-    "test",
-    "dev",
-]
+channels = "conda-forge"
+style = "requirements"
+deps = "pip"
 
 [tool.pyproject2conda.dependencies]
 pytest-accept = { pip = true }
-scriv = { pip = true }
 copier-templates-extensions = { pip = true }
+
+[tool.pyproject2conda.envs.dev]
+groups = "dev"
+style = "yaml"
+
+[tool.pyproject2conda.envs.test]
+groups = "test"
+style = "yaml"
+python = "all"
 
 [tool.pyproject2conda.envs.uvxrun-tools]
 reqs = [
@@ -356,28 +357,11 @@ reqs = [
 ]
 groups = [ "mypy" ]
 skip_package = true
-style = "requirements"
-
-[[tool.pyproject2conda.overrides]]
-# Ensure these have pip in yaml file
-envs = [
-    "test",
-    "dev",
-]
-deps = [ "pip" ]
-
-[[tool.pyproject2conda.overrides]]
-envs = [
-    "test",
-]
-python = "all"
 
 # * uv -------------------------------------------------------------------------
 
 [tool.uv]
 managed = true
-# problems using uv lock over old versions sometimes
-# environments = [ "python_version >= '3.12'" ]
 default-groups = [ "dev" ]
 fork-strategy = "requires-python"
 

@@ -111,8 +111,8 @@ typing = [
     { include-group = "uvxrun" },
 ]
 # Anything needed to run tools/uvxrun.py
-uvxrun = [ "packaging" ]
 # NOTE: uvxrun-tools defined explicitly in tool.pyproject2conda.envs.uvxrun-tools
+uvxrun = [ "packaging" ]
 
 [tool.hatch.version]
 source = "vcs"
@@ -364,24 +364,41 @@ user_config = "config/userconfig.toml"
 template_python = "requirements/py{py}-{env}"
 template = "requirements/{env}"
 python = "default"
-channels = [
-    "conda-forge",
-]
-style = [
-    "yaml",
-    "requirements",
-]
-default_envs = [
-    "test",
-    "test-notebook",
-    "typing",
-    "docs",
-    "dev",
-]
+channels = "conda-forge"
+style = "requirements"
+deps = "pip"
 
 [tool.pyproject2conda.dependencies]
 pytest-accept = { pip = true }
-scriv = { pip = true }
+
+[tool.pyproject2conda.envs.dev]
+groups = "dev"
+style = [ "requirements", "yaml" ]
+
+[tool.pyproject2conda.envs.test]
+groups = "test"
+style = [ "requirements", "yaml" ]
+python = "all"
+
+[tool.pyproject2conda.envs.test-extras]
+groups = "test-extras"
+style = [ "requirements", "yaml" ]
+skip_package = true
+python = "all"
+
+[tool.pyproject2conda.envs.test-notebook]
+groups = "test-notebook"
+
+[tool.pyproject2conda.envs.docs]
+groups = "docs"
+
+[tool.pyproject2conda.envs.typing]
+groups = "typing"
+python = "all"
+
+[tool.pyproject2conda.envs.build]
+groups = "build-system.requires"
+skip_package = true
 
 [tool.pyproject2conda.envs.uvxrun-tools]
 reqs = [
@@ -397,40 +414,11 @@ reqs = [
 ]
 groups = [ "mypy" ]
 skip_package = true
-style = "requirements"
-
-[tool.pyproject2conda.envs.build]
-groups = "build-system.requires"
-skip_package = true
-style = "requirements"
-
-[tool.pyproject2conda.envs.test-extras]
-groups = "test-extras"
-skip_package = true
-
-[[tool.pyproject2conda.overrides]]
-# Ensure these have pip in yaml file
-envs = [
-    "test",
-    "docs",
-    "dev",
-]
-deps = [ "pip" ]
-
-[[tool.pyproject2conda.overrides]]
-envs = [
-    "test",
-    "typing",
-    "test-extras",
-]
-python = "all"
 
 # * uv -------------------------------------------------------------------------
 
 [tool.uv]
 managed = true
-# problems using uv lock over old versions sometimes
-# environments = [ "python_version >= '3.12'" ]
 default-groups = [ "dev" ]
 fork-strategy = "requires-python"
 
