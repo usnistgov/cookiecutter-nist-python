@@ -365,7 +365,7 @@ template_python = "requirements/py{py}-{env}"
 template = "requirements/{env}"
 python = "default"
 channels = "conda-forge"
-style = "requirements"
+style = "yaml"
 deps = "pip"
 
 [tool.pyproject2conda.dependencies]
@@ -377,28 +377,32 @@ style = [ "requirements", "yaml" ]
 
 [tool.pyproject2conda.envs.test]
 groups = "test"
-style = [ "requirements", "yaml" ]
 python = "all"
+style = [ "requirements", "yaml" ]
 
 [tool.pyproject2conda.envs.test-extras]
 groups = "test-extras"
-style = [ "requirements", "yaml" ]
-skip_package = true
 python = "all"
+skip_package = true
+style = [ "requirements", "yaml" ]
 
 [tool.pyproject2conda.envs.test-notebook]
 groups = "test-notebook"
+style = "requirements"
 
 [tool.pyproject2conda.envs.docs]
 groups = "docs"
+style = "requirements"
 
 [tool.pyproject2conda.envs.typing]
 groups = "typing"
 python = "all"
+style = "requirements"
 
 [tool.pyproject2conda.envs.build]
 groups = "build-system.requires"
 skip_package = true
+style = "requirements"
 
 [tool.pyproject2conda.envs.uvxrun-tools]
 reqs = [
@@ -412,8 +416,9 @@ reqs = [
     "scriv",
     "twine>=5.0.0",
 ]
-groups = [ "mypy" ]
+groups = "mypy"
 skip_package = true
+style = "requirements"
 
 # * uv -------------------------------------------------------------------------
 
