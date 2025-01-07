@@ -57,6 +57,7 @@ def check_directory(
             ".prettierrc.yaml",
             ".prettierignore",
             ".python-version",
+            ".pylintrc.toml",
             "pyproject.toml",
             "noxfile.py",
             "CHANGELOG.md",

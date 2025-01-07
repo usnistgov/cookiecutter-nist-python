@@ -31,8 +31,6 @@ def run_inside_dir(
     """Run a command from inside a given directory, returning the exit status"""
 
     if env is not None:
-        import os
-
         env = {**os.environ, **env}
 
     with inside_dir(dirpath):

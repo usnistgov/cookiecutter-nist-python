@@ -8,7 +8,7 @@ from typing import Any
 from copier_templates_extensions import ContextHook
 
 
-class CookiecutterNamespace(ContextHook):
+class CookiecutterNamespace(ContextHook):  # pylint: disable=abstract-method
     """Template hooks for copier"""
 
     def hook(self, context: dict[str, Any]) -> dict[str, Any]:  # noqa: PLR6301

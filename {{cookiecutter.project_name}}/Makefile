@@ -135,13 +135,15 @@ pyright: ## Run pyright
 	$(UVXRUN) $(UVXRUN_OPTS) -c pyright
 pyright-watch: ## Run pyright in watch mode
 	$(UVXRUN) $(UVXRUN_OPTS) -c "pyright -w"
-typecheck: ## Run mypy and pyright
+pylint: ## Run pylint
+	uv run pylint src tests
+typecheck: pylint ## Run mypy and pyright
 	$(UVXRUN) $(UVXRUN_OPTS) -c mypy -c pyright
 
 .PHONY: typecheck-tools
 typecheck-tools:
+	uv run pylint noxfile.py tools
 	$(UVXRUN) $(UVXRUN_OPTS) -c "mypy --strict" -c pyright -- noxfile.py tools/*.py
-
 
 # * NOX ------------------------------------------------------------------------
 # ** docs
@@ -172,8 +174,10 @@ typing-mypy: ## run mypy mypy_args=...
 	$(NOX) -s typing -- +m mypy
 typing-pyright: ## run pyright pyright_args=...
 	$(NOX) -s typing -- +m pyright
+typing-pylint: ## run pylint
+	$(NOX) -s pylint -- +m pylint
 typing-typecheck:
-	$(NOX) -s typing -- +m mypy pyright
+	$(NOX) -s typing -- +m mypy pyright pylint
 
 # ** dist pypi
 .PHONY: build testrelease release
