@@ -103,7 +103,7 @@ dev: _dev install-kernel
 # * Testing --------------------------------------------------------------------
 .PHONY: test coverage
 test: ## run tests quickly with the default Python
-	uv run --frozen pytest -x -v
+	uv run --frozen pytest
 
 test-accept: ## run tests and accept doctest results. (using pytest-accept)
 	DOCFILLER_SUB=False uv run --frozen pytest -v --accept
@@ -128,7 +128,7 @@ requirements: ## rebuild all requirements/environment files
 
 
 # * Typing ---------------------------------------------------------------------
-.PHONY: mypy pyright
+.PHONY: mypy pyright pyright-watch pylint
 mypy: ## Run mypy
 	$(UVXRUN) $(UVXRUN_OPTS) -c mypy
 pyright: ## Run pyright
@@ -169,7 +169,7 @@ docs-linkcheck: ## check links
 	$(NOX) -s docs -- +d linkcheck
 
 # ** typing
-.PHONY: typing-mypy typing-pyright typing-typecheck
+.PHONY: typing-mypy typing-pyright typing-pylint typing-typecheck
 typing-mypy: ## run mypy mypy_args=...
 	$(NOX) -s typing -- +m mypy
 typing-pyright: ## run pyright pyright_args=...
@@ -220,17 +220,20 @@ list-dist: list-wheel list-sdist ## Cat out sdist and wheel contents
 # * NOTEBOOK -------------------------------------------------------------------
 NOTEBOOKS ?= examples/usage
 # NOTE: use this because nested call back in nox has errors with uv run...
-_NBQA_UVXRUN = $(shell which python) tools/uvxrun.py
+_PYTHON = $(shell which python)
+_NBQA_UVXRUN = $(_PYTHON) tools/uvxrun.py
 NBQA = $(_NBQA_UVXRUN) $(UVXRUN_OPTS) -c "nbqa --nbqa-shell \"$(_NBQA_UVXRUN)\" $(NOTEBOOKS) $(UVXRUN_OPTS) $(_NBQA)"
-.PHONY: mypy-notebook pyright-notebook typecheck-notebook test-notebook
+.PHONY: mypy-notebook pyright-notebook pylint-notebook typecheck-notebook test-notebook
 mypy-notebook: _NBQA = -c mypy
 mypy-notebook: ## run nbqa mypy
 	$(NBQA)
 pyright-notebook: _NBQA = -c pyright
 pyright-notebook: ## run nbqa pyright
 	$(NBQA)
+pylint-notebook:: ## run nbqa pylint
+	$(_NBQA_UVXRUN) $(UVXRUN_OPTS) -c "nbqa --nbqa-shell \"$(_PYTHON) -m pylint\" $(NOTEBOOKS)"
 typecheck-notebook: _NBQA = -c mypy -c pyright
-typecheck-notebook: ## run nbqa mypy/pyright
+typecheck-notebook: pylint-notebook ## run nbqa mypy/pyright
 	$(NBQA)
 test-notebook:  ## run pytest --nbval
 	uv run --frozen pytest --nbval --nbval-current-env --nbval-sanitize-with=config/nbval.ini --dist loadscope -x $(NOTEBOOKS)
