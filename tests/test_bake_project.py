@@ -170,7 +170,7 @@ def test_baked_typing(example_path: Path, nox_opts: str, nox_session_opts: str) 
     py = get_python_version()
 
     run_inside_dir(
-        f"nox {nox_opts} -s typing-{py} -- +m clean mypy pyright {nox_session_opts}",
+        f"nox {nox_opts} -s typing-{py} -- +m clean mypy pyright pylint {nox_session_opts}",
         example_path,
     )
 
