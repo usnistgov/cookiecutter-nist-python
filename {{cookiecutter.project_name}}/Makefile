@@ -128,7 +128,7 @@ requirements: ## rebuild all requirements/environment files
 
 
 # * Typing ---------------------------------------------------------------------
-.PHONY: mypy pyright pyright-watch pylint
+.PHONY: mypy pyright pyright-watch _typecheck pylint
 mypy: ## Run mypy
 	$(UVXRUN) $(UVXRUN_OPTS) -c mypy
 pyright: ## Run pyright
@@ -137,8 +137,9 @@ pyright-watch: ## Run pyright in watch mode
 	$(UVXRUN) $(UVXRUN_OPTS) -c "pyright -w"
 pylint: ## Run pylint
 	uv run pylint src tests
-typecheck: pylint ## Run mypy and pyright
+_typecheck:
 	$(UVXRUN) $(UVXRUN_OPTS) -c mypy -c pyright
+typecheck: _typecheck pylint ## Run mypy and pyright
 
 .PHONY: typecheck-tools
 typecheck-tools:

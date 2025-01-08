@@ -796,7 +796,14 @@ def typing(  # noqa: C901, PLR0912
         elif c == "pyright":
             run("pyright")
         elif c == "pylint":
-            session.run("pylint", "src", "tests")
+            session.run(
+                "pylint",
+                # A bit dangerous, but needed to allow pylint
+                # to work across versions.
+                "--disable=unrecognized-option",
+                "src",
+                "tests",
+            )
         else:
             session.log(f"Skipping unknown command {c}")
 

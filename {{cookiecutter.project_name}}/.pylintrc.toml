@@ -47,8 +47,6 @@ disable = [
     "consider-using-f-string",
     # "duplicate-code",
     # "cyclic-import",
-    # A bit dangerous, but needed to allow pylint to work across versions.
-    "unrecognized-option",
 ]
 
 [tool.pylint.reports]
