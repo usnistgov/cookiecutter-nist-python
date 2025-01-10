@@ -435,7 +435,7 @@ pip install -e . --no-deps
 ### Create development environment with uv/pip
 
 The easiest way to create an development environment, if using `uv.lock`
-mechanisim is:
+mechanism is:
 
 ```bash
 uv sync
