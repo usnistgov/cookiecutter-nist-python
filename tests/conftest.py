@@ -183,7 +183,7 @@ def _clean_directory(directory_path: Path, keep: str | list[str] | None = None) 
         return
 
     if keep is None:
-        keep = [".nox", "uv.lock", "requirements"]
+        keep = [".nox", ".venv", "uv.lock", "requirements"]
     elif isinstance(keep, str):
         keep = [keep]
 

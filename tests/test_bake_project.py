@@ -44,7 +44,7 @@ def check_directory(
     path = Path(path)
 
     if ignore_paths is None:
-        ignore_paths = ["__pycache__"]
+        ignore_paths = ["__pycache__", ".venv"]
 
     if files is None:
         files = [

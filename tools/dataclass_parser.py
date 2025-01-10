@@ -106,8 +106,7 @@ class Option:
         """Convert to dictionary."""
         return {
             k: v
-            for k, v in
-            (
+            for k, v in (
                 # Can't use asdict() since that deep copies and we need
                 # to filter using an identity check against UNDEFINED.
                 [
