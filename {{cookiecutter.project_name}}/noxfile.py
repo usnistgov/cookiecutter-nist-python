@@ -135,7 +135,9 @@ class SessionParams(DataclassParser):
     # common parameters
     lock: bool = False
     update: bool = add_option("--update", "-U", help="update dependencies/package")
-    version: str | None = None
+    version: str | None = add_option(
+        "--version", "-V", help="pretend version", default=None
+    )
     prune: bool = add_option(default=False, help="Pass `--prune` to conda env update")
     no_frozen: bool = add_option(
         "--no-frozen",
