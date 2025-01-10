@@ -135,7 +135,7 @@ pyright: ## Run pyright
 pyright-watch: ## Run pyright in watch mode
 	$(UVXRUN) $(UVXRUN_OPTS) -c "pyright -w"
 pylint: ## Run pylint
-	uv run pylint tests
+	uv run --frozen pylint tests
 _typecheck:
 	$(UVXRUN) $(UVXRUN_OPTS) -c mypy -c pyright
 typecheck: _typecheck pylint ## Run mypy and pyright
@@ -143,7 +143,7 @@ typecheck: _typecheck pylint ## Run mypy and pyright
 .PHONY: typecheck-tools
 typecheck-tools:
 	$(UVXRUN) $(UVXRUN_OPTS) -c "mypy --strict" -c pyright -- noxfile.py tools/*.py
-	uv run pylint noxfile.py tools
+	uv run --frozen pylint noxfile.py tools
 
 # * NOX ------------------------------------------------------------------------
 # ** docs

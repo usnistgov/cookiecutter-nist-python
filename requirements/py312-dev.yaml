@@ -16,6 +16,7 @@ dependencies:
   - mypy>=1.14.0
   - nox>=2024.4.15
   - packaging
+  - pylint
   - pytest
   - pytest-cov
   - pytest-sugar
