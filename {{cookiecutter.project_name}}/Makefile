@@ -5,7 +5,7 @@
 
 _PY_DEFAULT = $(shell cat .python-version | sed "s/\.//")
 UVRUN = uv run --frozen
-UVXRUN = $(UVRUN) --no-config --frozen tools/uvxrun.py
+UVXRUN = $(UVRUN) --no-config tools/uvxrun.py
 UVXRUN_OPTS = -r requirements/lock/py$(_PY_DEFAULT)-uvxrun-tools.txt -v
 UVXRUN_NO_PROJECT = uv run --with "packaging" --no-project tools/uvxrun.py
 NOX=uvx --from "nox>=2024.10.9" nox
@@ -141,8 +141,8 @@ _typecheck:
 	$(UVXRUN) $(UVXRUN_OPTS) -c mypy -c pyright
 typecheck: _typecheck pylint ## Run mypy and pyright
 
-.PHONY: typecheck-tools
-typecheck-tools:
+.PHONY: tools-typecheck
+tools-typecheck:
 	$(UVXRUN) $(UVXRUN_OPTS) -c "mypy --strict" -c pyright -- noxfile.py tools/*.py
 	$(UVRUN) pylint noxfile.py tools
 
@@ -181,13 +181,13 @@ typing-typecheck:
 	$(NOX) -s typing -- +m mypy pyright pylint
 
 # ** dist pypi
-.PHONY: build testrelease release
+.PHONY: build release-test release
 build: ## build dist
 	$(NOX) -s build
-testrelease: ## test release on testpypi
-	$(NOX) -s publish -- +p test
 release: ## release to pypi, can pass posargs=...
 	$(NOX) -s publish -- +p release
+release-test: ## test release on testpypi
+	$(NOX) -s publish -- +p test
 
 # ** dist conda
 .PHONY: conda-recipe conda-build
@@ -224,19 +224,19 @@ NOTEBOOKS ?= examples/usage
 _PYTHON = $(shell which python)
 _NBQA_UVXRUN = $(_PYTHON) tools/uvxrun.py
 NBQA = $(_NBQA_UVXRUN) $(UVXRUN_OPTS) -c "nbqa --nbqa-shell \"$(_NBQA_UVXRUN)\" $(NOTEBOOKS) $(UVXRUN_OPTS) $(_NBQA)"
-.PHONY: mypy-notebook pyright-notebook pylint-notebook typecheck-notebook test-notebook
-mypy-notebook: _NBQA = -c mypy
-mypy-notebook: ## run nbqa mypy
+.PHONY: notebook-mypy notebook-pyright notebook-pylint notebook-typecheck notebook-test
+notebook-mypy: _NBQA = -c mypy
+notebook-mypy: ## run nbqa mypy
 	$(NBQA)
-pyright-notebook: _NBQA = -c pyright
-pyright-notebook: ## run nbqa pyright
+notebook-pyright: _NBQA = -c pyright
+notebook-pyright: ## run nbqa pyright
 	$(NBQA)
-pylint-notebook:: ## run nbqa pylint
+notebook-pylint:: ## run nbqa pylint
 	$(_NBQA_UVXRUN) $(UVXRUN_OPTS) -c "nbqa --nbqa-shell \"$(_PYTHON) -m pylint\" $(NOTEBOOKS)"
-typecheck-notebook: _NBQA = -c mypy -c pyright
-typecheck-notebook: pylint-notebook ## run nbqa mypy/pyright
+notebook-typecheck: _NBQA = -c mypy -c pyright
+notebook-typecheck: notebook-pylint ## run nbqa mypy/pyright
 	$(NBQA)
-test-notebook:  ## run pytest --nbval
+notebook-test:  ## run pytest --nbval
 	$(UVRUN) pytest --nbval --nbval-current-env --nbval-sanitize-with=config/nbval.ini --dist loadscope -x $(NOTEBOOKS)
 
 .PHONY: clean-kernelspec

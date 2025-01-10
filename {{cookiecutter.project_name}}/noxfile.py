@@ -207,9 +207,9 @@ class SessionParams(DataclassParser):
             "pylint",
             "pytype",
             "all",
-            "mypy-notebook",
-            "pyright-notebook",
-            "typecheck-notebook",
+            "notebook-mypy",
+            "notebook-pyright",
+            "notebook-typecheck",
         ]
     ] = add_option("--typing", "-m")
     typing_run: RUN_ANNO = None
@@ -789,7 +789,7 @@ def typing(  # noqa: C901, PLR0912
     )
 
     for c in cmd:
-        if c.endswith("-notebook"):
+        if c.startswith("notebook-"):
             session.run("make", c, external=True)
         elif c == "mypy":
             run("mypy", "--color-output")
