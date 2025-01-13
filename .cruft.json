@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "d0215f414c6d5f50fe0f9830cd8986a34913f0fe",
-  "checkout": "develop",
+  "commit": "34630b8ef764351961938e2c5541acebee274032",
+  "checkout": "feature/better-docs",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",
@@ -19,7 +19,7 @@
       "__answers": "",
       "_copy_without_render": [],
       "_template": ".",
-      "_commit": "d0215f414c6d5f50fe0f9830cd8986a34913f0fe"
+      "_commit": "34630b8ef764351961938e2c5541acebee274032"
     }
   },
   "directory": null

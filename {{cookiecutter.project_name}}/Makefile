@@ -148,9 +148,10 @@ tools-typecheck:
 
 # * NOX ------------------------------------------------------------------------
 # ** docs
-.PHONY: docs-build docs-clean docs-clean-build docs-release
-docs-build: ## build docs in isolation
-	$(NOX) -s docs -- +d build
+.PHONY: docs-html docs-clean docs-clean-build docs-release
+docs-html: ## build html docs
+	$(NOX) -s docs -- +d html
+docs-build: docs-html ## alias to docs-html
 docs-clean: ## clean docs
 	rm -rf docs/_build/*
 	rm -rf docs/generated/*

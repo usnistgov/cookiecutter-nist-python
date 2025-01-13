@@ -671,7 +671,7 @@ nox.session(name="testdist-conda", **CONDA_ALL_KWS)(testdist)
 # # ** Docs
 @nox.session(name="docs", **DEFAULT_KWS)
 @add_opts
-def docs(
+def docs(  # noqa: C901
     session: nox.Session,
     opts: SessionParams,
 ) -> None:
@@ -703,8 +703,35 @@ def docs(
         cmd.remove("serve")
 
     if cmd:
-        args = ["make", "-C", "docs", *combine_list_str(cmd)]
-        session.run(*args, external=True)
+        common_opts = ["--doctree-dir=docs/_build/doctree"]
+        for c in combine_list_str(cmd):
+            if c == "clean":
+                for d in ["docs/_build", "generated", "reference/generated"]:
+                    shutil.rmtree(Path(d), ignore_errors=True)
+                session.log("cleaned docs")
+            elif c == "livehtml":
+                session.run(
+                    "sphinx-autobuild",
+                    "-b",
+                    "html",
+                    "docs",
+                    "docs/_build/html",
+                    *common_opts,
+                    "--open-browser",
+                    *(
+                        f"--ignore='*/{d}/*'"
+                        for d in [
+                            "_build",
+                            "generated",
+                            "jupyter_execute",
+                            ".ipynb_checkpoints",
+                        ]
+                    ),
+                )
+            else:
+                session.run(
+                    "sphinx-build", "-b", c, *common_opts, "docs", f"docs/_build/{c}"
+                )
 
     if open_page:
         open_webpage(path="./docs/_build/html/index.html")
@@ -774,7 +801,7 @@ def typing(  # noqa: C901, PLR0912
             p = Path(session.create_tmp()) / name
             if p.exists():
                 session.log(f"removing cache {p}")
-                shutil.rmtree(str(p))
+                shutil.rmtree(p)
 
     if not isinstance(session.python, str):
         raise TypeError
@@ -843,10 +870,9 @@ def build(session: nox.Session, opts: SessionParams) -> None:  # noqa: C901
                 )
         elif cmd == "build":
             outdir = opts.build_outdir
-            if Path(outdir).exists():
-                shutil.rmtree(outdir)
+            shutil.rmtree(outdir, ignore_errors=True)
 
-            args = f"uv build --out-dir {outdir}".split()
+            args = f"uv build --out-dir={outdir}".split()
             if USE_ENVIRONMENT_FOR_BUILD and not opts.build_isolation:
                 args.append("--no-build-isolation")
 
@@ -1001,8 +1027,7 @@ def conda_build(session: nox.Session, opts: SessionParams) -> None:
     if "clean" in cmds:
         cmds.remove("clean")
         session.log("removing directory dist-conda/build")
-        if Path("./dist-conda/build").exists():
-            shutil.rmtree("./dist-conda/build")
+        shutil.rmtree(Path("./dist-conda/build"), ignore_errors=True)
 
     for cmd in cmds:
         if cmd == "build":
