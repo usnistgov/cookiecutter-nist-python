@@ -311,7 +311,7 @@ def install_dependencies(
         if include_editable_package:
             install_package(session, editable=True, update=True)
 
-    elif opts.lock:
+    elif opts.lock:  # pylint: disable=confusing-consecutive-elif
         session.run_install(
             "uv",
             "sync",
@@ -585,7 +585,7 @@ def test_notebook(session: nox.Session, opts: SessionParams) -> None:
     test_opts = (
         (opts.test_opts or [])
         + test_nbval_opts
-        + list(map(str, Path("examples/usage").glob("*.ipynb")))
+        + [str(p) for p in Path("examples/usage").glob("*.ipynb")]
     )
 
     session.log(f"{test_opts = }")
@@ -707,7 +707,7 @@ def docs(  # noqa: C901
         common_opts = ["--doctree-dir=docs/_build/doctree"]
         for c in combine_list_str(cmd):
             if c == "clean":
-                for d in ["docs/_build", "generated", "reference/generated"]:
+                for d in ("docs/_build", "generated", "reference/generated"):
                     shutil.rmtree(Path(d), ignore_errors=True)
                 session.log("cleaned docs")
             elif c == "livehtml":
@@ -721,12 +721,12 @@ def docs(  # noqa: C901
                     "--open-browser",
                     *(
                         f"--ignore='*/{d}/*'"
-                        for d in [
+                        for d in (
                             "_build",
                             "generated",
                             "jupyter_execute",
                             ".ipynb_checkpoints",
-                        ]
+                        )
                     ),
                 )
             else:
@@ -798,7 +798,7 @@ def typing(  # noqa: C901, PLR0912
         cmd = list(cmd)
         cmd.remove("clean")
 
-        for name in [".mypy_cache", ".pytype"]:
+        for name in (".mypy_cache", ".pytype"):
             p = Path(session.create_tmp()) / name
             if p.exists():
                 session.log(f"removing cache {p}")
@@ -829,6 +829,7 @@ def typing(  # noqa: C901, PLR0912
                 # A bit dangerous, but needed to allow pylint
                 # to work across versions.
                 "--disable=unrecognized-option",
+                "--enable-all-extensions",
                 "src",
                 "tests",
             )

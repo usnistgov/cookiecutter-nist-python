@@ -128,6 +128,7 @@ requirements: ## rebuild all requirements/environment files
 
 # * Typing ---------------------------------------------------------------------
 .PHONY: mypy pyright pyright-watch pylint _typecheck typecheck
+PYLINT_OPTS = --enable-all-extensions
 mypy: ## Run mypy
 	$(UVXRUN) $(UVXRUN_OPTS) -c mypy
 pyright: ## Run pyright
@@ -135,7 +136,7 @@ pyright: ## Run pyright
 pyright-watch: ## Run pyright in watch mode
 	$(UVXRUN) $(UVXRUN_OPTS) -c "pyright -w"
 pylint: ## Run pylint
-	$(UVRUN) pylint tests
+	$(UVRUN) pylint $(PYLINT_OPTS) tests
 _typecheck:
 	$(UVXRUN) $(UVXRUN_OPTS) -c mypy -c pyright
 typecheck: _typecheck pylint ## Run mypy and pyright
@@ -143,7 +144,7 @@ typecheck: _typecheck pylint ## Run mypy and pyright
 .PHONY: tools-typecheck
 tools-typecheck:
 	$(UVXRUN) $(UVXRUN_OPTS) -c "mypy --strict" -c pyright -- noxfile.py tools/*.py
-	$(UVRUN) pylint noxfile.py tools
+	$(UVRUN) pylint $(PYLINT_OPTS) noxfile.py tools
 
 # * NOX ------------------------------------------------------------------------
 # ** docs
@@ -232,7 +233,7 @@ notebook-pyright: _NBQA = -c pyright
 notebook-pyright: ## run nbqa pyright
 	$(NBQA)
 notebook-pylint:: ## run nbqa pylint
-	$(_NBQA_UVXRUN) $(UVXRUN_OPTS) -c "nbqa --nbqa-shell \"$(_PYTHON) -m pylint\" $(NOTEBOOKS)"
+	$(_NBQA_UVXRUN) $(UVXRUN_OPTS) -c "nbqa --nbqa-shell \"$(_PYTHON) -m pylint $(PYLINT_OPTS)\" $(NOTEBOOKS)"
 notebook-typecheck: _NBQA = -c mypy -c pyright
 notebook-typecheck: notebook-pylint ## run nbqa mypy/pyright
 	$(NBQA)

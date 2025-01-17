@@ -6,7 +6,10 @@ import shlex
 import subprocess
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Iterator
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +21,7 @@ def inside_dir(dirpath: str | Path) -> Iterator[None]:
     :param dirpath: String, path of the directory the command is being run.
     """
     old_path = Path.cwd()
-    try:
+    try:  # pylint: disable=too-many-try-statements
         os.chdir(dirpath)
         yield
     finally:

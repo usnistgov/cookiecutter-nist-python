@@ -6,11 +6,16 @@ import logging
 import os
 import shutil
 from pathlib import Path
-from typing import Any, Iterator
+from typing import TYPE_CHECKING
 
 import pytest
 
 from .utils import run_inside_dir
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+    from typing import Any
+
 
 # * Examples setup ---------------------------------------------------------------------
 ROOT = (Path(__file__).parent / "..").resolve()
@@ -33,7 +38,7 @@ MARKER_MAP = {
 }
 
 PARAMS: list[Any] = []
-for style in ["cookie", "copier"]:
+for style in ("cookie", "copier"):
     for theme, cli in SPHINX_THEMES_AND_CLI:
         sphinx_theme, command_line_interface = (MARKER_MAP[k] for k in (theme, cli))
 
@@ -188,8 +193,7 @@ def _clean_directory(directory_path: Path, keep: str | list[str] | None = None) 
         keep = [keep]
 
     for p in directory_path.glob("*"):
-        x = p.name
-        if x in keep:
+        if p.name in keep:
             logging.debug("skipping %s", p)
         elif p.is_dir():
             logging.debug("removing directory %s", p)

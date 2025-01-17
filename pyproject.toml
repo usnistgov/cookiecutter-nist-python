@@ -51,7 +51,6 @@ docs = [
     "myst-parser",
     "pyenchant",
     "sphinx>=5.3.0",
-    "sphinx-autobuild",
     "sphinx-book-theme",
     "sphinx-copybutton",
     "sphinxcontrib-spelling",
@@ -59,6 +58,10 @@ docs = [
 cog = [ "cogapp" ]
 dev-extras = [
     "nox>=2024.4.15",
+]
+docs-live = [
+    "sphinx-autobuild",
+    { include-group = "docs" },
 ]
 mypy = [ "mypy>=1.14.0" ]
 nbval = [ "nbval" ]
