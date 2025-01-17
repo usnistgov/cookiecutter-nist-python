@@ -682,14 +682,15 @@ def docs(  # noqa: C901
     calls 'make -C docs html'. With 'release' option, you can set the
     message with 'message=...' in posargs.
     """
-    install_dependencies(session, name="docs", opts=opts, include_editable_package=True)
+    cmd = opts.docs or []
+    cmd = ["html"] if not opts.docs_run and not cmd else list(cmd)
+    name = "docs-live" if "livehtml" in cmd else "docs"
+
+    install_dependencies(session, name=name, opts=opts, include_editable_package=True)
 
     if opts.version:
         session.env["SETUPTOOLS_SCM_PRETEND_VERSION"] = opts.version
     session_run_commands(session, opts.docs_run)
-
-    cmd = opts.docs or []
-    cmd = ["html"] if not opts.docs_run and not cmd else list(cmd)
 
     if "symlink" in cmd:
         cmd.remove("symlink")

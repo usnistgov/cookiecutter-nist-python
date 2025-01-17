@@ -76,7 +76,6 @@ docs = [
     {%- if cookiecutter.command_line_interface == "argparse" %}
     "sphinx-argparse",
     {%- endif %}
-    "sphinx-autobuild",
     {%- if cookiecutter.sphinx_theme == "sphinx_book_theme" %}
     "sphinx-book-theme",
     {%- endif %}
@@ -93,6 +92,10 @@ dev-extras = [
     "nbclient>=0.10.0",
     "nox>=2024.4.15",
     "pytest-accept",
+]
+docs-live = [
+    "sphinx-autobuild",
+    { include-group = "docs" },
 ]
 mypy = [ "mypy>=1.14.0" ]
 nbval = [ "nbval" ]
@@ -393,6 +396,10 @@ style = "requirements"
 
 [tool.pyproject2conda.envs.docs]
 groups = "docs"
+style = "requirements"
+
+[tool.pyproject2conda.envs.docs-live]
+groups = "docs-live"
 style = "requirements"
 
 [tool.pyproject2conda.envs.typing]
