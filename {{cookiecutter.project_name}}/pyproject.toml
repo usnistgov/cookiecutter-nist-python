@@ -434,6 +434,7 @@ style = "requirements"
 managed = true
 default-groups = [ "dev" ]
 fork-strategy = "requires-python"
+required-version = ">=0.5.21"
 
 [tool.uv.pip]
 annotation-style = "line"
