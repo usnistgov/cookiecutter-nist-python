@@ -89,7 +89,7 @@ repos:
       - id: nbqa
         alias: nbqa-codespell
         name: nbqa-codespell
-        additional_dependencies: &codespell-deps [codespell==2.3.0, tomli] # make sure same as above
+        additional_dependencies: &codespell-deps [codespell==2.4.0, tomli] # make sure same as above
         args:
           [codespell, --ignore-words=docs/spelling_wordlist.txt, --nbqa-shell]
       - id: nbqa
