@@ -151,7 +151,6 @@ class SessionParams(DataclassParser):
     )
 
     # requirements
-    requirements_force: bool = False
     requirements_no_notify: bool = add_option(
         default=False,
         help="Skip notification of lock-compile",
@@ -447,15 +446,17 @@ def requirements(
     Create environment.yaml and requirement.txt files from pyproject.toml using pyproject2conda.
 
     These will be placed in the directory "./requirements".
+
+    Should instead us pre-commit run requirements --all-files
     """
     uvxrun.run(
-        "pyproject2conda",
-        "project",
-        "--verbose",
-        *(["--overwrite=force"] if opts.requirements_force else []),
-        session=session,
-        external=True,
+        "pre-commit",
+        "run",
+        "pyproject2conda-project",
+        "--all-files",
         specs=get_uvxrun_specs(),
+        session=session,
+        success_codes=[0, 1],
     )
 
     if not opts.requirements_no_notify:

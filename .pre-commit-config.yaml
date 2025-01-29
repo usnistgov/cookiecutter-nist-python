@@ -76,7 +76,7 @@ repos:
 
   # * Spelling
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.4.0
+    rev: v2.4.1
     hooks:
       - id: codespell
         additional_dependencies: [tomli]
@@ -128,10 +128,29 @@ repos:
   # * uv
   - repo: https://github.com/astral-sh/uv-pre-commit
     # uv version.
-    rev: 0.5.24
+    rev: 0.5.25
     hooks:
       - id: uv-lock
         args: [--locked]
+
+  # * pyproject2conda
+  - repo: https://github.com/usnistgov/pyproject2conda
+    rev: v0.19.0
+    hooks:
+      - id: pyproject2conda-project
+        alias: requirements
+
+  # * all lock files
+  - repo: local
+    hooks:
+      - id: requirements-lock
+        name: requirements-lock
+        alias: lock
+        entry: nox -s lock -- # ++lock-force
+        language: python
+        files: ^requirements/.*\.txt$
+        pass_filenames: false
+        additional_dependencies: ["nox==2024.10.9"]
 
   # * Manual Linting ------------------------------------------------------------
   - repo: https://github.com/asottile/pyupgrade
