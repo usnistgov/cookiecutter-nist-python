@@ -167,7 +167,9 @@ class SessionParams(DataclassParser):
 
     # test
     test_no_pytest: bool = False
-    test_opts: OPT_TYPE = add_option(help="Options to pytest")
+    test_options: OPT_TYPE = add_option(
+        "--test-options", "-t", help="Options to pytest"
+    )
     test_run: RUN_ANNO = None
     no_cov: bool = False
 
@@ -197,6 +199,9 @@ class SessionParams(DataclassParser):
     ) = add_option("--docs", "-d", help="doc commands")
     docs_run: RUN_ANNO = None
 
+    # lint
+    lint_options: OPT_TYPE = add_option(help="Options to pre-commit")
+
     # typing
     typing: list[
         Literal[
@@ -220,8 +225,8 @@ class SessionParams(DataclassParser):
     build: list[Literal["build", "version"]] | None = None
     build_run: RUN_ANNO = None
     build_isolation: bool = False
-    build_outdir: str = "./dist"
-    build_opts: OPT_ANNO = None
+    build_out_dir: str = "./dist"
+    build_options: OPT_ANNO = None
     build_silent: bool = False
 
     # publish
@@ -523,7 +528,7 @@ def _test(
     session: nox.Session,
     run: RUN_TYPE,
     test_no_pytest: bool,
-    test_opts: OPT_TYPE,
+    test_options: OPT_TYPE,
     no_cov: bool,
 ) -> None:
     import os
@@ -532,7 +537,7 @@ def _test(
 
     session_run_commands(session, run)
     if not test_no_pytest:
-        opts = combine_list_str(test_opts or [])
+        opts = combine_list_str(test_options or [])
         if not no_cov:
             session.env["COVERAGE_FILE"] = str(Path(session.create_tmp()) / ".coverage")
 
@@ -563,7 +568,7 @@ def test(
         session=session,
         run=opts.test_run,
         test_no_pytest=opts.test_no_pytest,
-        test_opts=opts.test_opts,
+        test_options=opts.test_options,
         no_cov=opts.no_cov,
     )
 
@@ -588,19 +593,19 @@ def test_notebook(session: nox.Session, opts: SessionParams) -> None:
    """,
     )
 
-    test_opts = (
-        (opts.test_opts or [])
+    test_options = (
+        (opts.test_options or [])
         + test_nbval_opts
         + [str(p) for p in Path("examples/usage").glob("*.ipynb")]
     )
 
-    session.log(f"{test_opts = }")
+    session.log(f"{test_options = }")
 
     _test(
         session=session,
         run=opts.test_run,
         test_no_pytest=opts.test_no_pytest,
-        test_opts=test_opts,
+        test_options=test_options,
         no_cov=opts.no_cov,
     )
 
@@ -665,7 +670,7 @@ def testdist(
         session=session,
         run=opts.testdist_run,
         test_no_pytest=opts.test_no_pytest,
-        test_opts=opts.test_opts,
+        test_options=opts.test_options,
         no_cov=opts.no_cov,
     )
 
@@ -677,7 +682,7 @@ nox.session(name="testdist-conda", **CONDA_ALL_KWS)(testdist)
 # # ** Docs
 @nox.session(name="docs", **DEFAULT_KWS)
 @add_opts
-def docs(  # noqa: C901
+def docs(  # noqa: C901, PLR0912
     session: nox.Session,
     opts: SessionParams,
 ) -> None:
@@ -735,6 +740,13 @@ def docs(  # noqa: C901
                         )
                     ),
                 )
+            elif c == "showlinks":
+                session.run(
+                    "python",
+                    "-m",
+                    "sphinx.ext.intersphinx",
+                    "docs/_build/html/objects.inv",
+                )
             else:
                 session.run(
                     "sphinx-build", "-b", c, *common_opts, "docs", f"docs/_build/{c}"
@@ -758,8 +770,10 @@ def docs(  # noqa: C901
 
 # ** lint
 @nox.session(python=False)
+@add_opts
 def lint(
     session: nox.Session,
+    opts: SessionParams,
 ) -> None:
     """
     Run linters with pre-commit.
@@ -772,6 +786,7 @@ def lint(
         "pre-commit",
         "run",
         "--all-files",  # "--show-diff-on-failure",
+        *(opts.lint_options or []),
         specs=get_uvxrun_specs(),
         session=session,
     )
@@ -879,15 +894,15 @@ def build(session: nox.Session, opts: SessionParams) -> None:  # noqa: C901
                     "uvx", "--with", "hatch-vcs", "hatchling", "version", external=True
                 )
         elif cmd == "build":
-            outdir = opts.build_outdir
+            outdir = opts.build_out_dir
             shutil.rmtree(outdir, ignore_errors=True)
 
             args = f"uv build --out-dir={outdir}".split()
             if USE_ENVIRONMENT_FOR_BUILD and not opts.build_isolation:
                 args.append("--no-build-isolation")
 
-            if opts.build_opts:
-                args.extend(opts.build_opts)
+            if opts.build_options:
+                args.extend(opts.build_options)
 
             out = session.run(*args, silent=opts.build_silent)
             if opts.build_silent:
@@ -917,7 +932,7 @@ def get_package_wheel(
     if reuse and getattr(get_package_wheel, "_called", False):
         session.log("Reuse isolated build")
     else:
-        cmd = f"nox -s build -- ++build-outdir {dist_location} ++build-opts --wheel ++build-silent"
+        cmd = f"nox -s build -- ++build-out-dir {dist_location} ++build-options --wheel ++build-silent"
         session.run_always(*shlex.split(cmd), external=True)
 
         # save that this was called:

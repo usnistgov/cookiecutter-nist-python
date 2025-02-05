@@ -5,8 +5,8 @@ description = "Cookiecutter template for NIST python packages"
 keywords = [
     "cookiecutter-nist-python",
 ]
-license = { text = "NIST-PD" }
-license-files = { paths = [ "LICENSE" ] }
+license = "NIST-PD"
+license-files = [ "LICENSE" ]
 authors = [
     { name = "William P. Krekelberg", email = "wpk@nist.gov" },
 ]
@@ -277,9 +277,9 @@ check_untyped_defs = true
 ignore_missing_imports = true
 module = [ "cookiecutter.*" ]
 
-[[tool.mypy.overrides]]
-ignore_errors = true
-module = [  ]
+# [[tool.mypy.overrides]]
+# ignore_errors = true
+# module = [  ]
 
 [tool.pyright]
 include = [

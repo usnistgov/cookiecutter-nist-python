@@ -12,8 +12,8 @@ description = "{{ cookiecutter.project_short_description }}"
 keywords = [
     "{{ cookiecutter.project_name }}",
 ]
-license = { text = "NIST-PD" }
-license-files = { paths = [ "LICENSE" ] }
+license = "NIST-PD"
+license-files = [ "LICENSE" ]
 authors = [
     { name = "{{ cookiecutter.full_name.replace('\"', '\\\"') }}", email = "{{ cookiecutter.email }}" },
 ]
@@ -305,13 +305,13 @@ exclude = [
 check_untyped_defs = true
 strict = true
 
-[[tool.mypy.overrides]]
-ignore_missing_imports = true
-module = [  ]
+# [[tool.mypy.overrides]]
+# ignore_missing_imports = true
+# module = [  ]
 
-[[tool.mypy.overrides]]
-ignore_errors = true
-module = [  ]
+# [[tool.mypy.overrides]]
+# ignore_errors = true
+# module = [  ]
 
 [tool.pyright]
 include = [
