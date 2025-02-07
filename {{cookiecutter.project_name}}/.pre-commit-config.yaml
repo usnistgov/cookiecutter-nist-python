@@ -68,7 +68,7 @@ repos:
         additional_dependencies:
           - black==24.10.0
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.4
+    rev: v0.9.5
     hooks:
       - id: ruff
         alias: ruff-all
@@ -124,7 +124,7 @@ repos:
 
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.1.1
+    rev: v4.2.0
     hooks:
       - id: commitizen
         stages: [commit-msg]
@@ -132,7 +132,7 @@ repos:
   # * uv
   - repo: https://github.com/astral-sh/uv-pre-commit
     # uv version.
-    rev: 0.5.28
+    rev: 0.5.29
     hooks:
       - id: uv-lock
         args: [--locked]
@@ -173,7 +173,7 @@ repos:
 
   # pyproject-validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2025.02.03
+    rev: 2025.02.06
     hooks:
       - id: validate-pyproject
         alias: validate-pyproject-full
