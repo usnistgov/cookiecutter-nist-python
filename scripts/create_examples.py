@@ -9,7 +9,10 @@ import shutil
 import subprocess
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Any, Iterator
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 FORMAT = "%(message)s [%(name)s - %(levelname)s]"
 logging.basicConfig(level=logging.INFO, format=FORMAT)
@@ -38,7 +41,7 @@ def inside_dir(dirpath: str | Path) -> Iterator[None]:
     :param dirpath: String, path of the directory the command is being run.
     """
     old_path = Path.cwd()
-    try:
+    try:  # pylint: disable=too-many-try-statements
         os.chdir(dirpath)
         yield
     finally:
@@ -59,8 +62,7 @@ def clean_directory(directory_path: Path, keep: str | list[str] | None = None) -
         keep = [keep]
 
     for p in directory_path.glob("*"):
-        x = p.name
-        if x in keep:
+        if p.name in keep:
             logger.info("skipping %s", p)
         elif p.is_dir():
             logger.info("removing directory %s", p)
@@ -80,7 +82,9 @@ def bake(
     **kws: Any,
 ) -> None:
     """Bake a cookiecutter"""
-    from cookiecutter.main import cookiecutter
+    from cookiecutter.main import (
+        cookiecutter,  # pyright: ignore[reportMissingTypeStubs,reportUnknownVariableType]
+    )
 
     if template is None:
         template = ROOT

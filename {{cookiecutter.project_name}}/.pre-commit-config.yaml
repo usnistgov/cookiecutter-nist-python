@@ -44,7 +44,7 @@ repos:
 
   # * Prettier
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.4.2
+    rev: v3.5.0
     hooks:
       - id: prettier
         alias: markdownlint
@@ -68,7 +68,7 @@ repos:
         additional_dependencies:
           - black==24.10.0
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.5
+    rev: v0.9.6
     hooks:
       - id: ruff
         alias: ruff-all
@@ -95,7 +95,7 @@ repos:
       - id: nbqa
         alias: nbqa-codespell
         name: nbqa-codespell
-        additional_dependencies: &codespell-deps [codespell==2.4.0, tomli] # make sure same as above
+        additional_dependencies: &codespell-deps [codespell==2.4.1, tomli] # make sure same as above
         args:
           [codespell, --ignore-words=docs/spelling_wordlist.txt, --nbqa-shell]
       - id: nbqa
@@ -124,7 +124,7 @@ repos:
 
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.2.0
+    rev: v4.2.1
     hooks:
       - id: commitizen
         stages: [commit-msg]
@@ -201,7 +201,7 @@ repos:
       - id: nbqa
         alias: nbqa-typos
         name: nbqa-typos
-        additional_dependencies: &typos-deps [typos==1.29.4] # make sure save version as above.
+        additional_dependencies: &typos-deps [typos==1.29.5] # make sure save version as above.
         stages: [manual]
         args: [typos, --nbqa-shell]
       - id: nbqa

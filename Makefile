@@ -72,6 +72,9 @@ _PRE_COMMIT_RUN_MANUAL = $(_PRE_COMMIT_RUN) --hook-stage=manual
 lint: ## run pre-commit on all files
 	$(_PRE_COMMIT_RUN)
 
+lint-all: ## run pre-commit using manual stage
+	$(_PRE_COMMIT_RUN_MANUAL)
+
 codespell: ## run codespell. Note that this imports allowed words from docs/spelling_wordlist.txt
 	$(_PRE_COMMIT_RUN) codespell
 	$(_PRE_COMMIT_RUN) nbqa-codespell
@@ -145,8 +148,8 @@ typecheck: _typecheck pylint ## Run mypy and pyright
 
 .PHONY: tools-typecheck
 tools-typecheck:
-	$(UVXRUN) $(UVXRUN_OPTS) -c "mypy --strict" -c pyright -- noxfile.py tools/*.py
-	$(UVRUN) pylint $(PYLINT_OPTS) noxfile.py tools
+	$(UVXRUN) $(UVXRUN_OPTS) -c "mypy --strict" -c pyright -- noxfile.py tools/*.py scripts/*.py
+	$(UVRUN) pylint $(PYLINT_OPTS) noxfile.py tools scripts
 
 # * NOX ------------------------------------------------------------------------
 # ** docs
@@ -279,14 +282,15 @@ tuna-import	: ## Analyze load time for module
 	rm tuna-loadtime.log
 
 # cookiecutter stuff
+.PHONY: bake
 BAKE_OPTIONS=--no-input
-
 bake: ## generate project using defaults
 	cookiecutter $(BAKE_OPTIONS) . --overwrite-if-exists
 
 watch: bake ## watchmedo bake
 	watchmedo shell-command -p '*.*' -c 'make bake -e BAKE_OPTIONS=$(BAKE_OPTIONS)' -W -R -D \{{cookiecutter.project_slug}}/
 
+.PHONY: replay
 replay: BAKE_OPTIONS=--replay
 replay: watch ## replay watch
 	;
