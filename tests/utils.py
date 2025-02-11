@@ -38,4 +38,4 @@ def run_inside_dir(
 
     with inside_dir(dirpath):
         logger.info("Run: %s", command)
-        return subprocess.check_call(shlex.split(command), env=env)  # noqa: S603
+        return subprocess.check_call(shlex.split(command), env=env)

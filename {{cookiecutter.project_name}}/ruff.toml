@@ -43,6 +43,9 @@ ignore = [
     "E501",    # - line too long - let formatter fix this
     "E731",    # - do not assign a lambda expression, use a def
     "FBT",     # - bools are ok
+    "S404",    # - Want to use subprocess sometimes
+    "S603",    # - subprocess-without-shell-equals-true
+    "S607",    # - start-process-with-partial-path
     "PLC0415", # - import should be at top level (leads to issues with imports in func?)
     "TID252",  # - Allow relative imports
 ]

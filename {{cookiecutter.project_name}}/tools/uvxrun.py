@@ -24,7 +24,7 @@ import logging
 import os
 import re
 import shlex
-import subprocess  # noqa: S404
+import subprocess
 import sys
 from functools import lru_cache
 from pathlib import Path
@@ -330,7 +330,7 @@ class Session:
         full_cmd = shlex.join(cleaned_args)
 
         self.info("Running %s", full_cmd)
-        r = subprocess.run(cleaned_args, check=False, env=_clean_env(env))  # pyright: ignore[reportUnknownVariableType]  # noqa: S603
+        r = subprocess.run(cleaned_args, check=False, env=_clean_env(env))  # pyright: ignore[reportUnknownVariableType]
         if returncode := r.returncode:
             logger.error("Command %s failed with exit code %s", full_cmd, returncode)  # pyright: ignore[reportUnknownArgumentType]
             msg = f"Returned code {returncode}"

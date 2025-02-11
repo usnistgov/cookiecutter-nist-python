@@ -19,7 +19,7 @@ from __future__ import annotations
 import json
 import logging
 from pathlib import Path
-from subprocess import CalledProcessError  # noqa: S404
+from subprocess import CalledProcessError
 
 FORMAT = "[%(name)s - %(levelname)s] %(message)s"
 logging.basicConfig(level=logging.INFO, format=FORMAT)
@@ -28,10 +28,10 @@ logger = logging.getLogger("clean_kernelspec")
 
 def get_kernelspec_data() -> None:
     """Main function."""
-    from subprocess import check_output  # noqa: S404
+    from subprocess import check_output
 
-    s = check_output(  # noqa: S603
-        ["jupyter", "kernelspec", "list", "--json", "--log-level", "ERROR"],  # noqa: S607
+    s = check_output(
+        ["jupyter", "kernelspec", "list", "--json", "--log-level", "ERROR"],
     )
 
     to_remove: list[str] = []
@@ -47,7 +47,7 @@ def get_kernelspec_data() -> None:
 
     if to_remove:
         logger.info("removing kernels %s", to_remove)
-        check_output(["jupyter", "kernelspec", "remove", "-f", *to_remove])  # noqa: S603,S607
+        check_output(["jupyter", "kernelspec", "remove", "-f", *to_remove])
     else:
         logger.info("nothing to do")
 
