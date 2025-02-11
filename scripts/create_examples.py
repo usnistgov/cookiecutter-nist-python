@@ -82,8 +82,8 @@ def bake(
     **kws: Any,
 ) -> None:
     """Bake a cookiecutter"""
-    from cookiecutter.main import (
-        cookiecutter,  # pyright: ignore[reportMissingTypeStubs,reportUnknownVariableType]
+    from cookiecutter.main import (  # pyright: ignore[reportMissingTypeStubs]
+        cookiecutter,  # pyright: ignore[reportUnknownVariableType]
     )
 
     if template is None:

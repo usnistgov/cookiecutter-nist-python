@@ -63,6 +63,7 @@ def check_directory(
             ".pylintrc.toml",
             "pyproject.toml",
             "noxfile.py",
+            "ruff.toml",
             "CHANGELOG.md",
             "CONTRIBUTING.md",
             "LICENSE",
