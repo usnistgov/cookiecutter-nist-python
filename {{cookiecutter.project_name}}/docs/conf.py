@@ -73,8 +73,12 @@ extensions = [
     {%- endif %}
 ]
 
-nitpicky = True
 autosectionlabel_prefix_document = True
+nitpicky = True
+suppress_warnings = ["autosectionlabel.*"]
+nitpick_ignore = [
+    # ("py:class", "Command"),
+]
 
 # -- myst stuff ---------------------------------------------------------
 myst_enable_extensions = [
