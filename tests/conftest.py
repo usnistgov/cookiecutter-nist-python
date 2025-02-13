@@ -181,7 +181,7 @@ logger = logging.getLogger(__name__)
 
 # * Utilities --------------------------------------------------------------------------
 def _clean_directory(directory_path: Path, keep: str | list[str] | None = None) -> None:
-    """Remove everything froma  directory path except those in `keep`"""
+    """Remove everything from  directory path except those in `keep`"""
 
     logging.info("cleaning %s", directory_path)
     if not directory_path.exists():
