@@ -512,7 +512,7 @@ def lock(
                         "--universal",
                         f"--config-file={PIP_COMPILE_CONFIG}",
                         "-q",
-                        "-p",
+                        "--python-version",
                         python_version,
                         *options,
                         path,

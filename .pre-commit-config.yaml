@@ -134,7 +134,7 @@ repos:
   # * uv
   - repo: https://github.com/astral-sh/uv-pre-commit
     # uv version.
-    rev: 0.5.31
+    rev: 0.6.0
     hooks:
       - id: uv-lock
         args: [--locked]
@@ -156,7 +156,7 @@ repos:
         language: python
         files: ^requirements/.*\.txt$
         pass_filenames: false
-        additional_dependencies: ["nox==2024.10.9"]
+        additional_dependencies: ["nox==2025.2.9"]
 
   # * Manual Linting ------------------------------------------------------------
   # - repo: https://github.com/asottile/pyupgrade
