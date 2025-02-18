@@ -5,6 +5,9 @@ test:
     - pip check
   requires:
     - pip
+{%- raw %}
+    - python {{ python_min }}
+{%- endraw %}
 
 about:
   home: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name}}

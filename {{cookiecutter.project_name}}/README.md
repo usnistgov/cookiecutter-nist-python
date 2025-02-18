@@ -13,6 +13,7 @@
   [pypi-badge]: https://badge.fury.io/py/{{ cookiecutter.project_name }}
 -->
 
+<!-- prettier-ignore-start -->
 [black-badge]: https://img.shields.io/badge/code%20style-black-000000.svg
 [black-link]: https://github.com/psf/black
 [pypi-badge]: https://img.shields.io/pypi/v/{{ cookiecutter.project_name }}
@@ -25,6 +26,7 @@
 [conda-link]: https://anaconda.org/{{ cookiecutter.conda_channel }}/{{ cookiecutter.project_name }}
 [license-badge]: https://img.shields.io/pypi/l/cmomy?color=informational
 [license-link]: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/blob/main/LICENSE
+<!-- prettier-ignore-end -->
 
 <!-- other links -->
 
@@ -77,7 +79,7 @@ This is free software. See [LICENSE][license-link].
 
 ## Related work
 
-Any other stuff to metion....
+Any other stuff to mention....
 
 ## Contact
 

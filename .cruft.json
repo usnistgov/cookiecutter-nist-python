@@ -1,0 +1,26 @@
+{
+  "template": ".",
+  "commit": "1f5523a1b1aaf9b82c5e9568e568226087721b6d",
+  "checkout": "develop",
+  "context": {
+    "cookiecutter": {
+      "project_name": "cookiecutter-nist-python",
+      "project_slug": "cookiecutter_nist_python",
+      "project_short_description": "Cookiecutter template for NIST python packages",
+      "full_name": "William P. Krekelberg",
+      "email": "wpk@nist.gov",
+      "github_username": "usnistgov",
+      "pypi_username": "wpk-nist",
+      "conda_channel": "usnistgov",
+      "command_line_interface": "none",
+      "sphinx_use_autodocsumm": true,
+      "sphinx_theme": "sphinx_book_theme",
+      "year": "2023",
+      "__answers": "",
+      "_copy_without_render": [],
+      "_template": ".",
+      "_commit": "1f5523a1b1aaf9b82c5e9568e568226087721b6d"
+    }
+  },
+  "directory": null
+}

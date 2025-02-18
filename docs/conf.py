@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #
 # python_boilerplate documentation build configuration file, created by
 # sphinx-quickstart on Fri Jun  9 13:47:02 2017.
@@ -17,10 +16,11 @@
 # relative to the documentation root, use os.path.abspath to make it
 # absolute, like shown here.
 #
+
 """Build docs."""
-import os
 
 # import cookiecutter_nist_python
+from pathlib import Path
 
 # -- General configuration ---------------------------------------------
 
@@ -38,27 +38,32 @@ extensions = [
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
     "sphinx.ext.autosectionlabel",
-    "IPython.sphinxext.ipython_directive",
-    "IPython.sphinxext.ipython_console_highlighting",
+    # "IPython.sphinxext.ipython_directive",
+    # "IPython.sphinxext.ipython_console_highlighting",
     # "nbsphinx",
-    ## easier external links
+    # easier external links
     # "sphinx.ext.extlinks",
-    ## view source code on created page
+    # view source code on created page
     # "sphinx.ext.viewcode",
-    ## view source code on github
+    # view source code on github
     # "sphinx.ext.linkcode",
-    ## add copy button
+    # add copy button
     "sphinx_copybutton",
-    ## redirect stuff?
+    # redirect stuff?
     # "sphinxext.rediraffe",
-    ## pretty things up?
+    # pretty things up?
     # "sphinx_design"
-    ## myst stuff
-    "myst_nb",
+    # myst stuff
+    # "myst_nb",
+    "myst_parser",
 ]
 
-nitpicky = True
 autosectionlabel_prefix_document = True
+nitpicky = True
+suppress_warnings = ["autosectionlabel.*"]
+nitpick_ignore = [
+    # ("py:class", "Command"),
+]
 
 # -- myst stuff ---------------------------------------------------------
 myst_enable_extensions = [
@@ -109,9 +114,15 @@ nb_execution_mode = "cache"
 # nb_execution_mode = "auto"
 
 # set the kernel name
-nb_kernel_rgx_aliases = {"cookiecutter-nist-python.*": "python3", "conda.*": "python3"}
+nb_kernel_rgx_aliases = {
+    "cookiecutter-nist-python.*": "python3",
+    "conda.*": "python3",
+}
 
 nb_execution_allow_errors = True
+
+# Whether to remove stderr
+nb_output_stderr = "remove"
 
 # - top level variables --------------------------------------------------------
 # set github_username variable to be subbed later.
@@ -119,7 +130,7 @@ nb_execution_allow_errors = True
 github_username = "usnistgov"
 
 html_context = {
-    "github_user": "usnistgov",
+    "github_user": github_username,
     "github_repo": "cookiecutter-nist-python",
     "github_version": "main",
     "doc_path": "docs",
@@ -223,7 +234,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "cookiecutter-nist-python"
-copyright = "2023, William P. Krekelberg"
+copyright = "2023, William P. Krekelberg"  # noqa: A001
 author = "William P. Krekelberg"
 
 # The version info for the project you're documenting, acts as replacement
@@ -231,30 +242,7 @@ author = "William P. Krekelberg"
 # the built documents.
 #
 # The short X.Y version.
-# versioning with scm with editable install has issues.
-# instead, try to use scm if available.
-# try:
-#     from setuptools_scm import get_version
-
-#     version = get_version(root="..", relative_to=__file__)
-#     release = version
-# except ImportError:
-#     version = cookiecutter_nist_python.__version__
-#     # The full version, including alpha/beta/rc tags.
-#     release = cookiecutter_nist_python.__version__
-# def _get_version():
-#     import os
-
-#     version = os.environ.get("SETUPTOOLS_SCM_PRETEND_VERSION", None)
-#     if version is None:
-#         version = cookiecutter_nist_python.__version__
-#     return version
-
-
-# release = version = _get_version()
-
 release = version = "latest"
-
 
 # if always want to print "latest"
 # release = "latest"
@@ -265,7 +253,7 @@ release = version = "latest"
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = "en"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -287,19 +275,19 @@ todo_include_todos = False
 
 html_theme = "sphinx_book_theme"
 
-html_theme_options = dict(
-    # analytics_id=''  this is configured in rtfd.io
-    # canonical_url="",
-    repository_url=f"https://github.com/{github_username}/cookiecutter-nist-python",
-    repository_branch=html_context["github_version"],
-    path_to_docs=html_context["doc_path"],
-    # use_edit_page_button=True,
-    use_repository_button=True,
-    use_issues_button=True,
-    home_page_in_toc=True,
-    show_toc_level=3,
-    show_navbar_depth=0,
-)
+html_theme_options = {
+    # "analytics_id": ''  this is configured in rtfd.io
+    # "canonical_url": "",
+    "repository_url": f"https://github.com/{github_username}/cookiecutter-nist-python",
+    "repository_branch": html_context["github_version"],
+    "path_to_docs": html_context["doc_path"],
+    # "use_edit_page_button": True,
+    "use_repository_button": True,
+    "use_issues_button": True,
+    "home_page_in_toc": True,
+    "show_toc_level": 3,
+    "show_navbar_depth": 0,
+}
 # handle nist css/js from here.
 html_css_files = [
     # "css/nist-combined.css",
@@ -329,12 +317,14 @@ html_static_path = ["_static"]
 # Sometimes the savefig directory doesn't exist and needs to be created
 # https://github.com/ipython/ipython/issues/8733
 # becomes obsolete when we can pin ipython>=5.2; see ci/requirements/doc.yml
-ipython_savefig_dir = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), "_build", "html", "_static"
-)
-if not os.path.exists(ipython_savefig_dir):
-    os.makedirs(ipython_savefig_dir)
+def _get_ipython_savefig_dir() -> str:
+    d = Path(__file__).parent / "_build" / "html" / "_static"
+    if not d.is_dir():
+        d.mkdir(parents=True)
+    return str(d)
 
+
+ipython_savefig_dir = _get_ipython_savefig_dir()
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
@@ -415,17 +405,16 @@ texinfo_documents = [
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
-    "python": ("https://docs.python.org/3/", None),
-    "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
-    "numpy": ("https://numpy.org/doc/stable", None),
-    "scipy": ("https://docs.scipy.org/doc/scipy/", None),
-    "numba": ("https://numba.pydata.org/numba-doc/latest", None),
-    # "matplotlib": ("https://matplotlib.org", None),
-    "matplotlib": ("https://matplotlib.org/stable/", None),
-    "dask": ("https://docs.dask.org/en/latest", None),
-    "cftime": ("https://unidata.github.io/cftime", None),
-    "sparse": ("https://sparse.pydata.org/en/latest/", None),
-    "xarray": ("https://docs.xarray.dev/en/stable/", None),
+    # "python": ("https://docs.python.org/3/", None),
+    # "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
+    # "numpy": ("https://numpy.org/doc/stable", None),
+    # "scipy": ("https://docs.scipy.org/doc/scipy/", None),
+    # "numba": ("https://numba.readthedocs.io/en/stable/", None),
+    # "matplotlib": ("https://matplotlib.org/stable/", None),
+    # "dask": ("https://docs.dask.org/en/latest", None),
+    # "cftime": ("https://unidata.github.io/cftime", None),
+    # "sparse": ("https://sparse.pydata.org/en/latest/", None),
+    # "xarray": ("https://docs.xarray.dev/en/stable/", None),
 }
 
 linkcheck_ignore = ["https://doi.org/"]
@@ -433,7 +422,7 @@ linkcheck_ignore = ["https://doi.org/"]
 
 # based on numpy doc/source/conf.py
 # def linkcode_resolve(domain, info):
-#     """Determine the URL corresponding to Python object"""
+#     """Determine the URL corresponding to Python object."""
 #     import inspect
 #     from operator import attrgetter
 

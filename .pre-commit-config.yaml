@@ -10,136 +10,209 @@ exclude: "^{{cookiecutter.project_name}}"
 repos:
   # * Top level
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v5.0.0
     hooks:
-      - id: trailing-whitespace
-      - id: end-of-file-fixer
       - id: check-added-large-files
-      - id: check-yaml
-      - id: check-json
+        exclude: ^uv[.]lock
+      - id: check-case-conflict
       - id: check-merge-conflict
       - id: check-symlinks
+      - id: check-yaml
+      - id: check-json
       - id: check-toml
-  # * sync dependencies
-  # Put this first, because messes up formatting
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+  # * Sync dependencies
   - repo: https://github.com/mxr/sync-pre-commit-deps
-    rev: v0.0.1
+    rev: v0.0.3
     hooks:
       - id: sync-pre-commit-deps
 
+  # * Pyproject-fmt
+  - repo: https://github.com/tox-dev/pyproject-fmt
+    rev: v2.5.0
+    hooks:
+      - id: pyproject-fmt
+        args: [--indent=4, --keep-full-version]
+        files: ""
+        types: [toml]
+
+  # * Pyproject validate
+  - repo: https://github.com/abravalheri/validate-pyproject
+    rev: v0.23
+    hooks:
+      - id: validate-pyproject
+
   # * Prettier
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: "v3.0.3"
+  - repo: https://github.com/rbubley/mirrors-prettier
+    rev: v3.5.1
     hooks:
       - id: prettier
-        stages: [commit]
-        additional_dependencies:
-          - prettier-plugin-toml
-        exclude: ^requirements/lock/.*[.]yml
+        alias: markdownlint
+        stages: [pre-commit, manual]
 
   # * Markdown
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.9.2
+    rev: v0.17.2
     hooks:
       - id: markdownlint-cli2
-        args: ["--style prettier"]
+        alias: markdownlint
+        args: [--style, prettier]
+        # language_version: 10.9.0
 
   # * Linting
-  - repo: https://github.com/charliermarsh/ruff-pre-commit
-    # Ruff version.
-    rev: "v0.0.289"
-    hooks:
-      - id: ruff
-  - repo: https://github.com/psf/black
-    rev: 23.9.1
-    hooks:
-      # NOTE: nbQA for notebook formatting
-      - id: black
+  # To be replace by ruff analog when I find one ...
   - repo: https://github.com/adamchainz/blacken-docs
-    rev: "1.16.0"
+    rev: 1.19.1
     hooks:
       - id: blacken-docs
         additional_dependencies:
-          - black==23.9.1
-        # exclude: ^README.md
-  - repo: https://github.com/nbQA-dev/nbQA
-    rev: 1.7.0
+          - black==25.1.0
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.6
     hooks:
-      - id: nbqa-ruff
-        additional_dependencies: [ruff==0.0.289]
-      - id: nbqa-black
-        additional_dependencies: [black==23.9.1]
+      - id: ruff
+        alias: ruff-all
+        types_or: &ruff-types-or [python, pyi, jupyter]
+        args: [--fix, --show-fixes]
+      - id: ruff-format
+        alias: ruff-all
+        types_or: *ruff-types-or
+
+  # * Spelling
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.1
+    hooks:
+      - id: codespell
+        additional_dependencies: [tomli]
+        args: [-I, docs/spelling_wordlist.txt]
+        exclude_types: [jupyter]
+        exclude: ^uv[.]lock$|^requirements
+
+  # * Notebook spelling
+  - repo: https://github.com/nbQA-dev/nbQA
+    rev: 1.9.1
+    hooks:
+      - id: nbqa
+        alias: nbqa-codespell
+        name: nbqa-codespell
+        additional_dependencies: &codespell-deps [codespell==2.4.1, tomli] # make sure same as above
+        args:
+          [codespell, --ignore-words=docs/spelling_wordlist.txt, --nbqa-shell]
+      - id: nbqa
+        alias: nbqa-codespell
+        name: nbqa-codespell-markdown
+        additional_dependencies: *codespell-deps
+        args:
+          [
+            codespell,
+            --ignore-words=docs/spelling_wordlist.txt,
+            --nbqa-shell,
+            --nbqa-md,
+          ]
+
+  # * Strip out metadata from notebooks
+  - repo: https://github.com/kynan/nbstripout
+    rev: 0.8.1
+    hooks:
+      - id: nbstripout
+        args: [
+            --keep-output, # keep output (needed for nbval testing)
+            --keep-count, # Errors with nbval without this...
+            --extra-keys, # strip out kernelspec.  If use this, always have to reselect kernel when open a notebook...
+            "metadata.kernelspec metadata.kernel_spec",
+          ]
 
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: 3.9.0
+    rev: v4.2.1
     hooks:
       - id: commitizen
         stages: [commit-msg]
 
+  # * uv
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    # uv version.
+    rev: 0.6.0
+    hooks:
+      - id: uv-lock
+        args: [--locked]
+
+  # * pyproject2conda
+  - repo: https://github.com/usnistgov/pyproject2conda
+    rev: v0.19.0
+    hooks:
+      - id: pyproject2conda-project
+        alias: requirements
+
+  # * all lock files
+  - repo: local
+    hooks:
+      - id: requirements-lock
+        name: requirements-lock
+        alias: lock
+        entry: nox -s lock -- # ++lock-force
+        language: python
+        files: ^requirements/.*\.txt$
+        pass_filenames: false
+        additional_dependencies: ["nox==2025.2.9"]
+
   # * Manual Linting ------------------------------------------------------------
-  # * isort, pyupgrade, flake8 defer to ruff
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.12.0
+  # - repo: https://github.com/asottile/pyupgrade
+  #   rev: v3.19.1
+  #   hooks:
+  #     - id: pyupgrade
+  #       stages: [manual]
+  #       args: [--py38-plus]
+  # - repo: https://github.com/nbQA-dev/nbQA
+  #   rev: 1.9.1
+  #   hooks:
+  #     - id: nbqa-pyupgrade
+  #       additional_dependencies: [pyupgrade]
+  #       stages: [manual]
+  #       args: [--py38-plus]
+
+  # pyproject-validate (schema-store)
+  - repo: https://github.com/henryiii/validate-pyproject-schema-store
+    rev: 2025.02.10
     hooks:
-      - id: isort
-        stages: [manual]
-  - repo: https://github.com/asottile/pyupgrade
-    rev: v3.10.1
-    hooks:
-      - id: pyupgrade
-        stages: [manual]
-        args: [--py38-plus]
-  - repo: https://github.com/pycqa/flake8
-    rev: 6.1.0
-    hooks:
-      - id: flake8
-        stages: [manual]
-        additional_dependencies:
-          - flake8-docstrings
-          - Flake8-pyproject
-          # - pep8-naming
-          # - flake8-rst-docstrings
-        exclude: ^tests/|^src/mypackage/tests/|^docs/conf.py|^setup.py
-  - repo: https://github.com/nbQA-dev/nbQA
-    rev: 1.7.0
-    hooks:
-      - id: nbqa-pyupgrade
-        additional_dependencies: [pyupgrade]
-        stages: [manual]
-        args: [--py38-plus]
-      - id: nbqa-isort
-        additional_dependencies: [isort]
-        stages: [manual]
-  # ** spelling
-  - repo: https://github.com/codespell-project/codespell
-    rev: v2.2.5
-    hooks:
-      - id: codespell
-        types_or: [python, rst, markdown, cython, c]
-        additional_dependencies: [tomli]
-        args: [-I, docs/spelling_wordlist.txt]
+      - id: validate-pyproject
+        alias: validate-pyproject-full
         stages: [manual]
 
-  # - repo: local
-  #   hooks:
-  #     - id: mypy
-  #       name: mypy
-  #       entry: tox
-  #       args: ["-e", "lint-mypy"]
-  #       language: system
-  #       pass_filenames: false
-  #       # additional_dependencies: [tox]
-  #       types: [python]
-  #       require_serial: true
-  #       stages: [manual]
-  #     - id: pyright
-  #       name: pyright
-  #       entry: pyright
-  #       args: []
-  #       language: system
-  #       pass_filenames: true
-  #       # additional_dependencies: [tox]
-  #       types: [python]
-  #       require_serial: true
-  #       stages: [manual]
+  # * checkmake
+  - repo: https://github.com/mrtazz/checkmake.git
+    # Or another commit hash or version
+    rev: 0.2.2
+    hooks:
+      - id: checkmake
+        stages: [manual]
+
+  # ** typos
+  # Probably stick with codespell, but this might also be nice...
+  - repo: https://github.com/crate-ci/typos
+    rev: typos-dict-v0.12.5
+    hooks:
+      - id: typos
+        stages: [manual]
+        exclude: "[.]ipynb$|^uv[.]lock$|^requirements"
+  - repo: https://github.com/nbQA-dev/nbQA
+    rev: 1.9.1
+    hooks:
+      - id: nbqa
+        alias: nbqa-typos
+        name: nbqa-typos
+        additional_dependencies: &typos-deps [typos==1.29.7] # make sure save version as above.
+        stages: [manual]
+        args: [typos, --nbqa-shell]
+        # this can lead to errors, so use with care
+        # args: [typos, --write-changes, --nbqa-shell]
+      - id: nbqa
+        alias: nbqa-typos
+        name: nbqa-typos-markdown
+        additional_dependencies: *typos-deps
+        stages: [manual]
+        args: [typos, --nbqa-shell, --nbqa-md]
+        # this can lead to errors, so use with care
+        # args: [typos, --write-changes, --nbqa-shell, --nbqa-md]

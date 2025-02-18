@@ -1,4 +1,4 @@
-
+{% raw %}
 
 .. automodule:: {{ fullname }}
    :autosummary:
@@ -19,3 +19,4 @@
 {%- endfor %}
 {% endif %}
 {% endblock %}
+{%- endraw %}

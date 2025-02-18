@@ -1,264 +1,264 @@
 [project]
 name = "cookiecutter-nist-python"
-authors = [{ name = "William P. Krekelberg", email = "wpk@nist.gov" }]
-license = { text = "NIST-PD" }
-description = "Cookiecutter template for NIST python package"
-# if using markdown
-# long_description_content_type = text/markdown
-keywords = ["cookiecutter-nist-python"]
+version = "0.2.0"
+description = "Cookiecutter template for NIST python packages"
+keywords = [
+    "cookiecutter-nist-python",
+]
+license = "NIST-PD"
+license-files = [ "LICENSE" ]
+authors = [
+    { name = "William P. Krekelberg", email = "wpk@nist.gov" },
+]
+requires-python = ">=3.8"
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Science/Research",
     "License :: Public Domain",
     "Operating System :: OS Independent",
-    "Intended Audience :: Science/Research",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering",
 ]
-dynamic = ["readme"]
-version = "0.1.0"
-requires-python = ">=3.8"
-dependencies = []
+dynamic = [
+    "readme",
+]
+dependencies = [
+]
+urls.Documentation = "https://pages.nist.gov/cookiecutter-nist-python/"
+urls.Homepage = "https://github.com/usnistgov/cookiecutter-nist-python"
 
-[project.urls]
-homepage = "https://github.com/usnistgov/cookiecutter-nist-python"
-documentation = "https://pages.nist.gov/cookiecutter-nist-python/"
-
-[project.optional-dependencies]
-test = [
-    "pytest", #
-    "pytest-sugar",
-    "pytest-cookies",
-    "cookiecutter",
-]
-dev-extras = [
-    "watchdog", #
-    "ipython",
-    "ipykernel",
-]
-typing-extras = [
-    "pytype; python_version < '3.11'", #
-    "mypy >= 1.4.1",
-]
-typing = [
-    "cookiecutter-nist-python[typing-extras]", #
-    "cookiecutter-nist-python[test]",
-]
-nox = [
-    "nox",
-    "noxopt", # p2c: -p
-    "ruamel.yaml",
-]
+[dependency-groups]
 dev = [
-    "cookiecutter-nist-python[test]", #
-    "cookiecutter-nist-python[typing-extras]",
-    "cookiecutter-nist-python[dev-extras]",
+    { include-group = "dev-extras" },
+    { include-group = "mypy" },
+    # { include-group = "nbval" },
+    { include-group = "test" },
+    { include-group = "typing" },
+    { include-group = "uvxrun" },
 ]
-tools = [
-    "pre-commit", #
-    # "cruft",
-    "scriv", # p2c: -p
-    "pyright",
-]
-dev-complete = [
-    "cookiecutter-nist-python[dev]", #
-    "cookiecutter-nist-python[tools]",
-    "cookiecutter-nist-python[nox]",
+test = [
+    { include-group = "test-extras" },
 ]
 docs = [
-    "ipython", #
+    "autodocsumm",
+    "myst-parser",
     "pyenchant",
-    "ghp-import",
-    "sphinx >= 5.3.0",
+    "sphinx>=5.3.0",
+    "sphinx-book-theme",
     "sphinx-copybutton",
     "sphinxcontrib-spelling",
-    "sphinx-autobuild",
-    "myst-nb",
-    "sphinx-book-theme",
-    "autodocsumm",
 ]
+cog = [ "cogapp" ]
+dev-extras = [
+    "nox>=2024.4.15",
+]
+docs-live = [
+    "sphinx-autobuild",
+    { include-group = "docs" },
+]
+mypy = [ "mypy>=1.14.0" ]
+nbval = [ "nbval" ]
+test-extras = [
+    "cookiecutter",
+    "copier",
+    "copier-templates-extensions",
+    "pytest",
+    "pytest-cov",
+    "pytest-sugar",
+    "pytest-xdist",
+]
+test-notebook = [
+    { include-group = "nbval" },
+    { include-group = "test-extras" },
+]
+typing = [
+    "pylint",
+    "pytest",
+    { include-group = "uvxrun" },
+]
+# Anything needed to run tools/uvxrun.py
+# NOTE: uvxrun-tools defined explicitly in tool.pyproject2conda.envs.uvxrun-tools
+uvxrun = [ "packaging" ]
+
+[tool.pyproject-fmt]
+# max_supported_python = "3.13"
+
+# * Testing --------------------------------------------------------------------
+
+[tool.pytest.ini_options]
+addopts = [
+    "--doctest-modules",
+    "--doctest-glob=*.md",
+    "--cov-config=pyproject.toml",
+    "-s",
+]
+testpaths = [
+    "tests",
+]
+markers = [
+    "default: default template",
+    "furo: furo theme",
+    "book: sphinx book theme",
+    "nocli: no command-line interface",
+    "click: Click cli",
+    "typer: Typer template",
+    "test: run tests",
+    "lint: run linting",
+    "docs: make docs",
+    "typing: run typing checks",
+    "mypystrict: run mypy --strict",
+    "create: simple test on path creation",
+    "longname: a project with a long name",
+    "disable: test that has been disabled by default",
+    "version: update-version-scm (disabled by default)",
+    "cookie: cookiecutter",
+    "copier: run copier tests",
+    "notebook: run typing/test on notebook",
+]
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+exclude_also = [
+    "if TYPE_CHECKING:",
+    "@overload",
+]
+omit = [
+    "*/vendored/*",
+]
+include = [
+    "src/*",
+]
+
+# * Typing ---------------------------------------------------------------------
+
+[tool.mypy]
+files = [
+    "tests",
+]
+show_error_codes = true
+warn_unused_ignores = true
+warn_return_any = true
+warn_unused_configs = true
+exclude = [
+    ".eggs",
+    ".tox",
+    ".nox",
+    ".venv",
+    ".numba_cache",
+    "docs",
+]
+check_untyped_defs = true
+# strict = true
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = [ "cookiecutter.*" ]
+
+# [[tool.mypy.overrides]]
+# ignore_errors = true
+# module = [  ]
+
+[tool.pyright]
+include = [
+    "tests",
+]
+exclude = [
+    "**/__pycache__",
+    ".tox/**",
+    ".nox/**",
+    ".venv/**",
+    "**/.mypy_cache",
+    "**/.numba_cache",
+]
+pythonVersion = "3.11"
+# strict = ["noxfile.py", "tools/*.py"]
+typeCheckingMode = "strict"
+# typeCheckingMode = "basic"
+# # enable subset of "strict"
+# reportDuplicateImport = true
+# reportInvalidStubStatement = true
+# reportOverlappingOverload = true
+# reportPropertyTypeMismatch = true
+# reportUntypedClassDecorator = true
+# reportUntypedFunctionDecorator = true
+# reportUntypedNamedTuple = true
+# reportUnusedImport = true
+# # disable subset of "basic"
+# reportGeneralTypeIssues = false
+# reportMissingModuleSource = false
+# reportOptionalCall = false
+# reportOptionalIterable = false
+# reportOptionalMemberAccess = false
+# reportOptionalOperand = false
+# reportOptionalSubscript = false
+# reportPrivateImportUsage = false
+# reportUnboundVariable = false
+
+[tool.pytype]
+inputs = [
+    "src",
+    "tests",
+]
+
+# * Dependency creation --------------------------------------------------------
 
 [tool.pyproject2conda]
 user_config = "config/userconfig.toml"
 template_python = "requirements/py{py}-{env}"
 template = "requirements/{env}"
-# defaults
-python = ["3.10"]
-channels = ["conda-forge"]
-style = ["yaml", "requirements"]
-default_envs = ["test", "typing", "docs", "dev", "dev-complete"]
+python = "default"
+channels = "conda-forge"
+style = "yaml"
+deps = "pip"
 
-[tool.pyproject2conda.envs.test-extras]
-extras = ["test"]
+[tool.pyproject2conda.dependencies]
+pytest-accept = { pip = true }
+copier-templates-extensions = { pip = true }
 
-[tool.pyproject2conda.envs.dev-base]
-extras = ["dev"]
+[tool.pyproject2conda.envs.dev]
+groups = "dev"
 
-[[tool.pyproject2conda.overrides]]
-envs = ["test-extras", "dist-conda", "dist-pypi"]
-base = false
+[tool.pyproject2conda.envs.test]
+groups = "test"
+python = "all"
 
-[[tool.pyproject2conda.overrides]]
-envs = ["test", "typing", "test-extras"]
-python = ["3.8", "3.9", "3.10", "3.11"]
-
-[tool.aliases]
-test = "pytest"
-
-[tool.pytest.ini_options]
-addopts = "--doctest-modules --doctest-glob='*.md' -s -rP --basetemp=tmp/baked --keep-baked-projects"
-testpaths = ["tests", "README.md"]
-
-[tool.coverage.report]
-exclude_also = ["if TYPE_CHECKING:", "@overload"]
-omit = ["*/vendored/*"]
-include = ["src/*"]
-
-[tool.isort]
-profile = "black"
-skip_gitignore = true
-known_first_party = ["cookiecutter_nist_python"]
-
-[tool.ruff]
-fix = true
-line-length = 88
-target-version = "py38"
-select = [
-    # pyflakes
-    "F",
-    # pycodestyle
-    "E",
-    "W",
-    # isort
-    "I",
-    # pyupgrade
-    "UP",
-    # pydocstyle
-    "D",
-    # # flake8-2020
-    "YTT",
-    # # flake8-bugbear
-    # "B",
-    # flake8-quotes
-    "Q",
-    # # pylint
-    # "PLE", "PLR", "PLW",
-    # # misc lints
-    "PIE",
-    # # tidy imports
-    "TID",
-    # # implicit string concatenation
-    # "ISC",
-    # # type-checking imports
-    "TCH",
+[tool.pyproject2conda.envs.uvxrun-tools]
+reqs = [
+    # these used solely for specking tools to be used with tools/uvxrun.py
+    "conda-lock>=2.5.5",
+    "grayskull>=2.5.3",
+    "nbqa>=1.8.4",
+    "pre-commit",
+    "pyright>=1.1.392",
+    "scriv",
+    "twine>=5.0.0",
 ]
-# Allow autofix for all enabled rules (when `--fix`) is provided.
-# fixable = ["A", "B", "C", "D", "E", "F", "..."]
-unfixable = []
-# Exclude a variety of commonly ignored directories.
-exclude = [
-    ".bzr",
-    ".direnv",
-    ".eggs",
-    ".git",
-    ".hg",
-    ".mypy_cache",
-    ".nox",
-    ".pants.d",
-    ".pytype",
-    ".ruff_cache",
-    ".svn",
-    ".tox",
-    ".venv",
-    "__pypackages__",
-    "_build",
-    "buck-out",
-    "build",
-    "dist",
-    "node_modules",
-    "venv",
-    "tests/",
-    "src/cookiecutter_nist_python/tests",
-]
-ignore = [
-    # # whitespace before ':' - doesn't work well with black
-    # "E203",
-    # module level import not at top of file
-    "E402",
-    # line too long - let black worry about that
-    "E501",
-    # do not assign a lambda expression, use a def
-    "E731",
-    # # line break before binary operator
-    # "W503",
-    # allow black line after docstring
-    "D202",
-    "D105",
-    "D205",
-    # this leads to errors with placing titles in module
-    # docstrings
-    "D400",
-    "D401",
-    "D415",
-    "D102",
-    "D103",
-    # these are useful, but too many errors
-    # due to use of docfiller
-    "D417",
-    "D107",
-    "D203",
-    "D212",
-    # Allow relative imports
-    "TID252",
-]
-per-file-ignores = {  }
-# Allow unused variables when underscore-prefixed.
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+groups = "mypy"
+skip_package = true
+style = "requirements"
 
-[tool.ruff.isort]
-known-first-party = ["cookiecutter_nist_python"]
+# * uv -------------------------------------------------------------------------
 
-[tool.ruff.mccabe]
-# Unlike Flake8, default to a complexity level of 10.
-max-complexity = 10
+[tool.uv]
+managed = true
+default-groups = [ "dev" ]
+fork-strategy = "requires-python"
+required-version = ">=0.5.21"
 
-[tool.nbqa.addopts]
-ruff = ["--fix", "--extend-ignore=D100,B018"]
+[tool.uv.pip]
+annotation-style = "line"
 
-[tool.flake8]
-docstring-convention = "numpy"
-ignore = [
-    # # whitespace before ':' - doesn't work well with black
-    "E203",
-    # module level import not at top of file
-    "E402",
-    # line too long - let black worry about that
-    "E501",
-    # do not assign a lambda expression, use a def
-    "E731",
-    # # line break before binary operator
-    "W503",
-    # allow black line after docstring
-    "D202",
-    "D105",
-    "D205",
-    # this leads to errors with placing titles in module
-    # docstrings
-    "D400",
-    "D401",
-    "D415",
-    "D102",
-    "D103",
-    # these are useful, but too many errors
-    # due to use of docfiller
-    "D417",
-    "D107",
-    "D203",
-    "D212",
-]
+# * Other tools ----------------------------------------------------------------
 
 [tool.scriv]
 format = "md"
@@ -269,48 +269,3 @@ new_fragment_template = "file: changelog.d/templates/new_fragment.md.j2"
 use_shortcuts = true
 
 [tool.cruft]
-
-[tool.mypy]
-files = ["src/cookiecutter_nist_python"]
-show_error_codes = true
-warn_unused_ignores = true
-warn_return_any = true
-warn_unused_configs = true
-exclude = [".eggs", ".tox", "doc", "docs", ".nox"]
-check_untyped_defs = true
-
-[[tool.mypy.overrides]]
-ignore_missing_imports = true
-module = []
-
-[[tool.mypy.overrides]]
-ignore_errors = true
-module = []
-
-[tool.pyright]
-include = ["src", "tests"]
-exclude = ["**/__pycache__", ".tox/**", ".nox/**", "**/.mypy_cache"]
-pythonVersion = "3.10"
-typeCheckingMode = "basic"
-# enable subset of "strict"
-reportDuplicateImport = true
-reportInvalidStubStatement = true
-reportOverlappingOverload = true
-reportPropertyTypeMismatch = true
-reportUntypedClassDecorator = true
-reportUntypedFunctionDecorator = true
-reportUntypedNamedTuple = true
-reportUnusedImport = true
-# disable subset of "basic"
-reportGeneralTypeIssues = false
-reportMissingModuleSource = false
-reportOptionalCall = false
-reportOptionalIterable = false
-reportOptionalMemberAccess = false
-reportOptionalOperand = false
-reportOptionalSubscript = false
-reportPrivateImportUsage = false
-reportUnboundVariable = false
-
-[tool.pytype]
-inputs = ["src", "tests"]

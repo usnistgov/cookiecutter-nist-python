@@ -1,29 +1,8 @@
+<!-- markdownlint-disable MD053 -->
+
 # Tutorial
 
-<!-- [NIST]: https://www.nist.gov/ -->
-
 [cookiecutter]: https://github.com/cookiecutter/cookiecutter
-
-<!-- [cruft]: https://cruft.github.io/cruft/ -->
-
-[nox]: https://nox.thea.codes/en/stable/
-[pre-commit]: https://pre-commit.com/
-
-<!-- [Sphinx]: https://www.sphinx-doc.org/en/master/ -->
-<!-- [MyST]: https://myst-parser.readthedocs.io/en/latest/ -->
-<!-- [furo]: https://pradyunsg.me/furo/ -->
-<!-- [sphinx-book-theme]: https://sphinx-book-theme.readthedocs.io/ -->
-<!-- [nist-pages]: https://pages.nist.gov/pages-root/ -->
-<!-- [cookiecutter-pypackage]: -->
-<!--   https://github.com/audreyfeldroy/cookiecutter-pypackage/ -->
-
-[conda]: https://docs.conda.io/en/latest/
-[virtualenv]: https://virtualenv.pypa.io/en/latest/
-
-<!-- [pyproject2conda]: https://github.com/usnistgov/pyproject2conda -->
-
-[pipx]: https://pypa.github.io/pipx/
-[condax]: https://mariusvniekerk.github.io/condax/
 
 ## Install cookiecutter
 
@@ -55,37 +34,51 @@ git add .
 git commit -m 'a meaningful message'
 ```
 
-## Using [pre-commit]
-
-It is highly recommended to enable [pre-commit]. To do so, you need to first
-install pre-commit. It is recommended to use [pipx] or [condax]
-
-```bash
-pipx/condax install pre-commit
-```
-
-Alternatively, you can install with your development environment.
-
-Then "install" the hooks with
-
-```bash
-pre-commit install
-```
-
-This will enable a variety of code-checkers (linters) when you add a file to
-commit. Alternatively, you can run the hooks over all files using:
-
-```bash
-pre-commit run --all-files
-```
-
-## Using [nox]
-
-The project is setup to use [nox] to run tests, build documentation, and run
-checkers in isolated virtual environments. One feature of [nox] is the ability
-to mix both [conda] and [virtualenv] based environments.
-
 ```{include} ../CONTRIBUTING.md
 :start-after: <!-- start-tutorial -->
-:end-before: <!-- end-tutorial -->
 ```
+
+## Using setuptools instead of hatchling
+
+[hatchling]: https://github.com/pypa/hatch/tree/master/backend
+[setuptools]: https://github.com/pypa/setuptools
+
+The repo by default uses [hatchling] for building the package. I've found that
+[setuptools] is overkill for python only projects. However, if you'd like to use
+[setuptools] (if, for example, your package includes non-python code), you can
+use something like the following:
+
+```toml
+# pyproject.toml
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = [
+    "setuptools>=61.2",
+    "setuptools_scm[toml]>=8.0",
+]
+
+...
+
+[tool.setuptools]
+zip-safe = true # if using mypy, must be False
+include-package-data = true
+license-files = ["LICENSE"]
+
+[tool.setuptools.packages.find]
+namespaces = true
+where = ["src"]
+
+[tool.setuptools.dynamic]
+readme = { file = [
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+], content-type = "text/markdown" }
+
+[tool.setuptools_scm]
+fallback_version = "999"
+```
+
+Also remove the sections `tool.hatch.version` and
+`tool.hatch.metadata.hooks.fancy-pypi-readme`. You may have to add the file
+`MANIFEST.in` to include/exclude files if needed.

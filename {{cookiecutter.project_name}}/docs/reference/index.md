@@ -8,7 +8,7 @@
 
    example_function
 ```
-{%- if cookiecutter.command_line_interface|lower in ["click", "typer"] %}
+{%- if cookiecutter.command_line_interface in ["click", "typer"] %}
 
 ```{eval-rst}
 

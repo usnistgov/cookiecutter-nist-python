@@ -19,7 +19,7 @@ ALLSPHINXAUTOOPTS = $(ALLSPHINXOPTS) \
 
 
 
-.PHONY: help Makefile clean-all build livehtml showlinks release command
+.PHONY: help Makefile clean-all build livehtml showlinks release command all clean test
 # Put it first so that "make" without argument is like "make help".
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(ALLSPHINXOPTS) $(O)
@@ -29,7 +29,7 @@ help:
 %: Makefile
 	$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(ALLSPHINXOPTS) $(O)
 
-clean-all: clean
+clean: clean
 	rm -rf $(BUILDDIR)/*
 	rm -rf generated/*
 	rm -rf reference/generated/*
@@ -37,15 +37,15 @@ clean-all: clean
 # Alias to html
 build: html
 
+all: clean html
+
+test: html
+
 livehtml:
 	$(SPHINXAUTOBUILD) "$(SOURCEDIR)" "$(BUILDDIR)/html" $(ALLSPHINXAUTOOPTS) $(O)
 
 showlinks:
 	python -m sphinx.ext.intersphinx $(BUILDDIR)/html/objects.inv
-
-release_args ?= -m "update docs" -b nist-pages
-release:
-	ghp-import -o -n $(release_args) $(BUILDDIR)/html
 
 command ?= @echo pass "command=..."
 command:

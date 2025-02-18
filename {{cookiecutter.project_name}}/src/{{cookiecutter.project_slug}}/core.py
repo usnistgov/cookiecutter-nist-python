@@ -1,9 +1,12 @@
-"""Core functionality"""
+"""
+Core functionality (:mod:`~{{ cookiecutter.project_slug }}.core`)
+=================================================================
+"""
 
 
 def example_function(a: int, b: int) -> int:
     """
-    just a test
+    Just a test
 
     Parameters
     ----------
@@ -18,5 +21,4 @@ def example_function(a: int, b: int) -> int:
         Sum of ``a`` and ``b``.
 
     """
-
     return a + b

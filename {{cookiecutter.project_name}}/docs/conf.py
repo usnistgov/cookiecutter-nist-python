@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #
 # python_boilerplate documentation build configuration file, created by
 # sphinx-quickstart on Fri Jun  9 13:47:02 2017.
@@ -18,10 +17,15 @@
 # absolute, like shown here.
 #
 """Build docs."""
+
+from __future__ import annotations
+
 import os
 import sys
+from pathlib import Path
+from typing import Any
 
-sys.path.insert(0, os.path.abspath("../src"))
+sys.path.insert(0, str(Path("../src").resolve()))
 
 import {{ cookiecutter.project_slug }}
 
@@ -36,37 +40,45 @@ import {{ cookiecutter.project_slug }}
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
-    {% if cookiecutter.sphinx_use_autodocsumm == "y" -%}
+    {% if cookiecutter.sphinx_use_autodocsumm -%}
     "autodocsumm",
     {% endif -%}
     "sphinx.ext.intersphinx",
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
     "sphinx.ext.autosectionlabel",
-    "IPython.sphinxext.ipython_directive",
-    "IPython.sphinxext.ipython_console_highlighting",
+    # "IPython.sphinxext.ipython_directive",
+    # "IPython.sphinxext.ipython_console_highlighting",
     # "nbsphinx",
-    ## easier external links
+    # - easier external links
     # "sphinx.ext.extlinks",
-    ## view source code on created page
+    # - view source code on created page
     # "sphinx.ext.viewcode",
-    ## view source code on github
+    # - view source code on github
     "sphinx.ext.linkcode",
-    ## add copy button
+    # - add copy button
     "sphinx_copybutton",
-    ## redirect stuff?
+    # - redirect stuff?
     # "sphinxext.rediraffe",
-    ## pretty things up?
+    # - pretty things up?
     # "sphinx_design"
-    ## myst stuff
+    # - myst stuff
     "myst_nb",
-    {%- if cookiecutter.command_line_interface|lower in ["click", "typer"] %}
+    # "myst_parser",
+    {%- if cookiecutter.command_line_interface in ["click", "typer"] %}
     "sphinx_click",
+    {%- endif %}
+    {%- if cookiecutter.command_line_interface == "argparse" %}
+    "sphinxarg.ext"
     {%- endif %}
 ]
 
-nitpicky = True
 autosectionlabel_prefix_document = True
+nitpicky = True
+suppress_warnings = ["autosectionlabel.*"]
+nitpick_ignore = [
+    # ("py:class", "Command"),
+]
 
 # -- myst stuff ---------------------------------------------------------
 myst_enable_extensions = [
@@ -117,9 +129,15 @@ nb_execution_mode = "cache"
 # nb_execution_mode = "auto"
 
 # set the kernel name
-nb_kernel_rgx_aliases = {"{{ cookiecutter.project_name }}.*": "python3", "conda.*": "python3"}
+nb_kernel_rgx_aliases = {
+    "{{ cookiecutter.project_name }}.*": "python3",
+    "conda.*": "python3",
+}
 
 nb_execution_allow_errors = True
+
+# Whether to remove stderr
+nb_output_stderr = "remove"
 
 # - top level variables --------------------------------------------------------
 # set github_username variable to be subbed later.
@@ -127,7 +145,7 @@ nb_execution_allow_errors = True
 github_username = "{{ cookiecutter.github_username }}"
 
 html_context = {
-    "github_user": "{{ cookiecutter.github_username}}",
+    "github_user": github_username,
     "github_repo": "{{ cookiecutter.project_name}}",
     "github_version": "main",
     "doc_path": "docs",
@@ -231,32 +249,17 @@ master_doc = "index"
 
 # General information about the project.
 project = "{{ cookiecutter.project_name }}"
-copyright = "{% now 'local', '%Y' %}, {{ cookiecutter.full_name }}"
+copyright = "{{ cookiecutter.year }}, {{ cookiecutter.full_name}}"  # noqa: A001
 author = "{{ cookiecutter.full_name }}"
+
 
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
 # the built documents.
 #
 # The short X.Y version.
-# versioning with scm with editable install has issues.
-# instead, try to use scm if available.
-# try:
-#     from setuptools_scm import get_version
-
-#     version = get_version(root="..", relative_to=__file__)
-#     release = version
-# except ImportError:
-#     version = {{ cookiecutter.project_slug }}.__version__
-#     # The full version, including alpha/beta/rc tags.
-#     release = {{ cookiecutter.project_slug}}.__version__
-
-
-def _get_version():
-    import os
-
-    version = os.environ.get("SETUPTOOLS_SCM_PRETEND_VERSION", None)
-    if version is None:
+def _get_version() -> str:
+    if (version := os.environ.get("SETUPTOOLS_SCM_PRETEND_VERSION")) is None:
         version = {{ cookiecutter.project_slug }}.__version__
     return version
 
@@ -273,7 +276,7 @@ release = version = _get_version()
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = "en"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -296,19 +299,19 @@ todo_include_todos = False
 {% if cookiecutter.sphinx_theme == "sphinx_book_theme" -%}
 html_theme = "sphinx_book_theme"
 
-html_theme_options = dict(
-    # analytics_id=''  this is configured in rtfd.io
-    # canonical_url="",
-    repository_url=f"https://github.com/{github_username}/{{ cookiecutter.project_name }}",
-    repository_branch=html_context["github_version"],
-    path_to_docs=html_context["doc_path"],
-    # use_edit_page_button=True,
-    use_repository_button=True,
-    use_issues_button=True,
-    home_page_in_toc=True,
-    show_toc_level=3,
-    show_navbar_depth=0,
-)
+html_theme_options = {
+    # "analytics_id": ''  this is configured in rtfd.io
+    # "canonical_url": "",
+    "repository_url": f"https://github.com/{github_username}/{{ cookiecutter.project_name }}",
+    "repository_branch": html_context["github_version"],
+    "path_to_docs": html_context["doc_path"],
+    # "use_edit_page_button": True,
+    "use_repository_button": True,
+    "use_issues_button": True,
+    "home_page_in_toc": True,
+    "show_toc_level": 3,
+    "show_navbar_depth": 0,
+}
 {% elif cookiecutter.sphinx_theme == "furo" -%}
 html_theme = "furo"
 {%endif -%}
@@ -342,12 +345,14 @@ html_static_path = ["_static"]
 # Sometimes the savefig directory doesn't exist and needs to be created
 # https://github.com/ipython/ipython/issues/8733
 # becomes obsolete when we can pin ipython>=5.2; see ci/requirements/doc.yml
-ipython_savefig_dir = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), "_build", "html", "_static"
-)
-if not os.path.exists(ipython_savefig_dir):
-    os.makedirs(ipython_savefig_dir)
+def _get_ipython_savefig_dir() -> str:
+    d = Path(__file__).parent / "_build" / "html" / "_static"
+    if not d.is_dir():
+        d.mkdir(parents=True)
+    return str(d)
 
+
+ipython_savefig_dir = _get_ipython_savefig_dir()
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
@@ -429,24 +434,23 @@ texinfo_documents = [
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
-    "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
-    "numpy": ("https://numpy.org/doc/stable", None),
-    "scipy": ("https://docs.scipy.org/doc/scipy/", None),
-    "numba": ("https://numba.pydata.org/numba-doc/latest", None),
-    # "matplotlib": ("https://matplotlib.org", None),
-    "matplotlib": ("https://matplotlib.org/stable/", None),
-    "dask": ("https://docs.dask.org/en/latest", None),
-    "cftime": ("https://unidata.github.io/cftime", None),
-    "sparse": ("https://sparse.pydata.org/en/latest/", None),
-    "xarray": ("https://docs.xarray.dev/en/stable/", None),
+    # "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
+    # "numpy": ("https://numpy.org/doc/stable", None),
+    # "scipy": ("https://docs.scipy.org/doc/scipy/", None),
+    # "numba": ("https://numba.readthedocs.io/en/stable/", None),
+    # "matplotlib": ("https://matplotlib.org/stable/", None),
+    # "dask": ("https://docs.dask.org/en/latest", None),
+    # "cftime": ("https://unidata.github.io/cftime", None),
+    # "sparse": ("https://sparse.pydata.org/en/latest/", None),
+    # "xarray": ("https://docs.xarray.dev/en/stable/", None),
 }
 
 linkcheck_ignore = ["https://doi.org/"]
 
 
 # based on numpy doc/source/conf.py
-def linkcode_resolve(domain, info):
-    """Determine the URL corresponding to Python object"""
+def linkcode_resolve(domain: str, info: dict[str, Any]) -> str | None:
+    """Determine the URL corresponding to Python object."""
     import inspect
     from operator import attrgetter
 
@@ -481,12 +485,11 @@ def linkcode_resolve(domain, info):
     except OSError:
         lineno = None
 
-    if lineno:
-        linespec = f"#L{lineno}-L{lineno + len(source) - 1}"
-    else:
-        linespec = ""
+    linespec = f"#L{lineno}-L{lineno + len(source) - 1}" if lineno else ""
 
-    fn = os.path.relpath(fn, start=os.path.dirname({{ cookiecutter.project_slug }}.__file__))
+    # fmt: off
+    fn = os.path.relpath(fn, start=Path({{ cookiecutter.project_slug }}.__file__).parent)
+    # fmt: on
 
     return f"https://github.com/{github_username}/{{ cookiecutter.project_name }}/blob/{html_context['github_version']}/src/{{ cookiecutter.project_slug }}/{fn}{linespec}"
 

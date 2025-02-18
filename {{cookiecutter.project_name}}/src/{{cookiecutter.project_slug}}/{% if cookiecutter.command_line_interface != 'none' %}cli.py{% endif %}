@@ -1,0 +1,65 @@
+"""
+Console script (:mod:`~{{cookiecutter.project_slug}}.cli`)
+==========================================================
+"""
+{% if cookiecutter.command_line_interface == 'argparse' %}
+import argparse
+{%- endif %}
+import sys
+{%- if cookiecutter.command_line_interface == 'click' %}
+
+import click
+{%- endif %}
+{%- if cookiecutter.command_line_interface == 'typer' %}
+
+import typer
+{%- endif %}
+
+PACKAGE = "{{ cookiecutter.project_slug}}"
+
+{%- if cookiecutter.command_line_interface == 'click' %}
+
+
+@click.command()
+def main() -> int:
+    """Console script for {{cookiecutter.project_slug}}."""
+    click.echo(f"Replace this message by putting your code into {PACKAGE}.cli.main")
+    click.echo("See click documentation at https://click.palletsprojects.com/")
+    return 0
+
+{%- elif cookiecutter.command_line_interface == 'typer' %}
+
+app = typer.Typer()
+
+
+@app.command()
+def func() -> int:
+    """Console script for {{cookiecutter.project_slug}}."""
+    print(f"Replace this message by putting your code into {PACKAGE}.cli.main")  # noqa: T201
+    print("See click documentation at https://typer.tiangolo.com/")  # noqa: T201
+    return 0
+
+
+# get the click function. For use with sphinx-click
+main = typer.main.get_command(app)
+
+
+{%- elif cookiecutter.command_line_interface == 'argparse' %}
+
+
+def main() -> int:
+    """Console script for {{cookiecutter.project_slug}}."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument('_', nargs='*')
+    args = parser.parse_args()
+
+    print("Arguments: " + str(args._))
+    print(f"Replace this message by putting your code into {PACKAGE}.cli.main"
+    return 0
+
+
+{%- endif %}
+
+
+if __name__ == "__main__":
+    sys.exit(main())  # pragma: no cover

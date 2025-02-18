@@ -1,92 +1,84 @@
-from contextlib import contextmanager
-import shlex
-import os
-import subprocess
-from cookiecutter.utils import rmtree
+from __future__ import annotations
 
+import logging
 from pathlib import Path
+from typing import TYPE_CHECKING
 
+import pytest
 
-@contextmanager
-def inside_dir(dirpath):
-    """
-    Execute code from inside the given directory
-    :param dirpath: String, path of the directory the command is being run.
-    """
-    old_path = os.getcwd()
-    try:
-        os.chdir(dirpath)
-        yield
-    finally:
-        os.chdir(old_path)
+from .utils import run_inside_dir
 
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
-def run_inside_dir(command, dirpath):
-    """
-    Run a command from inside a given directory, returning the exit status
-    :param command: Command that will be executed
-    :param dirpath: String, path of the directory the command is being run.
-    """
-    with inside_dir(dirpath):
-        return subprocess.check_call(shlex.split(command))
+logger = logging.getLogger(__name__)
 
-
-# @contextmanager
-# def bake_in_temp_dir(cookies, *args, **kwargs):
-#     """
-#     Delete the temporal directory that is created when executing the tests
-#     :param cookies: pytest_cookies.Cookies,
-#         cookie to be baked and its temporal files will be removed
-#     """
-#     result = cookies.bake(*args, **kwargs)
-#     try:
-#         yield result
-#     finally:
-#         rmtree(str(result.project))
-
-
-# def check_output_inside_dir(command, dirpath):
-#     "Run a command from inside a given directory, returning the command output"
-#     with inside_dir(dirpath):
-#         return subprocess.check_output(shlex.split(command))
-
-
-# def project_info(result):
-#     """Get toplevel dir, project_slug, and project dir from baked cookies"""
-#     project_path = str(result.project)
-#     project_slug = os.path.split(project_path)[-1]
-#     project_dir = os.path.join(project_path, project_slug)
-#     return project_path, project_slug, project_dir
+DEFAULT_PYTHON = (
+    (Path(__file__).parent.absolute().parent / ".python-version")
+    .read_text(encoding="utf-8")
+    .strip()
+)
 
 
 # * Actual testing
 # ** Utilities
+
+
+def _add_extras(x: list[str], extras: str | Iterable[str] | None) -> list[str]:
+    if extras is None:
+        out = x
+    elif isinstance(extras, str):
+        out = [*x, extras]
+    else:
+        out = x + list(extras)
+
+    return out
+
+
 def check_directory(
-    path, extra_files=None, extra_directories=None, files=None, directories=None
-):
+    path: str | Path,
+    extra_files: str | Iterable[str] | None = None,
+    extra_directories: str | Iterable[str] | None = None,
+    files: list[str] | None = None,
+    directories: list[str] | None = None,
+    ignore_paths: list[str] | None = None,
+) -> None:
     """Check path for files and directories"""
     path = Path(path)
+
+    if ignore_paths is None:
+        ignore_paths = ["__pycache__", ".venv"]
 
     if files is None:
         files = [
             ".editorconfig",
+            ".git_archival.txt",
+            ".gitattributes",
             ".gitignore",
             ".markdownlint.yaml",
             ".pre-commit-config.yaml",
             ".prettierrc.yaml",
+            ".prettierignore",
+            ".python-version",
+            ".pylintrc.toml",
             "pyproject.toml",
             "noxfile.py",
+            "ruff.toml",
             "CHANGELOG.md",
             "CONTRIBUTING.md",
             "LICENSE",
-            "MANIFEST.in",
             "Makefile",
             "README.md",
             "AUTHORS.md",
+            "uv.lock",
         ]
 
     if directories is None:
         directories = [
+            # These are added by the example creation
+            ".nox",
+            ".git",
+            # These are created from the template
             ".github",
             "changelog.d",
             "config",
@@ -98,21 +90,16 @@ def check_directory(
             "tools",
         ]
 
-    def _add_extras(x, extras):
-        if extras is None:
-            return x
-        elif isinstance(extras, str):
-            return x + [extras]
-        else:
-            return x + list(extras)
-
     files = _add_extras(files, extra_files)
     directories = _add_extras(directories, extra_directories)
 
-    found_files = []
-    found_directories = []
+    found_files: list[str] = []
+    found_directories: list[str] = []
 
     for p in Path(path).iterdir():
+        if p.name in ignore_paths:
+            continue
+
         if p.is_dir():
             found_directories.append(p.name)
         else:
@@ -122,63 +109,88 @@ def check_directory(
     assert set(directories) == set(found_directories)
 
 
-def get_python_version():
+def get_python_version() -> str:
     import sys
 
     return "{}.{}".format(*sys.version_info[:2])
 
 
-def run_nox_tests(path, test=True, docs=True, lint=True):
-    path = str(path)
-    py = get_python_version()
-
-    run_inside_dir("nox -s requirements", path)
-
-    if test:
-        run_inside_dir(f"nox -s test-venv-{py}", path)
-
-    if lint:
-        run_inside_dir("git init", path)
-        run_inside_dir("git add .", path)
-        run_inside_dir(f"nox -s lint", path)
-
-    if docs and py == "3.10":
-        run_inside_dir(f"nox -s docs-venv -- -d symlink build", path)
-
-
 # ** fixtures
-# @pytest.fixture
-# def result_default(cookies):
-#     return cookies.bake()
+# @pytest.mark.create
+def test_baked_create(example_path: Path) -> None:
+    logging.info("in directory %s", Path.cwd())
+    assert Path.cwd().resolve() == example_path.resolve()
 
-
-# ** tests
-def test_bake_and_run_tests_default(cookies):
-    result = cookies.bake()
-    # test directory structure
-    check_directory(result.project_path)
-
-    # test nox
-    run_nox_tests(result.project_path)
-
-
-def test_bake_and_run_tests_with_furo(cookies):
-    result = cookies.bake(
-        extra_context={"sphinx_theme": "furo", "command_line_interface": "Click"}
+    extra_files = (
+        [".copier-answers.yml"] if "copier" in str(example_path.name) else None
     )
 
-    # test directory structure
-    check_directory(result.project_path)
-
-    # test nox
-    run_nox_tests(result.project_path)
+    check_directory(path=example_path, extra_files=extra_files)
 
 
-def test_bake_and_run_tests_with_typer(cookies):
-    result = cookies.bake(extra_context={"command_line_interface": "Typer"})
+@pytest.mark.disable
+def test_baked_version(example_path: Path) -> None:
+    if get_python_version() == "DEFAULT_PYTHON":
+        run_inside_dir("nox -s build -- ++build version", example_path)
 
-    # test directory structure
-    check_directory(result.project_path)
 
-    # test nox
-    run_nox_tests(result.project_path)
+# @pytest.mark.test
+def test_baked_test(example_path: Path, nox_opts: str, nox_session_opts: str) -> None:
+    run_inside_dir(
+        f"nox {nox_opts} -s test-{get_python_version()} -- {nox_session_opts}",
+        example_path,
+    )
+
+
+# @pytest.mark.lint
+def test_baked_lint(example_path: Path, nox_opts: str, nox_session_opts: str) -> None:
+    if get_python_version() == DEFAULT_PYTHON:
+        try:
+            run_inside_dir(
+                f"nox {nox_opts} -s lint -- {nox_session_opts}", example_path
+            )
+        except Exception:
+            logging.info("git diff")
+            run_inside_dir("git diff", example_path)
+            raise
+
+
+# @pytest.mark.docs
+def test_baked_docs(example_path: Path, nox_opts: str, nox_session_opts: str) -> None:
+    if get_python_version() == DEFAULT_PYTHON:
+        run_inside_dir(
+            f"nox {nox_opts} -s docs -- +d symlink html {nox_session_opts}",
+            example_path,
+        )
+
+
+# @pytest.mark.typing
+def test_baked_typing(example_path: Path, nox_opts: str, nox_session_opts: str) -> None:
+    run_inside_dir(
+        f"nox {nox_opts} -s typing-{get_python_version()} -- +m clean mypy pyright pylint {nox_session_opts}",
+        example_path,
+    )
+
+
+def test_baked_mypystrict(
+    example_path: Path, nox_opts: str, nox_session_opts: str
+) -> None:
+    if (py := get_python_version()) == DEFAULT_PYTHON:
+        run_inside_dir(
+            f"nox {nox_opts} -s typing-{py} -- +m clean ++typing-run-internal 'mypy --strict' {nox_session_opts}",
+            example_path,
+        )
+
+
+def test_baked_notebook(
+    example_path: Path, nox_opts: str, nox_session_opts: str
+) -> None:
+    if (py := get_python_version()) == DEFAULT_PYTHON:
+        run_inside_dir(
+            f"nox {nox_opts} -s typing-{py} -- +m clean  notebook-typecheck {nox_session_opts}",
+            example_path,
+        )
+        run_inside_dir(
+            f"nox {nox_opts} -s test-notebook -- {nox_session_opts}",
+            example_path,
+        )

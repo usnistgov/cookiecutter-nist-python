@@ -1,29 +1,36 @@
-#!/usr/bin/env python
-
 """Tests for `{{ cookiecutter.project_name }}` package."""
 
+from __future__ import annotations
+
 import pytest
-{%- if cookiecutter.command_line_interface|lower in ["click", "typer"] %}
+{%- if cookiecutter.command_line_interface in ["click", "typer"] %}
 from click.testing import CliRunner
 {%- endif %}
-
+{% if cookiecutter.command_line_interface in ["click", "typer"] %}
+from {{ cookiecutter.project_slug }} import cli, example_function
+{%- else %}
 from {{ cookiecutter.project_slug }} import example_function
-{%- if cookiecutter.command_line_interface|lower in ["click", "typer"] %}
-from {{ cookiecutter.project_slug }} import cli
 {%- endif %}
+
+
+def test_version() -> None:
+    from {{ cookiecutter.project_slug }} import __version__
+
+    assert __version__ != "999"
 
 
 @pytest.fixture
-def response():
+def response() -> tuple[int, int]:
     return 1, 2
 
 
-def test_example_function(response):
-    assert example_function(*response) == 3
-{%- if cookiecutter.command_line_interface|lower in ["click", "typer"] %}
+def test_example_function(response: tuple[int, int]) -> None:
+    expected = 3
+    assert example_function(*response) == expected
+{%- if cookiecutter.command_line_interface in ["click", "typer"] %}
 
 
-def test_command_line_interface():
+def test_command_line_interface() -> None:
     """Test the CLI."""
     runner = CliRunner()
     result = runner.invoke(cli.main)

@@ -1,0 +1,104 @@
+# [[[cog
+# from tools.cog_cc import CC
+#
+# cc = CC("cookiecutter.json")
+#
+# print(cc.project_name.yaml(default=True) + "\n")
+#
+# print(cc.project_slug.yaml(default=True) + "\n")
+#
+# print(cc.to_yaml(
+#     "project_short_description",
+#     "full_name",
+#     "email",
+#     "github_username",
+#     "pypi_username",
+#     "conda_channel",
+#     "command_line_interface",
+#     "sphinx_use_autodocsumm",
+#     "sphinx_theme",
+#     default=True,
+#   ) + "\n",
+# )
+#
+# print(cc.year.yaml() + "\n")
+#
+# from datetime import datetime
+# print("  default: {}".format(datetime.now().year))
+# ]]]
+project_name:
+  type: str
+  help: The name of the project
+  default: mypackage
+
+project_slug:
+  type: str
+  help: The name of the python module
+  default: "{{ project_name.lower().replace(' ', '_').replace('-', '_') }}"
+
+project_short_description:
+  type: str
+  help: Short description of the project
+  default: All the boilerplate you need to create a Python package.
+
+full_name:
+  type: str
+  help: Author name
+  default: William P. Krekelberg
+
+email:
+  type: str
+  help: Author email
+  default: wpk@nist.gov
+
+github_username:
+  type: str
+  help: github username
+  default: wpk-nist-gov
+
+pypi_username:
+  type: str
+  help: pypi username
+  default: wpk-nist
+
+conda_channel:
+  type: str
+  help: conda channel
+  default: "{{ pypi_username }}"
+
+command_line_interface:
+  help: Select command line interface type
+  choices:
+    "No command-line interface": none
+    "Click": click
+    "Typer": typer
+    "Argparse": argparse
+  default: none
+
+sphinx_use_autodocsumm:
+  type: bool
+  help: Use `autodocsumm` sphinx extension
+  default: yes
+
+sphinx_theme:
+  help: Select sphinx theme
+  choices:
+    "Sphinx book theme": sphinx_book_theme
+    "Furo theme": furo
+  default: sphinx_book_theme
+
+year:
+  type: str
+  help: Copyright/creation year
+
+  default: 2023
+# [[[end]]]
+
+# * Copier options
+_templates_suffix: ""
+
+_subdirectory: "{% raw %}{{cookiecutter.project_name}}{% endraw %}"
+
+_jinja_extensions:
+  - copier_templates_extensions.TemplateExtensionLoader
+  - tools/copier_extensions.py:CookiecutterNamespace
