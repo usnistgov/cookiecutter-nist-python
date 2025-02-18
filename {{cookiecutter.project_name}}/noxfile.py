@@ -438,8 +438,10 @@ def dev(
         "ipykernel",
         "install",
         "--user",
-        "--name={{ cookiecutter.project_name }}-dev",
-        "--display-name='Python [venv: {{ cookiecutter.project_name }}-dev]'",
+        "--name",
+        "{{ cookiecutter.project_name }}-dev",
+        "--display-name",
+        "Python [venv: {{ cookiecutter.project_name }}-dev]",
     )
 
 

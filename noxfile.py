@@ -438,8 +438,10 @@ def dev(
         "ipykernel",
         "install",
         "--user",
-        "--name=cookiecutter-nist-python-dev",
-        "--display-name='Python [venv: cookiecutter-nist-python-dev]'",
+        "--name",
+        "cookiecutter-nist-python-dev",
+        "--display-name",
+        "Python [venv: cookiecutter-nist-python-dev]",
     )
 
 
