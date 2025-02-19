@@ -141,7 +141,7 @@ repos:
 
   # * pyproject2conda
   - repo: https://github.com/usnistgov/pyproject2conda
-    rev: v0.19.0
+    rev: v0.19.1
     hooks:
       - id: pyproject2conda-project
         alias: requirements
@@ -192,7 +192,7 @@ repos:
   # ** typos
   # Probably stick with codespell, but this might also be nice...
   - repo: https://github.com/crate-ci/typos
-    rev: typos-dict-v0.12.5
+    rev: v1.29.8
     hooks:
       - id: typos
         stages: [manual]
@@ -203,7 +203,7 @@ repos:
       - id: nbqa
         alias: nbqa-typos
         name: nbqa-typos
-        additional_dependencies: &typos-deps [typos==1.29.7] # make sure save version as above.
+        additional_dependencies: &typos-deps [typos==1.29.8] # make sure save version as above.
         stages: [manual]
         args: [typos, --nbqa-shell]
         # this can lead to errors, so use with care
