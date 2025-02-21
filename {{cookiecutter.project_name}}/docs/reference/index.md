@@ -16,4 +16,16 @@
     :prog: {{ cookiecutter.project_slug }}
     :nested: full
 ```
+
+{%- elif cookiecutter.command_line_interface == "argparse" %}
+
+```{eval-rst}
+
+.. argparse::
+   :module: {{ cookiecutter.project_slug }}.cli
+   :func: get_parser
+   :prog: {{ cookiecutter.project_slug }}
+   :nodefault:
+```
+
 {%- endif %}

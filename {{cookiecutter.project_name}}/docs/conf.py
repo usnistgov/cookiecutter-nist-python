@@ -69,7 +69,7 @@ extensions = [
     "sphinx_click",
     {%- endif %}
     {%- if cookiecutter.command_line_interface == "argparse" %}
-    "sphinxarg.ext"
+    "sphinxarg.ext",
     {%- endif %}
 ]
 
