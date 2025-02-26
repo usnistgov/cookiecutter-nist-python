@@ -413,7 +413,7 @@ def dev(
     opts: SessionParams,
 ) -> None:
     """Create development environment."""
-    session.run("uv", "venv", ".venv", "--allow-existing")
+    session.run("uv", "venv", ".venv", "--allow-existing", "--prompt", PACKAGE_NAME)
 
     python_opt = "--python=.venv/bin/python"
 
