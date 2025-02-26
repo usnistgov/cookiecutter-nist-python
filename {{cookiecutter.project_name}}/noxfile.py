@@ -442,6 +442,7 @@ def dev(
         "{{ cookiecutter.project_name }}-dev",
         "--display-name",
         "Python [venv: {{ cookiecutter.project_name }}-dev]",
+        success_codes=[0, 1],
     )
 
 

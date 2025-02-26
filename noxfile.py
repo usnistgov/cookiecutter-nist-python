@@ -442,6 +442,7 @@ def dev(
         "cookiecutter-nist-python-dev",
         "--display-name",
         "Python [venv: cookiecutter-nist-python-dev]",
+        success_codes=[0, 1],
     )
 
 
