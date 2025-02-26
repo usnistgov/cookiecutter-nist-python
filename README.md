@@ -1,8 +1,11 @@
 <!-- markdownlint-disable MD041 -->
 
-[![Repo][repo-badge]][repo-link] [![Docs][docs-badge]][docs-link]
+<!-- prettier-ignore-start -->
+[![Repo][repo-badge]][repo-link]
+[![Docs][docs-badge]][docs-link]
 [![PyPI license][license-badge]][license-link]
-[![Code style: ruff][ruff-badge]][ruff-link][![uv][uv-badge]][uv-link]
+[![Code style: ruff][ruff-badge]][ruff-link]
+[![uv][uv-badge]][uv-link]
 
 <!--
   For more badges, see
@@ -11,19 +14,16 @@
   [pypi-badge]: https://badge.fury.io/py/cookiecutter-nist-python
 -->
 
-[ruff-badge]:
-  https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json
+[ruff-badge]: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json
 [ruff-link]: https://github.com/astral-sh/ruff
-[uv-badge]:
-  https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json
+[uv-badge]: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json
 [uv-link]: https://github.com/astral-sh/uv
 [docs-badge]: https://img.shields.io/badge/docs-sphinx-informational
 [docs-link]: https://pages.nist.gov/cookiecutter-nist-python/
 [repo-badge]: https://img.shields.io/badge/--181717?logo=github&logoColor=ffffff
 [repo-link]: https://github.com/usnistgov/cookiecutter-nist-python
 [license-badge]: https://img.shields.io/pypi/l/cmomy?color=informational
-[license-link]:
-  https://github.com/usnistgov/cookiecutter-nist-python/blob/main/LICENSE
+[license-link]: https://github.com/usnistgov/cookiecutter-nist-python/blob/main/LICENSE
 
 <!-- other links -->
 
@@ -42,6 +42,8 @@
 [conda]: https://docs.conda.io/en/latest/
 [virtualenv]: https://virtualenv.pypa.io/en/latest/
 [pyproject2conda]: https://github.com/usnistgov/pyproject2conda
+
+<!-- prettier-ignore-end -->
 
 # `cookiecutter-nist-python`
 
