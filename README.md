@@ -37,8 +37,7 @@
 [furo]: https://pradyunsg.me/furo/
 [sphinx-book-theme]: https://sphinx-book-theme.readthedocs.io/
 [nist-pages]: https://pages.nist.gov/pages-root/
-[cookiecutter-pypackage]:
-  https://github.com/audreyfeldroy/cookiecutter-pypackage/
+[cookiecutter-pypackage]:  https://github.com/audreyfeldroy/cookiecutter-pypackage/
 [conda]: https://docs.conda.io/en/latest/
 [virtualenv]: https://virtualenv.pypa.io/en/latest/
 [pyproject2conda]: https://github.com/usnistgov/pyproject2conda
