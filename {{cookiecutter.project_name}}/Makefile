@@ -261,8 +261,8 @@ clean-kernelspec: ## cleanup unused kernels (assuming notebooks handled by conda
 .PHONY: install-kernel
 install-kernel:  ## install kernel
 	$(UVRUN) python -m ipykernel install --user \
-	--name {{ cookiecutter.project_name }}-dev \
-    --display-name "Python [venv: {{ cookiecutter.project_name }}-dev]"
+	--name {{ cookiecutter.project_name }} \
+    --display-name "Python [venv: {{ cookiecutter.project_name }}]"
 
 
 # * Other tools ----------------------------------------------------------------

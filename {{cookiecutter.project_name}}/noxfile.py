@@ -440,9 +440,9 @@ def dev(
         "install",
         "--user",
         "--name",
-        "{{ cookiecutter.project_name }}-dev",
+        "{{ cookiecutter.project_name }}",
         "--display-name",
-        "Python [venv: {{ cookiecutter.project_name }}-dev]",
+        "Python [venv: {{ cookiecutter.project_name }}]",
         success_codes=[0, 1],
     )
 
@@ -487,7 +487,12 @@ def lock(
     force = opts.lock_force or opts.lock_upgrade
 
     if opts.lock and opts.lock_upgrade:
-        session.run("uv", "lock", "--upgrade", env={"VIRTUAL_ENV": ".venv"})
+        session.run(
+            "uv",
+            "sync" if opts.update else "lock",
+            "--upgrade",
+            env={"VIRTUAL_ENV": ".venv"},
+        )
 
     reqs_path = Path("./requirements")
     for path in reqs_path.glob("*.txt"):
