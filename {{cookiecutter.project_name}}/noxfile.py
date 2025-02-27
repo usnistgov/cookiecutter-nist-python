@@ -428,12 +428,17 @@ def dev(
         no_dev=False,
         include_editable_package=True,
     )
+    session.notify("install-ipykernel")
 
+
+@nox.session(name="install-ipykernel", python=False)
+def install_ipykernel(session: Session) -> None:
+    """Install ipykernel for .venv"""
     session.run(
         "uv",
         "run",
         "--frozen",
-        python_opt,
+        "--python=.venv/bin/python",
         "python",
         "-m",
         "ipykernel",

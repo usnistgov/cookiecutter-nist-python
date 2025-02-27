@@ -259,11 +259,8 @@ clean-kernelspec: ## cleanup unused kernels (assuming notebooks handled by conda
 	$(UVRUN) tools/clean_kernelspec.py
 
 .PHONY: install-kernel
-install-kernel:  ## install kernel
-	$(UVRUN) python -m ipykernel install --user \
-	--name {{ cookiecutter.project_name }} \
-    --display-name "Python [venv: {{ cookiecutter.project_name }}]"
-
+install-ipykernel:  ## install ipykernel
+	$(NOX) -s install-ipykernel
 
 # * Other tools ----------------------------------------------------------------
 # Note that this requires `auto-changelog`, which can be installed with pip(x)

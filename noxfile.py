@@ -428,21 +428,26 @@ def dev(
         no_dev=False,
         include_editable_package=True,
     )
+    session.notify("install-ipykernel")
 
+
+@nox.session(name="install-ipykernel", python=False)
+def install_ipykernel(session: Session) -> None:
+    """Install ipykernel for .venv"""
     session.run(
         "uv",
         "run",
         "--frozen",
-        python_opt,
+        "--python=.venv/bin/python",
         "python",
         "-m",
         "ipykernel",
         "install",
         "--user",
         "--name",
-        "cookiecutter-nist-python-dev",
+        "cookiecutter-nist-python",
         "--display-name",
-        "Python [venv: cookiecutter-nist-python-dev]",
+        "Python [venv: cookiecutter-nist-python]",
         success_codes=[0, 1],
     )
 
@@ -487,7 +492,12 @@ def lock(
     force = opts.lock_force or opts.lock_upgrade
 
     if opts.lock and opts.lock_upgrade:
-        session.run("uv", "lock", "--upgrade", env={"VIRTUAL_ENV": ".venv"})
+        session.run(
+            "uv",
+            "sync" if opts.update else "lock",
+            "--upgrade",
+            env={"VIRTUAL_ENV": ".venv"},
+        )
 
     reqs_path = Path("./requirements")
     for path in reqs_path.glob("*.txt"):
