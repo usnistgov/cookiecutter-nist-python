@@ -68,7 +68,7 @@ repos:
         additional_dependencies:
           - black==25.1.0
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.8
+    rev: v0.9.9
     hooks:
       - id: ruff
         alias: ruff-all
@@ -124,7 +124,7 @@ repos:
 
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.2.2
+    rev: v4.3.0
     hooks:
       - id: commitizen
         stages: [commit-msg]
