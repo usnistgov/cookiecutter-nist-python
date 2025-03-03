@@ -46,7 +46,7 @@ repos:
 
   # * Prettier
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.5.2
+    rev: v3.5.3
     hooks:
       - id: prettier
         alias: markdownlint
@@ -70,7 +70,7 @@ repos:
         additional_dependencies:
           - black==25.1.0
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.8
+    rev: v0.9.9
     hooks:
       - id: ruff
         alias: ruff-all
@@ -126,7 +126,7 @@ repos:
 
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.2.2
+    rev: v4.4.1
     hooks:
       - id: commitizen
         stages: [commit-msg]
@@ -192,7 +192,7 @@ repos:
   # ** typos
   # Probably stick with codespell, but this might also be nice...
   - repo: https://github.com/crate-ci/typos
-    rev: typos-dict-v0.12.6
+    rev: v1.30.0
     hooks:
       - id: typos
         stages: [manual]
@@ -203,7 +203,7 @@ repos:
       - id: nbqa
         alias: nbqa-typos
         name: nbqa-typos
-        additional_dependencies: &typos-deps [typos==1.29.10] # make sure save version as above.
+        additional_dependencies: &typos-deps [typos==1.30.0] # make sure save version as above.
         stages: [manual]
         args: [typos, --nbqa-shell]
         # this can lead to errors, so use with care
