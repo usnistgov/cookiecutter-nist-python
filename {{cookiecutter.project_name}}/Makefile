@@ -3,10 +3,9 @@
 .DEFAULT_GOAL := help
 
 
-_PY_DEFAULT = $(shell cat .python-version | sed "s/\.//")
 UVRUN = uv run --frozen
 UVXRUN = $(UVRUN) --no-config tools/uvxrun.py
-UVXRUN_OPTS = -r requirements/lock/py$(_PY_DEFAULT)-uvxrun-tools.txt -v
+UVXRUN_OPTS = -r requirements/lock/uvxrun-tools.txt -v
 UVXRUN_NO_PROJECT = uv run --with "packaging" --no-project tools/uvxrun.py
 NOX=uvx --from "nox>=2024.10.9" nox
 PRE_COMMIT = uvx pre-commit
