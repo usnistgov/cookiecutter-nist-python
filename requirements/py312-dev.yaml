@@ -13,7 +13,7 @@ dependencies:
   - python=3.12
   - cookiecutter
   - copier
-  - mypy>=1.14.0
+  - mypy>=1.15.0
   - nox>=2024.4.15
   - packaging
   - pylint
