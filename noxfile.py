@@ -78,9 +78,7 @@ PYTHON_ALL_VERSIONS = [
 ]
 PYTHON_DEFAULT_VERSION = Path(".python-version").read_text(encoding="utf-8").strip()
 
-UVXRUN_LOCK_REQUIREMENTS = "requirements/lock/py{}-uvxrun-tools.txt".format(
-    PYTHON_DEFAULT_VERSION.replace(".", "")
-)
+UVXRUN_LOCK_REQUIREMENTS = "requirements/lock/uvxrun-tools.txt"
 UVXRUN_MIN_REQUIREMENTS = "requirements/uvxrun-tools.txt"
 PIP_COMPILE_CONFIG = "requirements/uv.toml"
 
@@ -496,48 +494,54 @@ def lock(
             "uv",
             "sync" if opts.update else "lock",
             "--upgrade",
-            env={"VIRTUAL_ENV": ".venv"},
+            env={
+                "VIRTUAL_ENV": ".venv",
+                "UV_PROJECT_ENVIRONMENT": ".venv",
+            },
         )
+
+    from packaging.version import Version
+
+    min_python_version = min(PYTHON_ALL_VERSIONS, key=Version)
 
     reqs_path = Path("./requirements")
     for path in reqs_path.glob("*.txt"):
-        python_versions = (
-            PYTHON_ALL_VERSIONS
+        python_version = (
+            min_python_version
             if path.name in {"test.txt", "test-extras.txt", "typing.txt"}
-            else [PYTHON_DEFAULT_VERSION]
+            else PYTHON_DEFAULT_VERSION
         )
 
-        for python_version in python_versions:
-            lockpath = infer_requirement_path(
-                path.name,
-                ext=".txt",
-                python_version=python_version,
-                lock=True,
-                check_exists=False,
-            )
+        lockpath = infer_requirement_path(
+            path.name,
+            ext=".txt",
+            python_version=python_version,
+            lock=True,
+            check_exists=False,
+        )
 
-            with check_for_change_manager(
-                path,
-                target_path=lockpath,
-                force_write=force,
-            ) as changed:
-                if force or changed:
-                    session.run(
-                        "uv",
-                        "pip",
-                        "compile",
-                        "--universal",
-                        f"--config-file={PIP_COMPILE_CONFIG}",
-                        "-q",
-                        "--python-version",
-                        python_version,
-                        *options,
-                        path,
-                        "-o",
-                        lockpath,
-                    )
-                else:
-                    session.log(f"Skipping {lockpath}")
+        with check_for_change_manager(
+            path,
+            target_path=lockpath,
+            force_write=force,
+        ) as changed:
+            if force or changed:
+                session.run(
+                    "uv",
+                    "pip",
+                    "compile",
+                    "--universal",
+                    f"--config-file={PIP_COMPILE_CONFIG}",
+                    "-q",
+                    "--python-version",
+                    python_version,
+                    *options,
+                    path,
+                    "-o",
+                    lockpath,
+                )
+            else:
+                session.log(f"Skipping {lockpath}")
 
 
 # ** testing
