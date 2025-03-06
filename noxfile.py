@@ -148,6 +148,11 @@ class SessionParams(DataclassParser):
         "-P",
         help="reinstall package.  Only works with uv sync and editable installs",
     )
+    installpkg: str | None = add_option(
+        "--installpkg",
+        help="Use this package instead of editable or built package",
+        default=None,
+    )
 
     # requirements
     requirements_no_notify: bool = add_option(
@@ -373,9 +378,13 @@ def install_package(
     *args: str,
     editable: bool = False,
     update: bool = True,
+    installpkg: str | None = None,
 ) -> None:
     """Install current package."""
-    if editable:
+    if installpkg is not None:
+        run = session.run
+        opts = [*args, installpkg]
+    elif editable:
         run = session.run if update else session.run_install
         opts = [*args, "-e", "."]
     else:
@@ -583,7 +592,7 @@ def test(
 ) -> None:
     """Test environments with conda installs."""
     install_dependencies(session, name="test", opts=opts)
-    install_package(session, editable=False, update=True)
+    install_package(session, editable=False, update=True, installpkg=opts.installpkg)
 
     _test(
         session=session,
@@ -603,7 +612,7 @@ nox.session(name="test-conda", **CONDA_ALL_KWS)(test)
 def test_notebook(session: nox.Session, opts: SessionParams) -> None:
     """Run pytest --nbval."""
     install_dependencies(session, name="test-notebook", opts=opts)
-    install_package(session, editable=False, update=True)
+    install_package(session, editable=False, update=True, installpkg=opts.installpkg)
 
     test_nbval_opts = shlex.split(
         """
