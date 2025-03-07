@@ -5,7 +5,7 @@
 
 UVRUN = uv run --frozen
 UVXRUN = $(UVRUN) --no-config tools/uvxrun.py
-UVXRUN_OPTS = -r requirements/lock/uvxrun-tools.txt -v
+UVXRUN_OPTS = --constraint requirements/lock/uvxrun-tools.txt -v
 UVXRUN_NO_PROJECT = uv run --with "packaging" --no-project tools/uvxrun.py
 NOX=uvx --from "nox>=2024.10.9" nox
 PRE_COMMIT = uvx pre-commit
@@ -135,20 +135,20 @@ requirements: ## rebuild all requirements/environment files
 .PHONY: mypy pyright pyright-watch pylint _typecheck typecheck
 PYLINT_OPTS = --enable-all-extensions
 mypy: ## Run mypy
-	$(UVXRUN) $(UVXRUN_OPTS) -c mypy
+	$(UVXRUN) $(UVXRUN_OPTS) -x mypy
 pyright: ## Run pyright
-	$(UVXRUN) $(UVXRUN_OPTS) -c pyright
+	$(UVXRUN) $(UVXRUN_OPTS) -x pyright
 pyright-watch: ## Run pyright in watch mode
-	$(UVXRUN) $(UVXRUN_OPTS) -c "pyright -w"
+	$(UVXRUN) $(UVXRUN_OPTS) -x "pyright -w"
 pylint: ## Run pylint
 	$(UVRUN) pylint $(PYLINT_OPTS) src tests
 _typecheck:
-	$(UVXRUN) $(UVXRUN_OPTS) -c mypy -c pyright
+	$(UVXRUN) $(UVXRUN_OPTS) -x mypy -x pyright
 typecheck: _typecheck pylint ## Run mypy and pyright
 
 .PHONY: tools-typecheck
 tools-typecheck:
-	$(UVXRUN) $(UVXRUN_OPTS) -c "mypy --strict" -c pyright -- noxfile.py tools/*.py
+	$(UVXRUN) $(UVXRUN_OPTS) -x "mypy --strict" -x pyright -- noxfile.py tools/*.py
 	$(UVRUN) pylint $(PYLINT_OPTS) noxfile.py tools
 
 # * NOX ------------------------------------------------------------------------
@@ -163,7 +163,7 @@ docs-clean: ## clean docs
 	rm -rf docs/reference/generated/*
 docs-clean-build: docs-clean docs-build ## clean and build
 docs-release: ## release docs.
-	$(UVXRUN_NO_PROJECT) $(UVXRUN_OPTS) -c "ghp-import -o -n -m \"update docs\" -b nist-pages" docs/_build/html
+	$(UVXRUN_NO_PROJECT) $(UVXRUN_OPTS) -x "ghp-import -o -n -m \"update docs\" -b nist-pages" docs/_build/html
 
 .PHONY: docs-open docs-spelling docs-livehtml docs-linkcheck
 docs-open: ## open the build
@@ -221,7 +221,7 @@ nox-list:
 check-release: ## run twine check on dist
 	$(NOX) -s publish -- +p check
 check-wheel: ## Run check-wheel-contents (requires check-wheel-contents to be installed)
-	$(UVXRUN_NO_PROJECT) -c check-wheel-contents dist/*.whl
+	$(UVXRUN_NO_PROJECT) -x check-wheel-contents dist/*.whl
 check-dist: check-release check-wheel ## Run check-release and check-wheel
 
 .PHONY:  list-wheel list-sdist list-dist
@@ -237,17 +237,17 @@ NOTEBOOKS ?= examples/usage
 # NOTE: use this because nested call back in nox has errors with uv run...
 _PYTHON = $(shell which python)
 _NBQA_UVXRUN = $(_PYTHON) tools/uvxrun.py
-NBQA = $(_NBQA_UVXRUN) $(UVXRUN_OPTS) -c "nbqa --nbqa-shell \"$(_NBQA_UVXRUN)\" $(NOTEBOOKS) $(UVXRUN_OPTS) $(_NBQA)"
+NBQA = $(_NBQA_UVXRUN) $(UVXRUN_OPTS) -x "nbqa --nbqa-shell \"$(_NBQA_UVXRUN)\" $(NOTEBOOKS) $(UVXRUN_OPTS) $(_NBQA)"
 .PHONY: notebook-mypy notebook-pyright notebook-pylint notebook-typecheck notebook-test
-notebook-mypy: _NBQA = -c mypy
+notebook-mypy: _NBQA = -x mypy
 notebook-mypy: ## run nbqa mypy
 	$(NBQA)
-notebook-pyright: _NBQA = -c pyright
+notebook-pyright: _NBQA = -x pyright
 notebook-pyright: ## run nbqa pyright
 	$(NBQA)
 notebook-pylint:: ## run nbqa pylint
-	$(_NBQA_UVXRUN) $(UVXRUN_OPTS) -c "nbqa --nbqa-shell \"$(_PYTHON) -m pylint $(PYLINT_OPTS)\" $(NOTEBOOKS)"
-notebook-typecheck: _NBQA = -c mypy -c pyright
+	$(_NBQA_UVXRUN) $(UVXRUN_OPTS) -x "nbqa --nbqa-shell \"$(_PYTHON) -m pylint $(PYLINT_OPTS)\" $(NOTEBOOKS)"
+notebook-typecheck: _NBQA = -x mypy -x pyright
 notebook-typecheck: notebook-pylint ## run nbqa mypy/pyright
 	$(NBQA)
 notebook-test:  ## run pytest --nbval

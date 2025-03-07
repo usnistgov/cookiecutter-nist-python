@@ -78,18 +78,18 @@ PYTHON_ALL_VERSIONS = [
 ]
 PYTHON_DEFAULT_VERSION = Path(".python-version").read_text(encoding="utf-8").strip()
 
-UVXRUN_LOCK_REQUIREMENTS = "requirements/lock/uvxrun-tools.txt"
-UVXRUN_MIN_REQUIREMENTS = "requirements/uvxrun-tools.txt"
+UVXRUN_LOCK_CONSTRAINTS = "requirements/lock/uvxrun-tools.txt"
+UVXRUN_MIN_CONSTRAINTS = "requirements/uvxrun-tools.txt"
 PIP_COMPILE_CONFIG = "requirements/uv.toml"
 
 
 @lru_cache
-def get_uvxrun_specs(requirements: str | None = None) -> uvxrun.Specifications:
+def get_uvxrun_specs(constraints: str | None = None) -> uvxrun.Specifications:
     """Get specs for uvxrun."""
-    requirements = requirements or UVXRUN_MIN_REQUIREMENTS
-    if not Path(requirements).exists():
-        requirements = None
-    return uvxrun.Specifications.from_requirements(requirements=requirements)
+    constraints = constraints or UVXRUN_MIN_CONSTRAINTS
+    if not Path(constraints).exists():
+        constraints = None
+    return uvxrun.Specifications.from_constraints(constraints=constraints)
 
 
 class SessionOptionsDict(TypedDict, total=False):
@@ -869,7 +869,7 @@ def typing(  # noqa: C901, PLR0912
 
     run = partial(
         uvxrun.run,
-        specs=get_uvxrun_specs(UVXRUN_LOCK_REQUIREMENTS),
+        specs=get_uvxrun_specs(UVXRUN_LOCK_CONSTRAINTS),
         session=session,
         python_version=session.python,
         python_executable=get_python_full_path(session),
