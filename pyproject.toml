@@ -1,6 +1,6 @@
 [project]
 name = "cookiecutter-nist-python"
-version = "0.3.0.dev"
+version = "0.3.0"
 description = "Cookiecutter template for NIST python packages"
 keywords = [
     "cookiecutter-nist-python",
