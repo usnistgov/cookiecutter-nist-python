@@ -1,10 +1,13 @@
 <!-- markdownlint-disable MD041 -->
 
-[![Repo][repo-badge]][repo-link] [![Docs][docs-badge]][docs-link]
+<!-- prettier-ignore-start -->
+[![Repo][repo-badge]][repo-link]
+[![Docs][docs-badge]][docs-link]
 [![PyPI license][license-badge]][license-link]
 [![PyPI version][pypi-badge]][pypi-link]
 [![Conda (channel only)][conda-badge]][conda-link]
-[![Code style: black][black-badge]][black-link]
+[![Code style: ruff][ruff-badge]][ruff-link]
+[![uv][uv-badge]][uv-link]
 
 <!--
   For more badges, see
@@ -13,9 +16,10 @@
   [pypi-badge]: https://badge.fury.io/py/{{ cookiecutter.project_name }}
 -->
 
-<!-- prettier-ignore-start -->
-[black-badge]: https://img.shields.io/badge/code%20style-black-000000.svg
-[black-link]: https://github.com/psf/black
+[ruff-badge]: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json
+[ruff-link]: https://github.com/astral-sh/ruff
+[uv-badge]: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json
+[uv-link]: https://github.com/astral-sh/uv
 [pypi-badge]: https://img.shields.io/pypi/v/{{ cookiecutter.project_name }}
 [pypi-link]: https://pypi.org/project/{{ cookiecutter.project_name }}
 [docs-badge]: https://img.shields.io/badge/docs-sphinx-informational
@@ -24,11 +28,12 @@
 [repo-link]: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}
 [conda-badge]: https://img.shields.io/conda/v/{{ cookiecutter.conda_channel }}/{{ cookiecutter.project_name }}
 [conda-link]: https://anaconda.org/{{ cookiecutter.conda_channel }}/{{ cookiecutter.project_name }}
-[license-badge]: https://img.shields.io/pypi/l/cmomy?color=informational
+[license-badge]: https://img.shields.io/pypi/l/{{ cookiecutter.project_name }}?color=informational
 [license-link]: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/blob/main/LICENSE
-<!-- prettier-ignore-end -->
 
 <!-- other links -->
+
+<!-- prettier-ignore-end -->
 
 # `{{ cookiecutter.project_name }}`
 

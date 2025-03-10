@@ -62,14 +62,15 @@ KERNEL_BASE = "{{ cookiecutter.project_slug }}"
 
 ROOT = Path(__file__).parent
 
+nox.needs_version = ">=2024.10.9"
 nox.options.reuse_existing_virtualenvs = True
-nox.options.sessions = ["test"]
+nox.options.sessions = ["lint", "typing", "test-all"]
 nox.options.default_venv_backend = "uv"
 
 # * Options ---------------------------------------------------------------------------
 
 # if True, use uv lock/sync.  If False, use uv pip compile/sync...
-UV_LOCK = False
+UV_LOCK = True
 
 PYTHON_ALL_VERSIONS = [
     c.split()[-1]
@@ -78,20 +79,18 @@ PYTHON_ALL_VERSIONS = [
 ]
 PYTHON_DEFAULT_VERSION = Path(".python-version").read_text(encoding="utf-8").strip()
 
-UVXRUN_LOCK_REQUIREMENTS = "requirements/lock/py{}-uvxrun-tools.txt".format(
-    PYTHON_DEFAULT_VERSION.replace(".", "")
-)
-UVXRUN_MIN_REQUIREMENTS = "requirements/uvxrun-tools.txt"
+UVXRUN_LOCK_CONSTRAINTS = "requirements/lock/uvxrun-tools.txt"
+UVXRUN_MIN_CONSTRAINTS = "requirements/uvxrun-tools.txt"
 PIP_COMPILE_CONFIG = "requirements/uv.toml"
 
 
 @lru_cache
-def get_uvxrun_specs(requirements: str | None = None) -> uvxrun.Specifications:
+def get_uvxrun_specs(constraints: str | None = None) -> uvxrun.Specifications:
     """Get specs for uvxrun."""
-    requirements = requirements or UVXRUN_MIN_REQUIREMENTS
-    if not Path(requirements).exists():
-        requirements = None
-    return uvxrun.Specifications.from_requirements(requirements=requirements)
+    constraints = constraints or UVXRUN_MIN_CONSTRAINTS
+    if not Path(constraints).exists():
+        constraints = None
+    return uvxrun.Specifications.from_constraints(constraints=constraints)
 
 
 class SessionOptionsDict(TypedDict, total=False):
@@ -134,6 +133,7 @@ class SessionParams(DataclassParser):
 
     # common parameters
     lock: bool = False
+    no_lock: bool = False
     update: bool = add_option("--update", "-U", help="update dependencies/package")
     version: str | None = add_option(
         "--version", "-V", help="pretend version", default=None
@@ -148,6 +148,11 @@ class SessionParams(DataclassParser):
         "--reinstall-package",
         "-P",
         help="reinstall package.  Only works with uv sync and editable installs",
+    )
+    installpkg: str | None = add_option(
+        "--installpkg",
+        help="Use this package instead of editable or built package",
+        default=None,
     )
 
     # requirements
@@ -175,9 +180,6 @@ class SessionParams(DataclassParser):
 
     # coverage
     coverage: list[Literal["erase", "combine", "report", "html", "open"]] | None = None
-
-    # testdist
-    testdist_run: RUN_ANNO = None
 
     # docs
     docs: (
@@ -254,7 +256,12 @@ def parse_posargs(*posargs: str) -> SessionParams:
     without escaping.
     """
     opts = SessionParams.from_posargs(posargs=posargs, prefix_char="+")
-    opts.lock = opts.lock or UV_LOCK
+
+    if opts.no_lock:
+        opts.lock = False
+    else:
+        opts.lock = opts.lock or UV_LOCK
+
     return opts
 
 
@@ -372,9 +379,13 @@ def install_package(
     *args: str,
     editable: bool = False,
     update: bool = True,
+    installpkg: str | None = None,
 ) -> None:
     """Install current package."""
-    if editable:
+    if installpkg is not None:
+        run = session.run
+        opts = [*args, installpkg]
+    elif editable:
         run = session.run if update else session.run_install
         opts = [*args, "-e", "."]
     else:
@@ -397,6 +408,7 @@ def install_package(
 @nox.session(name="test-all", python=False)
 def test_all(session: Session) -> None:
     """Run all tests and coverage."""
+    session.notify("coverage-erase")
     for py in PYTHON_ALL_VERSIONS:
         session.notify(f"test-{py}")
     session.notify("coverage")
@@ -410,7 +422,7 @@ def dev(
     opts: SessionParams,
 ) -> None:
     """Create development environment."""
-    session.run("uv", "venv", ".venv", "--allow-existing")
+    session.run("uv", "venv", ".venv", "--allow-existing", "--prompt", PACKAGE_NAME)
 
     python_opt = "--python=.venv/bin/python"
 
@@ -424,19 +436,27 @@ def dev(
         no_dev=False,
         include_editable_package=True,
     )
+    session.notify("install-ipykernel")
 
+
+@nox.session(name="install-ipykernel", python=False)
+def install_ipykernel(session: Session) -> None:
+    """Install ipykernel for .venv"""
     session.run(
         "uv",
         "run",
         "--frozen",
-        python_opt,
+        "--python=.venv/bin/python",
         "python",
         "-m",
         "ipykernel",
         "install",
         "--user",
-        "--name={{ cookiecutter.project_name }}-dev",
-        "--display-name='Python [venv: {{ cookiecutter.project_name }}-dev]'",
+        "--name",
+        "{{ cookiecutter.project_name }}",
+        "--display-name",
+        "Python [venv: {{ cookiecutter.project_name }}]",
+        success_codes=[0, 1],
     )
 
 
@@ -480,47 +500,58 @@ def lock(
     force = opts.lock_force or opts.lock_upgrade
 
     if opts.lock and opts.lock_upgrade:
-        session.run("uv", "lock", "--upgrade", env={"VIRTUAL_ENV": ".venv"})
+        session.run(
+            "uv",
+            "sync" if opts.update else "lock",
+            "--upgrade",
+            env={
+                "VIRTUAL_ENV": ".venv",
+                "UV_PROJECT_ENVIRONMENT": ".venv",
+            },
+        )
+
+    from packaging.version import Version
+
+    min_python_version = min(PYTHON_ALL_VERSIONS, key=Version)
 
     reqs_path = Path("./requirements")
     for path in reqs_path.glob("*.txt"):
-        python_versions = (
-            PYTHON_ALL_VERSIONS
+        python_version = (
+            min_python_version
             if path.name in {"test.txt", "test-extras.txt", "typing.txt"}
-            else [PYTHON_DEFAULT_VERSION]
+            else PYTHON_DEFAULT_VERSION
         )
 
-        for python_version in python_versions:
-            lockpath = infer_requirement_path(
-                path.name,
-                ext=".txt",
-                python_version=python_version,
-                lock=True,
-                check_exists=False,
-            )
+        lockpath = infer_requirement_path(
+            path.name,
+            ext=".txt",
+            python_version=python_version,
+            lock=True,
+            check_exists=False,
+        )
 
-            with check_for_change_manager(
-                path,
-                target_path=lockpath,
-                force_write=force,
-            ) as changed:
-                if force or changed:
-                    session.run(
-                        "uv",
-                        "pip",
-                        "compile",
-                        "--universal",
-                        f"--config-file={PIP_COMPILE_CONFIG}",
-                        "-q",
-                        "--python-version",
-                        python_version,
-                        *options,
-                        path,
-                        "-o",
-                        lockpath,
-                    )
-                else:
-                    session.log(f"Skipping {lockpath}")
+        with check_for_change_manager(
+            path,
+            target_path=lockpath,
+            force_write=force,
+        ) as changed:
+            if force or changed:
+                session.run(
+                    "uv",
+                    "pip",
+                    "compile",
+                    "--universal",
+                    f"--config-file={PIP_COMPILE_CONFIG}",
+                    "-q",
+                    "--python-version",
+                    python_version,
+                    *options,
+                    path,
+                    "-o",
+                    lockpath,
+                )
+            else:
+                session.log(f"Skipping {lockpath}")
 
 
 # ** testing
@@ -562,7 +593,7 @@ def test(
 ) -> None:
     """Test environments with conda installs."""
     install_dependencies(session, name="test", opts=opts)
-    install_package(session, editable=False, update=True)
+    install_package(session, editable=False, update=True, installpkg=opts.installpkg)
 
     _test(
         session=session,
@@ -582,7 +613,7 @@ nox.session(name="test-conda", **CONDA_ALL_KWS)(test)
 def test_notebook(session: nox.Session, opts: SessionParams) -> None:
     """Run pytest --nbval."""
     install_dependencies(session, name="test-notebook", opts=opts)
-    install_package(session, editable=False, update=True)
+    install_package(session, editable=False, update=True, installpkg=opts.installpkg)
 
     test_nbval_opts = shlex.split(
         """
@@ -648,6 +679,12 @@ def coverage(
             )
 
 
+@nox.session(name="coverage-erase", python=False)
+def coverage_erase(session: Session) -> None:
+    """Alias to `nox -s coverage -- ++coverage erase`"""
+    session.run("nox", "-s", "coverage", "--", "++coverage", "erase")
+
+
 # *** testdist (conda)
 @add_opts
 def testdist(
@@ -668,7 +705,7 @@ def testdist(
 
     _test(
         session=session,
-        run=opts.testdist_run,
+        run=opts.test_run,
         test_no_pytest=opts.test_no_pytest,
         test_options=opts.test_options,
         no_cov=opts.no_cov,
@@ -833,7 +870,7 @@ def typing(  # noqa: C901, PLR0912
 
     run = partial(
         uvxrun.run,
-        specs=get_uvxrun_specs(UVXRUN_LOCK_REQUIREMENTS),
+        specs=get_uvxrun_specs(UVXRUN_LOCK_CONSTRAINTS),
         session=session,
         python_version=session.python,
         python_executable=get_python_full_path(session),

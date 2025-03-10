@@ -26,6 +26,7 @@ SPHINX_THEMES_AND_CLI = [
     ("book", "nocli"),
     ("book", "typer"),
     ("book", "click"),
+    ("book", "argparse"),
     ("furo", "typer"),
 ]
 
@@ -35,6 +36,7 @@ MARKER_MAP = {
     "nocli": "none",
     "click": "click",
     "typer": "typer",
+    "argparse": "argparse",
 }
 
 PARAMS: list[Any] = []

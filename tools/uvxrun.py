@@ -218,54 +218,69 @@ def _iter_specs(specs: Iterable[str | Requirement]) -> Iterator[Requirement]:
 class Specifications:
     """Working with specifications."""
 
-    def __init__(self, specs: dict[str, Requirement]) -> None:
+    def __init__(
+        self, specs: dict[str, Requirement], constraints: Iterable[str | Path] | None
+    ) -> None:
         self.specs = specs
+        self.constraints = [] if constraints is None else [Path(c) for c in constraints]
+
+        # validate constraints:
+        for c in self.constraints:
+            if not c.is_file():
+                msg = f"{c} is not a file"
+                raise ValueError(msg)
 
     def assign(
-        self, specs: str | Requirement | Iterable[str | Requirement]
+        self,
+        specs: str | Requirement | Iterable[str | Requirement] | None = None,
+        constraints: Iterable[str | Path] | None = None,
     ) -> Specifications:
         """Assign value."""
         if isinstance(specs, (str, Requirement)):
             specs = [specs]
 
-        return type(self)(
-            specs=dict(self.specs, **{spec.name: spec for spec in _iter_specs(specs)})
+        specs = (
+            dict(self.specs, **{spec.name: spec for spec in _iter_specs(specs)})
+            if specs
+            else self.specs
+        )
+        constraints = (
+            [*self.constraints, *constraints] if constraints else self.constraints
         )
 
-    def get(self, index: str, default: Requirement | None = None) -> Requirement | None:
+        return type(self)(
+            specs=specs,
+            constraints=constraints,
+        )
+
+    def get(self, index: str, default: Requirement | None = None) -> Requirement:
         """Get specification"""
+        if default is None:
+            default = Requirement(index)
         return self.specs.get(index, default)
 
     @classmethod
-    def combine(cls, *specs: Specifications) -> Specifications:
-        """Combine specifications."""
-        new_specs: dict[str, Requirement] = {}
-        for spec in specs:
-            new_specs.update(spec.specs)
-        return cls(new_specs)
-
-    @classmethod
-    def from_requirements(
+    def from_constraints(
         cls,
         *specs: Requirement,
-        requirements: str | Path | Iterable[str | Path] | None = None,
+        constraints: str | Path | Iterable[str | Path] | None = None,
     ) -> Specifications:
-        """Create from requirements."""
-        if requirements is None:
-            requirements = []
-        elif isinstance(requirements, (str, Path)):
-            requirements = [requirements]
+        """Create from constraints."""
+        if constraints is None:
+            constraints = []
+        elif isinstance(constraints, (str, Path)):
+            constraints = [constraints]
 
         specs_dict: dict[str, Requirement] = {
             req.name: req
-            for requirement in requirements
+            for requirement in constraints
             for req in _parse_requirements(Path(requirement))
         }
 
         # update specs
-        specs_dict.update({spec.name: spec for spec in _iter_specs(specs)})
+        specs_dict = {spec.name: spec for spec in _iter_specs(specs)}
 
-        return cls(specs_dict)
+        return cls(specs=specs_dict, constraints=constraints)
 
 
 # * Dummy session -------------------------------------------------------------
@@ -341,14 +356,21 @@ class Command:
     """Class to handle commands."""
 
     def __init__(
-        self, name: str, args: Iterable[str], spec: Requirement | None = None
+        self,
+        name: str,
+        args: Iterable[str],
+        spec: Requirement | None,
+        constraints: list[Path] | None,
     ) -> None:
         self.name = name
         self.args = list(args)
         self.spec = spec
+        self.constraints = constraints or []
 
     @classmethod
-    def from_command(cls, *commands: str | os.PathLike[str]) -> Command:
+    def from_command(
+        cls, *commands: str | os.PathLike[str], constraints: list[Path] | None
+    ) -> Command:
         """Create from command iterable"""
         name, *args = (os.fsdecode(c) for c in commands)
         spec = Requirement(name)
@@ -356,12 +378,15 @@ class Command:
             name=spec.name,
             args=args,
             spec=spec if spec.specifier else None,
+            constraints=constraints,
         )
 
     def assign_spec(self, spec: Requirement | None, override: bool = False) -> Command:
         """Update spec from specs dict."""
         if spec and (override or not self.spec):
-            return type(self)(name=self.name, args=self.args, spec=spec)
+            return type(self)(
+                name=self.name, args=self.args, spec=spec, constraints=self.constraints
+            )
         return self
 
     def _get_python_flags(
@@ -382,13 +407,14 @@ class Command:
 
         return []
 
-    @staticmethod
-    def _get_uvx_flags(verbosity: int) -> list[str]:
+    def _get_uvx_flags(self, verbosity: int) -> list[str]:
+        out = [f"--constraint={c}" for c in self.constraints]
         if verbosity > 0:
-            return ["-v"]
+            return [*out, "-v"]
         if verbosity < 0:
-            return ["-q"]
-        return []
+            return [*out, "-q"]
+
+        return out
 
     def command(
         self,
@@ -467,14 +493,13 @@ def run(
     **kwargs: Any,
 ) -> Any:
     """Run command"""
-    command = Command.from_command(*args)
-
     if specs is None:
-        specs = Specifications({})
+        specs = Specifications({}, [])
 
     if extra_specs is not None:
         specs = specs.assign(extra_specs)
 
+    command = Command.from_command(*args, constraints=specs.constraints)
     command = command.assign_spec(specs.get(command.name))
 
     session = session or Session()
@@ -519,7 +544,7 @@ def _parse_args(args: Sequence[str] | None = None) -> argparse.Namespace:
         """,
     )
     parser.add_argument(
-        "-c",
+        "-x",
         "--command",
         dest="commands",
         default=[],
@@ -534,9 +559,9 @@ def _parse_args(args: Sequence[str] | None = None) -> argparse.Namespace:
         """,
     )
     parser.add_argument(
-        "-r",
-        "--requirement",
-        dest="requirements",
+        "-c",
+        "--constraint",
+        dest="constraints",
         default=[],
         action="append",
         type=Path,
@@ -604,14 +629,16 @@ def main(args: Sequence[str] | None = None) -> int:
         _get_python_executable(None),
     )
 
-    commands = [
-        Command.from_command(*shlex.split(command)) for command in options.commands
-    ]
-
     # specs from requirements
-    specs = Specifications.from_requirements(
-        *options.specs, requirements=options.requirements
+    specs = Specifications.from_constraints(
+        *options.specs,
+        constraints=options.constraints,
     )
+
+    commands = [
+        Command.from_command(*shlex.split(command), constraints=specs.constraints)
+        for command in options.commands
+    ]
 
     # update command specs
     commands = [command.assign_spec(specs.get(command.name)) for command in commands]
