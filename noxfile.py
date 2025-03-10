@@ -62,6 +62,7 @@ KERNEL_BASE = "cookiecutter_nist_python"
 
 ROOT = Path(__file__).parent
 
+nox.needs_version = ">=2024.10.9"
 nox.options.reuse_existing_virtualenvs = True
 nox.options.sessions = ["lint", "typing", "test-all"]
 nox.options.default_venv_backend = "uv"
