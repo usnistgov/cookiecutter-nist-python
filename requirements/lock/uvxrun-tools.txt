@@ -12,9 +12,9 @@ asttokens==3.0.0 \
     --hash=sha256:0dcd8baa8d62b0c1d118b399b2ddba3c4aff271d0d7a9e0d4c1681c79035bbc7 \
     --hash=sha256:e3078351a059199dd5138cb1c706e6430c05eff2ff136af5eb4790f9d28932e2
     # via stack-data
-attrs==25.1.0 \
-    --hash=sha256:1c97078a80c814273a76b2a298a932eb681c87415c11dee0a6921de7f1b02c3e \
-    --hash=sha256:c75a69e28a550a7e93789579c22aa26b0f5b83b75dc4e08fe092980051e1090a
+attrs==25.3.0 \
+    --hash=sha256:427318ce031701fea540783410126f03899a97ffc6f61596ad581ac2e40e3bc3 \
+    --hash=sha256:75d7cefc7fb576747b2c81b4442d4d4a1ce0900973527c011d1030fd3bf4af1b
     # via scriv
 autopep8==2.3.2 \
     --hash=sha256:89440a4f969197b69a995e4ce0661b031f455a9f776d2c5ba3dbd83466931758 \
@@ -292,9 +292,9 @@ executing==2.2.0 \
     --hash=sha256:11387150cad388d62750327a53d3339fad4888b39a6fe233c3afbb54ecffd3aa \
     --hash=sha256:5d108c028108fe2551d1a7b2e8b713341e2cb4fc0aa7dcf966fa4327a5226755
     # via stack-data
-filelock==3.17.0 \
-    --hash=sha256:533dc2f7ba78dc2f0f531fc6c4940addf7b70a481e269a5a3b93be94ffbe8338 \
-    --hash=sha256:ee4e77401ef576ebb38cd7f13b9b28893194acc20a8e68e18730ba9c0e54660e
+filelock==3.18.0 \
+    --hash=sha256:adbc88eabb99d2fec8c9c1b229b171f18afa655400173ddc653d5d01501fb9f2 \
+    --hash=sha256:c401f4f8377c4464e6db25fff06205fd89bdd83b65eb0488ed1b160f780e21de
     # via cachecontrol, ensureconda, virtualenv
 gitdb==4.0.12 \
     --hash=sha256:5ef71f855d191a3326fcfbc0d5da835f26b13fbcba60c32c21091c349ffdb571 \
@@ -304,9 +304,9 @@ gitpython==3.1.44 \
     --hash=sha256:9e0e10cda9bed1ee64bc9a6de50e7e38a9c9943241cd7f585f6df3ed28011110 \
     --hash=sha256:c87e30b26253bf5418b01b0660f818967f3c503193838337fe5e573331249269
     # via conda-lock
-grayskull==2.7.6 \
-    --hash=sha256:135929817ac49e2c39c4d16b6efe91677bf82f2887af9d80b4f75cc819b60fb2 \
-    --hash=sha256:e7828096dc9dc82b7dfad62c646e995aae0e633f9a3666ea762446a0f5ae0432
+grayskull==2.8.0 \
+    --hash=sha256:c2dcc0a09d098f86419a00439666603981b286e55c0504c414c77c4cb30318c3 \
+    --hash=sha256:f0c25140c3a08819a2da054338e452718abaf87e9e0e64fe0ed71ae764e20841
     # via -r requirements/uvxrun-tools.txt
 html5lib==1.1 \
     --hash=sha256:0d78f8fde1c230e99fe37986a60526d7049ed4bf8a9fadbad5f00e22e58e041d \
@@ -605,9 +605,9 @@ platformdirs==4.3.6 \
     --hash=sha256:357fb2acbc885b0419afd3ce3ed34564c13c9b95c89360cd9563f73aa5e2b907 \
     --hash=sha256:73e575e1408ab8103900836b97580d5307456908a03e92031bab39e4554cc3fb
     # via virtualenv
-pre-commit==4.1.0 \
-    --hash=sha256:ae3f018575a588e30dfddfab9a05448bfbd6b73d78709617b5a2b853549716d4 \
-    --hash=sha256:d29e7cb346295bcc1cc75fc3e92e343495e3ea0196c9ec6ba53f49f10ab6ae7b
+pre-commit==4.2.0 \
+    --hash=sha256:601283b9757afd87d40c4c4a9b2b5de9637a8ea02eaff7adc2d0fb4e04841146 \
+    --hash=sha256:a009ca7205f1eb497d10b845e52c838a98b6cdd2102a6c8e4540e94ee75c58bd
     # via -r requirements/uvxrun-tools.txt
 progressbar2==4.5.0 \
     --hash=sha256:625c94a54e63915b3959355e6d4aacd63a00219e5f3e2b12181b76867bf6f628 \
@@ -747,9 +747,9 @@ pylev==1.4.0 \
     --hash=sha256:7b2e2aa7b00e05bb3f7650eb506fc89f474f70493271a35c242d9a92188ad3dd \
     --hash=sha256:9e77e941042ad3a4cc305dcdf2b2dec1aec2fbe3dd9015d2698ad02b173006d1
     # via clikit
-pyright==1.1.396 \
-    --hash=sha256:142901f5908f5a0895be3d3befcc18bedcdb8cc1798deecaec86ef7233a29b03 \
-    --hash=sha256:c635e473095b9138c471abccca22b9fedbe63858e0b40d4fc4b67da041891844
+pyright==1.1.397 \
+    --hash=sha256:07530fd65a449e4b0b28dceef14be0d8e0995a7a5b1bb2f3f897c3e548451ce3 \
+    --hash=sha256:2e93fba776e714a82b085d68f8345b01f91ba43e1ab9d513e79b70fc85906257
     # via -r requirements/uvxrun-tools.txt
 python-utils==3.9.1 \
     --hash=sha256:0273d7363c7ad4b70999b2791d5ba6b55333d6f7a4e4c8b6b39fb82b5fab4613 \
@@ -994,9 +994,9 @@ secretstorage==3.3.3 ; sys_platform == 'linux' \
     --hash=sha256:2403533ef369eca6d2ba81718576c5e0f564d5cca1b58f73a8b23e7d4eeebd77 \
     --hash=sha256:f356e6628222568e3af06f2eba8df495efa13b3b63081dafd4f7d9a7b7bc9f99
     # via keyring
-setuptools==76.0.0 \
-    --hash=sha256:199466a166ff664970d0ee145839f5582cb9bca7a0a3a2e795b6a9cb2308e9c6 \
-    --hash=sha256:43b4ee60e10b0d0ee98ad11918e114c70701bc6051662a9a675a0496c1a158f4
+setuptools==76.1.0 \
+    --hash=sha256:34750dcb17d046929f545dec9b8349fe42bf4ba13ddffee78428aec422dbfb73 \
+    --hash=sha256:4959b9ad482ada2ba2320c8f1a8d8481d4d8d668908a7a1b84d987375cd7f5bd
     # via conda-lock, grayskull
 six==1.17.0 \
     --hash=sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274 \

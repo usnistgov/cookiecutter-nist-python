@@ -38,7 +38,7 @@ repos:
 
   # * Pyproject validate
   - repo: https://github.com/abravalheri/validate-pyproject
-    rev: v0.23
+    rev: v0.24
     hooks:
       - id: validate-pyproject
 
@@ -68,7 +68,7 @@ repos:
         additional_dependencies:
           - black==25.1.0
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.10
+    rev: v0.11.0
     hooks:
       - id: ruff
         alias: ruff-all
@@ -132,7 +132,7 @@ repos:
   # * uv
   - repo: https://github.com/astral-sh/uv-pre-commit
     # uv version.
-    rev: 0.6.5
+    rev: 0.6.8
     hooks:
       - id: uv-lock
         args: [--locked]
@@ -173,7 +173,7 @@ repos:
 
   # pyproject-validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2025.02.24
+    rev: 2025.03.17
     hooks:
       - id: validate-pyproject
         alias: validate-pyproject-full
@@ -190,7 +190,7 @@ repos:
   # ** typos
   # Probably stick with codespell, but this might also be nice...
   - repo: https://github.com/crate-ci/typos
-    rev: v1.30.1
+    rev: v1.30.2
     hooks:
       - id: typos
         stages: [manual]
@@ -201,7 +201,7 @@ repos:
       - id: nbqa
         alias: nbqa-typos
         name: nbqa-typos
-        additional_dependencies: &typos-deps [typos==1.30.1] # make sure save version as above.
+        additional_dependencies: &typos-deps [typos==1.30.2] # make sure save version as above.
         stages: [manual]
         args: [typos, --nbqa-shell]
         # this can lead to errors, so use with care
