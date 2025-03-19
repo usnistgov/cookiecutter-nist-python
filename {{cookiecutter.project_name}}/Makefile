@@ -2,13 +2,12 @@
 .PHONY: all clean clean-test clean-pyc clean-build help
 .DEFAULT_GOAL := help
 
-
+UVX = uvx
+UVX_OPTS = --constraints=requirements/lock/uvxrun-tools.txt -v
 UVRUN = uv run --frozen
 UVXRUN = $(UVRUN) --no-config tools/uvxrun.py
-UVXRUN_OPTS = --constraint requirements/lock/uvxrun-tools.txt -v
-UVXRUN_NO_PROJECT = uv run --with "packaging" --no-project tools/uvxrun.py
-NOX=uvx --from "nox>=2024.10.9" nox
-PRE_COMMIT = uvx pre-commit
+NOX=$(UVX) --from "nox>=2024.10.9" nox
+PRE_COMMIT = $(UVX) $(UVX_OPTS) pre-commit
 
 define BROWSER_PYSCRIPT
 import os, webbrowser, sys
@@ -135,20 +134,20 @@ requirements: ## rebuild all requirements/environment files
 .PHONY: mypy pyright pyright-watch pylint _typecheck typecheck
 PYLINT_OPTS = --enable-all-extensions
 mypy: ## Run mypy
-	$(UVXRUN) $(UVXRUN_OPTS) -x mypy
+	$(UVXRUN) $(UVX_OPTS) -x mypy
 pyright: ## Run pyright
-	$(UVXRUN) $(UVXRUN_OPTS) -x pyright
+	$(UVXRUN) $(UVX_OPTS) -x pyright
 pyright-watch: ## Run pyright in watch mode
-	$(UVXRUN) $(UVXRUN_OPTS) -x "pyright -w"
+	$(UVXRUN) $(UVX_OPTS) -x "pyright -w"
 pylint: ## Run pylint
 	$(UVRUN) pylint $(PYLINT_OPTS) src tests
 _typecheck:
-	$(UVXRUN) $(UVXRUN_OPTS) -x mypy -x pyright
+	$(UVXRUN) $(UVX_OPTS) -x mypy -x pyright
 typecheck: _typecheck pylint ## Run mypy and pyright
 
 .PHONY: tools-typecheck
 tools-typecheck:
-	$(UVXRUN) $(UVXRUN_OPTS) -x "mypy --strict" -x pyright -- noxfile.py tools/*.py
+	$(UVXRUN) $(UVX_OPTS) -x "mypy --strict" -x pyright -- noxfile.py tools/*.py
 	$(UVRUN) pylint $(PYLINT_OPTS) noxfile.py tools
 
 # * NOX ------------------------------------------------------------------------
@@ -163,7 +162,7 @@ docs-clean: ## clean docs
 	rm -rf docs/reference/generated/*
 docs-clean-build: docs-clean docs-build ## clean and build
 docs-release: ## release docs.
-	$(UVXRUN_NO_PROJECT) $(UVXRUN_OPTS) -x "ghp-import -o -n -m \"update docs\" -b nist-pages" docs/_build/html
+	$(UVX) $(UVX_OPTS) -x "ghp-import -o -n -m \"update docs\" -b nist-pages" docs/_build/html
 
 .PHONY: docs-open docs-spelling docs-livehtml docs-linkcheck
 docs-open: ## open the build
@@ -221,7 +220,7 @@ nox-list:
 check-release: ## run twine check on dist
 	$(NOX) -s publish -- +p check
 check-wheel: ## Run check-wheel-contents (requires check-wheel-contents to be installed)
-	$(UVXRUN_NO_PROJECT) -x check-wheel-contents dist/*.whl
+	$(UVX) $(UVX_OPTS) -x check-wheel-contents dist/*.whl
 check-dist: check-release check-wheel ## Run check-release and check-wheel
 
 .PHONY:  list-wheel list-sdist list-dist
@@ -237,7 +236,7 @@ NOTEBOOKS ?= examples/usage
 # NOTE: use this because nested call back in nox has errors with uv run...
 _PYTHON = $(shell which python)
 _NBQA_UVXRUN = $(_PYTHON) tools/uvxrun.py
-NBQA = $(_NBQA_UVXRUN) $(UVXRUN_OPTS) -x "nbqa --nbqa-shell \"$(_NBQA_UVXRUN)\" $(NOTEBOOKS) $(UVXRUN_OPTS) $(_NBQA)"
+NBQA = $(_NBQA_UVXRUN) $(UVX_OPTS) -x "nbqa --nbqa-shell \"$(_NBQA_UVXRUN)\" $(NOTEBOOKS) $(UVX_OPTS) $(_NBQA)"
 .PHONY: notebook-mypy notebook-pyright notebook-pylint notebook-typecheck notebook-test
 notebook-mypy: _NBQA = -x mypy
 notebook-mypy: ## run nbqa mypy
@@ -246,7 +245,7 @@ notebook-pyright: _NBQA = -x pyright
 notebook-pyright: ## run nbqa pyright
 	$(NBQA)
 notebook-pylint:: ## run nbqa pylint
-	$(_NBQA_UVXRUN) $(UVXRUN_OPTS) -x "nbqa --nbqa-shell \"$(_PYTHON) -m pylint $(PYLINT_OPTS)\" $(NOTEBOOKS)"
+	$(_NBQA_UVXRUN) $(UVX_OPTS) -x "nbqa --nbqa-shell \"$(_PYTHON) -m pylint $(PYLINT_OPTS)\" $(NOTEBOOKS)"
 notebook-typecheck: _NBQA = -x mypy -x pyright
 notebook-typecheck: notebook-pylint ## run nbqa mypy/pyright
 	$(NBQA)
@@ -265,15 +264,15 @@ install-ipykernel:  ## install ipykernel
 # Note that this requires `auto-changelog`, which can be installed with pip(x)
 .PHONY: auto-changelog
 auto-changelog: ## autogenerate changelog and print to stdout
-	uvx auto-changelog -u -r usnistgov -v unreleased --tag-prefix v --stdout --template changelog.d/templates/auto-changelog/template.jinja2
+	$(UVX) $(UVX_OPTS) auto-changelog -u -r usnistgov -v unreleased --tag-prefix v --stdout --template changelog.d/templates/auto-changelog/template.jinja2
 
 .PHONY:
 commitizen-changelog:
-	uvx --from="commitizen" cz changelog --unreleased-version unreleased --dry-run --incremental
+	$(UVX) $(UVX_OPTS) --from=commitizen cz changelog --unreleased-version unreleased --dry-run --incremental
 
 # tuna analyze load time:
 .PHONY: tuna-analyze
 tuna-import	: ## Analyze load time for module
 	$(UVRUN) python -X importtime -c 'import {{ cookiecutter.project_slug }}' 2> tuna-loadtime.log
-	uvx tuna tuna-loadtime.log
+	$(UVX) $(UVX_OPTS) tuna tuna-loadtime.log
 	rm tuna-loadtime.log

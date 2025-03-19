@@ -409,7 +409,7 @@ class Command:
         return []
 
     def _get_uvx_flags(self, verbosity: int) -> list[str]:
-        out = [f"--constraint={c}" for c in self.constraints]
+        out = [f"--constraints={c}" for c in self.constraints]
         if verbosity > 0:
             return [*out, "-v"]
         if verbosity < 0:
@@ -561,7 +561,7 @@ def _parse_args(args: Sequence[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument(
         "-c",
-        "--constraint",
+        "--constraints",
         dest="constraints",
         default=[],
         action="append",

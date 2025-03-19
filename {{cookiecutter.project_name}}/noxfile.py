@@ -79,15 +79,24 @@ PYTHON_ALL_VERSIONS = [
 ]
 PYTHON_DEFAULT_VERSION = Path(".python-version").read_text(encoding="utf-8").strip()
 
-UVXRUN_LOCK_CONSTRAINTS = "requirements/lock/uvxrun-tools.txt"
-UVXRUN_MIN_CONSTRAINTS = "requirements/uvxrun-tools.txt"
+UVX_LOCK_CONSTRAINTS = "requirements/lock/uvxrun-tools.txt"
+UVX_MIN_CONSTRAINTS = "requirements/uvxrun-tools.txt"
 PIP_COMPILE_CONFIG = "requirements/uv.toml"
+
+
+def get_uvx_constraint_args(locked: bool = True) -> tuple[str, ...]:
+    """Get constraints file for uvx."""
+    if locked and Path(UVX_LOCK_CONSTRAINTS).exists():
+        return (f"--constraints={UVX_LOCK_CONSTRAINTS}",)
+    if Path(UVX_MIN_CONSTRAINTS).exists():
+        return (f"--constraints={UVX_MIN_CONSTRAINTS}",)
+    return ()
 
 
 @lru_cache
 def get_uvxrun_specs(constraints: str | None = None) -> uvxrun.Specifications:
     """Get specs for uvxrun."""
-    constraints = constraints or UVXRUN_MIN_CONSTRAINTS
+    constraints = constraints or UVX_MIN_CONSTRAINTS
     if not Path(constraints).exists():
         constraints = None
     return uvxrun.Specifications.from_constraints(constraints=constraints)
@@ -474,13 +483,13 @@ def requirements(
 
     Should instead us pre-commit run requirements --all-files
     """
-    uvxrun.run(
+    session.run(
+        "uvx",
+        *get_uvx_constraint_args(),
         "pre-commit",
         "run",
         "pyproject2conda-project",
         "--all-files",
-        specs=get_uvxrun_specs(),
-        session=session,
         success_codes=[0, 1],
     )
 
@@ -650,7 +659,7 @@ def coverage(
     """Run coverage."""
     cmd = opts.coverage or ["combine", "html", "report"]
 
-    run = partial(uvxrun.run, specs=get_uvxrun_specs(), session=session)
+    run = partial(session.run, "uvx", *get_uvx_constraint_args())
 
     paths = list(Path(".nox").glob("test-*/tmp/.coverage*"))
 
@@ -822,13 +831,13 @@ def lint(
     To run something else pass, e.g.,
     `nox -s lint -- --lint-run "pre-commit run --hook-stage manual --all-files`
     """
-    uvxrun.run(
+    session.run(
+        "uvx",
+        *get_uvx_constraint_args(),
         "pre-commit",
         "run",
         "--all-files",  # "--show-diff-on-failure",
         *(opts.lint_options or []),
-        specs=get_uvxrun_specs(),
-        session=session,
     )
 
 
@@ -870,7 +879,7 @@ def typing(  # noqa: C901, PLR0912
 
     run = partial(
         uvxrun.run,
-        specs=get_uvxrun_specs(UVXRUN_LOCK_CONSTRAINTS),
+        specs=get_uvxrun_specs(UVX_LOCK_CONSTRAINTS),
         session=session,
         python_version=session.python,
         python_executable=get_python_full_path(session),
@@ -1002,7 +1011,7 @@ def get_package_wheel(
 @add_opts
 def publish(session: nox.Session, opts: SessionParams) -> None:
     """Publish the distribution."""
-    run = partial(uvxrun.run, specs=get_uvxrun_specs(), session=session, external=True)
+    run = partial(session.run, "uvx", *get_uvx_constraint_args(), external=True)
 
     for cmd in opts.publish or []:
         if cmd == "test":
@@ -1023,7 +1032,7 @@ def conda_recipe(
     """Run grayskull to create recipe."""
     commands = opts.conda_recipe or ["recipe"]
 
-    run = partial(uvxrun.run, specs=get_uvxrun_specs(), session=session)
+    run = partial(session.run, "uvx", *get_uvx_constraint_args(), external=True)
 
     if not (sdist_path := opts.conda_recipe_sdist_path):
         sdist_path = PACKAGE_NAME
