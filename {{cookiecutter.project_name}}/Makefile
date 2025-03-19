@@ -6,6 +6,8 @@ UVX = uvx
 UVX_OPTS = --constraints=requirements/lock/uvxrun-tools.txt -v
 UVRUN = uv run --frozen
 UVXRUN = $(UVRUN) --no-config tools/uvxrun.py
+TYPECHECK = $(UVRUN) --no-config tools/run_typechecker.py
+
 NOX=$(UVX) --from "nox>=2024.10.9" nox
 PRE_COMMIT = $(UVX) $(UVX_OPTS) pre-commit
 
@@ -134,20 +136,21 @@ requirements: ## rebuild all requirements/environment files
 .PHONY: mypy pyright pyright-watch pylint _typecheck typecheck
 PYLINT_OPTS = --enable-all-extensions
 mypy: ## Run mypy
-	$(UVXRUN) $(UVX_OPTS) -x mypy
+	$(TYPECHECK) $(UVX_OPTS) -x mypy
 pyright: ## Run pyright
-	$(UVXRUN) $(UVX_OPTS) -x pyright
+	$(TYPECHECK) $(UVX_OPTS) -x pyright
 pyright-watch: ## Run pyright in watch mode
-	$(UVXRUN) $(UVX_OPTS) -x "pyright -w"
+	$(TYPECHECK) $(UVX_OPTS) -x pyright -- -w
 pylint: ## Run pylint
 	$(UVRUN) pylint $(PYLINT_OPTS) src tests
 _typecheck:
-	$(UVXRUN) $(UVX_OPTS) -x mypy -x pyright
+	$(TYPECHECK) $(UVX_OPTS) -x mypy -x pyright
 typecheck: _typecheck pylint ## Run mypy and pyright
 
 .PHONY: tools-typecheck
 tools-typecheck:
-	$(UVXRUN) $(UVX_OPTS) -x "mypy --strict" -x pyright -- noxfile.py tools/*.py
+	$(TYPECHECK) $(UVX_OPTS) -x mypy -- --strict noxfile.py tools/*.py
+	$(TYPECHECK) $(UVX_OPTS) -x pyright -- noxfile.py tools/*.py
 	$(UVRUN) pylint $(PYLINT_OPTS) noxfile.py tools
 
 # * NOX ------------------------------------------------------------------------
