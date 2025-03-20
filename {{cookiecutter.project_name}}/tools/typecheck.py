@@ -1,5 +1,9 @@
 {% raw -%}
-"""uvx interface to mypy/pyright to handle python-version and python-executable."""
+"""
+Interface to type checkers (mypy/pyright) to handle python-version and python-executable.
+
+This allows for running centrally installed (or via uvx) type checkers against a given virtual environment.
+"""
 # pylint: disable=duplicate-code
 
 from __future__ import annotations
@@ -9,7 +13,6 @@ import os
 import shlex
 import sys
 from argparse import ArgumentParser
-from functools import lru_cache
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -17,26 +20,12 @@ if TYPE_CHECKING:
     from collections.abc import Mapping, Sequence
 
 
-FORMAT = "[%(levelname)s] %(message)s"
+FORMAT = "[TYPECHECK %(levelname)s] %(message)s"
 logging.basicConfig(level=logging.WARNING, format=FORMAT)
 logger = logging.getLogger(__name__)
 
 
 # * Utilities -----------------------------------------------------------------
-@lru_cache
-def _get_python_version(python_version: str | None) -> str:
-    if python_version is None:
-        return "{}.{}".format(*sys.version_info[:2])
-    return python_version
-
-
-@lru_cache
-def _get_python_executable(python_executable: str | None) -> str:
-    if python_executable is None:
-        return sys.executable
-    return python_executable
-
-
 def _setup_logging(
     verbosity: int = 0,
 ) -> None:  # pragma: no cover
@@ -172,8 +161,10 @@ def main(args: Sequence[str] | None = None) -> int:
 
     _setup_logging(options.verbosity)
 
-    python_version = _get_python_version(options.python_version)
-    python_executable = _get_python_executable(options.python_executable)
+    python_version = (
+        options.python_version or f"{sys.version_info.major}.{sys.version_info.minor}"
+    )
+    python_executable = options.python_executable or sys.executable
 
     logger.debug("checkers: %s", options.checkers)
     logger.debug("args: %s", options.args)

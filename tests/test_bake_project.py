@@ -177,7 +177,7 @@ def test_baked_mypystrict(
 ) -> None:
     if (py := get_python_version()) == DEFAULT_PYTHON:
         run_inside_dir(
-            f"nox {nox_opts} -s typing-{py} -- +m clean ++typing-run-internal 'mypy --strict' {nox_session_opts}",
+            f"nox {nox_opts} -s typing-{py} -- +m clean mypy ++typing-options --strict {nox_session_opts}",
             example_path,
         )
 
