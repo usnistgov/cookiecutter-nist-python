@@ -1,6 +1,6 @@
 {
   "template": ".",
-  "commit": "d6649f437f3cb7646f3614ef3eafafa40ee62580",
+  "commit": "673324616fad6ae013b4127bba819ca102ad931d",
   "checkout": "feature/uvx-constraints",
   "context": {
     "cookiecutter": {
@@ -19,7 +19,7 @@
       "__answers": "",
       "_copy_without_render": [],
       "_template": ".",
-      "_commit": "d6649f437f3cb7646f3614ef3eafafa40ee62580"
+      "_commit": "673324616fad6ae013b4127bba819ca102ad931d"
     }
   },
   "directory": null

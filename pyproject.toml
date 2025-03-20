@@ -228,7 +228,7 @@ python = "all"
 
 [tool.pyproject2conda.envs.uvx-tools]
 reqs = [
-    # these used solely for specking tools to be used with tools/uvxrun.py
+    # these used solely for specking tools to be used with uvx --constraints=...
     "conda-lock>=2.5.5",
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
