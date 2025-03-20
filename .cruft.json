@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "673324616fad6ae013b4127bba819ca102ad931d",
-  "checkout": "feature/uvx-constraints",
+  "commit": "677fa9048b9fff28edd83ef006d1ddb30302186c",
+  "checkout": "develop",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",
@@ -19,7 +19,7 @@
       "__answers": "",
       "_copy_without_render": [],
       "_template": ".",
-      "_commit": "673324616fad6ae013b4127bba819ca102ad931d"
+      "_commit": "677fa9048b9fff28edd83ef006d1ddb30302186c"
     }
   },
   "directory": null
