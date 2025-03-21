@@ -21,13 +21,9 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: mixed-line-ending
-  # * Sync dependencies
-  - repo: https://github.com/mxr/sync-pre-commit-deps
-    rev: v0.0.3
-    hooks:
-      - id: sync-pre-commit-deps
 
-  # * Pyproject-fmt
+  # * pyproject.toml
+  # ** format
   - repo: https://github.com/tox-dev/pyproject-fmt
     rev: v2.5.1
     hooks:
@@ -35,12 +31,18 @@ repos:
         args: [--indent=4, --keep-full-version]
         files: ""
         types: [toml]
-
-  # * Pyproject validate
+  # ** validate
   - repo: https://github.com/abravalheri/validate-pyproject
     rev: v0.24
     hooks:
       - id: validate-pyproject
+  # ** validate (schema-store)
+  - repo: https://github.com/henryiii/validate-pyproject-schema-store
+    rev: 2025.03.17
+    hooks:
+      - id: validate-pyproject
+        alias: validate-pyproject-full
+        stages: [manual]
 
   # * Prettier
   - repo: https://github.com/rbubley/mirrors-prettier
@@ -60,13 +62,6 @@ repos:
         # language_version: 10.9.0
 
   # * Linting
-  # To be replace by ruff analog when I find one ...
-  - repo: https://github.com/adamchainz/blacken-docs
-    rev: 1.19.1
-    hooks:
-      - id: blacken-docs
-        additional_dependencies:
-          - black==25.1.0
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.11.2
     hooks:
@@ -77,8 +72,23 @@ repos:
       - id: ruff-format
         alias: ruff-all
         types_or: *ruff-types-or
+  # To be replace by ruff analog when I find one ...
+  - repo: https://github.com/adamchainz/blacken-docs
+    rev: 1.19.1
+    hooks:
+      - id: blacken-docs
+        additional_dependencies:
+          - black==25.1.0
 
   # * Spelling
+  # ** typos (only with manual)
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.30.2
+    hooks:
+      - id: typos
+        stages: [manual]
+        exclude: "[.]ipynb$|^uv[.]lock$|^requirements"
+  # ** codespell
   - repo: https://github.com/codespell-project/codespell
     rev: v2.4.1
     hooks:
@@ -88,7 +98,82 @@ repos:
         exclude_types: [jupyter]
         exclude: ^uv[.]lock$|^requirements
 
-  # * Notebook spelling
+  # * Dependencies
+  # ** uv
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    # uv version.
+    rev: 0.6.9
+    hooks:
+      - id: uv-lock
+        args: [--locked]
+  # ** pyproject2conda
+  - repo: https://github.com/usnistgov/pyproject2conda
+    rev: v0.19.1
+    hooks:
+      - id: pyproject2conda-project
+        alias: requirements
+  # ** all lock files
+  - repo: local
+    hooks:
+      - id: requirements-lock
+        name: requirements-lock
+        alias: lock
+        entry: nox -s lock -- # ++lock-force
+        language: python
+        files: ^requirements/.*\.txt$
+        pass_filenames: false
+        additional_dependencies: ["nox==2025.2.9"]
+
+  # * Commit message
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v4.4.1
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
+
+  # * Makefile
+  - repo: https://github.com/mrtazz/checkmake.git
+    # Or another commit hash or version
+    rev: 0.2.2
+    hooks:
+      - id: checkmake
+        stages: [manual]
+
+  # * Notebook specific --------------------------------------------------------
+  # * Strip out metadata from notebooks
+  - repo: https://github.com/kynan/nbstripout
+    rev: 0.8.1
+    hooks:
+      - id: nbstripout
+        args: [
+            --keep-output, # keep output (needed for nbval testing)
+            --keep-count, # Errors with nbval without this...
+            --extra-keys, # strip out kernelspec.  If use this, always have to reselect kernel when open a notebook...
+            "metadata.kernelspec metadata.kernel_spec",
+          ]
+
+  # ** typos
+  - repo: https://github.com/nbQA-dev/nbQA
+    rev: 1.9.1
+    hooks:
+      - id: nbqa
+        alias: nbqa-typos
+        name: nbqa-typos
+        additional_dependencies: &typos-deps [typos==1.30.2] # make sure save version as above.
+        stages: [manual]
+        args: [typos, --nbqa-shell]
+        # this can lead to errors, so use with care
+        # args: [typos, --write-changes, --nbqa-shell]
+      - id: nbqa
+        alias: nbqa-typos
+        name: nbqa-typos-markdown
+        additional_dependencies: *typos-deps
+        stages: [manual]
+        args: [typos, --nbqa-shell, --nbqa-md]
+        # this can lead to errors, so use with care
+        # args: [typos, --write-changes, --nbqa-shell, --nbqa-md]
+
+  # ** codespell
   - repo: https://github.com/nbQA-dev/nbQA
     rev: 1.9.1
     hooks:
@@ -109,108 +194,3 @@ repos:
             --nbqa-shell,
             --nbqa-md,
           ]
-
-  # * Strip out metadata from notebooks
-  - repo: https://github.com/kynan/nbstripout
-    rev: 0.8.1
-    hooks:
-      - id: nbstripout
-        args: [
-            --keep-output, # keep output (needed for nbval testing)
-            --keep-count, # Errors with nbval without this...
-            --extra-keys, # strip out kernelspec.  If use this, always have to reselect kernel when open a notebook...
-            "metadata.kernelspec metadata.kernel_spec",
-          ]
-
-  # * Commit message
-  - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.4.1
-    hooks:
-      - id: commitizen
-        stages: [commit-msg]
-
-  # * uv
-  - repo: https://github.com/astral-sh/uv-pre-commit
-    # uv version.
-    rev: 0.6.9
-    hooks:
-      - id: uv-lock
-        args: [--locked]
-
-  # * pyproject2conda
-  - repo: https://github.com/usnistgov/pyproject2conda
-    rev: v0.19.1
-    hooks:
-      - id: pyproject2conda-project
-        alias: requirements
-
-  # * all lock files
-  - repo: local
-    hooks:
-      - id: requirements-lock
-        name: requirements-lock
-        alias: lock
-        entry: nox -s lock -- # ++lock-force
-        language: python
-        files: ^requirements/.*\.txt$
-        pass_filenames: false
-        additional_dependencies: ["nox==2025.2.9"]
-
-  # * Manual Linting ------------------------------------------------------------
-  # - repo: https://github.com/asottile/pyupgrade
-  #   rev: v3.19.1
-  #   hooks:
-  #     - id: pyupgrade
-  #       stages: [manual]
-  #       args: [--py38-plus]
-  # - repo: https://github.com/nbQA-dev/nbQA
-  #   rev: 1.9.1
-  #   hooks:
-  #     - id: nbqa-pyupgrade
-  #       additional_dependencies: [pyupgrade]
-  #       stages: [manual]
-  #       args: [--py38-plus]
-
-  # pyproject-validate (schema-store)
-  - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2025.03.17
-    hooks:
-      - id: validate-pyproject
-        alias: validate-pyproject-full
-        stages: [manual]
-
-  # * checkmake
-  - repo: https://github.com/mrtazz/checkmake.git
-    # Or another commit hash or version
-    rev: 0.2.2
-    hooks:
-      - id: checkmake
-        stages: [manual]
-
-  # ** typos
-  # Probably stick with codespell, but this might also be nice...
-  - repo: https://github.com/crate-ci/typos
-    rev: v1.30.2
-    hooks:
-      - id: typos
-        stages: [manual]
-        exclude: "[.]ipynb$|^uv[.]lock$|^requirements"
-  - repo: https://github.com/nbQA-dev/nbQA
-    rev: 1.9.1
-    hooks:
-      - id: nbqa
-        alias: nbqa-typos
-        name: nbqa-typos
-        additional_dependencies: &typos-deps [typos==1.30.2] # make sure save version as above.
-        stages: [manual]
-        args: [typos, --nbqa-shell]
-        # this can lead to errors, so use with care
-        # args: [typos, --write-changes, --nbqa-shell]
-      - id: nbqa
-        alias: nbqa-typos
-        name: nbqa-typos-markdown
-        additional_dependencies: *typos-deps
-        stages: [manual]
-        args: [typos, --nbqa-shell, --nbqa-md]
-        # this can lead to errors, so use with care
-        # args: [typos, --write-changes, --nbqa-shell, --nbqa-md]
