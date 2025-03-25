@@ -56,6 +56,7 @@ if sys.version_info < (3, 10):
 
 PACKAGE_NAME = "{{ cookiecutter.project_name }}"
 IMPORT_NAME = "{{ cookiecutter.project_slug }}"
+KERNEL_NAME = "{{ cookiecutter.project_name }}"
 
 # * nox options ------------------------------------------------------------------------
 
@@ -458,7 +459,13 @@ def uvx_run(
 def pre_commit_run(session: Session, *args: str | PathLike[str], **kwargs: Any) -> Any:
     """Run pre-commit via uvx."""
     return uvx_run(
-        session, "--with=pre-commit-uv", "pre-commit", "run", *args, **kwargs
+        session,
+        "--with=pre-commit-uv",
+        "pre-commit",
+        "run",
+        *args,
+        **kwargs,
+        locked=False,
     )
 
 
@@ -512,9 +519,9 @@ def install_ipykernel(session: Session) -> None:
         "install",
         "--user",
         "--name",
-        "{{ cookiecutter.project_name }}",
+        KERNEL_NAME,
         "--display-name",
-        "Python [venv: {{ cookiecutter.project_name }}]",
+        {% raw %}f"Python [venv: {KERNEL_NAME}]"{% endraw %},
         success_codes=[0, 1],
     )
 
