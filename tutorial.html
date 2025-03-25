@@ -57,7 +57,7 @@
     <link rel="prev" title="cookiecutter-nist-python" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="2025-03-10"/>
+    <meta name="docbuild:last-update" content="2025-03-25"/>
   </head>
   
   
@@ -651,8 +651,8 @@ create the final recipe.</p>
 </div>
 <p>Use <code class="docutils literal notranslate"><span class="pre">typing-conda</span></code> to test typing in a conda environment.</p>
 <p>Note that the repo is setup to use a single install of <a class="reference external" href="https://github.com/python/mypy">mypy</a> and <a class="reference external" href="https://github.com/microsoft/pyright">pyright</a>. The
-script <code class="docutils literal notranslate"><span class="pre">tools/uvxrun.py</span></code> will run check if an appropriate version of the
-typecheckers is installed. If not, they will be run (and cached) using <a class="reference external" href="https://docs.astral.sh/uv/guides/tools/">uvx</a>.</p>
+script <code class="docutils literal notranslate"><span class="pre">tools/typecheck.py</span></code> will run the checkers via <a class="reference external" href="https://docs.astral.sh/uv/guides/tools/">uvx</a> and point the
+checker to the appropriate python executable.</p>
 </section>
 <section id="setup-development-environment">
 <h2>Setup development environment<a class="headerlink" href="#setup-development-environment" title="Link to this heading">#</a></h2>
@@ -737,12 +737,12 @@ activate the development environment when in the parent directory.</p>
 </pre></div>
 </div>
 <p>Note that the repo is setup to automatically use <a class="reference external" href="https://docs.astral.sh/uv/guides/tools/">uvx</a> for many of these tools.
-Behind the scenes, the makefile and <code class="docutils literal notranslate"><span class="pre">noxfile.py</span></code> will invoke <code class="docutils literal notranslate"><span class="pre">tools/uvxrun.py</span></code>.
-This will run the tool with <code class="docutils literal notranslate"><span class="pre">uvx</span> <span class="pre">tool..</span></code> with proper tool version. Note that if
-the tool is already installed with the proper version, <a class="reference external" href="https://docs.astral.sh/uv/guides/tools/">uvx</a> will use it. This
-prevents having to install a bunch of tooling in the “dev” environment, and also
-avoid creating a bunch of through away <a class="reference external" href="https://github.com/wntrblm/nox">nox</a> environments. This is experimental,
-and I might change back to using small <a class="reference external" href="https://github.com/wntrblm/nox">nox</a> environments again in the future.</p>
+Behind the scenes, the makefile and <code class="docutils literal notranslate"><span class="pre">noxfile.py</span></code> will invoke <a class="reference external" href="https://docs.astral.sh/uv/guides/tools/">uvx</a> with
+constraints from <code class="docutils literal notranslate"><span class="pre">requirements/lock/uvx-tools.txt</span></code>. This will run the tool with
+with the proper version. Note that if the tool is already installed with the
+proper version, <a class="reference external" href="https://docs.astral.sh/uv/guides/tools/">uvx</a> will use it. This prevents having to install a bunch of
+tooling in the “dev” environment, and also avoid creating a bunch of through
+away <a class="reference external" href="https://github.com/wntrblm/nox">nox</a> environments.</p>
 </section>
 </section>
 <section id="package-version">
@@ -910,7 +910,7 @@ By William P. Krekelberg
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on 2025-03-10.
+  Last updated on 2025-03-25.
   <br/>
 </p>
   </div>
