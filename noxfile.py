@@ -56,7 +56,6 @@ if sys.version_info < (3, 10):
 
 PACKAGE_NAME = "cookiecutter-nist-python"
 IMPORT_NAME = "cookiecutter_nist_python"
-KERNEL_BASE = "cookiecutter_nist_python"
 
 # * nox options ------------------------------------------------------------------------
 

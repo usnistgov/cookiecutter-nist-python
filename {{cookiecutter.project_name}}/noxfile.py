@@ -56,7 +56,6 @@ if sys.version_info < (3, 10):
 
 PACKAGE_NAME = "{{ cookiecutter.project_name }}"
 IMPORT_NAME = "{{ cookiecutter.project_slug }}"
-KERNEL_BASE = "{{ cookiecutter.project_slug }}"
 
 # * nox options ------------------------------------------------------------------------
 
