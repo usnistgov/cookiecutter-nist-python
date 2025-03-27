@@ -129,6 +129,15 @@ fragments = [
     { path = "LICENSE" },
 ]
 
+[tool.repo-review]
+ignore = [
+    "GH",    # enable for actions
+    "PC140", # do this externally
+    "PC170", # pygrep
+    "PC901", # ci message
+    "RTD",
+]
+
 [tool.check-wheel-contents]
 toplevel = [ "{{ cookiecutter.project_slug }}" ]
 src_dir = [ "src" ]
@@ -140,6 +149,9 @@ src_dir = [ "src" ]
 
 [tool.pytest.ini_options]
 addopts = [
+    "-ra",
+    "--strict-config",
+    "--strict-markers",
     "--doctest-modules",
     "--doctest-glob=*.md",
     "--pyargs",
@@ -150,6 +162,10 @@ testpaths = [
     "{{ cookiecutter.project_slug }}",
     "tests",
 ]
+minversion = "8"
+log_cli_level = "INFO"
+xfail_strict = true
+filterwarnings = [ "error" ]
 
 [tool.coverage.run]
 branch = true
@@ -181,10 +197,10 @@ files = [
     "src",
     "tests",
 ]
-show_error_codes = true
 warn_unused_ignores = true
 warn_return_any = true
 warn_unused_configs = true
+warn_unreachable = true
 exclude = [
     ".eggs",
     ".tox",
@@ -195,6 +211,11 @@ exclude = [
 ]
 check_untyped_defs = true
 strict = true
+enable_error_code = [
+    "ignore-without-code",
+    "redundant-expr",
+    "truthy-bool",
+]
 
 # [[tool.mypy.overrides]]
 # ignore_missing_imports = true

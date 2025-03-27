@@ -81,6 +81,17 @@ typing = [
     "pytest",
 ]
 
+[tool.repo-review]
+ignore = [
+    "GH",    # enable for actions
+    "PC140", # do this externally
+    "PC170", # pygrep
+    "PC901", # ci message
+    "RTD",
+    "PP002",
+    "PP003",
+]
+
 [tool.pyproject-fmt]
 # max_supported_python = "3.13"
 
@@ -88,6 +99,9 @@ typing = [
 
 [tool.pytest.ini_options]
 addopts = [
+    "-ra",
+    "--strict-config",
+    "--strict-markers",
     "--doctest-modules",
     "--doctest-glob=*.md",
     "--cov-config=pyproject.toml",
@@ -116,6 +130,10 @@ markers = [
     "copier: run copier tests",
     "notebook: run typing/test on notebook",
 ]
+minversion = "8"
+log_cli_level = "INFO"
+xfail_strict = true
+filterwarnings = [ "error" ]
 
 [tool.coverage.run]
 branch = true
@@ -139,10 +157,10 @@ include = [
 files = [
     "tests",
 ]
-show_error_codes = true
 warn_unused_ignores = true
 warn_return_any = true
 warn_unused_configs = true
+warn_unreachable = true
 exclude = [
     ".eggs",
     ".tox",
@@ -152,7 +170,12 @@ exclude = [
     "docs",
 ]
 check_untyped_defs = true
-# strict = true
+strict = false
+enable_error_code = [
+    "ignore-without-code",
+    "redundant-expr",
+    "truthy-bool",
+]
 
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
