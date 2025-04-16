@@ -38,7 +38,7 @@ repos:
       - id: validate-pyproject
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2025.03.24
+    rev: 2025.04.07
     hooks:
       - id: validate-pyproject
         alias: validate-pyproject-full
@@ -69,7 +69,7 @@ repos:
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.2
+    rev: v0.11.5
     hooks:
       - id: ruff
         alias: ruff-all
@@ -89,7 +89,7 @@ repos:
   # * Spelling
   # ** typos (only with manual)
   - repo: https://github.com/crate-ci/typos
-    rev: v1.30.3
+    rev: v1.31.1
     hooks:
       - id: typos
         stages: [manual]
@@ -109,7 +109,7 @@ repos:
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
     # uv version.
-    rev: 0.6.10
+    rev: 0.6.14
     hooks:
       - id: uv-lock
         args: [--locked]
@@ -133,7 +133,7 @@ repos:
 
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.4.1
+    rev: v4.6.0
     hooks:
       - id: commitizen
         stages: [commit-msg]
@@ -166,7 +166,7 @@ repos:
       - id: nbqa
         alias: nbqa-typos
         name: nbqa-typos
-        additional_dependencies: &typos-deps [typos==1.30.3] # make sure save version as above.
+        additional_dependencies: &typos-deps [typos==1.31.1] # make sure save version as above.
         stages: [manual]
         args: [typos, --nbqa-shell]
         # this can lead to errors, so use with care
