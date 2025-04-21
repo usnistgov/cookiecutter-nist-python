@@ -39,7 +39,7 @@ dev = [
     { include-group = "mypy" },
     # { include-group = "nbval" },
     { include-group = "test" },
-    { include-group = "typing" },
+    { include-group = "typecheck" },
 ]
 test = [
     { include-group = "test-extras" },
@@ -76,7 +76,7 @@ test-notebook = [
     { include-group = "nbval" },
     { include-group = "test-extras" },
 ]
-typing = [
+typecheck = [
     "pylint",
     "pytest",
 ]
@@ -120,7 +120,7 @@ markers = [
     "test: run tests",
     "lint: run linting",
     "docs: make docs",
-    "typing: run typing checks",
+    "typecheck: run type checkers",
     "mypystrict: run mypy --strict",
     "create: simple test on path creation",
     "longname: a project with a long name",
@@ -151,7 +151,7 @@ include = [
     "src/*",
 ]
 
-# * Typing ---------------------------------------------------------------------
+# * typecheck ---------------------------------------------------------------------
 
 [tool.mypy]
 files = [

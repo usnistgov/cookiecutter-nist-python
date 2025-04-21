@@ -71,7 +71,7 @@ repos:
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.5
+    rev: v0.11.6
     hooks:
       - id: ruff
         alias: ruff-all
@@ -147,6 +147,18 @@ repos:
     hooks:
       - id: checkmake
         stages: [manual]
+
+  # * Justfile
+  - repo: local
+    hooks:
+      - id: just-fmt
+        name: just-fmt
+        entry:
+          uvx --constraints=requirements/lock/uvx-tools.txt --from="rust-just"
+          just --fmt --justfile
+        stages: [manual]
+        language: python
+        files: \.?[jJ]ustfile
 
   # * Notebook specific --------------------------------------------------------
   # * Strip out metadata from notebooks

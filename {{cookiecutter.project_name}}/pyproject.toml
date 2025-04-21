@@ -55,7 +55,7 @@ dev = [
     { include-group = "mypy" },
     # { include-group = "nbval" },
     { include-group = "test" },
-    { include-group = "typing" },
+    { include-group = "typecheck" },
 ]
 test = [
     { include-group = "test-extras" },
@@ -107,7 +107,7 @@ test-notebook = [
     { include-group = "nbval" },
     { include-group = "test-extras" },
 ]
-typing = [
+typecheck = [
     "pylint",
     "pytest",
 ]
@@ -190,7 +190,7 @@ source = [
     ".nox/**/site-packages/",
 ]
 
-# * Typing ---------------------------------------------------------------------
+# * typecheck ---------------------------------------------------------------------
 
 [tool.mypy]
 files = [
@@ -314,8 +314,8 @@ style = "requirements"
 groups = "docs-live"
 style = "requirements"
 
-[tool.pyproject2conda.envs.typing]
-groups = "typing"
+[tool.pyproject2conda.envs.typecheck]
+groups = "typecheck"
 python = "all"
 style = "requirements"
 

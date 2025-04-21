@@ -62,9 +62,9 @@ pyright==1.1.399 \
     --hash=sha256:439035d707a36c3d1b443aec980bc37053fbda88158eded24b8eedcf1c7b7a1b \
     --hash=sha256:55f9a875ddf23c9698f24208c764465ffdfd38be6265f7faf9a176e1dc549f3b
     # via -r requirements/uvx-tools.txt
-scriv==1.6.2 \
-    --hash=sha256:0c660bcfbbc43e2fbd407d401b84ca1073ede8ac4726c14520b703ea29d04351 \
-    --hash=sha256:58bc11e80498d99e24f612674c1b8c57c7412cf380115b6a1c9af7b29c601e12
+scriv==1.7.0 \
+    --hash=sha256:7c1a8be6351d03692e5e75784deea0d8f11b2c90f91be18b0fb3a375555b525e \
+    --hash=sha256:cbbdb93c40c3a6f9936c5f68035f20335bba871ec60028e43ff21e27441cfd65
     # via -r requirements/uvx-tools.txt
 twine==6.1.0 \
     --hash=sha256:a47f973caf122930bf0fbbf17f80b83bc1602c9ce393c7845f289a3001dc5384 \

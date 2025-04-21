@@ -68,6 +68,7 @@ def check_directory(
             "CONTRIBUTING.md",
             "LICENSE",
             "Makefile",
+            "justfile",
             "README.md",
             "AUTHORS.md",
             "uv.lock",
@@ -164,10 +165,11 @@ def test_baked_docs(example_path: Path, nox_opts: str, nox_session_opts: str) ->
         )
 
 
-# @pytest.mark.typing
-def test_baked_typing(example_path: Path, nox_opts: str, nox_session_opts: str) -> None:
+def test_baked_typecheck(
+    example_path: Path, nox_opts: str, nox_session_opts: str
+) -> None:
     run_inside_dir(
-        f"nox {nox_opts} -s typing-{get_python_version()} -- +m clean mypy pyright pylint {nox_session_opts}",
+        f"nox {nox_opts} -s typecheck-{get_python_version()} -- +m clean mypy pyright pylint {nox_session_opts}",
         example_path,
     )
 
@@ -177,7 +179,7 @@ def test_baked_mypystrict(
 ) -> None:
     if (py := get_python_version()) == DEFAULT_PYTHON:
         run_inside_dir(
-            f"nox {nox_opts} -s typing-{py} -- +m clean mypy ++typing-options --strict {nox_session_opts}",
+            f"nox {nox_opts} -s typecheck-{py} -- +m clean mypy ++typecheck-options --strict {nox_session_opts}",
             example_path,
         )
 
@@ -187,7 +189,7 @@ def test_baked_notebook(
 ) -> None:
     if (py := get_python_version()) == DEFAULT_PYTHON:
         run_inside_dir(
-            f"nox {nox_opts} -s typing-{py} -- +m clean  notebook-typecheck {nox_session_opts}",
+            f"nox {nox_opts} -s typecheck-{py} -- +m clean typecheck-notebook {nox_session_opts}",
             example_path,
         )
         run_inside_dir(
