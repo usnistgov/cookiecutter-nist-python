@@ -57,7 +57,7 @@
     <link rel="prev" title="License" href="license.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="2025-03-25"/>
+    <meta name="docbuild:last-update" content="2025-04-21"/>
   </head>
   
   
@@ -390,6 +390,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-environment-yaml-requirement-txt-files">Creating environment.yaml/requirement.txt files</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-just-as-task-runner">Using just as task runner</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ipykernel">ipykernel</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-docs">Building the docs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-with-nox">Testing with nox</a></li>
@@ -573,17 +574,14 @@ commit. Alternatively, you can run the hooks over all files using:</p>
 </section>
 <section id="using-nox">
 <h2>Using nox<a class="headerlink" href="#using-nox" title="Link to this heading">#</a></h2>
-<p>This project makes extensive use of <a class="reference external" href="https://github.com/wntrblm/nox">nox</a> to automate testing, typing,
+<p>This project makes extensive use of <a class="reference external" href="https://github.com/wntrblm/nox">nox</a> to automate testing, type checking,
 documentation creation, etc. One downside of using <a class="reference external" href="https://tox.wiki/en/latest/">tox</a> with this particular
-workflow is the need for multiple scripts/makefiles, while with <a class="reference external" href="https://github.com/wntrblm/nox">nox</a>, most
-everything is self contained in the file <code class="docutils literal notranslate"><span class="pre">noxfile.py</span></code>. <a class="reference external" href="https://github.com/wntrblm/nox">nox</a> also allows for a
-mix of <a class="reference external" href="https://docs.conda.io/en/latest/">conda</a> and <a class="reference external" href="https://virtualenv.pypa.io/en/latest/">virtualenv</a> environments. The default is for the development
-environment to use conda, while all other environments are virtualenvs. There
-are conda sessions for testing (<code class="docutils literal notranslate"><span class="pre">test-conda</span></code>), typing (<code class="docutils literal notranslate"><span class="pre">typing-conda</span></code>), docs
-(<code class="docutils literal notranslate"><span class="pre">docs-conda</span></code>), etc.</p>
+workflow is the need for multiple scripts, while with <a class="reference external" href="https://github.com/wntrblm/nox">nox</a>, most everything is
+self contained in the file <code class="docutils literal notranslate"><span class="pre">noxfile.py</span></code>. <a class="reference external" href="https://github.com/wntrblm/nox">nox</a> also allows for a mix of <a class="reference external" href="https://docs.conda.io/en/latest/">conda</a>
+and <a class="reference external" href="https://virtualenv.pypa.io/en/latest/">virtualenv</a> environments.</p>
 <section id="installing-interpreters-for-virtualenv-creation">
 <h3>Installing interpreters for virtualenv creation<a class="headerlink" href="#installing-interpreters-for-virtualenv-creation" title="Link to this heading">#</a></h3>
-<p>If using virtualenvs across multiple python versions (e.g., <code class="docutils literal notranslate"><span class="pre">test</span></code>, <code class="docutils literal notranslate"><span class="pre">typing</span></code>,
+<p>If using virtualenvs across multiple python versions (e.g., <code class="docutils literal notranslate"><span class="pre">test</span></code>, <code class="docutils literal notranslate"><span class="pre">typecheck</span></code>,
 etc), you’ll need to install python interpreters for each version. If using
 <a class="reference external" href="https://github.com/pyenv/pyenv">pyenv</a>, you should be good to go.</p>
 <p>Instead of using <a class="reference external" href="https://github.com/pyenv/pyenv">pyenv</a>, I use <a class="reference external" href="https://github.com/astral-sh/uv">uv</a> to manage python versions. For example:</p>
@@ -595,9 +593,8 @@ to use only managed python:</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="n">python-preference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;only-managed&quot;</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">noxfile.py</span></code> is setup to automatically add the python interpreters installed
-by <a class="reference external" href="https://github.com/astral-sh/uv">uv</a> to the path. Note that the python version needs to be installed before
-it can be used with <a class="reference external" href="https://github.com/wntrblm/nox">nox</a></p>
+<p><a class="reference external" href="https://github.com/wntrblm/nox">nox</a> is setup to automatically work with <a class="reference external" href="https://github.com/astral-sh/uv">uv</a>. Note that the python interpreter
+may need to be installed before it can be used with <a class="reference external" href="https://github.com/wntrblm/nox">nox</a></p>
 </section>
 <section id="nox-session-options">
 <h3>Nox session options<a class="headerlink" href="#nox-session-options" title="Link to this heading">#</a></h3>
@@ -644,9 +641,14 @@ calls the session <code class="docutils literal notranslate"><span class="pre">l
 <p>This will also update <code class="docutils literal notranslate"><span class="pre">uv.lock</span></code> if it’s being used.</p>
 </section>
 </section>
+<section id="using-just-as-task-runner">
+<h2>Using <a class="reference external" href="https://github.com/casey/just">just</a> as task runner<a class="headerlink" href="#using-just-as-task-runner" title="Link to this heading">#</a></h2>
+<p>The project includes a <code class="docutils literal notranslate"><span class="pre">justfile</span></code> to be invoked using <a class="reference external" href="https://github.com/casey/just">just</a> to simplify common
+tasks. Run <code class="docutils literal notranslate"><span class="pre">just</span></code> with no options to see available commands.</p>
+</section>
 <section id="ipykernel">
 <h2>ipykernel<a class="headerlink" href="#ipykernel" title="Link to this heading">#</a></h2>
-<p>The environments created by nox <code class="docutils literal notranslate"><span class="pre">dev</span></code>, or running <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install-kernel</span></code>, will
+<p>The environments created by nox <code class="docutils literal notranslate"><span class="pre">dev</span></code>, or running <code class="docutils literal notranslate"><span class="pre">just</span> <span class="pre">install-kernel</span></code>, will
 try to add meaningful display names for ipykernel. These are installed at the
 user level. To cleanup the kernels (meaning, removing installed kernels that
 point to a removed environment), You can use the script
@@ -738,7 +740,7 @@ create the final recipe.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nox<span class="w"> </span>-s<span class="w"> </span>testdist-conda<span class="w"> </span>--<span class="w"> </span>++version<span class="w"> </span><span class="o">[</span>version<span class="o">]</span>
 </pre></div>
 </div>
-<p>to to likewise from conda.</p>
+<p>to do likewise from conda.</p>
 </section>
 <section id="testing-notebooks-with-nbval">
 <h2>Testing notebooks with <a class="reference external" href="https://github.com/computationalmodelling/nbval">nbval</a><a class="headerlink" href="#testing-notebooks-with-nbval" title="Link to this heading">#</a></h2>
@@ -750,10 +752,9 @@ create the final recipe.</p>
 <section id="type-checking">
 <h2>Type checking<a class="headerlink" href="#type-checking" title="Link to this heading">#</a></h2>
 <p>Run:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nox<span class="w"> </span>-s<span class="w"> </span>typing<span class="w"> </span>--<span class="w"> </span>+m<span class="w"> </span><span class="o">[</span>commands<span class="o">]</span><span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nox<span class="w"> </span>-s<span class="w"> </span>typecheck<span class="w"> </span>--<span class="w"> </span>+m<span class="w"> </span><span class="o">[</span>commands<span class="o">]</span><span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
 </pre></div>
 </div>
-<p>Use <code class="docutils literal notranslate"><span class="pre">typing-conda</span></code> to test typing in a conda environment.</p>
 <p>Note that the repo is setup to use a single install of <a class="reference external" href="https://github.com/python/mypy">mypy</a> and <a class="reference external" href="https://github.com/microsoft/pyright">pyright</a>. The
 script <code class="docutils literal notranslate"><span class="pre">tools/typecheck.py</span></code> will run the checkers via <a class="reference external" href="https://docs.astral.sh/uv/guides/tools/">uvx</a> and point the
 checker to the appropriate python executable.</p>
@@ -801,7 +802,7 @@ the above, you may have to run something like:</p>
 </div>
 <p>and use this requirement file in the commands above.</p>
 <p>If the project includes an ipython kernel, you can install it with:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>install-kernel
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>just<span class="w"> </span>install-kernel
 </pre></div>
 </div>
 <p>Alternatively, you can simply use:</p>
@@ -816,32 +817,23 @@ activate the development environment when in the parent directory.</p>
 </section>
 <section id="development-tools">
 <h3>Development tools<a class="headerlink" href="#development-tools" title="Link to this heading">#</a></h3>
-<p>Additional tools are:</p>
+<p>The only required tool is <a class="reference external" href="https://github.com/astral-sh/uv">uv</a>. Other tools used are:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://pre-commit.com/">pre-commit</a></p></li>
-<li><p><a class="reference external" href="https://github.com/astral-sh/uv">uv</a> (optional, highly recommended)</p></li>
-<li><p><a class="reference external" href="https://github.com/nedbat/scriv">scriv</a> (optional)</p></li>
-<li><p><a class="reference external" href="https://github.com/microsoft/pyright">pyright</a> (optional)</p></li>
-<li><p><a class="reference external" href="https://github.com/cruft/cruft">cruft</a> (optional)</p></li>
-<li><p><a class="reference external" href="https://github.com/commitizen-tools/commitizen">commitizen</a> (optional)</p></li>
-<li><p><a class="reference external" href="https://github.com/nedbat/cog">cog</a> (optional)</p></li>
-<li><p><a class="reference external" href="https://github.com/nbQA-dev/nbQA">nbqa</a> (optional)</p></li>
+<li><p><a class="reference external" href="https://github.com/casey/just">just</a></p></li>
+<li><p><a class="reference external" href="https://github.com/nedbat/scriv">scriv</a></p></li>
+<li><p><a class="reference external" href="https://github.com/microsoft/pyright">pyright</a></p></li>
+<li><p><a class="reference external" href="https://github.com/cruft/cruft">cruft</a></p></li>
+<li><p><a class="reference external" href="https://github.com/commitizen-tools/commitizen">commitizen</a></p></li>
+<li><p><a class="reference external" href="https://github.com/nedbat/cog">cog</a></p></li>
+<li><p><a class="reference external" href="https://github.com/nbQA-dev/nbQA">nbqa</a></p></li>
 </ul>
-<p>We recommend installing these tools with <a class="reference external" href="https://github.com/astral-sh/uv">uv</a>, but feel free to use <a class="reference external" href="https://github.com/pypa/pipx">pipx</a> or
-<a class="reference external" href="https://github.com/mariusvniekerk/condax">condax</a>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">uv tool/condax/pipx install pre-commit</span>
-<span class="gp"># </span>optional<span class="w"> </span>packages
-<span class="go">uv tool/pipx install scriv</span>
-<span class="go">uv tool/condax/pipx install uv</span>
-<span class="go">uv tool/condax/pipx install pyright</span>
-<span class="go">uv tool/condax/pipx install cruft</span>
-<span class="go">uv tool/condax/pipx install commitizen</span>
-<span class="go">uv tool/condax/pipx install cogapp</span>
-<span class="go">uv tool/condax/pipx install nbqa</span>
+<p>which can be installed using:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>tool<span class="w"> </span>install<span class="w"> </span>pre-commit
 </pre></div>
 </div>
 <p>Note that the repo is setup to automatically use <a class="reference external" href="https://docs.astral.sh/uv/guides/tools/">uvx</a> for many of these tools.
-Behind the scenes, the makefile and <code class="docutils literal notranslate"><span class="pre">noxfile.py</span></code> will invoke <a class="reference external" href="https://docs.astral.sh/uv/guides/tools/">uvx</a> with
+Behind the scenes, the <code class="docutils literal notranslate"><span class="pre">justfile</span></code> and <code class="docutils literal notranslate"><span class="pre">noxfile.py</span></code> will invoke <a class="reference external" href="https://docs.astral.sh/uv/guides/tools/">uvx</a> with
 constraints from <code class="docutils literal notranslate"><span class="pre">requirements/lock/uvx-tools.txt</span></code>. This will run the tool with
 with the proper version. Note that if the tool is already installed with the
 proper version, <a class="reference external" href="https://docs.astral.sh/uv/guides/tools/">uvx</a> will use it. This prevents having to install a bunch of
@@ -932,6 +924,7 @@ uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </s
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-environment-yaml-requirement-txt-files">Creating environment.yaml/requirement.txt files</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-just-as-task-runner">Using just as task runner</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ipykernel">ipykernel</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-docs">Building the docs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-with-nox">Testing with nox</a></li>
@@ -980,7 +973,7 @@ By William P. Krekelberg
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on 2025-03-25.
+  Last updated on 2025-04-21.
   <br/>
 </p>
   </div>
