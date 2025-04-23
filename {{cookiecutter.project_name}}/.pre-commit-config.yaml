@@ -21,6 +21,13 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: mixed-line-ending
+  # * meta hooks
+  - repo: meta
+    hooks:
+      - id: check-hooks-apply
+        stages: [manual]
+      - id: check-useless-excludes
+        stages: [manual]
 
   # * pyproject.toml
   # ** format
@@ -109,7 +116,7 @@ repos:
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
     # uv version.
-    rev: 0.6.14
+    rev: 0.6.16
     hooks:
       - id: uv-lock
         args: [--locked]
