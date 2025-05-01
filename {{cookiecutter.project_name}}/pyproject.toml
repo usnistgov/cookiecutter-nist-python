@@ -88,7 +88,7 @@ dev-extras = [
     "ipykernel",
     "ipython",
     "nbclient>=0.10.0",
-    "nox>=2024.10.9",
+    "nox>=2025.5.1",
     "pytest-accept",
 ]
 docs-live = [
@@ -346,7 +346,7 @@ style = "requirements"
 managed = true
 default-groups = [ "dev" ]
 fork-strategy = "requires-python"
-required-version = ">=0.6.5"
+required-version = ">=0.7.2"
 
 [tool.uv.pip]
 annotation-style = "line"
