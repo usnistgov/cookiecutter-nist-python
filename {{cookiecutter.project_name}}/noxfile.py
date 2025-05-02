@@ -322,9 +322,14 @@ def install_dependencies(
         session.run_install(
             "uv",
             "sync",
-            *(["-U"] if opts.update else []),
+            *(
+                ["-U"]
+                if opts.update and opts.no_frozen
+                else []
+                if opts.no_frozen
+                else ["--frozen"]
+            ),
             *(["--no-dev"] if no_dev else []),
-            *([] if opts.no_frozen else ["--frozen"]),
             *(["--only-group"] if only_group else ["--group"]),
             name,
             # Handle package install here?
