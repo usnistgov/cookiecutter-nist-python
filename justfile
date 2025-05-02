@@ -8,7 +8,7 @@ UVX_OPTS := "--constraints=requirements/lock/uvx-tools.txt"
 UVX_WITH_OPTS := UVX + " " + UVX_OPTS
 UVRUN := "uv run --frozen"
 TYPECHECK := UVRUN + " --no-config tools/typecheck.py -v"
-NOX := UVX + " --from 'nox>=2024.10.9' nox"
+NOX := UVX + " --from 'nox>=2025.5.1' nox"
 
 # For pre-commit, just use a minimum version...
 
