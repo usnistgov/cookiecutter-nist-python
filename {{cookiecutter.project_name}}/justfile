@@ -181,7 +181,7 @@ pylint *options="src tests":
 
 # Run all checkers (with optional directories)
 [group("typecheck")]
-typecheck *options: (mypy options) (pyright options) (pylint options)
+typecheck *options: (mypy options) (pyright options) (pylint options "src" "tests")
 
 [group("tools")]
 [group("typecheck")]
