@@ -175,12 +175,12 @@ pyright-watch *options: (pyright "-w" options)
 # Run pylint (with optional args)
 [group("lint")]
 [group("typecheck")]
-pylint *options="src tests":
-    {{ UVRUN }} pylint {{ PYLINT_OPTS }} {{ options }} tests
+pylint *options="tests":
+    {{ UVRUN }} pylint {{ PYLINT_OPTS }} {{ options }}
 
 # Run all checkers (with optional directories)
 [group("typecheck")]
-typecheck *options: (mypy options) (pyright options) (pylint options)
+typecheck *options: (mypy options) (pyright options) (pylint options "tests")
 
 [group("tools")]
 [group("typecheck")]
