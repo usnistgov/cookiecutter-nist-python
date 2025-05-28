@@ -93,13 +93,15 @@ prettier: (lint "pyproject-fmt") (lint-manual "prettier") (lint-manual "markdown
 validate-pyproject: (lint-manual "validate-pyproject-full") (lint-manual "sp-repo-review")
 
 [group("lint")]
-ruff: (lint "ruff")
+ruff-check: (lint "ruff-check")
 
 [group("lint")]
 ruff-format: (lint "ruff-format")
 
 [group("lint")]
-ruff-all: ruff ruff-format
+ruff: (lint "ruff")
+
+alias ruff-all := ruff
 
 [group("lint")]
 checkmake: (lint-manual "checkmake")
