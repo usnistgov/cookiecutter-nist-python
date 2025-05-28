@@ -13,7 +13,7 @@ You can contribute in many ways:
 
 ### Report Bugs
 
-Report bugs at [here][issues]
+[Report bugs at here][issues]
 
 If you are reporting a bug, please include:
 
@@ -39,7 +39,7 @@ such.
 
 ### Submit Feedback
 
-The best way to send feedback is to file an issue [here][issues].
+The best way to send feedback is to [file an issue][issues].
 
 If you are proposing a feature:
 
@@ -418,7 +418,7 @@ This project uses a host of tools to (hopefully) make development easier. We
 recommend installing some of these tools system wide. For this, we recommend
 using [uv] (or [pipx] or [condax]). We mostly use [uv], but the choice is yours.
 For conda, we recommend actually using [mamba]. Alternatively, you can setup
-`conda` to use the faster `mamba` solver. See [here][conda-fast-setup] for
+`conda` to use the faster `mamba` solver. [See here][conda-fast-setup] for
 details.
 
 ### Create development environment with conda

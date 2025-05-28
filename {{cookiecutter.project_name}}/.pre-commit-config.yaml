@@ -32,7 +32,7 @@ repos:
   # * pyproject.toml
   # ** format
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: v2.5.1
+    rev: v2.6.0
     hooks:
       - id: pyproject-fmt
         args: [--indent=4, --keep-full-version]
@@ -45,7 +45,7 @@ repos:
       - id: validate-pyproject
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2025.04.28
+    rev: 2025.05.12
     hooks:
       - id: validate-pyproject
         alias: validate-pyproject-full
@@ -67,7 +67,7 @@ repos:
 
   # * Markdown
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.17.2
+    rev: v0.18.1
     hooks:
       - id: markdownlint-cli2
         alias: markdownlint
@@ -76,7 +76,7 @@ repos:
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.8
+    rev: v0.11.11
     hooks:
       - id: ruff
         alias: ruff-all
@@ -116,7 +116,7 @@ repos:
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
     # uv version.
-    rev: 0.7.2
+    rev: 0.7.8
     hooks:
       - id: uv-lock
         args: [--locked]
@@ -140,7 +140,7 @@ repos:
 
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.6.2
+    rev: v4.8.2
     hooks:
       - id: commitizen
         stages: [commit-msg]

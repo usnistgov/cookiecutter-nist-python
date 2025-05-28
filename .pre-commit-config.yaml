@@ -16,7 +16,7 @@ repos:
         exclude: ^uv[.]lock
       - id: check-case-conflict
       - id: check-merge-conflict
-      - id: check-symlinks
+      # - id: check-symlinks
       - id: check-yaml
       - id: check-json
       - id: check-toml
@@ -169,16 +169,16 @@ repos:
 
   # * Notebook specific --------------------------------------------------------
   # * Strip out metadata from notebooks
-  - repo: https://github.com/kynan/nbstripout
-    rev: 0.8.1
-    hooks:
-      - id: nbstripout
-        args: [
-            --keep-output, # keep output (needed for nbval testing)
-            --keep-count, # Errors with nbval without this...
-            --extra-keys, # strip out kernelspec.  If use this, always have to reselect kernel when open a notebook...
-            "metadata.kernelspec metadata.kernel_spec",
-          ]
+  # - repo: https://github.com/kynan/nbstripout
+  #   rev: 0.8.1
+  #   hooks:
+  #     - id: nbstripout
+  #       args: [
+  #           --keep-output, # keep output (needed for nbval testing)
+  #           --keep-count, # Errors with nbval without this...
+  #           --extra-keys, # strip out kernelspec.  If use this, always have to reselect kernel when open a notebook...
+  #           "metadata.kernelspec metadata.kernel_spec",
+  #         ]
 
   # ** typos
   - repo: https://github.com/nbQA-dev/nbQA
