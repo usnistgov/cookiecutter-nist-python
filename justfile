@@ -326,3 +326,7 @@ tuna-import:
 cog-readme:
     {{ NOX }} -s cog
     {{ PRE_COMMIT }} run markdownlint --files README.md
+
+# create README.pdf
+readme-pdf:
+    pandoc -V colorlinks -V geometry:margin=0.8in README.md -o README.pdf
