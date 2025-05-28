@@ -78,12 +78,12 @@ repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.11.11
     hooks:
-      - id: ruff
-        alias: ruff-all
+      - id: ruff-check
+        alias: ruff
         types_or: &ruff-types-or [python, pyi, jupyter]
         args: [--fix, --show-fixes]
       - id: ruff-format
-        alias: ruff-all
+        alias: ruff
         types_or: *ruff-types-or
   # To be replace by ruff analog when I find one ...
   - repo: https://github.com/adamchainz/blacken-docs
