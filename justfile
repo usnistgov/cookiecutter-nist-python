@@ -23,6 +23,7 @@ default:
     @just --list
 
 # * Clean ----------------------------------------------------------------------
+
 _find_and_clean first *other:
     find ./src \( -name {{ quote(first) }} {{ prepend("-o -name '", append("'", other)) }} \) -print -exec  rm -fr {} +
 
@@ -137,7 +138,7 @@ test-accept *options="":
 version-scm:
     {{ NOX }} -s build -- ++build version
 
-# # check version from python import
+# check version from python import
 [group("version")]
 version-import:
     -{{ UVRUN }} python -c 'import {{ IMPORT_NAME }}; print({{ IMPORT_NAME }}.__version__)'
@@ -234,6 +235,7 @@ pyright-all: (typecheck-all "pyright")
 pylint-all: (typecheck-all "pylint")
 
 # * dist ----------------------------------------------------------------------
+
 [group("dist")]
 build *options:
     {{ NOX }} -s build -- {{ options }}
@@ -305,6 +307,7 @@ install-ipykernel:
     {{ NOX }} -s install-ipykernel
 
 # * Other tools ----------------------------------------------------------------
+
 auto-changelog:
     {{ UVX_WITH_OPTS }} auto-changelog -u -r usnistgov -v unreleased --tag-prefix v --stdout --template changelog.d/templates/auto-changelog/template.jinja2
 
