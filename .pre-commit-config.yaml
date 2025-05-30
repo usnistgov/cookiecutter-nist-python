@@ -147,14 +147,6 @@ repos:
       - id: commitizen
         stages: [commit-msg]
 
-  # * Makefile
-  - repo: https://github.com/mrtazz/checkmake.git
-    # Or another commit hash or version
-    rev: 0.2.2
-    hooks:
-      - id: checkmake
-        stages: [manual]
-
   # * Justfile
   - repo: local
     hooks:

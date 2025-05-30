@@ -177,10 +177,10 @@ pyright-watch *options: (pyright "-w" options)
 
 # Run ty (NOTE: in alpha)
 [group("typecheck")]
-ty *options="src tests": (_typecheck "ty" options)
+ty *options="tests": (_typecheck "ty" options)
 
 # Run pyrefly (Note: in alpha)
-pyrefly *options="src tests": (_typecheck "pyrefly" options)
+pyrefly *options="tests": (_typecheck "pyrefly" options)
 
 # Run pylint (with optional args)
 [group("lint")]
@@ -333,14 +333,14 @@ install-ipykernel:
 
 # update templates
 cruft-update *options="--checkout develop":
-    {{ UVX }} cruft update {{ options }}
+    {{ UVX_WITH_OPTS }} cruft update {{ options }}
 
 # create changelog snippet with scriv
 scriv-create *options="--add --edit":
-    {{ UVX }} scriv create {{ options }}
+    {{ UVX_WITH_OPTS }} scriv create {{ options }}
 
 scriv-collect version *options="--add --edit":
-    {{ UVX }} scriv collect --version {{ version }} {{ options }}
+    {{ UVX_WITH_OPTS }} scriv collect --version {{ version }} {{ options }}
 
 auto-changelog:
     {{ UVX_WITH_OPTS }} auto-changelog -u -r usnistgov -v unreleased --tag-prefix v --stdout --template changelog.d/templates/auto-changelog/template.jinja2
