@@ -210,6 +210,8 @@ class SessionParams(DataclassParser):
             "pyright-notebook",
             "pylint-notebook",
             "typecheck-notebook",
+            "ty",
+            "pyrefly",
         ]
     ] = add_option("--typecheck", "-m")
     typecheck_run: RUN_ANNO = None
@@ -930,7 +932,7 @@ def typecheck(  # noqa: C901
     for c in cmd:
         if c.endswith("-notebook"):
             session.run("just", c, external=True)
-        elif c in {"mypy", "pyright"}:
+        elif c in {"mypy", "pyright", "ty", "pyrefly"}:
             session.run(
                 "python",
                 "tools/typecheck.py",
@@ -938,7 +940,11 @@ def typecheck(  # noqa: C901
                 "--verbose",
                 f"--checker={c}",
                 "--",
-                *(opts.typecheck_options or []),
+                *(
+                    opts.typecheck_options or ["src", "tests"]
+                    if c in {"ty", "pyrefly"}
+                    else []
+                ),
                 *(["--color-output"] if c == "mypy" else []),
             )
         elif c == "pylint":
