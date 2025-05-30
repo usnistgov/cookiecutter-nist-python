@@ -243,6 +243,12 @@ pyright-all: (typecheck-all "pyright")
 [group("typecheck")]
 pylint-all: (typecheck-all "pylint")
 
+[group("typecheck")]
+ty-all: (typecheck-all "ty")
+
+[group("typecheck")]
+pyrefly-all: (typecheck-all "pyrefly")
+
 # * dist ----------------------------------------------------------------------
 
 [group("dist")]
@@ -295,6 +301,14 @@ mypy-notebook *files=NOTEBOOKS: (_nbqa_typecheck "mypy" files)
 [group("notebook")]
 [group("typecheck")]
 pyright-notebook *files=NOTEBOOKS: (_nbqa_typecheck "pyright" files)
+
+[group("notebook")]
+[group("typecheck")]
+ty-notebook *files=NOTEBOOKS: (_nbqa_typecheck "ty" files)
+
+[group("notebook")]
+[group("typecheck")]
+pyrefly-notebook *files=NOTEBOOKS: (_nbqa_typecheck "pyrefly" files)
 
 [group("lint")]
 [group("notebook")]
