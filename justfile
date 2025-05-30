@@ -175,6 +175,13 @@ pyright *options: (_typecheck "pyright" options)
 [group("typecheck")]
 pyright-watch *options: (pyright "-w" options)
 
+# Run ty (NOTE: in alpha)
+[group("typecheck")]
+ty *options="src tests": (_typecheck "ty" options)
+
+# Run pyrefly (Note: in alpha)
+pyrefly *options="src tests": (_typecheck "pyrefly" options)
+
 # Run pylint (with optional args)
 [group("lint")]
 [group("typecheck")]
@@ -309,6 +316,17 @@ install-ipykernel:
     {{ NOX }} -s install-ipykernel
 
 # * Other tools ----------------------------------------------------------------
+
+# update templates
+cruft-update *options="--checkout develop":
+    {{ UVX }} cruft update {{ options }}
+
+# create changelog snippet with scriv
+scriv-create *options="--add --edit":
+    {{ UVX }} scriv create {{ options }}
+
+scriv-collect version *options="--add --edit":
+    {{ UVX }} scriv collect --version {{ version }} {{ options }}
 
 auto-changelog:
     {{ UVX_WITH_OPTS }} auto-changelog -u -r usnistgov -v unreleased --tag-prefix v --stdout --template changelog.d/templates/auto-changelog/template.jinja2
