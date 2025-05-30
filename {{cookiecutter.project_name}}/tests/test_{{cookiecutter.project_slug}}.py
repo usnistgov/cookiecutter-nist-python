@@ -26,7 +26,7 @@ def response() -> tuple[int, int]:
 
 def test_example_function(response: tuple[int, int]) -> None:
     expected = 3
-    assert example_function(*response) == expected
+    assert example_function(*response) == expected  # ty: ignore[missing-argument]
 {%- if cookiecutter.command_line_interface in ["click", "typer"] %}
 
 
