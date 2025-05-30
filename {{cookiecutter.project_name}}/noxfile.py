@@ -212,6 +212,8 @@ class SessionParams(DataclassParser):
             "typecheck-notebook",
             "ty",
             "pyrefly",
+            "ty-notebook",
+            "pyrefly-notebook",
         ]
     ] = add_option("--typecheck", "-m")
     typecheck_run: RUN_ANNO = None
