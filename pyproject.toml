@@ -64,8 +64,8 @@ mypy = [ "mypy>=1.15.0" ]
 nbval = [ "nbval" ]
 test-extras = [
     "cookiecutter",
-    "copier",
-    "copier-templates-extensions",
+    "copier==9.5.0",
+    "copier-templates-extensions==0.3.0",
     "pytest",
     "pytest-cov",
     "pytest-sugar",

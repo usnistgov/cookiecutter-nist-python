@@ -90,3 +90,8 @@ pylint.max-public-methods = 30
     "LOG015",
     "S404",
 ]
+"tools/copier_extensions.py" = [
+    "D",
+    "ANN",
+    "PL",
+]
