@@ -64,8 +64,9 @@ mypy = [ "mypy>=1.15.0" ]
 nbval = [ "nbval" ]
 test-extras = [
     "cookiecutter",
-    "copier==9.5.0",
-    "copier-templates-extensions==0.3.0",
+    "copier",
+    # "copier-templates-extensions==0.3.0",
+    "copier-templates-extensions>=0.3.1",
     "pytest",
     "pytest-cov",
     "pytest-sugar",
@@ -132,7 +133,10 @@ markers = [
 minversion = "8"
 log_cli_level = "INFO"
 xfail_strict = true
-filterwarnings = [ "error" ]
+filterwarnings = [
+    "error",
+    "ignore: Dirty template:copier.errors.DirtyLocalWarning",
+]
 
 [tool.coverage.run]
 branch = true
@@ -195,6 +199,7 @@ exclude = [
     ".venv/**",
     "**/.mypy_cache",
     "**/.numba_cache",
+    "tools/copier_extensions.py",
 ]
 pythonVersion = "3.11"
 # strict = ["noxfile.py", "tools/*.py"]

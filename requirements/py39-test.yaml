@@ -12,11 +12,11 @@ channels:
 dependencies:
   - python=3.9
   - cookiecutter
-  - copier==9.5.0
+  - copier
   - pytest
   - pytest-cov
   - pytest-sugar
   - pytest-xdist
   - pip
   - pip:
-      - copier-templates-extensions==0.3.0
+      - copier-templates-extensions>=0.3.1

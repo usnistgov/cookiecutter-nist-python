@@ -56,4 +56,4 @@ def __answers(context):
 
 class CookiecutterNamespace(ContextHook):
     def hook(self, context):
-        return {"cookiecutter": CookiecutterContext(context)}
+        context["cookiecutter"] = CookiecutterContext(context)
