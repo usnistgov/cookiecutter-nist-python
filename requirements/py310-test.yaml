@@ -7,6 +7,7 @@
 # You should not manually edit this file.
 # Instead edit the corresponding pyproject.toml file.
 #
+name: py310-test
 channels:
   - conda-forge
 dependencies:
