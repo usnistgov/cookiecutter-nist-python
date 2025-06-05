@@ -159,6 +159,14 @@ repos:
         language: python
         files: \.?[jJ]ustfile
 
+  # * Cruft
+  - repo: https://github.com/cruft/cruft.git
+    rev: 2.16.0
+    hooks:
+      - id: cruft
+        args: [--checkout, develop]
+        stages: [manual]
+
   # * Notebook specific --------------------------------------------------------
   # * Strip out metadata from notebooks
   # - repo: https://github.com/kynan/nbstripout
