@@ -275,9 +275,10 @@ inputs = [
 # * Dependency creation --------------------------------------------------------
 
 [tool.pyproject2conda]
-user_config = "config/userconfig.toml"
-template_python = "requirements/py{py}-{env}"
+user-config = "config/userconfig.toml"
+template-python = "requirements/py{py}-{env}"
 template = "requirements/{env}"
+name = "py{py}-{env}"
 python = "default"
 channels = "conda-forge"
 style = "yaml"
@@ -298,7 +299,7 @@ style = [ "requirements", "yaml" ]
 [tool.pyproject2conda.envs.test-extras]
 groups = "test-extras"
 python = "all"
-skip_package = true
+skip-package = true
 style = [ "requirements", "yaml" ]
 
 [tool.pyproject2conda.envs.test-notebook]
@@ -320,7 +321,7 @@ style = "requirements"
 
 [tool.pyproject2conda.envs.build]
 groups = "build-system.requires"
-skip_package = true
+skip-package = true
 style = "requirements"
 
 [tool.pyproject2conda.envs.uvx-tools]
@@ -339,7 +340,7 @@ reqs = [
     "ty",
 ]
 groups = "mypy"
-skip_package = true
+skip-package = true
 style = "requirements"
 
 # * uv -------------------------------------------------------------------------
