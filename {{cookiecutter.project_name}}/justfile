@@ -366,7 +366,7 @@ tuna-import:
 
 # apply cog to README.md
 cog-readme:
-    {{ NOX }} -s cog
+    COLUMNS=90 {{ UVRUN }} --group=cog cog -rP README.md
     {{ PRE_COMMIT }} run markdownlint --files README.md
 
 # create README.pdf
