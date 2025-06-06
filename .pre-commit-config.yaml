@@ -124,7 +124,7 @@ repos:
         args: [--locked]
   # ** pyproject2conda
   - repo: https://github.com/usnistgov/pyproject2conda
-    rev: v0.22.0
+    rev: v0.22.1
     hooks:
       - id: pyproject2conda-project
         alias: requirements
