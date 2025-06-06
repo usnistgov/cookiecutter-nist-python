@@ -1123,15 +1123,6 @@ def conda_build(session: nox.Session, opts: SessionParams) -> None:
             )
 
 
-# ** Other utilities
-@nox.session(**DEFAULT_KWS)
-@add_opts
-def cog(session: nox.Session, opts: SessionParams) -> None:
-    """Run cog."""
-    install_dependencies(session, name="cog", opts=opts, include_editable_package=True)
-    session.run("cog", "-rP", "README.md", env={"COLUMNS": "90"})
-
-
 # * Utilities -------------------------------------------------------------------------
 def _create_doc_examples_symlinks(session: nox.Session, clean: bool = True) -> None:  # noqa: C901
     """Create symlinks from docs/examples/*.md files to /examples/usage/..."""
