@@ -324,7 +324,7 @@ typecheck-notebook *files=NOTEBOOKS: (mypy-notebook files) (pyright-notebook fil
 [group("notebook")]
 [group("test")]
 test-notebook *files=NOTEBOOKS:
-    {{ UVRUN }} pytest --nbval --nbval-current-env --nbval-sanitize-with=config/nbval.ini --dist loadscope -x {{ files }}
+    {{ UVRUN }} --group=nbval pytest --nbval --nbval-current-env --nbval-sanitize-with=config/nbval.ini --dist loadscope -x {{ files }}
 
 [group("notebook")]
 install-ipykernel:

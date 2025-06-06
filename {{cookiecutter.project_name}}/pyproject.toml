@@ -52,7 +52,6 @@ scripts.{{ cookiecutter.project_slug }} = "{{ cookiecutter.project_slug}}.cli:ma
 dev = [
     { include-group = "dev-extras" },
     { include-group = "mypy" },
-    # { include-group = "nbval" },
     { include-group = "test" },
     { include-group = "typecheck" },
 ]
