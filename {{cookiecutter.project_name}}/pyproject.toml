@@ -85,8 +85,6 @@ docs = [
 cog = [ "cogapp" ]
 dev-extras = [
     "ipykernel",
-    "ipython",
-    "nbclient>=0.10.0",
     "nox>=2025.5.1",
     "pytest-accept",
 ]
