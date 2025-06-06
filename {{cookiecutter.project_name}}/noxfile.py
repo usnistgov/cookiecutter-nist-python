@@ -554,6 +554,7 @@ def requirements(
         session,
         "pyproject2conda-project",
         "--all-files",
+        "--verbose",
         success_codes=[0, 1],
     )
 
