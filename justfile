@@ -332,7 +332,7 @@ install-ipykernel:
 # Execute notebooks inplace using nbclient
 [group("notebook")]
 execute-notebooks *files="examples/usage/*.ipynb":
-    {{ UVRUN }} --with="nbclient>=0.10.0" jupyter execute --inplace {{ files }}
+    {{ UVRUN }} --with="nbclient>=0.10.0" jupyter execute --inplace --allow-errors {{ files }}
 
 # * Other tools ----------------------------------------------------------------
 
