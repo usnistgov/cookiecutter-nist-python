@@ -329,7 +329,16 @@ test-notebook *files=NOTEBOOKS:
 install-ipykernel:
     {{ NOX }} -s install-ipykernel
 
+# Execute notebooks inplace using nbclient
+[group("notebook")]
+execute-notebooks *files="examples/usage/*.ipynb":
+    {{ UVRUN }} --with="nbclient>=0.10.0" jupyter execute --inplace {{ files }}
+
 # * Other tools ----------------------------------------------------------------
+
+# Run ipython with ephemeral current environment
+ipython:
+    {{ UVRUN }} --with=ipython ipython
 
 # update templates
 cruft-update *options="--skip-apply-ask --checkout develop":
