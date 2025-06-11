@@ -77,6 +77,7 @@ def _run_checker(
         python_flag = "python-executable"
 
     version_flag = "pythonversion" if checker == "pyright" else "python-version"
+
     check_subcommand = ["check"] if checker in {"ty", "pyrefly"} else []
 
     if checker == "ty":
@@ -91,6 +92,7 @@ def _run_checker(
 
     _uvx_run(
         *(f"--constraints={c}" for c in constraints),
+        *(["--with", "orjson"] if checker == "mypy" else []),
         checker,
         *python_flags,
         *args,

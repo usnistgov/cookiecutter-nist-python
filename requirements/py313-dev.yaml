@@ -16,6 +16,7 @@ dependencies:
   - copier
   - mypy>=1.15.0
   - nox>=2025.5.1
+  - orjson
   - pylint
   - pytest
   - pytest-cov

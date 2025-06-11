@@ -348,8 +348,9 @@ dev = [
     { name = "cookiecutter" },
     { name = "copier" },
     { name = "copier-templates-extensions" },
-    { name = "mypy", extra = ["faster-cache"] },
+    { name = "mypy" },
     { name = "nox" },
+    { name = "orjson" },
     { name = "pylint" },
     { name = "pytest" },
     { name = "pytest-cov" },
@@ -387,7 +388,8 @@ docs-live = [
     { name = "sphinxcontrib-spelling", version = "8.0.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
 ]
 mypy = [
-    { name = "mypy", extra = ["faster-cache"] },
+    { name = "mypy" },
+    { name = "orjson" },
 ]
 test = [
     { name = "cookiecutter" },
@@ -420,8 +422,9 @@ dev = [
     { name = "cookiecutter" },
     { name = "copier" },
     { name = "copier-templates-extensions", specifier = ">=0.3.1" },
-    { name = "mypy", extras = ["faster-cache"], specifier = ">=1.15.0" },
+    { name = "mypy", specifier = ">=1.15.0" },
     { name = "nox", specifier = ">=2025.5.1" },
+    { name = "orjson" },
     { name = "pylint" },
     { name = "pytest" },
     { name = "pytest-cov" },
@@ -448,7 +451,10 @@ docs-live = [
     { name = "sphinx-copybutton" },
     { name = "sphinxcontrib-spelling" },
 ]
-mypy = [{ name = "mypy", extras = ["faster-cache"], specifier = ">=1.15.0" }]
+mypy = [
+    { name = "mypy", specifier = ">=1.15.0" },
+    { name = "orjson" },
+]
 test = [
     { name = "cookiecutter" },
     { name = "copier" },
@@ -924,11 +930,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/1a/f1/39a22985b78c766a594ae1e0bbb6f8bdf5f31ea8d0c52291a3c211fd3cd5/mypy-1.16.0-cp39-cp39-musllinux_1_2_x86_64.whl", hash = "sha256:a5fcfdb7318c6a8dd127b14b1052743b83e97a970f0edb6c913211507a255e20", size = 12871923, upload-time = "2025-05-29T13:32:21.823Z" },
     { url = "https://files.pythonhosted.org/packages/f3/8e/84db4fb0d01f43d2c82fa9072ca72a42c49e52d58f44307bbd747c977bc2/mypy-1.16.0-cp39-cp39-win_amd64.whl", hash = "sha256:2e7e0ad35275e02797323a5aa1be0b14a4d03ffdb2e5f2b0489fa07b89c67b21", size = 9482931, upload-time = "2025-05-29T13:21:32.326Z" },
     { url = "https://files.pythonhosted.org/packages/99/a3/6ed10530dec8e0fdc890d81361260c9ef1f5e5c217ad8c9b21ecb2b8366b/mypy-1.16.0-py3-none-any.whl", hash = "sha256:29e1499864a3888bca5c1542f2d7232c6e586295183320caa95758fc84034031", size = 2265773, upload-time = "2025-05-29T13:35:18.762Z" },
-]
-
-[package.optional-dependencies]
-faster-cache = [
-    { name = "orjson" },
 ]
 
 [[package]]

@@ -10,8 +10,9 @@
 conda-lock>=2.5.5
 cruft
 grayskull>=2.5.3
-mypy[faster-cache]>=1.15.0
+mypy>=1.15.0
 nbqa>=1.8.4
+orjson
 pre-commit
 pre-commit-uv
 pyrefly

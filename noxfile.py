@@ -626,7 +626,11 @@ def lock(
                     f"--config-file={PIP_COMPILE_CONFIG}",
                     "-q",
                     # don't include dependencies for uvx-tools
-                    *(["--no-deps"] if path.name == "uvx-tools.txt" else []),
+                    *(
+                        ["--no-deps", "--no-strip-extras"]
+                        if path.name == "uvx-tools.txt"
+                        else []
+                    ),
                     "--python-version",
                     python_version,
                     *options,
