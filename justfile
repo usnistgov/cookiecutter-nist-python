@@ -179,6 +179,10 @@ pyright-watch *options: (pyright "-w" options)
 [group("typecheck")]
 ty *options="tests": (_typecheck "ty" options)
 
+# Run ty without --python flags
+ty2 *options="src tests":
+    {{ UVX_WITH_OPTS }} ty check {{ options }}
+
 # Run pyrefly (Note: in alpha)
 pyrefly *options="tests": (_typecheck "pyrefly" options)
 
