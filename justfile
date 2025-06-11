@@ -151,7 +151,7 @@ version: version-scm version-import
 # * Requirements/Environment files ---------------------------------------------
 
 # Rebuild all requirements files
-[group("requirements")]
+[group("requirements")     ]
 requirements *options:
     {{ NOX }} -s requirements -- {{ options }}
 
@@ -333,6 +333,7 @@ install-ipykernel:
 [group("notebook")]
 execute-notebooks *files="examples/usage/*.ipynb":
     {{ UVRUN }} --group="nbclient" jupyter execute --inplace --allow-errors {{ files }}
+    {{ PRE_COMMIT }} run nbstripout --all-files
 
 # * Other tools ----------------------------------------------------------------
 
