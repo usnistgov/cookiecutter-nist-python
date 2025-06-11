@@ -40,7 +40,7 @@ sys.path.pop(0)
 
 
 if TYPE_CHECKING:
-    from collections.abc import Callable, Iterable, Iterator, Sequence
+    from collections.abc import Callable, Iterable
     from os import PathLike
     from typing import Any
 
@@ -178,7 +178,6 @@ class SessionParams(DataclassParser):
             Literal[
                 "html",
                 "build",
-                "symlink",
                 "clean",
                 "livehtml",
                 "linkcheck",
@@ -807,7 +806,7 @@ nox.session(name="testdist-conda", **CONDA_ALL_KWS)(testdist)
 # # ** Docs
 @nox.session(name="docs", **DEFAULT_KWS)
 @add_opts
-def docs(  # noqa: C901, PLR0912
+def docs(  # noqa: C901
     session: nox.Session,
     opts: SessionParams,
 ) -> None:
@@ -821,10 +820,6 @@ def docs(  # noqa: C901, PLR0912
     if opts.version:
         session.env["SETUPTOOLS_SCM_PRETEND_VERSION"] = opts.version
     session_run_commands(session, opts.docs_run)
-
-    if "symlink" in cmd:
-        cmd.remove("symlink")
-        _create_doc_examples_symlinks(session)
 
     if open_page := "open" in cmd:
         cmd.remove("open")
@@ -1136,62 +1131,6 @@ def conda_build(session: nox.Session, opts: SessionParams) -> None:
 
 
 # * Utilities -------------------------------------------------------------------------
-def _create_doc_examples_symlinks(session: nox.Session, clean: bool = True) -> None:  # noqa: C901
-    """Create symlinks from docs/examples/*.md files to /examples/usage/..."""
-    import os
-
-    def usage_paths(path: Path) -> Iterator[Path]:
-        with path.open("r") as f:
-            for line in f:
-                if line.startswith("usage/"):
-                    yield Path(line.strip())
-
-    def get_target_path(
-        usage_path: str | Path,
-        prefix_dir: str | Path = "./examples",
-        exts: Sequence[str] = (".md", ".ipynb"),
-    ) -> Path:
-        path = Path(prefix_dir) / Path(usage_path)
-
-        if not all(ext.startswith(".") for ext in exts):
-            msg = "Bad extensions.  Should start with '.'"
-            raise ValueError(msg)
-
-        if path.exists():
-            return path
-
-        for ext in exts:
-            p = path.with_suffix(ext)
-            if p.exists():
-                return p
-
-        msg = f"no path found for base {path}"
-        raise ValueError(msg)
-
-    root = Path("./docs/examples/")
-    if clean:
-        shutil.rmtree(root / "usage", ignore_errors=True)
-
-    # get all md files
-    paths = list(root.glob("*.md"))
-
-    # read usage lines
-    for path in paths:
-        for usage_path in usage_paths(path):
-            target = get_target_path(usage_path)
-            link = root / usage_path.parent / target.name
-
-            if link.exists():
-                link.unlink()
-
-            link.parent.mkdir(parents=True, exist_ok=True)
-
-            target_rel = os.path.relpath(target, start=link.parent)
-            session.log(f"linking {target_rel} -> {link}")
-
-            link.symlink_to(target_rel)
-
-
 def _append_recipe(recipe_path: str | Path, append_path: str | Path) -> None:
     recipe_path = Path(recipe_path)
     append_path = Path(append_path)

@@ -151,7 +151,7 @@ version: version-scm version-import
 # * Requirements/Environment files ---------------------------------------------
 
 # Rebuild all requirements files
-[group("requirements")     ]
+[group("requirements")]
 requirements *options:
     {{ NOX }} -s requirements -- {{ options }}
 

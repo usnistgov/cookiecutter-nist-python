@@ -160,7 +160,7 @@ def test_baked_lint(example_path: Path, nox_opts: str, nox_session_opts: str) ->
 def test_baked_docs(example_path: Path, nox_opts: str, nox_session_opts: str) -> None:
     if get_python_version() == DEFAULT_PYTHON:
         run_inside_dir(
-            f"nox {nox_opts} -s docs -- +d symlink html {nox_session_opts}",
+            f"nox {nox_opts} -s docs -- +d html {nox_session_opts}",
             example_path,
         )
 

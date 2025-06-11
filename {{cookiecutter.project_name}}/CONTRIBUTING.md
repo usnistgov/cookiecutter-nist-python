@@ -301,7 +301,6 @@ where commands can be one of:
 - build/html : build html documentation
 - spelling : check spelling
 - linkcheck : check the links
-- symlink : rebuild symlinks from `examples` to `docs/examples`
 - release : make pages branch for documentation hosting (using
   [ghp-import](https://github.com/c-w/ghp-import))
 - livehtml : Live documentation updates
