@@ -54,6 +54,8 @@ dev = [
     { include-group = "mypy" },
     { include-group = "test" },
     { include-group = "typecheck" },
+    # { include-group = "nbval" },
+    # { include-group = "nbclient" },
 ]
 test = [
     { include-group = "test-extras" },

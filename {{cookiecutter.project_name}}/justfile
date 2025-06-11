@@ -366,8 +366,10 @@ tuna-import:
 
 # apply cog to README.md
 cog-readme:
-    # If need package, use `--group="cog" --no-dev`
+    # If don't need package
     COLUMNS=90 {{ UVRUN }} --isolated --only-group="cog" cog -rP README.md
+    # If need package
+    # COLUMNS=90 {{ UVRUN }} --isolated --group="cog" --no-dev cog -rP README.md
     {{ PRE_COMMIT }} run markdownlint --files README.md
 
 # create README.pdf
