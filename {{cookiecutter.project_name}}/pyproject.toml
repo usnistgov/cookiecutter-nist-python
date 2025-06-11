@@ -52,10 +52,9 @@ scripts.{{ cookiecutter.project_slug }} = "{{ cookiecutter.project_slug}}.cli:ma
 dev = [
     { include-group = "dev-extras" },
     { include-group = "mypy" },
+    { include-group = "notebook" },
     { include-group = "test" },
     { include-group = "typecheck" },
-    # { include-group = "nbval" },
-    # { include-group = "nbclient" },
 ]
 test = [
     { include-group = "test-extras" },
@@ -85,7 +84,6 @@ docs = [
 ]
 cog = [ "cogapp" ]
 dev-extras = [
-    "ipykernel",
     "nox>=2025.5.1",
     "pytest-accept",
 ]
@@ -93,9 +91,14 @@ docs-live = [
     "sphinx-autobuild",
     { include-group = "docs" },
 ]
-mypy = [ "mypy>=1.15.0" ]
+mypy = [ "mypy[faster-cache]>=1.15.0" ]
 nbclient = [ "nbclient" ]
 nbval = [ "nbval" ]
+notebook = [
+    "ipykernel",
+    { include-group = "nbclient" },
+    { include-group = "nbval" },
+]
 test-extras = [
     "pytest",
     "pytest-cov",
