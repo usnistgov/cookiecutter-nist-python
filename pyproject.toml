@@ -52,7 +52,6 @@ docs = [
     "sphinx-copybutton",
     "sphinxcontrib-spelling",
 ]
-cog = [ "cogapp" ]
 dev-extras = [
     "nox>=2025.5.1",
 ]
