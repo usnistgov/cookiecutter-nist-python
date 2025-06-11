@@ -281,6 +281,7 @@ def install_dependencies(
     python_version: str | None = None,
     location: str | None = None,
     no_dev: bool = True,
+    no_default_groups: bool = False,
     only_group: bool = False,
     include_editable_package: bool = False,
     lock: bool | None = None,
@@ -333,7 +334,13 @@ def install_dependencies(
                 if opts.no_frozen
                 else ["--frozen"]
             ),
-            *(["--no-dev"] if no_dev else []),
+            *(
+                ["--no-default-groups"]
+                if no_default_groups
+                else ["--no-dev"]
+                if no_dev
+                else []
+            ),
             *(["--only-group"] if only_group else ["--group"]),
             name,
             # Handle package install here?

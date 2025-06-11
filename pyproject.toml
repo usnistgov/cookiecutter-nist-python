@@ -36,9 +36,10 @@ urls.Homepage = "https://github.com/usnistgov/cookiecutter-nist-python"
 dev = [
     { include-group = "dev-extras" },
     { include-group = "mypy" },
-    # { include-group = "nbval" },
     { include-group = "test" },
     { include-group = "typecheck" },
+    # { include-group = "nbval" },
+    # { include-group = "nbclient" },
 ]
 test = [
     { include-group = "test-extras" },
@@ -52,6 +53,7 @@ docs = [
     "sphinx-copybutton",
     "sphinxcontrib-spelling",
 ]
+cog = [ "cogapp" ]
 dev-extras = [
     "nox>=2025.5.1",
 ]
@@ -60,6 +62,7 @@ docs-live = [
     { include-group = "docs" },
 ]
 mypy = [ "mypy>=1.15.0" ]
+nbclient = [ "nbclient" ]
 nbval = [ "nbval" ]
 test-extras = [
     "cookiecutter",

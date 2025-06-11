@@ -118,7 +118,7 @@ repos:
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
     # uv version.
-    rev: 0.7.11
+    rev: 0.7.12
     hooks:
       - id: uv-lock
         args: [--locked]
@@ -142,7 +142,7 @@ repos:
 
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.8.2
+    rev: v4.8.3
     hooks:
       - id: commitizen
         stages: [commit-msg]
@@ -222,3 +222,13 @@ repos:
             --nbqa-shell,
             --nbqa-md,
           ]
+
+  # * local hooks
+  - repo: local
+    hooks:
+      - id: cog-copier-yaml
+        name: cog-copier-yaml
+        stages: [manual]
+        entry: uv run --only-group=cog cog -rP copier.yaml
+        language: python
+        pass_filenames: false

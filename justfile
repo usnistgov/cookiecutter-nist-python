@@ -323,7 +323,7 @@ typecheck-notebook *files=NOTEBOOKS: (mypy-notebook files) (pyright-notebook fil
 [group("notebook")]
 [group("test")]
 test-notebook *files=NOTEBOOKS:
-    {{ UVRUN }} pytest --nbval --nbval-current-env --nbval-sanitize-with=config/nbval.ini --dist loadscope -x {{ files }}
+    {{ UVRUN }} --group="nbval" pytest --nbval --nbval-current-env --nbval-sanitize-with=config/nbval.ini --dist loadscope -x {{ files }}
 
 [group("notebook")]
 install-ipykernel:
@@ -332,7 +332,7 @@ install-ipykernel:
 # Execute notebooks inplace using nbclient
 [group("notebook")]
 execute-notebooks *files="examples/usage/*.ipynb":
-    {{ UVRUN }} --with="nbclient>=0.10.0" jupyter execute --inplace --allow-errors {{ files }}
+    {{ UVRUN }} --group="nbclient" jupyter execute --inplace --allow-errors {{ files }}
 
 # * Other tools ----------------------------------------------------------------
 
@@ -365,7 +365,10 @@ tuna-import:
 
 # apply cog to README.md
 cog-readme:
-    COLUMNS=90 {{ UVRUN }} --with="cogapp>=3.5.0" cog -rP README.md
+    # If don't need package
+    COLUMNS=90 {{ UVRUN }} --isolated --only-group="cog" cog -rP README.md
+    # If need package
+    # COLUMNS=90 {{ UVRUN }} --isolated --group="cog" --no-dev cog -rP README.md
     {{ PRE_COMMIT }} run markdownlint --files README.md
 
 # create README.pdf
