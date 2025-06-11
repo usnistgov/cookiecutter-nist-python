@@ -109,6 +109,11 @@ checkmake: (lint-manual "checkmake")
 [group("lint")]
 just-fmt: (lint-manual "just-fmt")
 
+# symlink docs/examples/usage -> examples/usage
+[group("docs")]
+[group("lint")]
+docs-symlink-notebooks: (lint-manual "symlink-docs-examples-notebooks")
+
 # * User setup -----------------------------------------------------------------
 
 # Create .autoenv.zsh files
@@ -199,7 +204,7 @@ typecheck-tools *files="noxfile.py tools/*.py": (mypy "--strict" files) (pyright
 # * NOX ------------------------------------------------------------------------
 # ** docs
 
-# build docs.  Optioons {html, spelling, livehtml, linkcheck, open, symlink}.
+# build docs.  Optioons {html, spelling, livehtml, linkcheck, open}.
 [group("docs")]
 docs *options="html":
     {{ NOX }} -s docs -- +d {{ options }}
