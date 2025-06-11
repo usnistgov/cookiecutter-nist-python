@@ -91,7 +91,10 @@ docs-live = [
     "sphinx-autobuild",
     { include-group = "docs" },
 ]
-mypy = [ "mypy[faster-cache]>=1.15.0" ]
+mypy = [
+    "mypy>=1.15.0",
+    "orjson",
+]
 nbclient = [ "nbclient" ]
 nbval = [ "nbval" ]
 notebook = [
