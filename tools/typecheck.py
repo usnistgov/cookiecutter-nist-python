@@ -79,6 +79,10 @@ def _run_checker(
     version_flag = "pythonversion" if checker == "pyright" else "python-version"
     check_subcommand = ["check"] if checker in {"ty", "pyrefly"} else []
 
+    if checker == "ty":
+        # ty prefers `--python` flag pointing to environonmentf
+        python_executable = str(Path(python_executable).parent.parent)
+
     python_flags = (
         *check_subcommand,
         f"--{python_flag}={python_executable}",
