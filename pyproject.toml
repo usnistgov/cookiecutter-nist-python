@@ -38,8 +38,6 @@ dev = [
     { include-group = "mypy" },
     { include-group = "test" },
     { include-group = "typecheck" },
-    # { include-group = "nbval" },
-    # { include-group = "nbclient" },
 ]
 test = [
     { include-group = "test-extras" },
@@ -61,9 +59,7 @@ docs-live = [
     "sphinx-autobuild",
     { include-group = "docs" },
 ]
-mypy = [ "mypy>=1.15.0" ]
-nbclient = [ "nbclient" ]
-nbval = [ "nbval" ]
+mypy = [ "mypy[faster-cache]>=1.15.0" ]
 test-extras = [
     "cookiecutter",
     "copier",
@@ -73,10 +69,6 @@ test-extras = [
     "pytest-cov",
     "pytest-sugar",
     "pytest-xdist",
-]
-test-notebook = [
-    { include-group = "nbval" },
-    { include-group = "test-extras" },
 ]
 typecheck = [
     "pylint",
