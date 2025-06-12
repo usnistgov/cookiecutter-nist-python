@@ -490,8 +490,6 @@ The only required tool is [uv]. Other tools used are:
 - [pyright]
 - [cruft]
 - [commitizen]
-- [cog]
-- [nbqa]
 
 which can be installed using:
 
@@ -532,7 +530,6 @@ To do this in a given session, use:
 nox -s {session} -- +P/++update-package
 ```
 
-[cog]: https://github.com/nedbat/cog
 [commitizen]: https://github.com/commitizen-tools/commitizen
 [conda-fast-setup]:
   https://www.anaconda.com/blog/a-faster-conda-for-a-growing-community
@@ -544,7 +541,6 @@ nox -s {session} -- +P/++update-package
 [just]: https://github.com/casey/just
 [mamba]: https://github.com/mamba-org/mamba
 [mypy]: https://github.com/python/mypy
-[nbqa]: https://github.com/nbQA-dev/nbQA
 [nbval]: https://github.com/computationalmodelling/nbval
 [nox]: https://github.com/wntrblm/nox
 [pipx]: https://github.com/pypa/pipx

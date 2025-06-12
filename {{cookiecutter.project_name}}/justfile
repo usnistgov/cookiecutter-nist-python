@@ -168,6 +168,11 @@ requirements *options:
 [group("requirements")]
 requirements-update: (requirements "+L")
 
+# Build requirements files from scratch
+[group("requirements")]
+requirements-bootstrap *options:
+    uv run --isolated --only-group=nox nox -s requirements -- {{ options }}
+
 # * Typing ---------------------------------------------------------------------
 _typecheck checker *options:
     {{ TYPECHECK }} {{ UVX_OPTS }} -x {{ checker }} -- {{ options }}

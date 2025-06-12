@@ -248,3 +248,4 @@ repos:
         entry: python tools/symlink_docs_examples_notebooks.py
         language: python
         files: ^docs/examples/.*\.md$
+        pass_filenames: false

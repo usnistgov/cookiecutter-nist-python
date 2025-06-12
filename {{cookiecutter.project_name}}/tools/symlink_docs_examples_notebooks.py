@@ -96,22 +96,10 @@ def main(args: Sequence[str] | None = None) -> int:
         action="store_true",
         help="default is to clean out `dos_example_path / usage`.  Pass this to skip clean.",
     )
-    parser.add_argument(
-        "--all",
-        dest="all_",
-        action="store_true",
-        help="Run on all files.",
-    )
-    parser.add_argument(
-        "paths",
-        type=Path,
-        nargs="*",
-    )
-
     opts = parser.parse_args(args)
 
     _create_doc_examples_symlinks(
-        Path("./docs/examples").glob("*.md") if opts.all_ else opts.paths,
+        Path("./docs/examples").glob("**/*.md"),
         example_path=opts.example_path,
         clean=not opts.no_clean,
     )

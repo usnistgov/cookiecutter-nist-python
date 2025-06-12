@@ -134,7 +134,7 @@ def example_path(
 
     run_inside_dir(f"nox -s requirements {nox_opts} -- {nox_session_opts}", str(path))
     run_inside_dir(
-        "uv run --no-project tools/symlink_docs_examples_notebooks.py --all", str(path)
+        "uv run --no-project tools/symlink_docs_examples_notebooks.py", str(path)
     )
     run_inside_dir("uv lock", str(path), env={"VIRTUAL_ENV": str(path / ".venv")})
 
