@@ -82,6 +82,7 @@ def _lock_files(
 
 def main(args: Sequence[str] | None = None) -> int:
     """Main script."""
+    # pylint: disable=duplicate-code
     parser = ArgumentParser()
     parser.add_argument(
         "--upgrade",

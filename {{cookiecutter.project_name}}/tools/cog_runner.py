@@ -16,10 +16,13 @@ FORMAT = "[%(name)s - %(levelname)s] %(message)s"
 logging.basicConfig(level=logging.INFO, format=FORMAT)
 logger = logging.getLogger("clean_kernelspec")
 
+CONSTRAINT_OPTION = "--constraints=requirements/lock/uvx-tools.txt"
+
 
 def _run_cog(
     files: Iterable[str],
     extras: Iterable[str],
+    use_uvx: bool = False,
     env: Mapping[str, str] | None = None,
 ) -> None:
     if env is not None:
@@ -28,8 +31,7 @@ def _run_cog(
         env = dict(os.environ, **env)
 
     command = [
-        "uv",
-        "run",
+        *(["uvx", CONSTRAINT_OPTION, "--from=cogapp"] if use_uvx else ["uv", "run"]),
         *extras,
         "cog",
         "-rP",
@@ -52,7 +54,7 @@ def _run_linters(
     for linter in linters:
         command = [
             "uvx",
-            "--constraints=requirements/lock/uvx-tools.txt",
+            CONSTRAINT_OPTION,
             "pre-commit",
             "run",
             linter,
@@ -68,6 +70,11 @@ def main(args: Sequence[str] | None = None) -> int:
     """Main script."""
     parser = ArgumentParser(description="run cog and linters")
     parser.add_argument(
+        "--use-uvx",
+        action="store_true",
+        help="use uvx instead of uv run",
+    )
+    parser.add_argument(
         "--linter",
         dest="linters",
         action="append",
@@ -81,8 +88,8 @@ def main(args: Sequence[str] | None = None) -> int:
 
     opts, extras = parser.parse_known_args(args)
 
-    for path in map(Path, opts.files):
-        if not path.exists():
+    for path in opts.files:
+        if not Path(path).exists():
             msg = f"{path} does not exist.  Remember that options should passed with --name=value and not --name value"
             raise ValueError(msg)
 
@@ -92,6 +99,7 @@ def main(args: Sequence[str] | None = None) -> int:
     _run_cog(
         opts.files,
         extras=extras,
+        use_uvx=opts.use_uvx,
         env={"COLUMNS": "90"},
     )
 

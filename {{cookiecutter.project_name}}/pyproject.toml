@@ -347,6 +347,7 @@ reqs = [
     "ty",
 ]
 groups = [
+    "cog",
     "mypy",
     "nox",
 ]
