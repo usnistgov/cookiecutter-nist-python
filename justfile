@@ -8,11 +8,11 @@ UVX_OPTS := "--constraints=requirements/lock/uvx-tools.txt"
 UVX_WITH_OPTS := UVX + " " + UVX_OPTS
 UVRUN := "uv run --frozen"
 TYPECHECK := UVRUN + " --no-config tools/typecheck.py -v"
-NOX := UVX + " --from 'nox>=2025.5.1' nox"
+NOX := UVX_WITH_OPTS + " nox"
 
 # For pre-commit, just use a minimum version...
 
-PRE_COMMIT := UVX + " --constraints=requirements/uvx-tools.txt --with=pre-commit-uv pre-commit"
+PRE_COMMIT := UVX_WITH_OPTS + " --with=pre-commit-uv pre-commit"
 PYTHON_PATH := which("python")
 PYLINT_OPTS := "--enable-all-extensions"
 
@@ -109,6 +109,9 @@ checkmake: (lint-manual "checkmake")
 [group("lint")]
 just-fmt: (lint-manual "just-fmt")
 
+[group("lint")]
+cog: (lint-manual "cog")
+
 # symlink docs/examples/usage -> examples/usage
 [group("docs")]
 [group("lint")]
@@ -162,7 +165,7 @@ requirements *options:
 
 # Update all requirement files
 [group("requirements")]
-requirements-update: (requirements "+L +U")
+requirements-update: (requirements "+L")
 
 # * Typing ---------------------------------------------------------------------
 _typecheck checker *options:
@@ -338,7 +341,7 @@ install-ipykernel:
 [group("notebook")]
 execute-notebooks *files="examples/usage/*.ipynb":
     {{ UVRUN }} --group="nbclient" jupyter execute --inplace --allow-errors {{ files }}
-    {{ PRE_COMMIT }} run nbstripout --all-files
+    {{ PRE_COMMIT }} run nbstripout --all-files  || true
 
 # * Other tools ----------------------------------------------------------------
 
@@ -369,18 +372,6 @@ tuna-import:
     {{ UVX_WITH_OPTS }} tuna tuna-loadtime.log
     rm tuna-loadtime.log
 
-# apply cog to README.md
-cog-readme:
-    # If don't need package
-    COLUMNS=90 {{ UVRUN }} --isolated --only-group="cog" cog -rP README.md
-    # If need package
-    # COLUMNS=90 {{ UVRUN }} --isolated --group="cog" --no-dev cog -rP README.md
-    {{ PRE_COMMIT }} run markdownlint --files README.md
-
 # create README.pdf
 readme-pdf:
     pandoc -V colorlinks -V geometry:margin=0.8in README.md -o README.pdf
-
-cog-copier-yaml:
-    {{ UVRUN }} --isolated --only-group="cog" cog -rP copier.yaml
-    {{ PRE_COMMIT }} run prettier --files copier.yaml || true

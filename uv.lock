@@ -391,6 +391,9 @@ mypy = [
     { name = "mypy" },
     { name = "orjson" },
 ]
+nox = [
+    { name = "nox" },
+]
 test = [
     { name = "cookiecutter" },
     { name = "copier" },
@@ -455,6 +458,7 @@ mypy = [
     { name = "mypy", specifier = ">=1.15.0" },
     { name = "orjson" },
 ]
+nox = [{ name = "nox", specifier = ">=2025.5.1" }]
 test = [
     { name = "cookiecutter" },
     { name = "copier" },

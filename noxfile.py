@@ -153,7 +153,6 @@ class SessionParams(DataclassParser):
     )
 
     # lock
-    lock_force: bool = False
     lock_upgrade: bool = add_option(
         "--lock-upgrade",
         "-L",
@@ -345,7 +344,6 @@ def install_dependencies(
             # Handle package install here?
             # "--no-editable",
             # "--reinstall-package",
-            # "open-notebook",
             *([] if include_editable_package else ["--no-install-project"]),
             *(
                 [f"--reinstall-package={PACKAGE_NAME}"]
@@ -576,69 +574,26 @@ def lock(
     opts: SessionParams,
 ) -> None:
     """Run uv pip compile ..."""
-    options: list[str] = ["-U"] if opts.lock_upgrade else []
-    force = opts.lock_force or opts.lock_upgrade
+    options: list[str] = ["--upgrade"] if opts.lock_upgrade else []
 
-    if opts.lock and opts.lock_upgrade:
+    if opts.lock:
         session.run(
             "uv",
             "sync" if opts.update else "lock",
-            "--upgrade",
+            *options,
             env={
                 "VIRTUAL_ENV": ".venv",
                 "UV_PROJECT_ENVIRONMENT": ".venv",
             },
         )
-
-    from packaging.version import Version
-
-    min_python_version = min(PYTHON_ALL_VERSIONS, key=Version)
-
-    reqs_path = Path("./requirements")
-    for path in reqs_path.glob("*.txt"):
-        python_version = (
-            min_python_version
-            if path.name
-            in {"test.txt", "test-extras.txt", "typecheck.txt", "uvx-tools.txt"}
-            else PYTHON_DEFAULT_VERSION
-        )
-
-        lockpath = infer_requirement_path(
-            path.name,
-            ext=".txt",
-            python_version=python_version,
-            lock=True,
-            check_exists=False,
-        )
-
-        with check_for_change_manager(
-            path,
-            target_path=lockpath,
-            force_write=force,
-        ) as changed:
-            if force or changed:
-                session.run(
-                    "uv",
-                    "pip",
-                    "compile",
-                    "--universal",
-                    f"--config-file={PIP_COMPILE_CONFIG}",
-                    "-q",
-                    # don't include dependencies for uvx-tools
-                    *(
-                        ["--no-deps", "--no-strip-extras"]
-                        if path.name == "uvx-tools.txt"
-                        else []
-                    ),
-                    "--python-version",
-                    python_version,
-                    *options,
-                    path,
-                    "-o",
-                    lockpath,
-                )
-            else:
-                session.log(f"Skipping {lockpath}")
+    session.run(
+        "uv",
+        "run",
+        "--no-project",
+        "tools/requirements_lock.py",
+        "--all",
+        *options,
+    )
 
 
 # ** testing

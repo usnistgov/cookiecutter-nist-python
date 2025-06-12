@@ -134,11 +134,9 @@ repos:
       - id: requirements-lock
         name: requirements-lock
         alias: lock
-        entry: nox -s lock -- # ++lock-force
+        entry: python tools/requirements_lock.py
         language: python
-        files: ^requirements/.*\.txt$
-        pass_filenames: false
-        additional_dependencies: ["nox==2025.5.1"]
+        files: ^requirements/[^/]*\.txt$
 
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
@@ -178,3 +176,16 @@ repos:
         language: python
         pass_filenames: false
         stages: [manual]
+
+  # * Cog
+  - repo: local
+    hooks:
+      - id: cog-readme
+        name: cog-readme
+        alias: cog
+        entry:
+          python tools/cog_runner.py --use-uvx --linter=prettier -- copier.yaml
+          # if need package, use --isolated --group=cog --no-dev
+        language: python
+        stages: [manual]
+        pass_filenames: false
