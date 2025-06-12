@@ -93,8 +93,8 @@ def main(args: Sequence[str] | None = None) -> int:
             msg = f"{path} does not exist.  Remember that options should passed with --name=value and not --name value"
             raise ValueError(msg)
 
-    logger.info("opts: %s", opts)
-    logger.info("extras: %s", extras)
+    logger.debug("opts: %s", opts)
+    logger.debug("extras: %s", extras)
 
     _run_cog(
         opts.files,
