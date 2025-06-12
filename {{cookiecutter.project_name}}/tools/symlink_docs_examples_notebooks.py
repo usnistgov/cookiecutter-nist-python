@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator, Sequence
+    from collections.abc import Iterable, Iterator, Sequence
 
 FORMAT = "[%(name)s - %(levelname)s] %(message)s"
 logging.basicConfig(level=logging.INFO, format=FORMAT)
@@ -56,22 +56,21 @@ def _get_target_path(
 
 
 def _create_doc_examples_symlinks(
-    docs_example_path: Path,
+    paths: Iterable[Path],
     example_path: Path,
     clean: bool = True,
 ) -> None:
+    paths = list(paths)
     if clean:
-        logger.info("removing %s / usage", docs_example_path)
-        shutil.rmtree(docs_example_path / "usage", ignore_errors=True)
-
-    # get all md files
-    paths = list(docs_example_path.glob("*.md"))
+        for path in {p.parent / "usage" for p in paths}:
+            logger.info("removing %s", path)
+            shutil.rmtree(path, ignore_errors=True)
 
     # read usage lines
     for path in paths:
         for usage_path in _usage_paths(path):
             target = _get_target_path(usage_path, prefix_path=example_path)
-            link = docs_example_path / usage_path.parent / target.name
+            link = path.parent / usage_path.parent / target.name
 
             if link.exists():
                 link.unlink()
@@ -88,12 +87,6 @@ def main(args: Sequence[str] | None = None) -> int:
     """Main script"""
     parser = ArgumentParser()
     parser.add_argument(
-        "--docs-example-path",
-        type=Path,
-        default="./docs/examples",
-        help="docs example path",
-    )
-    parser.add_argument(
         "--example-path",
         type=Path,
         default="./examples",
@@ -103,10 +96,22 @@ def main(args: Sequence[str] | None = None) -> int:
         action="store_true",
         help="default is to clean out `dos_example_path / usage`.  Pass this to skip clean.",
     )
+    parser.add_argument(
+        "--all",
+        dest="all_",
+        action="store_true",
+        help="Run on all files.",
+    )
+    parser.add_argument(
+        "paths",
+        type=Path,
+        nargs="*",
+    )
+
     opts = parser.parse_args(args)
 
     _create_doc_examples_symlinks(
-        docs_example_path=opts.docs_example_path,
+        Path("./docs/examples").glob("*.md") if opts.all_ else opts.paths,
         example_path=opts.example_path,
         clean=not opts.no_clean,
     )

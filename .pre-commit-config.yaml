@@ -155,9 +155,9 @@ repos:
         entry:
           uvx --constraints=requirements/lock/uvx-tools.txt --from="rust-just"
           just --fmt --justfile
-        stages: [manual]
         language: python
         files: \.?[jJ]ustfile
+        stages: [manual]
 
   # * Cruft
   - repo: https://github.com/cruft/cruft.git
@@ -172,7 +172,9 @@ repos:
     hooks:
       - id: cog-copier-yaml
         name: cog-copier-yaml
-        stages: [manual]
-        entry: uv run --only-group=cog cog -rP copier.yaml
+        entry:
+          uvx --constraints=requirements/lock/uvx-tools.txt --from="rust-just"
+          just cog-copier-yaml
         language: python
         pass_filenames: false
+        stages: [manual]

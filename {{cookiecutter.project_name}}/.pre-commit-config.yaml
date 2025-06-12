@@ -132,11 +132,9 @@ repos:
       - id: requirements-lock
         name: requirements-lock
         alias: lock
-        entry: nox -s lock -- # ++lock-force
+        entry: python tools/requirements_lock.py
         language: python
-        files: ^requirements/.*\.txt$
-        pass_filenames: false
-        additional_dependencies: ["nox==2025.5.1"]
+        files: ^requirements/[^/]*\.txt$
 
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
@@ -161,9 +159,9 @@ repos:
         entry:
           uvx --constraints=requirements/lock/uvx-tools.txt --from="rust-just"
           just --fmt --justfile
-        stages: [manual]
         language: python
         files: \.?[jJ]ustfile
+        stages: [manual]
 
   # * Cruft
   - repo: https://github.com/cruft/cruft.git
@@ -171,6 +169,20 @@ repos:
     hooks:
       - id: cruft
         args: [--checkout, develop]
+        stages: [manual]
+
+  # * Cog
+  - repo: local
+    hooks:
+      - id: cog-readme
+        name: cog-readme
+        alias: cog
+        entry:
+          python tools/cog_runner.py --isolated --only-group=cog
+          --linter=markdownlint --
+          # if need package, use --group=cog --no-dev
+        language: python
+        files: ^README\.md$
         stages: [manual]
 
   # * Notebook specific --------------------------------------------------------
@@ -234,8 +246,6 @@ repos:
     hooks:
       - id: symlink-docs-examples-notebooks
         name: symlink-docs-examples-notebooks
-        alias: lock
         entry: python tools/symlink_docs_examples_notebooks.py
         language: python
         files: ^docs/examples/.*\.md$
-        pass_filenames: false

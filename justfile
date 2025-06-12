@@ -380,3 +380,7 @@ cog-readme:
 # create README.pdf
 readme-pdf:
     pandoc -V colorlinks -V geometry:margin=0.8in README.md -o README.pdf
+
+cog-copier-yaml:
+    {{ UVRUN }} --isolated --only-group="cog" cog -rP copier.yaml
+    {{ PRE_COMMIT }} run prettier --files copier.yaml || true
