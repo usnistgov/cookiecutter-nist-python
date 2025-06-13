@@ -240,13 +240,14 @@ pyrefly-all: (typecheck-all "pyrefly")
 build *options:
     {{ NOX }} -s build -- {{ options }}
 
-[group("dist")]
-publish:
-    {{ NOX }} -s publish -- +p release
+_twine *options="":
+    {{ UVX_WITH_OPTS }} twine {{ options }}
 
 [group("dist")]
-publish-test:
-    {{ NOX }} -s publish -- +p test
+publish: (_twine "upload dist/*")
+
+[group("dist")]
+publish-test: (_twine "upload --repository testpypi dist/*")
 
 _uv-publish *options:
     uv publish --username __token__ --keyring-provider subprocess {{ options }}
@@ -254,19 +255,18 @@ _uv-publish *options:
 _open_page site:
     uv run --no-project python -c "import webbrowser; webbrowser.open('https://{{ site }}/project/{{ PACKAGE_NAME }}')"
 
-# uv release
+# uv publish
 [group("dist")]
 uv-publish: _uv-publish && (_open_page "pypi.org")
 
-# uv test release on testpypi
+# uv publish to testpypi
 [group("dist")]
 uv-publish-test: (_uv-publish "--publish-url https://test.pypi.org/legacy/") && (_open_page "test.pypi.org")
 
-# run twine check on dist
+# lint distribution
 [group("dist")]
 [group("lint")]
-lint-dist:
-    {{ NOX }} -s publish -- +p check
+lint-dist: (_twine "check --strict dist/*")
     {{ UVX_WITH_OPTS }} check-wheel-contents dist/*.whl
 
 [group("dist")]
