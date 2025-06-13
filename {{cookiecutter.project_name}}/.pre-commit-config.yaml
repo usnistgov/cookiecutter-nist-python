@@ -48,7 +48,7 @@ repos:
     rev: 2025.05.12
     hooks:
       - id: validate-pyproject
-        alias: validate-pyproject-full
+        name: validate-pyproject-schema-store
         stages: [manual]
   # ** repo review
   - repo: https://github.com/scientific-python/cookie
@@ -113,27 +113,23 @@ repos:
         exclude: ^uv[.]lock$|^requirements
 
   # * Dependencies
-  # ** uv
-  - repo: https://github.com/astral-sh/uv-pre-commit
-    # uv version.
-    rev: 0.7.12
-    hooks:
-      - id: uv-lock
-        args: [--locked]
   # ** pyproject2conda
   - repo: https://github.com/usnistgov/pyproject2conda
     rev: v0.22.1
     hooks:
       - id: pyproject2conda-project
         alias: requirements
-  # ** all lock files
-  - repo: local
+  # ** uv
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.7.12
     hooks:
-      - id: requirements-lock
-        name: requirements-lock
-        alias: lock
+      - id: uv-lock
+        alias: requirements
+        args: [--locked]
+      - id: pip-compile
+        alias: requirements
         entry: python tools/requirements_lock.py
-        language: python
+        pass_filenames: true
         files: ^requirements/[^/]*\.txt$
 
   # * Commit message
@@ -142,14 +138,6 @@ repos:
     hooks:
       - id: commitizen
         stages: [commit-msg]
-
-  # * Makefile
-  - repo: https://github.com/mrtazz/checkmake.git
-    # Or another commit hash or version
-    rev: 0.2.2
-    hooks:
-      - id: checkmake
-        stages: [manual]
 
   # * Justfile
   - repo: local
@@ -197,40 +185,37 @@ repos:
             "metadata.kernelspec metadata.kernel_spec",
           ]
 
-  # ** typos
   - repo: https://github.com/nbQA-dev/nbQA
     rev: 1.9.1
     hooks:
+      # ** typos
       - id: nbqa
-        alias: nbqa-typos
         name: nbqa-typos
+        alias: typos
         additional_dependencies: &typos-deps [typos==1.33.1] # make sure save version as above.
         stages: [manual]
         args: [typos, --nbqa-shell]
         # this can lead to errors, so use with care
         # args: [typos, --write-changes, --nbqa-shell]
       - id: nbqa
-        alias: nbqa-typos
         name: nbqa-typos-markdown
+        alias: typos
         additional_dependencies: *typos-deps
         stages: [manual]
         args: [typos, --nbqa-shell, --nbqa-md]
         # this can lead to errors, so use with care
         # args: [typos, --write-changes, --nbqa-shell, --nbqa-md]
 
-  # ** codespell
-  - repo: https://github.com/nbQA-dev/nbQA
-    rev: 1.9.1
-    hooks:
+      # ** codespell
       - id: nbqa
-        alias: nbqa-codespell
         name: nbqa-codespell
+        alias: codespell
         additional_dependencies: &codespell-deps [codespell==2.4.1, tomli] # make sure same as above
         args:
           [codespell, --ignore-words=docs/spelling_wordlist.txt, --nbqa-shell]
       - id: nbqa
-        alias: nbqa-codespell
         name: nbqa-codespell-markdown
+        alias: codespell
         additional_dependencies: *codespell-deps
         args:
           [

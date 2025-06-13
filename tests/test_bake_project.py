@@ -67,7 +67,6 @@ def check_directory(
             "CHANGELOG.md",
             "CONTRIBUTING.md",
             "LICENSE",
-            "Makefile",
             "justfile",
             "README.md",
             "AUTHORS.md",
