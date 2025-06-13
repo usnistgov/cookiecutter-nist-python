@@ -15,8 +15,8 @@ mypy>=1.15.0
 nbqa>=1.8.4
 nox>=2025.5.1
 orjson
-pre-commit
 pre-commit-uv
+pre-commit>=4.0.0
 pyrefly
 pyright>=1.1.396
 scriv

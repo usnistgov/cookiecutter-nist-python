@@ -12,7 +12,7 @@ NOX := UVX_WITH_OPTS + " nox"
 
 # For pre-commit, just use a minimum version...
 
-PRE_COMMIT := UVX_WITH_OPTS + " --with=pre-commit-uv pre-commit"
+PRE_COMMIT := UVX + " --constraints=requirements/uvx-tools.txt --with=pre-commit-uv pre-commit"
 PYTHON_PATH := which("python")
 PYLINT_OPTS := "--enable-all-extensions"
 
