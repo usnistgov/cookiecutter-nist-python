@@ -145,9 +145,8 @@ repos:
       - id: just-fmt
         name: just-fmt
         entry:
-          uvx --constraints=requirements/lock/uvx-tools.txt --from="rust-just"
           just --fmt --justfile
-        language: python
+        language: system
         files: \.?[jJ]ustfile
         stages: [manual]
 
