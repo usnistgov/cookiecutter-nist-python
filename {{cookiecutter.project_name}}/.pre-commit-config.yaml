@@ -166,7 +166,8 @@ repos:
         name: cog-readme
         alias: cog
         entry:
-          python tools/cog_runner.py --use-uvx --linter=markdownlint --
+          python tools/cog_runner.py --use-uvx --format=prettier
+          --lint=markdownlint-cli2 --
           # if need package, use --isolated --group=cog --no-dev
         language: python
         files: ^README\.md$
