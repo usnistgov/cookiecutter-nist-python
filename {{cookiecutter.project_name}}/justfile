@@ -67,16 +67,16 @@ clean-venvs: (_clean ".nox" ".venv")
 
 # run pre-commit (staged files only)
 [group("lint")]
-pre-commit *commands="":
+pre-commit *commands:
     {{ PRE_COMMIT }} {{ commands }}
 
 # run pre-commit on all files
 [group("lint")]
-lint *commands="": (pre-commit "run --all-files" commands)
+lint *commands: (pre-commit "run --all-files" commands)
 
 # run pre-commit using manual stage on all files
 [group("lint")]
-lint-manual *commands="": (pre-commit "run --all-files --hook-stage=manual" commands)
+lint-manual *commands: (pre-commit "run --all-files --hook-stage=manual" commands)
 
 alias lint-all := lint-manual
 
@@ -101,17 +101,17 @@ user-all:
 
 # run tests quickly with the default Python
 [group("test")]
-test *options="":
+test *options:
     {{ UVRUN }} pytest {{ options }}
 
 # test across versions
 [group("test")]
-test-all *options="":
+test-all *options:
     {{ NOX }} -s test-all -- ++test-options {{ options }}
 
 # run tests and accept doctest results. (using pytest-accept)
 [group("test")]
-test-accept *options="":
+test-accept *options:
     DOCFILLER_SUB=False {{ UVRUN }} pytest -v --accept {{ options }}
 
 # * Versioning -----------------------------------------------------------------
@@ -131,14 +131,14 @@ version: version-scm version-import
 
 # * Requirements/Environment files ---------------------------------------------
 
-# Rebuild all requirements files
+# Rebuild all requirements files (pass +U to run uv sync)
 [group("requirements")]
 requirements *options:
     {{ NOX }} -s requirements -- {{ options }}
 
-# Update all requirement files
+# Update all requirement files  (pass +U to run uv sync)
 [group("requirements")]
-requirements-update: (requirements "+L")
+requirements-update *options: (requirements "+L" options)
 
 # Build requirements files from scratch
 [group("requirements")]
@@ -241,7 +241,7 @@ pyrefly-all: (typecheck-all "pyrefly")
 build *options:
     {{ NOX }} -s build -- {{ options }}
 
-_twine *options="":
+_twine *options:
     {{ UVX_WITH_OPTS }} twine {{ options }}
 
 [group("dist")]
