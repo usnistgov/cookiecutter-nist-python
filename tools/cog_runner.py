@@ -48,6 +48,7 @@ def _run_cog(
 def _run_linters(
     files: Sequence[str],
     linters: Iterable[str],
+    check: bool,
 ) -> None:
     from subprocess import run
 
@@ -63,7 +64,7 @@ def _run_linters(
         ]
 
         logger.info(shlex.join(command))
-        run(command, check=False)
+        run(command, check=check)
 
 
 def main(args: Sequence[str] | None = None) -> int:
@@ -75,10 +76,18 @@ def main(args: Sequence[str] | None = None) -> int:
         help="use uvx instead of uv run",
     )
     parser.add_argument(
-        "--linter",
+        "--lint",
         dest="linters",
         action="append",
         default=[],
+        help="linters (if fail, command fails)",
+    )
+    parser.add_argument(
+        "--format",
+        dest="formatters",
+        action="append",
+        default=[],
+        help="formatters (if fail, command does not fail)",
     )
 
     parser.add_argument(
@@ -105,7 +114,14 @@ def main(args: Sequence[str] | None = None) -> int:
 
     _run_linters(
         opts.files,
+        opts.formatters,
+        check=False,
+    )
+
+    _run_linters(
+        opts.files,
         opts.linters,
+        check=True,
     )
 
     return 0

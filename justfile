@@ -66,56 +66,25 @@ clean-venvs: (_clean ".nox" ".venv")
 
 # run pre-commit on all files
 [group("lint")]
-lint command="":
-    {{ PRE_COMMIT }} run --all-files {{ command }}
+lint *commands="":
+    {{ PRE_COMMIT }} run --all-files {{ commands }}
 
 # run pre-commit using manual stage
 [group("lint")]
-lint-manual command="":
-    {{ PRE_COMMIT }} run --all-files --hook-stage=manual {{ command }}
+lint-manual *commands="":
+    {{ PRE_COMMIT }} run --all-files --hook-stage=manual {{ commands }}
 
 alias lint-all := lint-manual
 
-# run codespell. Note that this imports allowed words from docs/spelling_wordlist.txt
+# run prettier/markdownlint/pypoject-fmt
 [group("lint")]
-codespell: (lint "codespell") (lint "nbqa-codespell")
-
-# run typos.
-[group("lint")]
-typos: (lint-manual "typos") (lint-manual "nbqa-typos")
-
-# run prettier
-[group("lint")]
-prettier: (lint "pyproject-fmt") (lint-manual "prettier") (lint-manual "markdownlint")
-
-# run pyproject validators
-[group("lint")]
-validate-pyproject: (lint-manual "validate-pyproject-full") (lint-manual "sp-repo-review")
-
-[group("lint")]
-ruff-check: (lint "ruff-check")
-
-[group("lint")]
-ruff-format: (lint "ruff-format")
+prettier: (lint "pyproject-fmt") (lint-manual "markdownlint")
 
 [group("lint")]
 ruff: (lint "ruff")
 
-alias ruff-all := ruff
-
-[group("lint")]
-checkmake: (lint-manual "checkmake")
-
-[group("lint")]
-just-fmt: (lint-manual "just-fmt")
-
 [group("lint")]
 cog: (lint-manual "cog")
-
-# symlink docs/examples/usage -> examples/usage
-[group("docs")]
-[group("lint")]
-docs-symlink-notebooks: (lint-manual "symlink-docs-examples-notebooks")
 
 # * User setup -----------------------------------------------------------------
 
