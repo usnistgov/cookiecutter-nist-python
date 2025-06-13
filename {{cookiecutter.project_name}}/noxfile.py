@@ -202,7 +202,6 @@ class SessionParams(DataclassParser):
             "mypy",
             "pyright",
             "pylint",
-            "pytype",
             "all",
             "mypy-notebook",
             "pyright-notebook",
@@ -864,7 +863,7 @@ def typecheck(  # noqa: C901
     session: nox.Session,
     opts: SessionParams,
 ) -> None:
-    """Run type checkers (mypy, pyright, pytype)."""
+    """Run type checkers (mypy, pyright, etc)."""
     install_dependencies(
         session, name="typecheck", opts=opts, include_editable_package=True
     )
@@ -872,10 +871,10 @@ def typecheck(  # noqa: C901
 
     cmd = opts.typecheck or []
     if not opts.typecheck_run and not cmd:
-        cmd = ["mypy", "pyright", "pylint"]
+        cmd = ["mypy", "pyright"]
 
     if "all" in cmd:
-        cmd = ["mypy", "pyright", "pylint", "pytype"]
+        cmd = ["mypy", "pyright", "pylint"]
 
     # set the cache directory for mypy
     session.env["MYPY_CACHE_DIR"] = str(Path(session.create_tmp()) / ".mypy_cache")
