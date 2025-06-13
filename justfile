@@ -181,10 +181,6 @@ typecheck *options: (mypy options) (pyright options)
 [group("typecheck")]
 typecheck-tools *files="noxfile.py tools/*.py": (mypy "--strict" files) (pyright files) (pylint files)
 
-[group("tools")]
-[group("lint")]
-pylint-tools *files="noxfile.py tools/*.py": (pylint files)
-
 # * NOX ------------------------------------------------------------------------
 # ** docs
 
