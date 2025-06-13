@@ -67,7 +67,7 @@ clean-venvs: (_clean ".nox" ".venv")
 # run pre-commit (staged files only)
 [group("lint")]
 pre-commit *commands="":
-    {{ PRE_COMMIT }} run {{ commands }}
+    {{ PRE_COMMIT }} {{ commands }}
 
 # run pre-commit on all files
 [group("lint")]
