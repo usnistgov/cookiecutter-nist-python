@@ -175,11 +175,15 @@ pylint *options="tests":
 
 # Run all checkers (with optional directories)
 [group("typecheck")]
-typecheck *options: (mypy options) (pyright options) (pylint options "tests")
+typecheck *options: (mypy options) (pyright options)
 
 [group("tools")]
 [group("typecheck")]
 typecheck-tools *files="noxfile.py tools/*.py": (mypy "--strict" files) (pyright files) (pylint files)
+
+[group("tools")]
+[group("lint")]
+pylint-tools *files="noxfile.py tools/*.py": (pylint files)
 
 # * NOX ------------------------------------------------------------------------
 # ** docs
@@ -216,8 +220,8 @@ docs-linkcheck: (docs "linkcheck")
 
 # typecheck across versions with nox
 [group("typecheck")]
-typecheck-all *options="mypy pyright pylint":
-    {{ NOX }} -s typecheck -- +m {{ options }}
+typecheck-all *checkers="mypy pyright":
+    {{ NOX }} -s typecheck -- +m {{ checkers }}
 
 [group("typecheck")]
 mypy-all: (typecheck-all "mypy")
@@ -303,7 +307,7 @@ pylint-notebook *files=NOTEBOOKS:
 
 [group("notebook")]
 [group("typecheck")]
-typecheck-notebook *files=NOTEBOOKS: (mypy-notebook files) (pyright-notebook files) (pylint-notebook files)
+typecheck-notebook *files=NOTEBOOKS: (mypy-notebook files) (pyright-notebook files)
 
 [group("notebook")]
 [group("test")]
