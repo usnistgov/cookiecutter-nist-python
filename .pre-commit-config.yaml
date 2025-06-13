@@ -146,10 +146,8 @@ repos:
     hooks:
       - id: just-fmt
         name: just-fmt
-        entry:
-          uvx --constraints=requirements/lock/uvx-tools.txt --from="rust-just"
-          just --fmt --justfile
-        language: python
+        entry: just --fmt --justfile
+        language: system
         files: \.?[jJ]ustfile
         stages: [manual]
 
