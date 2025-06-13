@@ -338,7 +338,7 @@ reqs = [
     "cruft",
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
-    "pre-commit",
+    "pre-commit>=4.0.0",
     "pre-commit-uv",
     "pyrefly",
     "pyright>=1.1.396",

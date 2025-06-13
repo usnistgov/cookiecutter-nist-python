@@ -71,11 +71,11 @@ pre-commit *commands="":
 
 # run pre-commit on all files
 [group("lint")]
-lint *commands="": (pre-commit "--all-files" commands)
+lint *commands="": (pre-commit "run --all-files" commands)
 
 # run pre-commit using manual stage on all files
 [group("lint")]
-lint-manual *commands="": (pre-commit "--all-files --hook-stage=manual" commands)
+lint-manual *commands="": (pre-commit "run --all-files --hook-stage=manual" commands)
 
 alias lint-all := lint-manual
 

@@ -16,7 +16,8 @@ FORMAT = "[%(name)s - %(levelname)s] %(message)s"
 logging.basicConfig(level=logging.INFO, format=FORMAT)
 logger = logging.getLogger("clean_kernelspec")
 
-CONSTRAINT_OPTION = "--constraints=requirements/lock/uvx-tools.txt"
+CONSTRAINT_OPTION = "--constraints=requirements/uvx-tools.txt"
+CONSTRAINT_OPTION_LOCKED = "--constraints=requirements/lock/uvx-tools.txt"
 
 
 def _run_cog(
@@ -31,7 +32,11 @@ def _run_cog(
         env = dict(os.environ, **env)
 
     command = [
-        *(["uvx", CONSTRAINT_OPTION, "--from=cogapp"] if use_uvx else ["uv", "run"]),
+        *(
+            ["uvx", CONSTRAINT_OPTION_LOCKED, "--from=cogapp"]
+            if use_uvx
+            else ["uv", "run"]
+        ),
         *extras,
         "cog",
         "-rP",
