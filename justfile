@@ -2,9 +2,11 @@
 
 PACKAGE_NAME := "cookiecutter-nist-python"
 IMPORT_NAME := "cookiecutter_nist_python"
+CONSTRAINTS_MIN := "requirements/uvx-tools.txt"
+CONSTRAINTS_LOCK := "requirements/lock/uvx-tools.txt"
 NOTEBOOKS := "examples/usage"
 UVX := "uvx"
-UVX_OPTS := "--constraints=requirements/lock/uvx-tools.txt"
+UVX_OPTS := "--constraints=" + CONSTRAINTS_LOCK
 UVX_WITH_OPTS := UVX + " " + UVX_OPTS
 UVRUN := "uv run --frozen"
 TYPECHECK := UVRUN + " --no-config tools/typecheck.py -v"
@@ -12,7 +14,6 @@ NOX := UVX_WITH_OPTS + " nox"
 
 # For pre-commit, just use a minimum version...
 
-PRE_COMMIT := UVX + " --constraints=requirements/uvx-tools.txt --with=pre-commit-uv pre-commit"
 PYTHON_PATH := which("python")
 PYLINT_OPTS := "--enable-all-extensions"
 
@@ -67,7 +68,8 @@ clean-venvs: (_clean ".nox" ".venv")
 # run pre-commit (staged files only)
 [group("lint")]
 pre-commit *commands:
-    {{ PRE_COMMIT }} {{ commands }}
+    @[[ ! -f {{ CONSTRAINTS_MIN }} ]] && touch {{ CONSTRAINTS_MIN }} || true
+    {{ UVX }} --constraints={{ CONSTRAINTS_MIN }} --with=pre-commit-uv pre-commit {{ commands }}
 
 # run pre-commit on all files
 [group("lint")]
@@ -134,8 +136,7 @@ version: version-scm version-import
 # Rebuild all requirements files (pass --upgrade to upgrade, --sync to force sync)
 [group("requirements")]
 requirements *options="--sync-or-lock":
-    [[ ! -f requirements/uvx-tools.txt ]] && touch requirements/uvx-tools.txt || true
-    {{ PRE_COMMIT }} run pyproject2conda-project --all-files --verbose || true
+    just pre-commit run pyproject2conda-project --all-files --verbose || true
     uv run --no-project tools/requirements_lock.py --all-files {{ options }}
 
 # Update all requirement files  (pass --sync to force sync)
@@ -318,7 +319,7 @@ install-ipykernel:
 execute-notebooks *files="examples/usage/*.ipynb":
     {{ UVRUN }} --group="notebook" --no-dev \
     jupyter execute --inplace --allow-errors {{ files }}
-    {{ PRE_COMMIT }} run nbstripout --all-files  || true
+    just pre-commit run nbstripout --all-files  || true
 
 # * Other tools ----------------------------------------------------------------
 
