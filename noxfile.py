@@ -904,19 +904,6 @@ def build(session: nox.Session, opts: SessionParams) -> None:  # noqa: C901
                 session.log(out.strip().split("\n")[-1])
 
 
-@nox.session(python=False)
-@add_opts
-def publish(session: nox.Session, opts: SessionParams) -> None:
-    """Publish the distribution."""
-    for cmd in opts.publish or []:
-        if cmd == "test":
-            uvx_run(session, "twine", "upload", "--repository", "testpypi", "dist/*")
-        elif cmd == "release":
-            uvx_run(session, "twine", "upload", "dist/*")
-        elif cmd == "check":
-            uvx_run(session, "twine", "check", "--strict", "dist/*")
-
-
 # # ** Dist conda
 @nox.session(name="conda-recipe", python=False)
 @add_opts
