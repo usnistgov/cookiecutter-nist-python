@@ -34,13 +34,15 @@ def _run_cog(
     command: list[str]
     if use_uvx:
         command = ["uvx", "--from=cogapp"]
-        constraints = constraints_locked
+        if constraints_locked:
+            constraints = constraints_locked
+        if constraints:
+            command.append(f"--constraints={constraints}")
     else:
         command = ["uv", "run"]
 
     command = [
         *command,
-        *([f"--constraints={constraints}"] if constraints else []),
         *extras,
         "cog",
         "-rP",
