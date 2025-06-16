@@ -357,9 +357,6 @@ dev = [
     { name = "pytest-sugar" },
     { name = "pytest-xdist" },
 ]
-dev-extras = [
-    { name = "nox" },
-]
 docs = [
     { name = "autodocsumm" },
     { name = "myst-parser", version = "3.0.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
@@ -434,7 +431,6 @@ dev = [
     { name = "pytest-sugar" },
     { name = "pytest-xdist" },
 ]
-dev-extras = [{ name = "nox", specifier = ">=2025.5.1" }]
 docs = [
     { name = "autodocsumm" },
     { name = "myst-parser" },

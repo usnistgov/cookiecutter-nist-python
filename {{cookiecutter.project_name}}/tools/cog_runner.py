@@ -1,4 +1,4 @@
-"""Script to run cog on files"""
+"""Script to run cog on files with optional linters/formatters."""
 
 from __future__ import annotations
 
@@ -16,27 +16,31 @@ FORMAT = "[%(name)s - %(levelname)s] %(message)s"
 logging.basicConfig(level=logging.INFO, format=FORMAT)
 logger = logging.getLogger("clean_kernelspec")
 
-CONSTRAINT_OPTION = "--constraints=requirements/uvx-tools.txt"
-CONSTRAINT_OPTION_LOCKED = "--constraints=requirements/lock/uvx-tools.txt"
-
 
 def _run_cog(
+    *,
     files: Iterable[str],
     extras: Iterable[str],
     use_uvx: bool = False,
     env: Mapping[str, str] | None = None,
+    constraints: str,
+    constraints_locked: str,
 ) -> None:
     if env is not None:
         import os
 
         env = dict(os.environ, **env)
 
+    command: list[str]
+    if use_uvx:
+        command = ["uvx", "--from=cogapp"]
+        constraints = constraints_locked
+    else:
+        command = ["uv", "run"]
+
     command = [
-        *(
-            ["uvx", CONSTRAINT_OPTION_LOCKED, "--from=cogapp"]
-            if use_uvx
-            else ["uv", "run"]
-        ),
+        *command,
+        *([f"--constraints={constraints}"] if constraints else []),
         *extras,
         "cog",
         "-rP",
@@ -54,13 +58,14 @@ def _run_linters(
     files: Sequence[str],
     linters: Iterable[str],
     check: bool,
+    constraints: str,
 ) -> None:
     from subprocess import run
 
     for linter in linters:
         command = [
             "uvx",
-            CONSTRAINT_OPTION,
+            *([f"--constraints={constraints}"] if constraints else []),
             "pre-commit",
             "run",
             linter,
@@ -94,7 +99,16 @@ def main(args: Sequence[str] | None = None) -> int:
         default=[],
         help="formatters (if fail, command does not fail)",
     )
-
+    parser.add_argument(
+        "--constraints",
+        default="requirements/uvx-tools.txt",
+        help="Constraints used with ``uv run``. Pass '' for no constraints",
+    )
+    parser.add_argument(
+        "--constraints-locked",
+        default="requirements/lock/uvx-tools.txt",
+        help="Constraints used with ``uvx cog``. Pass '' for no constraints",
+    )
     parser.add_argument(
         "files",
         nargs="+",
@@ -111,22 +125,26 @@ def main(args: Sequence[str] | None = None) -> int:
     logger.debug("extras: %s", extras)
 
     _run_cog(
-        opts.files,
+        files=opts.files,
         extras=extras,
         use_uvx=opts.use_uvx,
         env={"COLUMNS": "90"},
+        constraints=opts.constraints,
+        constraints_locked=opts.constraints_locked,
     )
 
     _run_linters(
         opts.files,
         opts.formatters,
         check=False,
+        constraints=opts.constraints,
     )
 
     _run_linters(
         opts.files,
         opts.linters,
         check=True,
+        constraints=opts.constraints,
     )
 
     return 0

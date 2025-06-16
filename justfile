@@ -111,7 +111,8 @@ test-all *options:
 # run tests and accept doctest results. (using pytest-accept)
 [group("test")]
 test-accept *options:
-    DOCFILLER_SUB=False {{ UVRUN }} pytest -v --accept {{ options }}
+    DOCFILLER_SUB=False {{ UVRUN }} --group="test" --group="test-accept" \
+    pytest -v --accept {{ options }}
 
 # * Versioning -----------------------------------------------------------------
 
@@ -130,19 +131,16 @@ version: version-scm version-import
 
 # * Requirements/Environment files ---------------------------------------------
 
-# Rebuild all requirements files (pass +U to run uv sync)
+# Rebuild all requirements files (pass --upgrade to upgrade, --sync to force sync)
 [group("requirements")]
-requirements *options:
-    {{ NOX }} -s requirements -- {{ options }}
+requirements *options="--sync-or-lock":
+    [[ ! -f requirements/uvx-tools.txt ]] && touch requirements/uvx-tools.txt || true
+    {{ PRE_COMMIT }} run pyproject2conda-project --all-files --verbose || true
+    uv run --no-project tools/requirements_lock.py --all-files {{ options }}
 
-# Update all requirement files  (pass +U to run uv sync)
+# Update all requirement files  (pass --sync to force sync)
 [group("requirements")]
-requirements-update *options: (requirements "+L" options)
-
-# Build requirements files from scratch
-[group("requirements")]
-requirements-bootstrap *options:
-    uv run --isolated --only-group=nox nox -s requirements -- {{ options }}
+requirements-upgrade *options="--sync-or-lock": (requirements "--upgrade" options)
 
 # * Typing ---------------------------------------------------------------------
 _typecheck checker *options:
@@ -308,7 +306,8 @@ typecheck-notebook *files=NOTEBOOKS: (mypy-notebook files) (pyright-notebook fil
 [group("notebook")]
 [group("test")]
 test-notebook *files=NOTEBOOKS:
-    {{ UVRUN }} --group="nbval" pytest --nbval --nbval-current-env --nbval-sanitize-with=config/nbval.ini --dist loadscope -x {{ files }}
+    {{ UVRUN }} --group="test-notebook" --no-dev \
+    pytest --nbval --nbval-current-env --nbval-sanitize-with=config/nbval.ini --dist loadscope -x {{ files }}
 
 [group("notebook")]
 install-ipykernel:
@@ -317,7 +316,8 @@ install-ipykernel:
 # Execute notebooks inplace using nbclient
 [group("notebook")]
 execute-notebooks *files="examples/usage/*.ipynb":
-    {{ UVRUN }} --group="nbclient" jupyter execute --inplace --allow-errors {{ files }}
+    {{ UVRUN }} --group="notebook" --no-dev \
+    jupyter execute --inplace --allow-errors {{ files }}
     {{ PRE_COMMIT }} run nbstripout --all-files  || true
 
 # * Other tools ----------------------------------------------------------------

@@ -146,20 +146,6 @@ class SessionParams(DataclassParser):
         default=None,
     )
 
-    # requirements
-    requirements_no_notify: bool = add_option(
-        default=False,
-        help="Skip notification of lock-compile",
-    )
-
-    # lock
-    lock_upgrade: bool = add_option(
-        "--lock-upgrade",
-        "-L",
-        help="Upgrade all packages in lock files",
-        default=False,
-    )
-
     # test
     test_no_pytest: bool = False
     test_options: OPT_TYPE = add_option(
@@ -536,62 +522,6 @@ def install_ipykernel(session: Session) -> None:
         "--display-name",
         f"Python [venv: {KERNEL_NAME}]",
         success_codes=[0, 1],
-    )
-
-
-# ** requirements
-@nox.session(name="requirements", python=False)
-@add_opts
-def requirements(
-    session: Session,
-    opts: SessionParams,
-) -> None:
-    """
-    Create environment.yaml and requirement.txt files from pyproject.toml using pyproject2conda.
-
-    These will be placed in the directory "./requirements".
-
-    Should instead us pre-commit run requirements --all-files
-    """
-    pre_commit_run(
-        session,
-        "pyproject2conda-project",
-        "--all-files",
-        "--verbose",
-        success_codes=[0, 1],
-    )
-
-    if not opts.requirements_no_notify:
-        session.notify("lock")
-
-
-# ** uv lock compile
-@nox.session(name="lock", python=False)
-@add_opts
-def lock(
-    session: Session,
-    opts: SessionParams,
-) -> None:
-    """Run uv pip compile ..."""
-    options: list[str] = ["--upgrade"] if opts.lock_upgrade else []
-
-    if opts.lock:
-        session.run(
-            "uv",
-            "sync" if opts.update else "lock",
-            *options,
-            env={
-                "VIRTUAL_ENV": ".venv",
-                "UV_PROJECT_ENVIRONMENT": ".venv",
-            },
-        )
-    session.run(
-        "uv",
-        "run",
-        "--no-project",
-        "tools/requirements_lock.py",
-        "--all",
-        *options,
     )
 
 

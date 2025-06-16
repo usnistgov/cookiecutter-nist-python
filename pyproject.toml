@@ -34,8 +34,8 @@ urls.Homepage = "https://github.com/usnistgov/cookiecutter-nist-python"
 
 [dependency-groups]
 dev = [
-    { include-group = "dev-extras" },
-    { include-group = "mypy" },
+    { include-group = "mypy" },      # so can use dmypy
+    { include-group = "nox" },
     { include-group = "test" },
     { include-group = "typecheck" },
 ]
@@ -52,9 +52,6 @@ docs = [
     "sphinxcontrib-spelling",
 ]
 cog = [ "cogapp" ]
-dev-extras = [
-    { include-group = "nox" },
-]
 docs-live = [
     "sphinx-autobuild",
     { include-group = "docs" },
@@ -67,7 +64,6 @@ nox = [ "nox>=2025.5.1" ]
 test-extras = [
     "cookiecutter",
     "copier",
-    # "copier-templates-extensions==0.3.0",
     "copier-templates-extensions>=0.3.1",
     "pytest",
     "pytest-cov",
@@ -285,6 +281,7 @@ required-version = ">=0.7.2"
 
 [tool.uv.pip]
 annotation-style = "line"
+generate-hashes = true
 
 # * Other tools ----------------------------------------------------------------
 
