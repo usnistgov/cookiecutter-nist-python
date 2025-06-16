@@ -94,6 +94,13 @@ def pytest_addoption(parser: pytest.Parser) -> None:
     )
 
     parser.addoption(
+        "--requirements-opts",
+        action="store",
+        default="",
+        help="options to pass to tools/requirements_lock.py",
+    )
+
+    parser.addoption(
         "--enable",
         action="store_true",
         default=False,
@@ -111,13 +118,19 @@ def nox_session_opts(pytestconfig: pytest.Config) -> str:
     return pytestconfig.getoption("nox_session_opts")  # type: ignore[no-any-return]
 
 
+@pytest.fixture(scope="session")
+def requirements_opts(pytestconfig: pytest.Config) -> str:
+    return pytestconfig.getoption("requirements_opts")  # type: ignore[no-any-return]
+
+
 # * Fixtures ---------------------------------------------------------------------------
 @pytest.fixture(
     scope="session",
     params=PARAMS,
 )
 def example_path(
-    request: pytest.FixtureRequest, nox_opts: str, nox_session_opts: str
+    request: pytest.FixtureRequest,
+    requirements_opts: str,
 ) -> Iterator[Path]:
     project_name = request.param["project_name"]
     extra_context = request.param["extra_context"]
@@ -132,11 +145,10 @@ def example_path(
         run_inside_dir("git init", path)
     run_inside_dir("git add .", path)
 
-    run_inside_dir(f"nox -s requirements {nox_opts} -- {nox_session_opts}", str(path))
+    run_inside_dir(f"just requirements --lock {requirements_opts}", str(path))
     run_inside_dir(
         "uv run --no-project tools/symlink_docs_examples_notebooks.py", str(path)
     )
-    run_inside_dir("uv lock", str(path), env={"VIRTUAL_ENV": str(path / ".venv")})
 
     run_inside_dir("git add .", path)
 

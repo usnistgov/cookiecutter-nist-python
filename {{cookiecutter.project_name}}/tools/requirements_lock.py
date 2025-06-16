@@ -7,6 +7,7 @@ import shlex
 import sys
 from argparse import ArgumentParser
 from pathlib import Path
+from subprocess import check_call
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -40,11 +41,9 @@ def _lock_files(
     paths: Iterable[Path],
     min_python_version: str,
     default_python_version: str,
-    pip_compile_config: Path,
+    pip_compile_config_file: Path | None,
     upgrade: bool = False,
 ) -> None:
-    from subprocess import check_call
-
     for path in paths:
         python_version = (
             min_python_version
@@ -60,7 +59,11 @@ def _lock_files(
             "pip",
             "compile",
             "--universal",
-            f"--config-file={pip_compile_config}",
+            *(
+                [f"--config-file={pip_compile_config_file}"]
+                if pip_compile_config_file
+                else []
+            ),
             "-q",
             # don't include dependencies for uvx-tools
             *(
@@ -80,26 +83,74 @@ def _lock_files(
         check_call(options)
 
 
+def _maybe_lock_or_sync(
+    lock: bool,
+    sync: bool,
+    sync_or_lock: bool,
+    upgrade: bool,
+) -> None:
+    if sync_or_lock:
+        if Path(".venv").exists():
+            sync = True
+        else:
+            lock = True
+
+    if lock or sync:
+        command = [
+            "uv",
+            ("sync" if sync else "lock"),
+            *(["--no-active"] if sync else []),
+            *(["--upgrade"] if upgrade else []),
+        ]
+
+        logger.info(shlex.join(command))
+        check_call(command)
+
+
 def main(args: Sequence[str] | None = None) -> int:
     """Main script."""
     # pylint: disable=duplicate-code
     parser = ArgumentParser()
     parser.add_argument(
         "--upgrade",
+        "-U",
         action="store_true",
         help="Upgrade requirements",
     )
     parser.add_argument(
-        "--pip-compile-config",
-        default="./requirements/uv.toml",
+        "--pip-compile-config-file",
+        default=None,
         type=Path,
-        help="Config file for locking.",
+        help="""
+        Config file to use when invoking ``uv pip compile``.
+        Useful if you want ``pip compile`` to have different settings from ``uv sync``.
+        For example, you could use ``--pip-compile-config-file=requirements/uv.toml`` with
+        pip-compile specific settings in ``requirements/uv.toml``.
+        """,
     )
     parser.add_argument(
-        "--all",
-        dest="all_",
+        "--all-files",
+        dest="all_files",
         action="store_true",
-        help="Run on all files.",
+        help="Run ``uv pip compile`` on all files.",
+    )
+    parser.add_argument(
+        "--lock",
+        action="store_true",
+        help="Run ``uv lock``",
+    )
+    parser.add_argument(
+        "--sync",
+        action="store_true",
+        help="Run ``uv sync`` (overrides ``uv lock``)",
+    )
+    parser.add_argument(
+        "--sync-or-lock",
+        action="store_true",
+        help="""
+        If directory ``.venv`` exists, run ``uv sync``.  Otherwise run ``uv lock``.
+        Overridden by ``--sync``.
+        """,
     )
     parser.add_argument(
         "paths",
@@ -109,12 +160,19 @@ def main(args: Sequence[str] | None = None) -> int:
 
     opts = parser.parse_args(args)
 
+    _maybe_lock_or_sync(
+        lock=opts.lock,
+        sync=opts.sync,
+        sync_or_lock=opts.sync_or_lock,
+        upgrade=opts.upgrade,
+    )
+
     _lock_files(
-        Path("./requirements").glob("*.txt") if opts.all_ else opts.paths,
+        Path("./requirements").glob("*.txt") if opts.all_files else opts.paths,
         min_python_version=_get_min_python_version(),
         default_python_version=_get_default_version(),
         upgrade=opts.upgrade,
-        pip_compile_config=opts.pip_compile_config,
+        pip_compile_config_file=opts.pip_compile_config_file,
     )
 
     return 0

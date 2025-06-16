@@ -50,10 +50,12 @@ scripts.{{ cookiecutter.project_slug }} = "{{ cookiecutter.project_slug}}.cli:ma
 
 [dependency-groups]
 dev = [
-    { include-group = "dev-extras" },
-    { include-group = "mypy" },
+    { include-group = "mypy" },          # so can use dmypy
     { include-group = "notebook" },
+    { include-group = "nox" },
     { include-group = "test" },
+    { include-group = "test-accept" },
+    { include-group = "test-notebook" },
     { include-group = "typecheck" },
 ]
 test = [
@@ -83,10 +85,6 @@ docs = [
     "sphinxcontrib-spelling",
 ]
 cog = [ "cogapp" ]
-dev-extras = [
-    "pytest-accept",
-    { include-group = "nox" },
-]
 docs-live = [
     "sphinx-autobuild",
     { include-group = "docs" },
@@ -95,14 +93,12 @@ mypy = [
     "mypy>=1.15.0",
     "orjson",
 ]
-nbclient = [ "nbclient" ]
-nbval = [ "nbval" ]
 nox = [ "nox>=2025.5.1" ]
 notebook = [
     "ipykernel",
-    { include-group = "nbclient" },
-    { include-group = "nbval" },
+    "nbclient",
 ]
+test-accept = [ "pytest-accept" ]
 test-extras = [
     "pytest",
     "pytest-cov",
@@ -110,7 +106,7 @@ test-extras = [
     "pytest-xdist",
 ]
 test-notebook = [
-    { include-group = "nbval" },
+    "nbval",
     { include-group = "test-extras" },
 ]
 typecheck = [
@@ -364,6 +360,7 @@ required-version = ">=0.7.2"
 
 [tool.uv.pip]
 annotation-style = "line"
+generate-hashes = true
 
 # * Other tools ----------------------------------------------------------------
 

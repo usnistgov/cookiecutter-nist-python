@@ -249,7 +249,7 @@ The project is setup to create `environment.yaml` and `requirement.txt` files
 from `pyproject.toml`. This can be done using:
 
 ```bash
-nox -s requirements
+just requirements
 ```
 
 This uses [pyproject2conda] to create the requirement files. Note that all
@@ -259,13 +259,10 @@ requirement files are under something like
 
 Additionally, requirement files for virtualenvs (e.g., `requirements.txt` like
 files) will be "locked" using `uv pip compile` from [uv]. These files are placed
-under `requirements/lock`. Note the the session `requirements` automatically
-calls the session `lock`.
-
-To upgrade the dependencies in the lock, you'll need to pass the option:
+under `requirements/lock`. This uses the script `tools/requirements_lock.py`.
 
 ```bash
-nox -s lock -- +L/++lock-upgrade
+just requirements-upgrade
 ```
 
 This will also update `uv.lock` if it's being used.
