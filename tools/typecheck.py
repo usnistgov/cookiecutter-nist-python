@@ -19,9 +19,9 @@ if TYPE_CHECKING:
     from collections.abc import Mapping, Sequence
 
 
-FORMAT = "[TYPECHECK %(levelname)s] %(message)s"
+FORMAT = "[%(name)s - %(levelname)s] %(message)s"
 logging.basicConfig(level=logging.WARNING, format=FORMAT)
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("typecheck")
 
 
 # * Utilities -----------------------------------------------------------------

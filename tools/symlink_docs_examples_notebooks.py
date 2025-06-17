@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 
 FORMAT = "[%(name)s - %(levelname)s] %(message)s"
 logging.basicConfig(level=logging.INFO, format=FORMAT)
-logger = logging.getLogger("clean_kernelspec")
+logger = logging.getLogger("symlink_docs_examples_notebooks")
 
 
 def _usage_paths(path: Path) -> Iterator[Path]:
