@@ -61,8 +61,8 @@ docs = [
 cog = [ "cogapp" ]
 mypy = [ "mypy>=1.15.0", "orjson" ]
 nox = [ "nox>=2025.5.1" ]
-pytest = [ "pytest" ]
 pylint = [ "pylint" ]
+pytest = [ "pytest" ]
 # other environments
 docs-live = [
     "sphinx-autobuild",
