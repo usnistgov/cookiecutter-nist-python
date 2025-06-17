@@ -53,8 +53,8 @@ dev = [
     { include-group = "mypy" },
     { include-group = "notebook" },
     { include-group = "nox" },
+    { include-group = "pytest-accept" },
     { include-group = "test" },
-    { include-group = "test-accept" },
     { include-group = "test-notebook" },
     { include-group = "typecheck" },
 ]
@@ -92,9 +92,9 @@ cog = [ "cogapp" ]
 mypy = [ "mypy>=1.15.0", "orjson" ]
 notebook = [ "ipykernel", "nbclient" ]
 nox = [ "nox>=2025.5.1" ]
-pytest = [ "pytest" ]
 pylint = [ "pylint" ]
-test-accept = [ "pytest-accept" ]
+pytest = [ "pytest" ]
+pytest-accept = [ "pytest-accept" ]
 # other environments
 docs-live = [
     "sphinx-autobuild",

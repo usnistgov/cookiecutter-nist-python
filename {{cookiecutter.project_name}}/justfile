@@ -116,7 +116,7 @@ test-all *options: (nox "-s test-all -- ++test-options" options)
 # run tests and accept doctest results. (using pytest-accept)
 [group("test")]
 test-accept *options:
-    DOCFILLER_SUB=False {{ UVRUN }} --group="test" --group="test-accept" --no-dev \
+    DOCFILLER_SUB=False {{ UVRUN }} --group="test" --group="pytest-accept" --no-dev \
     pytest -v --accept {{ options }}
 
 # * Versioning -----------------------------------------------------------------
