@@ -6,23 +6,32 @@ IMPORT_NAME := "{{ cookiecutter.project_slug }}"
 CONSTRAINTS_MIN := "requirements/uvx-tools.txt"
 CONSTRAINTS_LOCK := "requirements/lock/uvx-tools.txt"
 NOTEBOOKS := "examples/usage"
+PYLINT_OPTS := "--enable-all-extensions"
 UVX := "uvx"
 UVX_OPTS := "--constraints=" + CONSTRAINTS_LOCK
 UVX_WITH_OPTS := UVX + " " + UVX_OPTS
 UVRUN := "uv run --frozen"
-TYPECHECK := UVRUN + " --no-config tools/typecheck.py -v"
-NOX := UVX_WITH_OPTS + " nox"
-
-# For pre-commit, just use a minimum version...
-
-PYTHON_PATH := which("python")
-PYLINT_OPTS := "--enable-all-extensions"
+TYPECHECK := "tools/typecheck.py -v"
 
 set unstable := true
 
 # * Defaults
 default:
     @just --list
+
+# * Functions ------------------------------------------------------------------
+
+# run nox
+[group("tools")]
+nox *options:
+    {{ UVX_WITH_OPTS }} nox {{ options }}
+
+# run pre-commit
+[group("lint")]
+[group("tools")]
+pre-commit *commands:
+    @[[ ! -f {{ CONSTRAINTS_MIN }} ]] && touch {{ CONSTRAINTS_MIN }} || true
+    {{ UVX }} --constraints={{ CONSTRAINTS_MIN }} --with=pre-commit-uv pre-commit {{ commands }}
 
 # * Clean ----------------------------------------------------------------------
 
@@ -66,12 +75,6 @@ clean-venvs: (_clean ".nox" ".venv")
 
 # * Pre-commit -----------------------------------------------------------------
 
-# run pre-commit (staged files only)
-[group("lint")]
-pre-commit *commands:
-    @[[ ! -f {{ CONSTRAINTS_MIN }} ]] && touch {{ CONSTRAINTS_MIN }} || true
-    {{ UVX }} --constraints={{ CONSTRAINTS_MIN }} --with=pre-commit-uv pre-commit {{ commands }}
-
 # run pre-commit on all files
 [group("lint")]
 lint *commands: (pre-commit "run --all-files" commands)
@@ -90,7 +93,7 @@ prettier: (lint "pyproject-fmt") (lint-manual "markdownlint")
 ruff: (lint "ruff")
 
 [group("lint")]
-cog: (lint-manual "cog")
+cog: (lint-manual "cog" "--verbose")
 
 # * User setup -----------------------------------------------------------------
 
@@ -104,30 +107,28 @@ user-all:
 # run tests quickly with the default Python
 [group("test")]
 test *options:
-    {{ UVRUN }} pytest {{ options }}
+    {{ UVRUN }} --group="test" --no-dev pytest {{ options }}
 
 # test across versions
 [group("test")]
-test-all *options:
-    {{ NOX }} -s test-all -- ++test-options {{ options }}
+test-all *options: (nox "-s test-all -- ++test-options" options)
 
 # run tests and accept doctest results. (using pytest-accept)
 [group("test")]
 test-accept *options:
-    DOCFILLER_SUB=False {{ UVRUN }} --group="test" --group="test-accept" \
+    DOCFILLER_SUB=False {{ UVRUN }} --group="test" --group="test-accept" --no-dev \
     pytest -v --accept {{ options }}
 
 # * Versioning -----------------------------------------------------------------
 
 # check/update version of package from scm
 [group("version")]
-version-scm:
-    {{ NOX }} -s build -- ++build version
+version-scm: (nox "-s build -- ++build version")
 
 # check version from python import
 [group("version")]
 version-import:
-    -{{ UVRUN }} python -c 'import {{ IMPORT_NAME }}; print({{ IMPORT_NAME }}.__version__)'
+    {{ UVRUN }} --no-dev python -c 'import {{ IMPORT_NAME }}; print({{ IMPORT_NAME }}.__version__)' || true
 
 [group("version")]
 version: version-scm version-import
@@ -140,13 +141,20 @@ requirements *options="--sync-or-lock":
     just pre-commit run pyproject2conda-project --all-files --verbose || true
     uv run --no-project tools/requirements_lock.py --all-files {{ options }}
 
+
 # Update all requirement files  (pass --sync to force sync)
 [group("requirements")]
 requirements-upgrade *options="--sync-or-lock": (requirements "--upgrade" options)
 
+alias sync := requirements
+alias sync-upgrade := requirements-upgrade
+
 # * Typing ---------------------------------------------------------------------
-_typecheck checker *options:
-    {{ TYPECHECK }} {{ UVX_OPTS }} -x {{ checker }} -- {{ options }}
+
+TYPECHECK_UVRUN_OPTS := "--group=typecheck --no-dev"
+
+_typecheck checker *check_options:
+    {{ UVRUN }} {{ TYPECHECK_UVRUN_OPTS }} {{ TYPECHECK }} {{ UVX_OPTS }} -x {{ checker }} -- {{ check_options }}
 
 # Run mypy (with optional args)
 [group("typecheck")]
@@ -171,23 +179,25 @@ pyrefly *options="src tests": (_typecheck "pyrefly" options)
 [group("lint")]
 [group("typecheck")]
 pylint *options="src tests":
-    {{ UVRUN }} pylint {{ PYLINT_OPTS }} {{ options }}
+    {{ UVRUN }} {{ TYPECHECK_UVRUN_OPTS }} pylint {{ PYLINT_OPTS }} {{ options }}
 
 # Run all checkers (with optional directories)
 [group("typecheck")]
 typecheck *options: (mypy options) (pyright options)
 
+# Run checkers on tools
 [group("tools")]
 [group("typecheck")]
-typecheck-tools *files="noxfile.py tools/*.py": (mypy "--strict" files) (pyright files) (pylint files)
+@typecheck-tools *files="noxfile.py tools/*.py":
+    just TYPECHECK_UVRUN_OPTS="--only-group=nox" typecheck {{ files }}
+    just TYPECHECK_UVRUN_OPTS="--only-group=nox --only-group=pylint" pylint {{ files }}
 
 # * NOX ------------------------------------------------------------------------
 # ** docs
 
 # build docs.  Optioons {html, spelling, livehtml, linkcheck, open}.
 [group("docs")]
-docs *options="html":
-    {{ NOX }} -s docs -- +d {{ options }}
+docs *options="html": (nox "-s docs -- +d" options)
 
 [group("docs")]
 docs-html: (docs "html")
@@ -216,8 +226,7 @@ docs-linkcheck: (docs "linkcheck")
 
 # typecheck across versions with nox
 [group("typecheck")]
-typecheck-all *checkers="mypy pyright":
-    {{ NOX }} -s typecheck -- +m {{ checkers }}
+typecheck-all *checkers="mypy pyright": (nox "-s typecheck -- +m" checkers)
 
 [group("typecheck")]
 mypy-all: (typecheck-all "mypy")
@@ -237,8 +246,7 @@ pyrefly-all: (typecheck-all "pyrefly")
 # * dist ----------------------------------------------------------------------
 
 [group("dist")]
-build *options:
-    {{ NOX }} -s build -- {{ options }}
+build *options: (nox "-s build --" options)
 
 _twine *options:
     {{ UVX_WITH_OPTS }} twine {{ options }}
@@ -277,7 +285,9 @@ list-dist:
 
 # * NOTEBOOK -------------------------------------------------------------------
 _nbqa_typecheck checker *files:
-    {{ UVX_WITH_OPTS }} nbqa --nbqa-shell "{{ PYTHON_PATH }} tools/typecheck.py -v {{ UVX_OPTS }} -x {{ checker }}" {{ files }}
+    {{ UVX_WITH_OPTS }} \
+    nbqa --nbqa-shell \
+    "uv run --active --no-project {{ TYPECHECK }} {{ UVX_OPTS }} -x {{ checker }}" {{ files }}
 
 [group("notebook")]
 [group("typecheck")]
@@ -299,7 +309,8 @@ pyrefly-notebook *files=NOTEBOOKS: (_nbqa_typecheck "pyrefly" files)
 [group("notebook")]
 [group("typecheck")]
 pylint-notebook *files=NOTEBOOKS:
-    {{ UVX_WITH_OPTS }} nbqa --nbqa-shell "{{ PYTHON_PATH }} -m pylint {{ PYLINT_OPTS }}" {{ files }}
+    {{ UVX_WITH_OPTS }} nbqa --nbqa-shell \
+    "uv run --active --no-project -m pylint {{ PYLINT_OPTS }}" {{ files }}
 
 [group("notebook")]
 [group("typecheck")]
@@ -309,11 +320,13 @@ typecheck-notebook *files=NOTEBOOKS: (mypy-notebook files) (pyright-notebook fil
 [group("test")]
 test-notebook *files=NOTEBOOKS:
     {{ UVRUN }} --group="test-notebook" --no-dev \
-    pytest --nbval --nbval-current-env --nbval-sanitize-with=config/nbval.ini --dist loadscope -x {{ files }}
+    pytest --nbval --nbval-current-env \
+    --nbval-sanitize-with=config/nbval.ini \
+    --dist loadscope \
+    -x {{ files }}
 
 [group("notebook")]
-install-ipykernel:
-    {{ NOX }} -s install-ipykernel
+install-ipykernel: (nox "-s install-ipykernel")
 
 # Execute notebooks inplace using nbclient
 [group("notebook")]
@@ -340,14 +353,25 @@ scriv-collect version *options="--add --edit":
     {{ UVX_WITH_OPTS }} scriv collect --version {{ version }} {{ options }}
 
 auto-changelog:
-    {{ UVX_WITH_OPTS }} auto-changelog -u -r usnistgov -v unreleased --tag-prefix v --stdout --template changelog.d/templates/auto-changelog/template.jinja2
+    {{ UVX_WITH_OPTS }} \
+    auto-changelog \
+    -u \
+    -r usnistgov \
+    -v unreleased \
+    --tag-prefix v \
+    --stdout \
+    --template changelog.d/templates/auto-changelog/template.jinja2
 
 commitizen-changelog:
-    {{ UVX_WITH_OPTS }} --from=commitizen cz changelog --unreleased-version unreleased --dry-run --incremental
+    {{ UVX_WITH_OPTS }} --from=commitizen \
+    cz changelog \
+    --unreleased-version unreleased \
+    --dry-run \
+    --incremental
 
 # tuna analyze load time:
 tuna-import:
-    {{ UVRUN }} python -X importtime -c 'import {{ IMPORT_NAME }}' 2> tuna-loadtime.log
+    {{ UVRUN }} --no-dev python -X importtime -c 'import {{ IMPORT_NAME }}' 2> tuna-loadtime.log
     {{ UVX_WITH_OPTS }} tuna tuna-loadtime.log
     rm tuna-loadtime.log
 

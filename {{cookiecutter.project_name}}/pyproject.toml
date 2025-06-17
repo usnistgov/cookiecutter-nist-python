@@ -50,7 +50,7 @@ scripts.{{ cookiecutter.project_slug }} = "{{ cookiecutter.project_slug}}.cli:ma
 
 [dependency-groups]
 dev = [
-    { include-group = "mypy" },          # so can use dmypy
+    { include-group = "mypy" },
     { include-group = "notebook" },
     { include-group = "nox" },
     { include-group = "test" },
@@ -59,7 +59,10 @@ dev = [
     { include-group = "typecheck" },
 ]
 test = [
-    { include-group = "test-extras" },
+    "pytest-cov",
+    "pytest-sugar",
+    "pytest-xdist",
+    { include-group = "pytest" },
 ]
 docs = [
     {%- if cookiecutter.sphinx_use_autodocsumm %}
@@ -84,34 +87,29 @@ docs = [
     "sphinx-copybutton",
     "sphinxcontrib-spelling",
 ]
+# other packages/tools
 cog = [ "cogapp" ]
+mypy = [ "mypy>=1.15.0", "orjson" ]
+notebook = [ "ipykernel", "nbclient" ]
+nox = [ "nox>=2025.5.1" ]
+pytest = [ "pytest" ]
+pylint = [ "pylint" ]
+test-accept = [ "pytest-accept" ]
+# other environments
 docs-live = [
     "sphinx-autobuild",
     { include-group = "docs" },
 ]
-mypy = [
-    "mypy>=1.15.0",
-    "orjson",
-]
-nox = [ "nox>=2025.5.1" ]
-notebook = [
-    "ipykernel",
-    "nbclient",
-]
-test-accept = [ "pytest-accept" ]
 test-extras = [
-    "pytest",
-    "pytest-cov",
-    "pytest-sugar",
-    "pytest-xdist",
+    { include-group = "test" },
 ]
 test-notebook = [
     "nbval",
-    { include-group = "test-extras" },
+    { include-group = "test" },
 ]
 typecheck = [
-    "pylint",
-    "pytest",
+    { include-group = "pylint" },
+    { include-group = "pytest" },
 ]
 
 [tool.hatch.version]

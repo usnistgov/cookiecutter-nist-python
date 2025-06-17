@@ -45,7 +45,7 @@ repos:
       - id: validate-pyproject
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2025.05.12
+    rev: 2025.06.13
     hooks:
       - id: validate-pyproject
         name: validate-pyproject-schema-store
@@ -166,7 +166,7 @@ repos:
         entry:
           python tools/cog_runner.py --use-uvx --format=prettier
           --lint=markdownlint-cli2 --
-          # if need package, use --group=cog --no-dev
+          # if need package, use --group=cog --no-dev --no-active/--isolated
         language: python
         files: ^README\.md$
         stages: [manual]
