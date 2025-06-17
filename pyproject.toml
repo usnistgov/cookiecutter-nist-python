@@ -40,7 +40,13 @@ dev = [
     { include-group = "typecheck" },
 ]
 test = [
-    { include-group = "test-extras" },
+    "cookiecutter",
+    "copier",
+    "copier-templates-extensions>=0.3.1",
+    "pytest-cov",
+    "pytest-sugar",
+    "pytest-xdist",
+    { include-group = "pytest" },
 ]
 docs = [
     "autodocsumm",
@@ -51,28 +57,20 @@ docs = [
     "sphinx-copybutton",
     "sphinxcontrib-spelling",
 ]
+# other packages/tools
 cog = [ "cogapp" ]
+mypy = [ "mypy>=1.15.0", "orjson" ]
+nox = [ "nox>=2025.5.1" ]
+pytest = [ "pytest" ]
+pylint = [ "pylint" ]
+# other environments
 docs-live = [
     "sphinx-autobuild",
     { include-group = "docs" },
 ]
-mypy = [
-    "mypy>=1.15.0",
-    "orjson",
-]
-nox = [ "nox>=2025.5.1" ]
-test-extras = [
-    "cookiecutter",
-    "copier",
-    "copier-templates-extensions>=0.3.1",
-    "pytest",
-    "pytest-cov",
-    "pytest-sugar",
-    "pytest-xdist",
-]
 typecheck = [
-    "pylint",
-    "pytest",
+    { include-group = "pylint" },
+    { include-group = "pytest" },
 ]
 
 [tool.repo-review]

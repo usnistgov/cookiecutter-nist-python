@@ -479,7 +479,8 @@ activate the development environment when in the parent directory.
 
 ### Development tools
 
-The only required tool is [uv]. Other tools used are:
+The only required tool is [uv], but it highly recommended to also install
+[just]. Other tools used are:
 
 - [pre-commit]
 - [just]
@@ -499,8 +500,8 @@ Behind the scenes, the `justfile` and `noxfile.py` will invoke [uvx] with
 constraints from `requirements/lock/uvx-tools.txt`. This will run the tool with
 with the proper version. Note that if the tool is already installed with the
 proper version, [uvx] will use it. This prevents having to install a bunch of
-tooling in the "dev" environment, and also avoid creating a bunch of through
-away [nox] environments.
+tooling in the "dev" environment, and also avoid creating a bunch of throw away
+[nox] environments.
 
 ## Package version
 

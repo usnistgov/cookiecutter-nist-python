@@ -141,7 +141,6 @@ requirements *options="--sync-or-lock":
     just pre-commit run pyproject2conda-project --all-files --verbose || true
     uv run --no-project tools/requirements_lock.py --all-files {{ options }}
 
-
 # Update all requirement files  (pass --sync to force sync)
 [group("requirements")]
 requirements-upgrade *options="--sync-or-lock": (requirements "--upgrade" options)
@@ -189,7 +188,8 @@ typecheck *options: (mypy options) (pyright options)
 [group("tools")]
 [group("typecheck")]
 @typecheck-tools *files="noxfile.py tools/*.py":
-    just TYPECHECK_UVRUN_OPTS="--only-group=nox" typecheck {{ files }}
+    just TYPECHECK_UVRUN_OPTS="--only-group=nox" mypy --strict {{ files }}
+    just TYPECHECK_UVRUN_OPTS="--only-group=nox" pyright {{ files }}
     just TYPECHECK_UVRUN_OPTS="--only-group=nox --only-group=pylint" pylint {{ files }}
 
 # * NOX ------------------------------------------------------------------------

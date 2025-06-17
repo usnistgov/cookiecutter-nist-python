@@ -391,16 +391,13 @@ mypy = [
 nox = [
     { name = "nox" },
 ]
-test = [
-    { name = "cookiecutter" },
-    { name = "copier" },
-    { name = "copier-templates-extensions" },
-    { name = "pytest" },
-    { name = "pytest-cov" },
-    { name = "pytest-sugar" },
-    { name = "pytest-xdist" },
+pylint = [
+    { name = "pylint" },
 ]
-test-extras = [
+pytest = [
+    { name = "pytest" },
+]
+test = [
     { name = "cookiecutter" },
     { name = "copier" },
     { name = "copier-templates-extensions" },
@@ -455,16 +452,9 @@ mypy = [
     { name = "orjson" },
 ]
 nox = [{ name = "nox", specifier = ">=2025.5.1" }]
+pylint = [{ name = "pylint" }]
+pytest = [{ name = "pytest" }]
 test = [
-    { name = "cookiecutter" },
-    { name = "copier" },
-    { name = "copier-templates-extensions", specifier = ">=0.3.1" },
-    { name = "pytest" },
-    { name = "pytest-cov" },
-    { name = "pytest-sugar" },
-    { name = "pytest-xdist" },
-]
-test-extras = [
     { name = "cookiecutter" },
     { name = "copier" },
     { name = "copier-templates-extensions", specifier = ">=0.3.1" },
