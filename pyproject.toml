@@ -51,11 +51,9 @@ test = [
 docs = [
     "autodocsumm",
     "myst-parser",
-    "pyenchant",
     "sphinx>=5.3.0",
     "sphinx-book-theme",
     "sphinx-copybutton",
-    "sphinxcontrib-spelling",
 ]
 # other packages/tools
 cog = [ "cogapp" ]
@@ -67,6 +65,11 @@ pytest = [ "pytest" ]
 # other environments
 docs-live = [
     "sphinx-autobuild",
+    { include-group = "docs" },
+]
+docs-spelling = [
+    "pyenchant",
+    "sphinxcontrib-spelling",
     { include-group = "docs" },
 ]
 typecheck = [
