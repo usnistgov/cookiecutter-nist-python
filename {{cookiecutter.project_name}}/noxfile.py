@@ -685,7 +685,13 @@ def docs(  # noqa: C901
     """Build/serve docs."""
     cmd = opts.docs or []
     cmd = ["html"] if not opts.docs_run and not cmd else list(cmd)
-    name = "docs-live" if "livehtml" in cmd else "docs"
+    name = (
+        "docs-live"
+        if "livehtml" in cmd
+        else "docs-spelling"
+        if "spelling" in cmd
+        else "docs"
+    )
 
     install_dependencies(session, name=name, opts=opts, include_editable_package=True)
 
