@@ -59,6 +59,7 @@ docs = [
 ]
 # other packages/tools
 cog = [ "cogapp" ]
+ipython = [ "ipython" ]
 mypy = [ "mypy>=1.15.0", "orjson" ]
 nox = [ "nox>=2025.5.1" ]
 pylint = [ "pylint" ]

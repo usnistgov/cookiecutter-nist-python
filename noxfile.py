@@ -210,11 +210,6 @@ class SessionParams(DataclassParser):
     build_options: OPT_ANNO = None
     build_silent: bool = False
 
-    # publish
-    publish: list[Literal["release", "test", "check"]] | None = add_option(
-        "-p", "--publish"
-    )
-
     # conda-recipe/grayskull
     conda_recipe: list[Literal["recipe", "recipe-full"]] | None = None
     conda_recipe_sdist_path: str | None = None

@@ -146,9 +146,11 @@ repos:
     hooks:
       - id: just-fmt
         name: just-fmt
-        entry: just --fmt --justfile
+        entry:
+          bash -c 'for x in "$@"; do just --fmt --unstable --justfile "$x";
+          done' --
         language: system
-        files: \.?[jJ]ustfile
+        files: \.?[jJ]ustfile|.*\.just$
         stages: [manual]
 
   # * Cruft
