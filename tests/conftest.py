@@ -147,7 +147,7 @@ def example_path(
     run_inside_dir("git add .", path)
 
     run_inside_dir(
-        f"just {'requirements-upgrade' if requirements_upgrade else 'requirements'} --lock",
+        f"just lock {'--upgrade' if requirements_upgrade else ''}",
         str(path),
     )
     run_inside_dir(

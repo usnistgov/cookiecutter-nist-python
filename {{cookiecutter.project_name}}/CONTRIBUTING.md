@@ -260,12 +260,8 @@ requirement files are under something like
 Additionally, requirement files for virtualenvs (e.g., `requirements.txt` like
 files) will be "locked" using `uv pip compile` from [uv]. These files are placed
 under `requirements/lock`. This uses the script `tools/requirements_lock.py`.
-
-```bash
-just requirements-upgrade
-```
-
-This will also update `uv.lock` if it's being used.
+The `uv.lock` file will also be updated. To upgrade locked requirements pass
+option `--upgrade/-U`.
 
 ## Using [just] as task runner
 
