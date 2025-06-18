@@ -130,10 +130,8 @@ class SessionParams(DataclassParser):
         "--version", "-V", help="pretend version", default=None
     )
     prune: bool = add_option(default=False, help="Pass `--prune` to conda env update")
-    no_frozen: bool = add_option(
-        "--no-frozen",
-        "-N",
-        help="run `uv sync` without --frozen (default is to use `--frozen`)",
+    uv_sync_options: list[str] = add_option(
+        help="options to uv sync. Default='--locked'", default=("--locked",)
     )
     reinstall_package: bool = add_option(
         "--reinstall-package",
@@ -305,13 +303,7 @@ def install_dependencies(
         session.run_install(
             "uv",
             "sync",
-            *(
-                ["-U"]
-                if opts.update and opts.no_frozen
-                else []
-                if opts.no_frozen
-                else ["--frozen"]
-            ),
+            *(["-U"] if opts.update else opts.uv_sync_options),
             *(
                 ["--no-default-groups"]
                 if no_default_groups
@@ -500,12 +492,13 @@ def dev(
 
 
 @nox.session(name="install-ipykernel", python=False)
-def install_ipykernel(session: Session) -> None:
+@add_opts
+def install_ipykernel(session: Session, opts: SessionParams) -> None:
     """Install ipykernel for .venv"""
     session.run(
         "uv",
         "run",
-        "--frozen",
+        *opts.uv_sync_options,
         "--python=.venv/bin/python",
         "python",
         "-m",
