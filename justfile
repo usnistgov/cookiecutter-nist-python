@@ -136,8 +136,8 @@ alias sync-upgrade := requirements-upgrade
 
 TYPECHECK_UVRUN_OPTS := "--group=typecheck --no-dev"
 
-_typecheck checker *check_options:
-    {{ UVRUN }} {{ TYPECHECK_UVRUN_OPTS }} {{ TYPECHECK }} {{ UVX_OPTS }} -x {{ checker }} -- {{ check_options }}
+_typecheck checkers="mypy pyright" *check_options:
+    {{ UVRUN }} {{ TYPECHECK_UVRUN_OPTS }} {{ TYPECHECK }} {{ UVX_OPTS }} {{ prepend("-x ", checkers) }} -- {{ check_options }}
 
 # Run mypy (with optional args)
 [group("typecheck")]
@@ -167,7 +167,7 @@ pylint *options="tests":
 
 # Run all checkers (with optional directories)
 [group("typecheck")]
-typecheck *options: (mypy options) (pyright options)
+typecheck *options: (_typecheck "mypy pyright" options)
 
 # Run checkers on tools
 [group("tools")]
