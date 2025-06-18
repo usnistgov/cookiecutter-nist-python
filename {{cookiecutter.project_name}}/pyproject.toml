@@ -89,6 +89,7 @@ docs = [
 ]
 # other packages/tools
 cog = [ "cogapp" ]
+ipython = [ "ipython" ]
 mypy = [ "mypy>=1.15.0", "orjson" ]
 notebook = [ "ipykernel", "nbclient" ]
 nox = [ "nox>=2025.5.1" ]
