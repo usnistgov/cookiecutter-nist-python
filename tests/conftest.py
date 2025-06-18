@@ -94,10 +94,11 @@ def pytest_addoption(parser: pytest.Parser) -> None:
     )
 
     parser.addoption(
-        "--requirements-opts",
-        action="store",
+        "--upgrade",
+        "-U",
+        action="store_true",
         default="",
-        help="options to pass to tools/requirements_lock.py",
+        help="Upgrade requirements",
     )
 
     parser.addoption(
@@ -119,8 +120,8 @@ def nox_session_opts(pytestconfig: pytest.Config) -> str:
 
 
 @pytest.fixture(scope="session")
-def requirements_opts(pytestconfig: pytest.Config) -> str:
-    return pytestconfig.getoption("requirements_opts")  # type: ignore[no-any-return]
+def requirements_upgrade(pytestconfig: pytest.Config) -> bool:
+    return pytestconfig.getoption("upgrade")  # type: ignore[no-any-return]
 
 
 # * Fixtures ---------------------------------------------------------------------------
@@ -130,7 +131,7 @@ def requirements_opts(pytestconfig: pytest.Config) -> str:
 )
 def example_path(
     request: pytest.FixtureRequest,
-    requirements_opts: str,
+    requirements_upgrade: bool,
 ) -> Iterator[Path]:
     project_name = request.param["project_name"]
     extra_context = request.param["extra_context"]
@@ -145,7 +146,10 @@ def example_path(
         run_inside_dir("git init", path)
     run_inside_dir("git add .", path)
 
-    run_inside_dir(f"just requirements --lock {requirements_opts}", str(path))
+    run_inside_dir(
+        f"just {'requirements-upgrade' if requirements_upgrade else 'requirements'} --lock",
+        str(path),
+    )
     run_inside_dir(
         "uv run --no-project tools/symlink_docs_examples_notebooks.py", str(path)
     )
