@@ -316,7 +316,7 @@ def install_dependencies(
             # Handle package install here?
             # "--no-editable",
             # "--reinstall-package",
-            *([] if include_editable_package else ["--no-install-project"]),
+            "--no-install-project",
             *(
                 [f"--reinstall-package={PACKAGE_NAME}"]
                 if opts.reinstall_package and include_editable_package
@@ -358,25 +358,6 @@ def install_package(
     installpkg: str | None = None,
 ) -> None:
     """Install current package."""
-    if installpkg is not None:
-        run = session.run
-        opts = [*args, installpkg]
-    elif editable:
-        run = session.run if update else session.run_install
-        opts = [*args, "-e", "."]
-    else:
-        run = session.run
-        opts = [*args, get_package_wheel(session)]
-
-    run(
-        "uv",
-        "pip",
-        "install",
-        *opts,
-        "--no-deps",
-        "--force-reinstall",
-        external=True,
-    )
 
 
 def get_package_wheel(
