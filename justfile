@@ -42,7 +42,7 @@ clean-test: (_clean ".coverage" "htmlcov")
 
 # remove all .*_cache directories
 [group("clean")]
-clean-cache: (_clean ".*_cache", "cached_examples/*")
+clean-cache: (_clean ".*_cache" "cached_examples/*")
 
 # remove Python file artifact
 [group("clean")]
