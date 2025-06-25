@@ -94,6 +94,7 @@ repos:
       - id: blacken-docs
         additional_dependencies:
           - black==25.1.0
+        stages: [manual]
 
   # * Spelling
   # ** typos (only with manual)
@@ -113,6 +114,7 @@ repos:
         args: [-I, docs/spelling_wordlist.txt]
         exclude_types: [jupyter]
         exclude: ^uv[.]lock$|^requirements
+        stages: [manual]
 
   # * Dependencies
   # ** pyproject2conda
