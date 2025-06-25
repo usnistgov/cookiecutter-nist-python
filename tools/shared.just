@@ -4,7 +4,6 @@ PACKAGE_NAME := "cookiecutter-nist-python"
 IMPORT_NAME := "cookiecutter_nist_python"
 CONSTRAINTS_MIN := "requirements/uvx-tools.txt"
 CONSTRAINTS_LOCK := "requirements/lock/uvx-tools.txt"
-NOTEBOOKS := "examples/usage"
 PYLINT_OPTS := "--enable-all-extensions"
 UVX := "uvx"
 UVX_OPTS := "--constraints=" + CONSTRAINTS_LOCK

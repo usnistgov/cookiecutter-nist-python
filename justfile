@@ -119,18 +119,21 @@ version: version-scm version-import
 
 # * Requirements/Environment files ---------------------------------------------
 
-# Rebuild all requirements files (pass --upgrade to upgrade, --sync to force sync)
-[group("requirements")]
-requirements *options="--sync-or-lock":
+_requirements *options:
     just pre-commit run pyproject2conda-project --all-files --verbose || true
     uv run --no-project tools/requirements_lock.py --all-files {{ options }}
 
-# Update all requirement files  (pass --sync to force sync)
+# Rebuild requirements, lock requirements, and run uv sync.  Pass --upgrade/-U to upgrade
 [group("requirements")]
-requirements-upgrade *options="--sync-or-lock": (requirements "--upgrade" options)
+sync *options: (_requirements "--sync" options)
 
-alias sync := requirements
-alias sync-upgrade := requirements-upgrade
+# Rebuild requirements, lock requirements, and run uv lock.  Pass --upgrade/-U to upgrade
+[group("requirements")]
+lock *options: (_requirements "--lock" options)
+
+# Rebuild requirements, lock requirements, and run uv sync if .venv exists or uv lock if not.  Pass --upgrade/-U to upgrade
+[group("requirements")]
+requirements *options: (_requirements "--sync-or-lock" options)
 
 # * Typecheck ---------------------------------------------------------------------
 
