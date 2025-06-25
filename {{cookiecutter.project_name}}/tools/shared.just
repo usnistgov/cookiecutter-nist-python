@@ -4,7 +4,6 @@ PACKAGE_NAME := "{{ cookiecutter.project_name }}"
 IMPORT_NAME := "{{ cookiecutter.project_slug }}"
 CONSTRAINTS_MIN := "requirements/uvx-tools.txt"
 CONSTRAINTS_LOCK := "requirements/lock/uvx-tools.txt"
-NOTEBOOKS := "examples/usage"
 PYLINT_OPTS := "--enable-all-extensions"
 UVX := "uvx"
 UVX_OPTS := "--constraints=" + CONSTRAINTS_LOCK

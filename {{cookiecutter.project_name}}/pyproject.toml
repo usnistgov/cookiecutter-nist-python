@@ -71,7 +71,7 @@ docs = [
     {%- if cookiecutter.sphinx_theme == "furo" %}
     "furo",
     {%- endif %}
-    "myst-nb; python_version>'3.9'",
+    "myst-nb",
     # myst-parser, ipython,
     "sphinx>=5.3.0",
     {%- if cookiecutter.command_line_interface == "argparse" %}
@@ -362,11 +362,23 @@ style = "requirements"
 managed = true
 default-groups = [ "dev" ]
 fork-strategy = "requires-python"
-required-version = ">=0.7.2"
+required-version = ">=0.7.15"
 
 [tool.uv.pip]
 annotation-style = "line"
 generate-hashes = true
+
+[tool.uv.dependency-groups]
+dev.requires-python = ">=3.12"
+docs.requires-python = ">=3.12"
+docs-live.requires-python = ">=3.12"
+docs-spelling.requires-python = ">=3.12"
+# other tools
+cog.requires-python = ">=3.12"
+ipython.requires-python = ">=3.12"
+mypy.requires-python = ">=3.12"
+notebook.requires-python = ">=3.12"
+nox.requires-python = ">=3.12"
 
 # * Other tools ----------------------------------------------------------------
 

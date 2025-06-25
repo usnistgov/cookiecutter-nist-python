@@ -45,7 +45,7 @@ repos:
       - id: validate-pyproject
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2025.06.13
+    rev: 2025.06.23
     hooks:
       - id: validate-pyproject
         name: validate-pyproject-schema-store
@@ -59,7 +59,7 @@ repos:
 
   # * Prettier
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.5.3
+    rev: v3.6.1
     hooks:
       - id: prettier
         alias: markdownlint
@@ -76,7 +76,7 @@ repos:
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.13
+    rev: v0.12.0
     hooks:
       - id: ruff-check
         alias: ruff
@@ -121,7 +121,7 @@ repos:
         alias: requirements
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.7.13
+    rev: 0.7.15
     hooks:
       - id: uv-lock
         alias: requirements

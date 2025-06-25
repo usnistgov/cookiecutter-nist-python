@@ -3,6 +3,8 @@
 
 import "shared.just"
 
+NOTEBOOKS := "examples/usage"
+
 _nbqa_typecheck checker *files:
     {{ UVX_WITH_OPTS }} \
     nbqa --nbqa-shell \
