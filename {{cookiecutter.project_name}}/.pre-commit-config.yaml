@@ -92,6 +92,7 @@ repos:
       - id: blacken-docs
         additional_dependencies:
           - black==25.1.0
+        stages: [manual]
 
   # * Spelling
   # ** typos (only with manual)
@@ -111,6 +112,7 @@ repos:
         args: [-I, docs/spelling_wordlist.txt]
         exclude_types: [jupyter]
         exclude: ^uv[.]lock$|^requirements
+        stages: [manual]
 
   # * Dependencies
   # ** pyproject2conda
@@ -194,7 +196,6 @@ repos:
         name: nbqa-typos
         alias: typos
         additional_dependencies: &typos-deps [typos==1.33.1] # make sure save version as above.
-        stages: [manual]
         args: [typos, --nbqa-shell]
         # this can lead to errors, so use with care
         # args: [typos, --write-changes, --nbqa-shell]
@@ -202,7 +203,6 @@ repos:
         name: nbqa-typos-markdown
         alias: typos
         additional_dependencies: *typos-deps
-        stages: [manual]
         args: [typos, --nbqa-shell, --nbqa-md]
         # this can lead to errors, so use with care
         # args: [typos, --write-changes, --nbqa-shell, --nbqa-md]
@@ -214,6 +214,7 @@ repos:
         additional_dependencies: &codespell-deps [codespell==2.4.1, tomli] # make sure same as above
         args:
           [codespell, --ignore-words=docs/spelling_wordlist.txt, --nbqa-shell]
+        stages: [manual]
       - id: nbqa
         name: nbqa-codespell-markdown
         alias: codespell
@@ -225,6 +226,7 @@ repos:
             --nbqa-shell,
             --nbqa-md,
           ]
+        stages: [manual]
 
   # ** symlink in notebooks from example/usage to docs/example/usage
   - repo: local
