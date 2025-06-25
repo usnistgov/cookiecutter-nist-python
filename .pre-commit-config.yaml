@@ -101,7 +101,6 @@ repos:
     rev: v1.33.1
     hooks:
       - id: typos
-        stages: [manual]
         exclude_types: [jupyter]
         exclude: ^uv[.]lock$|^requirements
   # ** codespell
