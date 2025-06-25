@@ -46,7 +46,7 @@ clean-cache: (_clean ".*_cache" "cached_examples/*")
 
 # remove Python file artifact
 [group("clean")]
-clean-pyc: (_clean ".numba_cache/*") (_find_and_clean "*.pyc" "*.pyo" "*~" "*.nbi" "*.nbc" "__pycache__")
+clean-pyc: (_clean ".numba_cache/*") (_find_and_clean "__pycache__") (_find_and_clean "*.pyc" "*.pyo" "*~" "*.nbi" "*.nbc")
 
 [group("clean")]
 [group("docs")]
