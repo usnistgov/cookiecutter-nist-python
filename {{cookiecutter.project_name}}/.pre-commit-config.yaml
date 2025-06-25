@@ -92,7 +92,6 @@ repos:
       - id: blacken-docs
         additional_dependencies:
           - black==25.1.0
-        stages: [manual]
 
   # * Spelling
   # ** typos (only with manual)
