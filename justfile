@@ -15,7 +15,11 @@ default:
 # * Clean ----------------------------------------------------------------------
 
 _find_and_clean first *other:
-    find ./src \( -name {{ quote(first) }} {{ prepend("-o -name '", append("'", other)) }} \) -print -exec  rm -fr {} +
+    find . \
+    -not -path "./.nox/*" \
+    -not -path "./.venv/*" \
+    \( -name {{ quote(first) }} {{ prepend("-o -name '", append("'", other)) }} \) \
+    -print -exec  rm -fr {} +
 
 _clean *dirs:
     rm -fr {{ dirs }}
@@ -24,25 +28,25 @@ _clean *dirs:
 clean: clean-build clean-test clean-cache
 
 [group("clean")]
-clean-all: clean clean-pyc clean-venvs clean-docs
+clean-all: clean clean-pyc clean-docs clean-venvs
 
 # remove build artifacts
 [group("clean")]
 [group("dist")]
 clean-build: (_clean "build/" "docs/_build/" "dist/" "dist-conda/")
 
-# remove Python file artifact
-[group("clean")]
-clean-pyc: (_find_and_clean "*.pyc" "*.pyo" "*~" "*.nbi" "*.nbc" "__pycache__") (_clean ".numba_cache/*")
-
-# remove all .*_cache directories
-[group("clean")]
-clean-cache: (_clean ".*_cache")
-
 # remove test and coverage artifacts
 [group("clean")]
 [group("test")]
-clean-test: (_clean ".coverage" "htmlcov" ".pytest_cache")
+clean-test: (_clean ".coverage" "htmlcov")
+
+# remove all .*_cache directories
+[group("clean")]
+clean-cache: (_clean ".*_cache", "cached_examples/*")
+
+# remove Python file artifact
+[group("clean")]
+clean-pyc: (_clean ".numba_cache/*") (_find_and_clean "*.pyc" "*.pyo" "*~" "*.nbi" "*.nbc" "__pycache__")
 
 [group("clean")]
 [group("docs")]
