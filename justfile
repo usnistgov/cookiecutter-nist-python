@@ -1,21 +1,18 @@
-# where to define shared variables/functions
+#!/usr/bin/env -S just --justfile
 
 import "tools/shared.just"
-
-# optional notebook support
-
 import? "tools/notebook.just"
 
 set unstable := true
 
 # * Defaults
-default:
+_default:
     @just --list --unsorted
 
 # * Clean ----------------------------------------------------------------------
 
-_find_and_clean first *other:
-    find . \
+_find_and_clean path first *other:
+    find {{ path }} \
     -not -path "./.nox/*" \
     -not -path "./.venv/*" \
     \( -name {{ quote(first) }} {{ prepend("-o -name '", append("'", other)) }} \) \
@@ -24,9 +21,11 @@ _find_and_clean first *other:
 _clean *dirs:
     rm -fr {{ dirs }}
 
+# clean build/test/cache files
 [group("clean")]
 clean: clean-build clean-test clean-cache
 
+# clean everything
 [group("clean")]
 clean-all: clean clean-pyc clean-docs clean-venvs
 
@@ -42,19 +41,24 @@ clean-test: (_clean ".coverage" "htmlcov")
 
 # remove all .*_cache directories
 [group("clean")]
-clean-cache: (_clean ".*_cache" "cached_examples/*")
+clean-cache: (_clean ".*_cache" ".dmypy.json" ".pytype" "tuna-loadtime.log" "cached_examples/*")
 
 # remove Python file artifact
 [group("clean")]
-clean-pyc: (_clean ".numba_cache/*") (_find_and_clean "__pycache__") (_find_and_clean "*.pyc" "*.pyo" "*~" "*.nbi" "*.nbc")
+clean-pyc: (_clean ".numba_cache/*") (_find_and_clean "." "__pycache__") (_find_and_clean "." "*.pyc" "*.pyo" "*~" "*.nbi" "*.nbc")
 
 [group("clean")]
 [group("docs")]
-clean-docs: (_clean "docs/_build/*" "docs/generated/*" "docs/reference/generated/*")
+clean-docs: (_clean "docs/_build/*") (_find_and_clean "docs" "generated")
 
 # remove all .nox/.venv files
 [group("clean")]
 clean-venvs: (_clean ".nox" ".venv")
+
+# remove ignored/untracked files. Defaults to dry run.  Pass `-i` for interactive or `-f` for force remove.
+[group("clean")]
+sterilize +options="-n":
+    git clean -x -d {{ options }}
 
 # * Pre-commit -----------------------------------------------------------------
 
