@@ -12,11 +12,12 @@ _default:
 
 # * Clean ----------------------------------------------------------------------
 
-_find_and_clean path first *other:
+# find and remove files from `path` with `name`
+find_and_clean path name *other_names:
     find {{ path }} \
     -not -path "./.nox/*" \
     -not -path "./.venv/*" \
-    \( -name {{ quote(first) }} {{ prepend("-o -name '", append("'", other)) }} \) \
+    \( -name {{ quote(name) }} {{ prepend("-o -name '", append("'", other_names)) }} \) \
     -print -exec  rm -fr {} +
 
 _clean *dirs:
@@ -24,7 +25,7 @@ _clean *dirs:
 
 # clean build/test/cache files
 [group("clean")]
-clean: clean-build clean-test clean-cache
+clean: clean-build clean-test clean-cache clean-backups
 
 # clean everything
 [group("clean")]
@@ -42,15 +43,19 @@ clean-test: (_clean ".coverage" "htmlcov")
 
 # remove all .*_cache directories
 [group("clean")]
-clean-cache: (_clean ".dmypy.json" ".pytype" "tuna-loadtime.log") (_find_and_clean "." ".*_cache" ".ipynb_checkpoints")
+clean-cache: (_clean ".dmypy.json" ".pytype" "tuna-loadtime.log") (find_and_clean "." ".*_cache")
+
+# remove checkpoint files/directories
+[group("clean")]
+clean-backups: (find_and_clean "." ".ipynb_checkpoints" "*~")
 
 # remove Python file artifact
 [group("clean")]
-clean-pyc: (_clean ".numba_cache/*") (_find_and_clean "." "__pycache__") (_find_and_clean "." "*.pyc" "*.pyo" "*~" "*.nbi" "*.nbc")
+clean-pyc: (_clean ".numba_cache/*") (find_and_clean "." "__pycache__") (find_and_clean "." "*.pyc" "*.pyo" "*.nbi" "*.nbc")
 
 [group("clean")]
 [group("docs")]
-clean-docs: (_clean "docs/_build/*" "README.pdf") (_find_and_clean "docs" "generated")
+clean-docs: (_clean "docs/_build/*" "README.pdf") (find_and_clean "docs" "generated")
 
 # remove all .nox/.venv files
 [group("clean")]
