@@ -41,7 +41,8 @@ clean-test: (_clean ".coverage" "htmlcov")
 
 # remove all .*_cache directories
 [group("clean")]
-clean-cache: (_clean ".*_cache" ".dmypy.json" ".pytype" "tuna-loadtime.log" "cached_examples/*")
+clean-cache: && (_clean ".dmypy.json" ".pytype" "tuna-loadtime.log") (_find_and_clean "." ".*_cache" ".ipynb_checkpoints")
+    just _clean cached_examples
 
 # remove Python file artifact
 [group("clean")]
