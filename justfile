@@ -22,13 +22,13 @@ find_and_clean path name *other_names:
 _clean *dirs:
     rm -fr {{ dirs }}
 
-# clean build, docs, test, backups, cache
+# clean .nox, build, docs, test, backups, cache
 [group("clean")]
-clean: clean-build clean-docs clean-test clean-cache clean-backups
+clean: (_clean ".nox") clean-build clean-docs clean-test clean-cache clean-backups
 
-# clean plus .nox and artifacts (keep .venv)
+# clean plus artifacts (keep .venv)
 [group("clean")]
-clean-all: (_clean ".nox") clean clean-artifacts
+clean-all: clean clean-artifacts
 
 # clean build artifacts
 [group("clean")]
