@@ -49,7 +49,7 @@ clean-pyc: (_clean ".numba_cache/*") (_find_and_clean "." "__pycache__") (_find_
 
 [group("clean")]
 [group("docs")]
-clean-docs: (_clean "docs/_build/*") (_find_and_clean "docs" "generated")
+clean-docs: (_clean "docs/_build/*" "README.pdf") (_find_and_clean "docs" "generated")
 
 # remove all .nox/.venv files
 [group("clean")]
