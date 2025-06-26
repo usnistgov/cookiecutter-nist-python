@@ -22,46 +22,43 @@ find_and_clean path name *other_names:
 _clean *dirs:
     rm -fr {{ dirs }}
 
-# clean build/test/cache files
+# clean build, docs, test, backups, cache
 [group("clean")]
-clean: clean-build clean-test clean-cache clean-backups
+clean: clean-build clean-docs clean-test clean-cache clean-backups
 
-# clean everything
+# clean plus .nox and artifacts (keep .venv)
 [group("clean")]
-clean-all: clean-venvs clean clean-pyc clean-docs
+clean-all: (_clean ".nox") clean clean-artifacts
 
-# remove build artifacts
+# clean build artifacts
 [group("clean")]
 [group("dist")]
 clean-build: (_clean "build/" "dist/" "dist-conda/")
 
-# remove test and coverage artifacts
-[group("clean")]
-[group("test")]
-clean-test: (_clean ".coverage" "htmlcov")
-
-# remove all .*_cache directories
-[group("clean")]
-clean-cache: (_clean ".dmypy.json" ".pytype" "tuna-loadtime.log" ".nox/*/tmp" ".nox/.cache") (find_and_clean "." ".*_cache")
-    just _clean cached_examples
-
-# remove checkpoint files/directories
-[group("clean")]
-clean-backups: (find_and_clean "." ".ipynb_checkpoints" "*~")
-
-# remove Python file artifact
-[group("clean")]
-clean-pyc: (_clean ".numba_cache/*") (find_and_clean "." "__pycache__") (find_and_clean "." "*.pyd" "*.pyc" "*.pyo" "*.nbi" "*.nbc")
-
+# clean docs artifacts
 [group("clean")]
 [group("docs")]
 clean-docs: (_clean "docs/_build" "README.pdf") (find_and_clean "docs" "generated")
 
-# remove all .nox/.venv files
+# clean test and coverage artifacts
 [group("clean")]
-clean-venvs: (_clean ".nox" ".venv")
+[group("test")]
+clean-test: (_clean ".coverage" "htmlcov")
 
-# remove ignored/untracked files. Defaults to dry run.  Pass `-i` for interactive or `-f` for force remove.
+# clean cache files
+[group("clean")]
+clean-cache: && (_clean ".dmypy.json" ".pytype" "tuna-loadtime.log" ".nox/*/tmp" ".nox/.cache") (find_and_clean "." ".*cache")
+    just _clean cached_examples
+
+# clean backup/checkpoint files
+[group("clean")]
+clean-backups: (find_and_clean "." ".ipynb_checkpoints" "*~")
+
+# clean python artifacts
+[group("clean")]
+clean-artifacts: (_clean ".numba_cache/*") (find_and_clean "." "__pycache__") (find_and_clean "." "*.pyd" "*.pyc" "*.pyo" "*.nbi" "*.nbc")
+
+# clean ignored/untracked files. Defaults to dry run.  Pass `-i` for interactive or `-f` for force remove.  Pass `-e ".venv"` to keep .venv.
 [group("clean")]
 sterilize +options="-n":
     git clean -x -d {{ options }}
