@@ -97,7 +97,9 @@ repos:
 
   # * Spelling
   # ** typos (only with manual)
-  - repo: https://github.com/crate-ci/typos
+  # Revert to crate-ci/typos if https://github.com/crate-ci/typos/issues/390 is fixed.
+  # - repo: https://github.com/crate-ci/typos
+  - repo: https://github.com/adhtruong/mirrors-typos
     rev: v1.33.1
     hooks:
       - id: typos
