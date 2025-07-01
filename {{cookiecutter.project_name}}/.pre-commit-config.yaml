@@ -98,7 +98,7 @@ repos:
   # Revert to crate-ci/typos if https://github.com/crate-ci/typos/issues/390 is fixed.
   # - repo: https://github.com/crate-ci/typos
   - repo: https://github.com/adhtruong/mirrors-typos
-    rev: v1.33.1
+    rev: v1.34.0
     hooks:
       - id: typos
         exclude_types: [jupyter]
@@ -123,7 +123,7 @@ repos:
         alias: requirements
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.7.15
+    rev: 0.7.17
     hooks:
       - id: uv-lock
         alias: requirements
