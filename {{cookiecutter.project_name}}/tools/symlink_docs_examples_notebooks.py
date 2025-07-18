@@ -23,7 +23,7 @@ logger = logging.getLogger("symlink_docs_examples_notebooks")
 
 
 def _usage_paths(path: Path) -> Iterator[Path]:
-    with path.open("r") as f:
+    with path.open("r", encoding="utf-8") as f:
         for line in f:
             if line.startswith("usage/"):
                 yield Path(line.strip())
