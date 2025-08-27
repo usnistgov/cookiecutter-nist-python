@@ -344,6 +344,7 @@ reqs = [
     "pre-commit-uv",
     "pyrefly",
     "pyright>=1.1.396",
+    "basedpyright>=1.31.3",
     "scriv",
     "twine>=5.0.0",
     "ty",

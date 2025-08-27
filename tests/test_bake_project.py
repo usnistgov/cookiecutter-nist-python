@@ -168,7 +168,7 @@ def test_baked_typecheck(
     example_path: Path, nox_opts: str, nox_session_opts: str
 ) -> None:
     run_inside_dir(
-        f"nox {nox_opts} -s typecheck-{get_python_version()} -- +m clean mypy pyright pylint {nox_session_opts}",
+        f"nox {nox_opts} -s typecheck-{get_python_version()} -- +m clean mypy basedpyright pylint {nox_session_opts}",
         example_path,
     )
 

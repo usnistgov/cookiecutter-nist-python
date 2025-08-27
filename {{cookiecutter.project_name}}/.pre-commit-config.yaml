@@ -195,7 +195,7 @@ repos:
       - id: nbqa
         name: nbqa-typos
         alias: typos
-        additional_dependencies: &typos-deps [typos==1.33.1] # make sure save version as above.
+        additional_dependencies: &typos-deps [typos==1.35.5] # make sure save version as above.
         args: [typos, --nbqa-shell]
         # this can lead to errors, so use with care
         # args: [typos, --write-changes, --nbqa-shell]

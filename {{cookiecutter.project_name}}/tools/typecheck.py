@@ -1,6 +1,6 @@
 {% raw -%}
 """
-Interface to type checkers (mypy/pyright) to handle python-version and python-executable.
+Interface to type checkers (mypy, (based)pyright, ty, pyrefly) to handle python-version and python-executable.
 
 This allows for running centrally installed (or via uvx) type checkers against a given virtual environment.
 """
@@ -59,6 +59,10 @@ def _uvx_run(
         # raise RuntimeError(msg)  # noqa: ERA001
 
 
+def _is_pyright_like(checker: str) -> bool:
+    return checker in {"pyright", "basedpyright"}
+
+
 def _run_checker(
     checker: str,
     *args: str,
@@ -67,7 +71,7 @@ def _run_checker(
     constraints: list[Path],
     dry_run: bool = False,
 ) -> None:
-    if checker == "pyright":
+    if _is_pyright_like(checker):
         python_flag = "pythonpath"
     elif checker == "ty":
         python_flag = "python"
@@ -77,7 +81,7 @@ def _run_checker(
         # default to mypy
         python_flag = "python-executable"
 
-    version_flag = "pythonversion" if checker == "pyright" else "python-version"
+    version_flag = "pythonversion" if _is_pyright_like(checker) else "python-version"
 
     check_subcommand = ["check"] if checker in {"ty", "pyrefly"} else []
 
@@ -112,7 +116,7 @@ def get_parser() -> ArgumentParser:
         type=Path,
         help="""
         Path to python executable. Defaults to ``sys.executable``. This is
-        passed to `--python-executable` in mypy and `--pythonpath` in pyright.
+        passed to `--python-executable` in mypy and `--pythonpath` in (based)pyright.
         """,
     )
     parser.add_argument(
@@ -149,7 +153,7 @@ def get_parser() -> ArgumentParser:
         dest="checkers",
         default=[],
         action="append",
-        choices=["mypy", "pyright", "ty", "pyrefly"],
+        choices=["mypy", "pyright", "basedpyright", "ty", "pyrefly"],
         help="Type checker to use.",
     )
     parser.add_argument(
