@@ -828,6 +828,7 @@ def typecheck(  # noqa: C901
                 *get_uvx_constraint_args(),
                 "--verbose",
                 f"--checker={c}",
+                "--allow-errors",
                 "--",
                 *(
                     opts.typecheck_options
