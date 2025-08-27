@@ -199,7 +199,7 @@ typecheck *options: (_typecheck "mypy basedpyright" options)
 [group("tools")]
 [group("typecheck")]
 @typecheck-tools *files="noxfile.py tools/*.py":
-    just TYPECHECK_UVRUN_OPTS="--only-group=nox" mypy --strict {{ files }}
+    -just TYPECHECK_UVRUN_OPTS="--only-group=nox" mypy --strict {{ files }}
     just TYPECHECK_UVRUN_OPTS="--only-group=nox" basedpyright {{ files }}
     just TYPECHECK_UVRUN_OPTS="--only-group=nox --only-group=pylint" pylint {{ files }}
 

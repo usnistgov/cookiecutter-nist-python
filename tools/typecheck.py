@@ -41,7 +41,7 @@ def _uvx_run(
     *args: str,
     env: Mapping[str, str] | None = None,
     dry_run: bool = False,
-) -> None:
+) -> int:
     import subprocess
 
     cleaned_args = ["uvx", *(os.fsdecode(arg) for arg in args)]
@@ -49,13 +49,15 @@ def _uvx_run(
     logger.info("Running %s", full_cmd)
 
     if dry_run:
-        return
+        return 0
 
     r = subprocess.run(cleaned_args, check=False, env=env)
+
     if returncode := r.returncode:
         logger.error("Command %s failed with exit code %s", full_cmd, returncode)
         # msg = f"Returned code {returncode}"  # noqa: ERA001
         # raise RuntimeError(msg)  # noqa: ERA001
+    return returncode
 
 
 def _is_pyright_like(checker: str) -> bool:
@@ -69,7 +71,7 @@ def _run_checker(
     python_executable: str,
     constraints: list[Path],
     dry_run: bool = False,
-) -> None:
+) -> int:
     if _is_pyright_like(checker):
         python_flag = "pythonpath"
     elif checker == "ty":
@@ -94,7 +96,7 @@ def _run_checker(
         f"--{version_flag}={python_version}",
     )
 
-    _uvx_run(
+    return _uvx_run(
         *(f"--constraints={c}" for c in constraints),
         *(["--with", "orjson"] if checker == "mypy" else []),
         checker,
@@ -156,6 +158,10 @@ def get_parser() -> ArgumentParser:
         help="Type checker to use.",
     )
     parser.add_argument(
+        "--allow-errors",
+        action="store_true",
+    )
+    parser.add_argument(
         "--dry-run",
         action="store_true",
     )
@@ -185,8 +191,9 @@ def main(args: Sequence[str] | None = None) -> int:
     logger.debug("checkers: %s", options.checkers)
     logger.debug("args: %s", options.args)
 
+    code = 0
     for checker in options.checkers:
-        _run_checker(
+        code += _run_checker(
             checker,
             *options.args,
             python_version=python_version,
@@ -195,7 +202,7 @@ def main(args: Sequence[str] | None = None) -> int:
             dry_run=options.dry_run,
         )
 
-    return 0
+    return 0 if options.allow_errors else code
 
 
 if __name__ == "__main__":
