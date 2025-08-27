@@ -103,7 +103,7 @@ class CC:
 
             self.options[name] = Option(
                 name=name,
-                default=value,  # pyright: ignore[reportGeneralTypeIssues, reportArgumentType]
+                default=value,  # pyright: ignore[reportArgumentType]
                 prompt=prompt,  # pyright: ignore[reportUnknownArgumentType]
                 type_=(
                     "str"
