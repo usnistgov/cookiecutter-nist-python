@@ -185,10 +185,12 @@ class SessionParams(DataclassParser):
             "clean",
             "mypy",
             "pyright",
+            "basedpyright",
             "pylint",
             "all",
             "mypy-notebook",
             "pyright-notebook",
+            "basedpyright-notebook",
             "pylint-notebook",
             "typecheck-notebook",
             "ty",
@@ -776,10 +778,10 @@ def typecheck(  # noqa: C901
 
     cmd = opts.typecheck or []
     if not opts.typecheck_run and not cmd:
-        cmd = ["mypy", "pyright"]
+        cmd = ["mypy", "basedpyright"]
 
     if "all" in cmd:
-        cmd = ["mypy", "pyright", "pylint"]
+        cmd = ["mypy", "basedpyright", "pylint"]
 
     # set the cache directory for mypy
     session.env["MYPY_CACHE_DIR"] = str(Path(session.create_tmp()) / ".mypy_cache")
@@ -800,7 +802,7 @@ def typecheck(  # noqa: C901
     for c in cmd:
         if c.endswith("-notebook"):
             session.run("just", c, external=True)
-        elif c in {"mypy", "pyright", "ty", "pyrefly"}:
+        elif c in {"mypy", "pyright", "basedpyright", "ty", "pyrefly"}:
             session.run(
                 "python",
                 "tools/typecheck.py",
