@@ -173,6 +173,10 @@ basedpyright *options: (_typecheck "basedpyright" options)
 [group("typecheck")]
 basedpyright-watch *options: (basedpyright "-w" options)
 
+# Run basedpyright (with --verifytypes <package> --ignoreexternal)
+[group("typecheck")]
+basedpyright-verifytypes *options=("src/" + IMPORT_NAME): (basedpyright "--verifytypes" options "--ignoreexternal")
+
 # Run ty (NOTE: in alpha)
 [group("typecheck")]
 ty *options="src tests": (_typecheck "ty" options)
