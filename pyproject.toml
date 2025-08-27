@@ -197,28 +197,11 @@ exclude = [
     "**/.numba_cache",
 ]
 pythonVersion = "3.11"
+typeCheckingMode = "strict"
 # Turn on always
 enableTypeIgnoreComments = false
 reportUnnecessaryTypeIgnoreComment = true
 reportUnreachable = "warning"
-# strict options
-typeCheckingMode = "strict"
-# standard options
-# strict = [
-#     "src",
-#     "tests",
-#     "noxfile.py",
-#     "tools/*.py",
-# ]
-# typeCheckingMode = "standard"
-# reportDuplicateImport = true
-# reportInvalidStubStatement = true
-# reportOverlappingOverload = true
-# reportPropertyTypeMismatch = true
-# reportUntypedClassDecorator = true
-# reportUntypedFunctionDecorator = true
-# reportUntypedNamedTuple = true
-# reportUnusedImport = true
 
 [tool.pytype]
 inputs = [
