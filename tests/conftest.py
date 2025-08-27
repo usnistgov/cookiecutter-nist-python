@@ -180,7 +180,7 @@ def pytest_collection_modifyitems(
     config: pytest.Config, items: list[pytest.Item]
 ) -> None:
     for item in items:
-        marker = item.originalname.split("_")[-1]  # type: ignore[attr-defined]
+        marker = item.originalname.split("_")[-1]  # type: ignore[attr-defined]  # pyright: ignore[reportUnknownVariableType,reportUnknownMemberType,reportAttributeAccessIssue]
         item.add_marker(getattr(pytest.mark, marker))  # pyright: ignore[reportUnknownArgumentType]
 
     if config.getoption("--enable"):
@@ -266,9 +266,9 @@ def _bake_project(
         )
 
     elif style == "copier":
-        import copier  # pyright: ignore[reportMissingImports]
+        import copier
 
-        copier.run_copy(  # pyright: ignore[reportUnknownMemberType]
+        copier.run_copy(
             src_path=str(template),
             dst_path=str(output_dir / project_name),
             data=extra_context,

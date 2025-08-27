@@ -387,7 +387,7 @@ def get_package_wheel(
 
         # save that this was called:
         if reuse:
-            get_package_wheel._called = True  # type: ignore[attr-defined]  # noqa: SLF001  # pylint: disable=protected-access
+            get_package_wheel._called = True  # type: ignore[attr-defined]  # pyright: ignore[reportFunctionMemberAccess] # noqa: SLF001  # pylint: disable=protected-access
 
     paths = list(dist_location.glob("*.whl"))
     if len(paths) != 1:
@@ -856,7 +856,7 @@ def build(session: nox.Session, opts: SessionParams) -> None:  # noqa: C901
     for cmd in opts.build or ["build"]:
         if cmd == "version":
             if USE_ENVIRONMENT_FOR_BUILD:
-                session.run(get_python_full_path(session), "-m", "hatchling", "version")  # pyright: ignore[reportPossiblyUnboundVariable]
+                session.run(get_python_full_path(session), "-m", "hatchling", "version")
             else:
                 uvx_run(
                     session, "--with=hatch-vcs", "hatchling", "version", external=True

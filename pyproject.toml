@@ -220,6 +220,8 @@ typeCheckingMode = "strict"
 # reportOptionalSubscript = false
 # reportPrivateImportUsage = false
 # reportUnboundVariable = false
+enableTypeIgnoreComments = false
+reportUnnecessaryTypeIgnoreComment = true
 
 [tool.pytype]
 inputs = [

@@ -53,7 +53,7 @@ def _uvx_run(
 
     r = subprocess.run(cleaned_args, check=False, env=env)
     if returncode := r.returncode:
-        logger.error("Command %s failed with exit code %s", full_cmd, returncode)  # pyright: ignore[reportUnknownArgumentType]
+        logger.error("Command %s failed with exit code %s", full_cmd, returncode)
         # msg = f"Returned code {returncode}"  # noqa: ERA001
         # raise RuntimeError(msg)  # noqa: ERA001
 
