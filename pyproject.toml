@@ -198,7 +198,7 @@ exclude = [
 ]
 pythonVersion = "3.11"
 typeCheckingMode = "strict"
-# Turn on always
+# Extra flags
 enableTypeIgnoreComments = false
 reportUnnecessaryTypeIgnoreComment = true
 reportUnreachable = "warning"

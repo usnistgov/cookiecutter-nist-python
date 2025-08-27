@@ -259,7 +259,7 @@ typeCheckingMode = "strict"
 # reportUntypedFunctionDecorator = true
 # reportUntypedNamedTuple = true
 # reportUnusedImport = true
-# Turn on always
+# Extra flags
 enableTypeIgnoreComments = false
 reportUnnecessaryTypeIgnoreComment = true
 reportUnreachable = "warning"
