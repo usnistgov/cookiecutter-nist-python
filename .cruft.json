@@ -1,6 +1,6 @@
 {
   "template": ".",
-  "commit": "e14c3ef1b7f7ab6611ba49e8587ef23c7fbb6759",
+  "commit": "23e2c4f7ca0d0da31085111b8c8f9d982d1c01e8",
   "checkout": "develop",
   "context": {
     "cookiecutter": {
@@ -19,7 +19,7 @@
       "__answers": "",
       "_copy_without_render": [],
       "_template": ".",
-      "_commit": "e14c3ef1b7f7ab6611ba49e8587ef23c7fbb6759"
+      "_commit": "23e2c4f7ca0d0da31085111b8c8f9d982d1c01e8"
     }
   },
   "directory": null
