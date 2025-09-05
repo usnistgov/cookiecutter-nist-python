@@ -329,3 +329,7 @@ tuna-import:
 [group("tools")]
 readme-pdf:
     pandoc -V colorlinks -V geometry:margin=0.8in README.md -o README.pdf
+
+
+update-template-pre-commit-config:
+    cd {{"{{cookiecutter.project_name}}"}} && uvx pre-commit autoupdate
