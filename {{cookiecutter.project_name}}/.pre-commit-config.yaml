@@ -45,7 +45,7 @@ repos:
       - id: validate-pyproject
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2025.08.29
+    rev: 2025.09.15
     hooks:
       - id: validate-pyproject
         name: validate-pyproject-schema-store
@@ -76,7 +76,7 @@ repos:
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.12.12
+    rev: v0.13.1
     hooks:
       - id: ruff-check
         alias: ruff
@@ -87,11 +87,11 @@ repos:
         types_or: *ruff-types-or
   # To be replace by ruff analog when I find one ...
   - repo: https://github.com/adamchainz/blacken-docs
-    rev: 1.19.1
+    rev: 1.20.0
     hooks:
       - id: blacken-docs
         additional_dependencies:
-          - black==25.1.0
+          - black==25.9.0
 
   # * Spelling
   # ** typos (only with manual)
@@ -123,7 +123,7 @@ repos:
         alias: requirements
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.8.15
+    rev: 0.8.18
     hooks:
       - id: uv-lock
         alias: requirements
@@ -136,7 +136,7 @@ repos:
 
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.8.4
+    rev: v4.9.1
     hooks:
       - id: commitizen
         stages: [commit-msg]
