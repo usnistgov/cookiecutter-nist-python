@@ -76,7 +76,7 @@ repos:
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.13.1
+    rev: v0.13.2
     hooks:
       - id: ruff-check
         alias: ruff
@@ -123,7 +123,7 @@ repos:
         alias: requirements
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.8.18
+    rev: 0.8.22
     hooks:
       - id: uv-lock
         alias: requirements
