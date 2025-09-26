@@ -57,7 +57,7 @@
     <link rel="prev" title="cookiecutter-nist-python" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="2025-04-21"/>
+    <meta name="docbuild:last-update" content="2025-09-26"/>
   </head>
   
   
@@ -519,7 +519,7 @@ open the documentation, run:</p>
 <h3>Creating environment.yaml/requirement.txt files<a class="headerlink" href="#creating-environment-yaml-requirement-txt-files" title="Link to this heading">#</a></h3>
 <p>The project is setup to create <code class="docutils literal notranslate"><span class="pre">environment.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">requirement.txt</span></code> files
 from <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>. This can be done using:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nox<span class="w"> </span>-s<span class="w"> </span>requirements
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>just<span class="w"> </span>requirements
 </pre></div>
 </div>
 <p>This uses <a class="reference external" href="https://github.com/wpk-nist-gov/pyproject2conda">pyproject2conda</a> to create the requirement files. Note that all
@@ -528,13 +528,9 @@ requirement files are under something like
 <code class="docutils literal notranslate"><span class="pre">requirements/{env-name}.txt</span></code> (virtual environment).</p>
 <p>Additionally, requirement files for virtualenvs (e.g., <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> like
 files) will be “locked” using <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">pip</span> <span class="pre">compile</span></code> from <a class="reference external" href="https://github.com/astral-sh/uv">uv</a>. These files are placed
-under <code class="docutils literal notranslate"><span class="pre">requirements/lock</span></code>. Note the the session <code class="docutils literal notranslate"><span class="pre">requirements</span></code> automatically
-calls the session <code class="docutils literal notranslate"><span class="pre">lock</span></code>.</p>
-<p>To upgrade the dependencies in the lock, you’ll need to pass the option:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nox<span class="w"> </span>-s<span class="w"> </span>lock<span class="w"> </span>--<span class="w"> </span>+L/++lock-upgrade
-</pre></div>
-</div>
-<p>This will also update <code class="docutils literal notranslate"><span class="pre">uv.lock</span></code> if it’s being used.</p>
+under <code class="docutils literal notranslate"><span class="pre">requirements/lock</span></code>. This uses the script <code class="docutils literal notranslate"><span class="pre">tools/requirements_lock.py</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">uv.lock</span></code> file will also be updated. To upgrade locked requirements pass
+option <code class="docutils literal notranslate"><span class="pre">--upgrade/-U</span></code>.</p>
 </section>
 </section>
 <section id="using-just-as-task-runner">
@@ -565,7 +561,6 @@ point to a removed environment), You can use the script
 <li><p>build/html : build html documentation</p></li>
 <li><p>spelling : check spelling</p></li>
 <li><p>linkcheck : check the links</p></li>
-<li><p>symlink : rebuild symlinks from <code class="docutils literal notranslate"><span class="pre">examples</span></code> to <code class="docutils literal notranslate"><span class="pre">docs/examples</span></code></p></li>
 <li><p>release : make pages branch for documentation hosting (using
 <a class="reference external" href="https://github.com/c-w/ghp-import">ghp-import</a>)</p></li>
 <li><p>livehtml : Live documentation updates</p></li>
@@ -661,7 +656,7 @@ checker to the appropriate python executable.</p>
 recommend installing some of these tools system wide. For this, we recommend
 using <a class="reference external" href="https://github.com/astral-sh/uv">uv</a> (or <a class="reference external" href="https://github.com/pypa/pipx">pipx</a> or <a class="reference external" href="https://github.com/mariusvniekerk/condax">condax</a>). We mostly use <a class="reference external" href="https://github.com/astral-sh/uv">uv</a>, but the choice is yours.
 For conda, we recommend actually using <a class="reference external" href="https://github.com/mamba-org/mamba">mamba</a>. Alternatively, you can setup
-<code class="docutils literal notranslate"><span class="pre">conda</span></code> to use the faster <code class="docutils literal notranslate"><span class="pre">mamba</span></code> solver. See <a class="reference external" href="https://www.anaconda.com/blog/a-faster-conda-for-a-growing-community">here</a> for
+<code class="docutils literal notranslate"><span class="pre">conda</span></code> to use the faster <code class="docutils literal notranslate"><span class="pre">mamba</span></code> solver. <a class="reference external" href="https://www.anaconda.com/blog/a-faster-conda-for-a-growing-community">See here</a> for
 details.</p>
 <section id="create-development-environment-with-conda">
 <h3>Create development environment with conda<a class="headerlink" href="#create-development-environment-with-conda" title="Link to this heading">#</a></h3>
@@ -713,7 +708,8 @@ activate the development environment when in the parent directory.</p>
 </section>
 <section id="development-tools">
 <h3>Development tools<a class="headerlink" href="#development-tools" title="Link to this heading">#</a></h3>
-<p>The only required tool is <a class="reference external" href="https://github.com/astral-sh/uv">uv</a>. Other tools used are:</p>
+<p>The only required tool is <a class="reference external" href="https://github.com/astral-sh/uv">uv</a>, but it highly recommended to also install
+<a class="reference external" href="https://github.com/casey/just">just</a>. Other tools used are:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://pre-commit.com/">pre-commit</a></p></li>
 <li><p><a class="reference external" href="https://github.com/casey/just">just</a></p></li>
@@ -721,8 +717,6 @@ activate the development environment when in the parent directory.</p>
 <li><p><a class="reference external" href="https://github.com/microsoft/pyright">pyright</a></p></li>
 <li><p><a class="reference external" href="https://github.com/cruft/cruft">cruft</a></p></li>
 <li><p><a class="reference external" href="https://github.com/commitizen-tools/commitizen">commitizen</a></p></li>
-<li><p><a class="reference external" href="https://github.com/nedbat/cog">cog</a></p></li>
-<li><p><a class="reference external" href="https://github.com/nbQA-dev/nbQA">nbqa</a></p></li>
 </ul>
 <p>which can be installed using:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>tool<span class="w"> </span>install<span class="w"> </span>pre-commit
@@ -733,8 +727,8 @@ Behind the scenes, the <code class="docutils literal notranslate"><span class="p
 constraints from <code class="docutils literal notranslate"><span class="pre">requirements/lock/uvx-tools.txt</span></code>. This will run the tool with
 with the proper version. Note that if the tool is already installed with the
 proper version, <a class="reference external" href="https://docs.astral.sh/uv/guides/tools/">uvx</a> will use it. This prevents having to install a bunch of
-tooling in the “dev” environment, and also avoid creating a bunch of through
-away <a class="reference external" href="https://github.com/wntrblm/nox">nox</a> environments.</p>
+tooling in the “dev” environment, and also avoid creating a bunch of throw away
+<a class="reference external" href="https://github.com/wntrblm/nox">nox</a> environments.</p>
 </section>
 </section>
 <section id="package-version">
@@ -903,7 +897,7 @@ By William P. Krekelberg
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on 2025-04-21.
+  Last updated on 2025-09-26.
   <br/>
 </p>
   </div>
