@@ -45,7 +45,7 @@ repos:
       - id: validate-pyproject
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2025.09.15
+    rev: 2025.09.26
     hooks:
       - id: validate-pyproject
         name: validate-pyproject-schema-store
@@ -98,7 +98,7 @@ repos:
   # Revert to crate-ci/typos if https://github.com/crate-ci/typos/issues/390 is fixed.
   # - repo: https://github.com/crate-ci/typos
   - repo: https://github.com/adhtruong/mirrors-typos
-    rev: v1.36.2
+    rev: v1.36.3
     hooks:
       - id: typos
         exclude_types: [jupyter]
@@ -195,7 +195,7 @@ repos:
       - id: nbqa
         name: nbqa-typos
         alias: typos
-        additional_dependencies: &typos-deps [typos==1.36.2] # make sure save version as above.
+        additional_dependencies: &typos-deps [typos==1.36.3] # make sure save version as above.
         args: [typos, --nbqa-shell]
         # this can lead to errors, so use with care
         # args: [typos, --write-changes, --nbqa-shell]
