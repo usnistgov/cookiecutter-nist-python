@@ -7,15 +7,16 @@
 # You should not manually edit this file.
 # Instead edit the corresponding pyproject.toml file.
 #
+name: py313-dev
 channels:
   - conda-forge
 dependencies:
-  - python=3.12
+  - python=3.13
   - cookiecutter
   - copier
   - mypy>=1.15.0
-  - nox>=2024.10.9
-  - packaging
+  - nox>=2025.5.1
+  - orjson
   - pylint
   - pytest
   - pytest-cov
@@ -23,4 +24,4 @@ dependencies:
   - pytest-xdist
   - pip
   - pip:
-      - copier-templates-extensions
+      - copier-templates-extensions>=0.3.1

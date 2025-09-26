@@ -7,11 +7,19 @@
 # You should not manually edit this file.
 # Instead edit the corresponding pyproject.toml file.
 #
+basedpyright>=1.31.3
+cogapp
 conda-lock>=2.5.5
+cruft
 grayskull>=2.5.3
 mypy>=1.15.0
 nbqa>=1.8.4
-pre-commit
+nox>=2025.5.1
+orjson
+pre-commit-uv
+pre-commit>=4.0.0
+pyrefly
 pyright>=1.1.396
 scriv
 twine>=5.0.0
+ty

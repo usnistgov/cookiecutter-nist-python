@@ -52,7 +52,17 @@ Some features...
 This package is actively used by the author. Please feel free to create a pull
 request for wanted features and suggestions!
 
-## Quick start
+## Example usage
+
+```python
+import {{ cookiecutter.project_slug }}
+```
+
+<!-- end-docs -->
+
+## Installation
+
+<!-- start-installation -->
 
 Use one of the following
 
@@ -66,13 +76,7 @@ or
 conda install -c {{ cookiecutter.conda_channel}} {{ cookiecutter.project_name }}
 ```
 
-## Example usage
-
-```python
-import {{ cookiecutter.project_slug }}
-```
-
-<!-- end-docs -->
+<!-- end-installation -->
 
 ## Documentation
 

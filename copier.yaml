@@ -91,7 +91,7 @@ year:
   type: str
   help: Copyright/creation year
 
-  default: 2023
+  default: 2025
 # [[[end]]]
 
 # * Copier options

@@ -1,5 +1,5 @@
 # need this to pick up requires-python from pyproject.toml
-extend = "./pyproject.toml"
+# extend = "./pyproject.toml"
 extend-include = [
     "*.ipynb",
 ]
@@ -89,4 +89,9 @@ pylint.max-public-methods = 30
 "tests/*.py" = [
     "LOG015",
     "S404",
+]
+"tools/copier_extensions.py" = [
+    "D",
+    "ANN",
+    "PL",
 ]

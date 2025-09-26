@@ -1,5 +1,5 @@
 # need this to pick up requires-python from pyproject.toml
-extend = "./pyproject.toml"
+# extend = "./pyproject.toml"
 extend-include = [
     "*.ipynb",
 ]

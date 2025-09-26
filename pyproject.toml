@@ -1,6 +1,6 @@
 [project]
 name = "cookiecutter-nist-python"
-version = "0.3.0"
+version = "0.4.0"
 description = "Cookiecutter template for NIST python packages"
 keywords = [
     "cookiecutter-nist-python",
@@ -14,7 +14,6 @@ requires-python = ">=3.9"
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Science/Research",
-    "License :: Public Domain",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3 :: Only",
@@ -35,56 +34,59 @@ urls.Homepage = "https://github.com/usnistgov/cookiecutter-nist-python"
 
 [dependency-groups]
 dev = [
-    { include-group = "dev-extras" },
-    { include-group = "mypy" },
-    # { include-group = "nbval" },
+    { include-group = "mypy" },      # so can use dmypy
+    { include-group = "nox" },
     { include-group = "test" },
-    { include-group = "typing" },
-    { include-group = "uvxrun" },
+    { include-group = "typecheck" },
 ]
 test = [
-    { include-group = "test-extras" },
+    "cookiecutter",
+    "copier",
+    "copier-templates-extensions>=0.3.1",
+    "pytest-cov",
+    "pytest-sugar",
+    "pytest-xdist",
+    { include-group = "pytest" },
 ]
 docs = [
     "autodocsumm",
     "myst-parser",
-    "pyenchant",
     "sphinx>=5.3.0",
     "sphinx-book-theme",
     "sphinx-copybutton",
-    "sphinxcontrib-spelling",
 ]
+# other packages/tools
 cog = [ "cogapp" ]
-dev-extras = [
-    "nox>=2024.10.9",
-]
+ipython = [ "ipython" ]
+mypy = [ "mypy>=1.15.0", "orjson" ]
+nox = [ "nox>=2025.5.1" ]
+pylint = [ "pylint" ]
+pytest = [ "pytest" ]
+# other environments
 docs-live = [
     "sphinx-autobuild",
     { include-group = "docs" },
 ]
-mypy = [ "mypy>=1.15.0" ]
-nbval = [ "nbval" ]
-test-extras = [
-    "cookiecutter",
-    "copier",
-    "copier-templates-extensions",
-    "pytest",
-    "pytest-cov",
-    "pytest-sugar",
-    "pytest-xdist",
+docs-spelling = [
+    "pyenchant",
+    "sphinxcontrib-spelling",
+    { include-group = "docs" },
 ]
-test-notebook = [
-    { include-group = "nbval" },
-    { include-group = "test-extras" },
+typecheck = [
+    { include-group = "pylint" },
+    { include-group = "pytest" },
 ]
-typing = [
-    "pylint",
-    "pytest",
-    { include-group = "uvxrun" },
+
+[tool.repo-review]
+ignore = [
+    "GH",    # enable for actions
+    "PC140", # do this externally
+    "PC170", # pygrep
+    "PC901", # ci message
+    "RTD",
+    "PP002",
+    "PP003",
 ]
-# Anything needed to run tools/uvxrun.py
-# NOTE: uvxrun-tools defined explicitly in tool.pyproject2conda.envs.uvxrun-tools
-uvxrun = [ "packaging" ]
 
 [tool.pyproject-fmt]
 # max_supported_python = "3.13"
@@ -93,6 +95,9 @@ uvxrun = [ "packaging" ]
 
 [tool.pytest.ini_options]
 addopts = [
+    "-ra",
+    "--strict-config",
+    "--strict-markers",
     "--doctest-modules",
     "--doctest-glob=*.md",
     "--cov-config=pyproject.toml",
@@ -111,7 +116,7 @@ markers = [
     "test: run tests",
     "lint: run linting",
     "docs: make docs",
-    "typing: run typing checks",
+    "typecheck: run type checkers",
     "mypystrict: run mypy --strict",
     "create: simple test on path creation",
     "longname: a project with a long name",
@@ -120,6 +125,13 @@ markers = [
     "cookie: cookiecutter",
     "copier: run copier tests",
     "notebook: run typing/test on notebook",
+]
+minversion = "8"
+log_cli_level = "INFO"
+xfail_strict = true
+filterwarnings = [
+    "error",
+    "ignore: Dirty template:copier.errors.DirtyLocalWarning",
 ]
 
 [tool.coverage.run]
@@ -138,16 +150,16 @@ include = [
     "src/*",
 ]
 
-# * Typing ---------------------------------------------------------------------
+# * typecheck ---------------------------------------------------------------------
 
 [tool.mypy]
 files = [
     "tests",
 ]
-show_error_codes = true
 warn_unused_ignores = true
 warn_return_any = true
 warn_unused_configs = true
+warn_unreachable = true
 exclude = [
     ".eggs",
     ".tox",
@@ -157,7 +169,12 @@ exclude = [
     "docs",
 ]
 check_untyped_defs = true
-# strict = true
+strict = false
+enable_error_code = [
+    "ignore-without-code",
+    "redundant-expr",
+    "truthy-bool",
+]
 
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
@@ -180,28 +197,11 @@ exclude = [
     "**/.numba_cache",
 ]
 pythonVersion = "3.11"
-# strict = ["noxfile.py", "tools/*.py"]
 typeCheckingMode = "strict"
-# typeCheckingMode = "basic"
-# # enable subset of "strict"
-# reportDuplicateImport = true
-# reportInvalidStubStatement = true
-# reportOverlappingOverload = true
-# reportPropertyTypeMismatch = true
-# reportUntypedClassDecorator = true
-# reportUntypedFunctionDecorator = true
-# reportUntypedNamedTuple = true
-# reportUnusedImport = true
-# # disable subset of "basic"
-# reportGeneralTypeIssues = false
-# reportMissingModuleSource = false
-# reportOptionalCall = false
-# reportOptionalIterable = false
-# reportOptionalMemberAccess = false
-# reportOptionalOperand = false
-# reportOptionalSubscript = false
-# reportPrivateImportUsage = false
-# reportUnboundVariable = false
+# Extra flags
+enableTypeIgnoreComments = false
+reportUnnecessaryTypeIgnoreComment = true
+reportUnreachable = "warning"
 
 [tool.pytype]
 inputs = [
@@ -212,9 +212,10 @@ inputs = [
 # * Dependency creation --------------------------------------------------------
 
 [tool.pyproject2conda]
-user_config = "config/userconfig.toml"
-template_python = "requirements/py{py}-{env}"
+user-config = "config/userconfig.toml"
+template-python = "requirements/py{py}-{env}"
 template = "requirements/{env}"
+name = "py{py}-{env}"
 python = "default"
 channels = "conda-forge"
 style = "yaml"
@@ -231,19 +232,28 @@ groups = "dev"
 groups = "test"
 python = "all"
 
-[tool.pyproject2conda.envs.uvxrun-tools]
+[tool.pyproject2conda.envs.uvx-tools]
 reqs = [
-    # these used solely for specking tools to be used with tools/uvxrun.py
+    # these used solely for specking tools to be used with uvx --constraints=...
     "conda-lock>=2.5.5",
+    "cruft",
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
-    "pre-commit",
+    "pre-commit>=4.0.0",
+    "pre-commit-uv",
+    "pyrefly",
     "pyright>=1.1.396",
+    "basedpyright>=1.31.3",
     "scriv",
     "twine>=5.0.0",
+    "ty",
 ]
-groups = "mypy"
-skip_package = true
+groups = [
+    "cog",
+    "mypy",
+    "nox",
+]
+skip-package = true
 style = "requirements"
 
 # * uv -------------------------------------------------------------------------
@@ -252,10 +262,22 @@ style = "requirements"
 managed = true
 default-groups = [ "dev" ]
 fork-strategy = "requires-python"
-required-version = ">=0.6.5"
+required-version = ">=0.7.15"
 
 [tool.uv.pip]
 annotation-style = "line"
+generate-hashes = true
+
+[tool.uv.dependency-groups]
+dev.requires-python = ">=3.12"
+docs.requires-python = ">=3.12"
+docs-live.requires-python = ">=3.12"
+docs-spelling.requires-python = ">=3.12"
+# other tools
+cog.requires-python = ">=3.12"
+ipython.requires-python = ">=3.12"
+mypy.requires-python = ">=3.12"
+nox.requires-python = ">=3.12"
 
 # * Other tools ----------------------------------------------------------------
 

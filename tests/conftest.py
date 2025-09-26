@@ -94,6 +94,14 @@ def pytest_addoption(parser: pytest.Parser) -> None:
     )
 
     parser.addoption(
+        "--upgrade",
+        "-U",
+        action="store_true",
+        default="",
+        help="Upgrade requirements",
+    )
+
+    parser.addoption(
         "--enable",
         action="store_true",
         default=False,
@@ -111,13 +119,19 @@ def nox_session_opts(pytestconfig: pytest.Config) -> str:
     return pytestconfig.getoption("nox_session_opts")  # type: ignore[no-any-return]
 
 
+@pytest.fixture(scope="session")
+def requirements_upgrade(pytestconfig: pytest.Config) -> bool:
+    return pytestconfig.getoption("upgrade")  # type: ignore[no-any-return]
+
+
 # * Fixtures ---------------------------------------------------------------------------
 @pytest.fixture(
     scope="session",
     params=PARAMS,
 )
 def example_path(
-    request: pytest.FixtureRequest, nox_opts: str, nox_session_opts: str
+    request: pytest.FixtureRequest,
+    requirements_upgrade: bool,
 ) -> Iterator[Path]:
     project_name = request.param["project_name"]
     extra_context = request.param["extra_context"]
@@ -132,8 +146,13 @@ def example_path(
         run_inside_dir("git init", path)
     run_inside_dir("git add .", path)
 
-    run_inside_dir(f"nox -s requirements {nox_opts} -- {nox_session_opts}", str(path))
-    run_inside_dir("uv lock", str(path), env={"VIRTUAL_ENV": str(path / ".venv")})
+    run_inside_dir(
+        f"just lock {'--upgrade' if requirements_upgrade else ''}",
+        str(path),
+    )
+    run_inside_dir(
+        "uv run --no-project tools/symlink_docs_examples_notebooks.py", str(path)
+    )
 
     run_inside_dir("git add .", path)
 
@@ -161,7 +180,7 @@ def pytest_collection_modifyitems(
     config: pytest.Config, items: list[pytest.Item]
 ) -> None:
     for item in items:
-        marker = item.originalname.split("_")[-1]  # type: ignore[attr-defined]
+        marker = item.originalname.split("_")[-1]  # type: ignore[attr-defined]  # pyright: ignore[reportUnknownVariableType,reportUnknownMemberType,reportAttributeAccessIssue]
         item.add_marker(getattr(pytest.mark, marker))  # pyright: ignore[reportUnknownArgumentType]
 
     if config.getoption("--enable"):
@@ -247,9 +266,9 @@ def _bake_project(
         )
 
     elif style == "copier":
-        import copier  # pyright: ignore[reportMissingImports]
+        import copier
 
-        copier.run_copy(  # pyright: ignore[reportUnknownMemberType]
+        copier.run_copy(
             src_path=str(template),
             dst_path=str(output_dir / project_name),
             data=extra_context,

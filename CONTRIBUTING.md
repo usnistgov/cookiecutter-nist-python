@@ -13,7 +13,7 @@ You can contribute in many ways:
 
 ### Report Bugs
 
-Report bugs at [here][issues]
+[Report bugs at here][issues]
 
 If you are reporting a bug, please include:
 
@@ -39,7 +39,7 @@ such.
 
 ### Submit Feedback
 
-The best way to send feedback is to file an issue [here][issues].
+The best way to send feedback is to [file an issue][issues].
 
 If you are proposing a feature:
 
@@ -184,18 +184,15 @@ nox -s lint
 
 ## Using nox
 
-This project makes extensive use of [nox] to automate testing, typing,
+This project makes extensive use of [nox] to automate testing, type checking,
 documentation creation, etc. One downside of using [tox] with this particular
-workflow is the need for multiple scripts/makefiles, while with [nox], most
-everything is self contained in the file `noxfile.py`. [nox] also allows for a
-mix of [conda] and [virtualenv] environments. The default is for the development
-environment to use conda, while all other environments are virtualenvs. There
-are conda sessions for testing (`test-conda`), typing (`typing-conda`), docs
-(`docs-conda`), etc.
+workflow is the need for multiple scripts, while with [nox], most everything is
+self contained in the file `noxfile.py`. [nox] also allows for a mix of [conda]
+and [virtualenv] environments.
 
 ### Installing interpreters for virtualenv creation
 
-If using virtualenvs across multiple python versions (e.g., `test`, `typing`,
+If using virtualenvs across multiple python versions (e.g., `test`, `typecheck`,
 etc), you'll need to install python interpreters for each version. If using
 [pyenv], you should be good to go.
 
@@ -213,9 +210,8 @@ python-preference = "only-managed"
 
 ```
 
-The `noxfile.py` is setup to automatically add the python interpreters installed
-by [uv] to the path. Note that the python version needs to be installed before
-it can be used with [nox]
+[nox] is setup to automatically work with [uv]. Note that the python interpreter
+may need to be installed before it can be used with [nox]
 
 ### Nox session options
 
@@ -253,7 +249,7 @@ The project is setup to create `environment.yaml` and `requirement.txt` files
 from `pyproject.toml`. This can be done using:
 
 ```bash
-nox -s requirements
+just requirements
 ```
 
 This uses [pyproject2conda] to create the requirement files. Note that all
@@ -263,20 +259,18 @@ requirement files are under something like
 
 Additionally, requirement files for virtualenvs (e.g., `requirements.txt` like
 files) will be "locked" using `uv pip compile` from [uv]. These files are placed
-under `requirements/lock`. Note the the session `requirements` automatically
-calls the session `lock`.
+under `requirements/lock`. This uses the script `tools/requirements_lock.py`.
+The `uv.lock` file will also be updated. To upgrade locked requirements pass
+option `--upgrade/-U`.
 
-To upgrade the dependencies in the lock, you'll need to pass the option:
+## Using [just] as task runner
 
-```bash
-nox -s lock -- +L/++lock-upgrade
-```
-
-This will also update `uv.lock` if it's being used.
+The project includes a `justfile` to be invoked using [just] to simplify common
+tasks. Run `just` with no options to see available commands.
 
 ## ipykernel
 
-The environments created by nox `dev`, or running `make install-kernel`, will
+The environments created by nox `dev`, or running `just install-kernel`, will
 try to add meaningful display names for ipykernel. These are installed at the
 user level. To cleanup the kernels (meaning, removing installed kernels that
 point to a removed environment), You can use the script
@@ -300,7 +294,6 @@ where commands can be one of:
 - build/html : build html documentation
 - spelling : check spelling
 - linkcheck : check the links
-- symlink : rebuild symlinks from `examples` to `docs/examples`
 - release : make pages branch for documentation hosting (using
   [ghp-import](https://github.com/c-w/ghp-import))
 - livehtml : Live documentation updates
@@ -389,7 +382,7 @@ to test a specific version from pypi and
 nox -s testdist-conda -- ++version [version]
 ```
 
-to to likewise from conda.
+to do likewise from conda.
 
 ## Testing notebooks with [nbval]
 
@@ -404,14 +397,12 @@ nox -s test-notebook
 Run:
 
 ```bash
-nox -s typing -- +m [commands] [options]
+nox -s typecheck -- +m [commands] [options]
 ```
 
-Use `typing-conda` to test typing in a conda environment.
-
 Note that the repo is setup to use a single install of [mypy] and [pyright]. The
-script `tools/uvxrun.py` will run check if an appropriate version of the
-typecheckers is installed. If not, they will be run (and cached) using [uvx].
+script `tools/typecheck.py` will run the checkers via [uvx] and point the
+checker to the appropriate python executable.
 
 ## Setup development environment
 
@@ -419,7 +410,7 @@ This project uses a host of tools to (hopefully) make development easier. We
 recommend installing some of these tools system wide. For this, we recommend
 using [uv] (or [pipx] or [condax]). We mostly use [uv], but the choice is yours.
 For conda, we recommend actually using [mamba]. Alternatively, you can setup
-`conda` to use the faster `mamba` solver. See [here][conda-fast-setup] for
+`conda` to use the faster `mamba` solver. [See here][conda-fast-setup] for
 details.
 
 ### Create development environment with conda
@@ -467,7 +458,7 @@ and use this requirement file in the commands above.
 If the project includes an ipython kernel, you can install it with:
 
 ```bash
-make install-kernel
+just install-kernel
 ```
 
 Alternatively, you can simply use:
@@ -484,39 +475,29 @@ activate the development environment when in the parent directory.
 
 ### Development tools
 
-Additional tools are:
+The only required tool is [uv], but it highly recommended to also install
+[just]. Other tools used are:
 
 - [pre-commit]
-- [uv] (optional, highly recommended)
-- [scriv] (optional)
-- [pyright] (optional)
-- [cruft] (optional)
-- [commitizen] (optional)
-- [cog] (optional)
-- [nbqa] (optional)
+- [just]
+- [scriv]
+- [pyright]
+- [cruft]
+- [commitizen]
 
-We recommend installing these tools with [uv], but feel free to use [pipx] or
-[condax].
+which can be installed using:
 
-```console
-uv tool/condax/pipx install pre-commit
-# optional packages
-uv tool/pipx install scriv
-uv tool/condax/pipx install uv
-uv tool/condax/pipx install pyright
-uv tool/condax/pipx install cruft
-uv tool/condax/pipx install commitizen
-uv tool/condax/pipx install cogapp
-uv tool/condax/pipx install nbqa
+```bash
+uv tool install pre-commit
 ```
 
 Note that the repo is setup to automatically use [uvx] for many of these tools.
-Behind the scenes, the makefile and `noxfile.py` will invoke `tools/uvxrun.py`.
-This will run the tool with `uvx tool..` with proper tool version. Note that if
-the tool is already installed with the proper version, [uvx] will use it. This
-prevents having to install a bunch of tooling in the "dev" environment, and also
-avoid creating a bunch of through away [nox] environments. This is experimental,
-and I might change back to using small [nox] environments again in the future.
+Behind the scenes, the `justfile` and `noxfile.py` will invoke [uvx] with
+constraints from `requirements/lock/uvx-tools.txt`. This will run the tool with
+with the proper version. Note that if the tool is already installed with the
+proper version, [uvx] will use it. This prevents having to install a bunch of
+tooling in the "dev" environment, and also avoid creating a bunch of throw away
+[nox] environments.
 
 ## Package version
 
@@ -543,7 +524,6 @@ To do this in a given session, use:
 nox -s {session} -- +P/++update-package
 ```
 
-[cog]: https://github.com/nedbat/cog
 [commitizen]: https://github.com/commitizen-tools/commitizen
 [conda-fast-setup]:
   https://www.anaconda.com/blog/a-faster-conda-for-a-growing-community
@@ -552,9 +532,9 @@ nox -s {session} -- +P/++update-package
 [conventional-style]: https://www.conventionalcommits.org/en/v1.0.0/
 [cruft]: https://github.com/cruft/cruft
 [git-flow]: https://github.com/nvie/gitflow
+[just]: https://github.com/casey/just
 [mamba]: https://github.com/mamba-org/mamba
 [mypy]: https://github.com/python/mypy
-[nbqa]: https://github.com/nbQA-dev/nbQA
 [nbval]: https://github.com/computationalmodelling/nbval
 [nox]: https://github.com/wntrblm/nox
 [pipx]: https://github.com/pypa/pipx

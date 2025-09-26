@@ -34,6 +34,7 @@ class Option:
             result.append(f"  type: {self.type_}")
         result.append(f"  help: {self.prompt}")
 
+        default_val: Any
         if self.choices:
             result.append("  choices:")
             for choice in self.choices:
@@ -49,10 +50,10 @@ class Option:
             default_val = self.default
 
         if default and default_val:
-            if isinstance(default_val, bool):  # pyright: ignore[reportUnnecessaryIsInstance]
+            if isinstance(default_val, bool):
                 default_val = "yes" if default_val else "no"
 
-            if not isinstance(default_val, str):  # pyright: ignore[reportUnnecessaryIsInstance]
+            if not isinstance(default_val, str):
                 msg = f"received {default_val} of type {type(default_val)}"
                 raise TypeError(msg)
 
@@ -102,7 +103,7 @@ class CC:
 
             self.options[name] = Option(
                 name=name,
-                default=value,  # pyright: ignore[reportGeneralTypeIssues, reportArgumentType]
+                default=value,  # pyright: ignore[reportArgumentType]
                 prompt=prompt,  # pyright: ignore[reportUnknownArgumentType]
                 type_=(
                     "str"

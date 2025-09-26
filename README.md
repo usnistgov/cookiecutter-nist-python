@@ -113,6 +113,8 @@ The following packages use this template:
 - [`module-utilities`](https://github.com/usnistgov/module-utilities)
 - [`analphipy`](https://github.com/conda-forge/analphipy-feedstock)
 - [`pyproject2conda`](https://github.com/usnistgov/pyproject2conda)
+- [`open-notebook`](https://github.com/usnistgov/open-notebook)
+- [`uv-workon`](https://github.com/usnistgov/uv-workon)
 
 ## Other useful templates
 
