@@ -98,9 +98,9 @@ Ready to contribute? Here's how to make a contribution.
   pre-commit gc
   ```
 
-You can instead use [prek] (replacing all above `pre-commit` commands with
-`prek` commands) which is written in rust, and faster than [pre-commit], but is
-still under development.
+  You can instead use [prek] (replacing all above `pre-commit` commands with
+  `prek` commands) which is written in rust, and faster than [pre-commit], but
+  is still under development.
 
 - Create a branch for local development:
 
