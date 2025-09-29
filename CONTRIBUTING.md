@@ -77,11 +77,14 @@ Ready to contribute? Here's how to make a contribution.
 - Create development environment. See [](#setup-development-environment) for
   details.
 
-- Initiate [pre-commit] with:
+- Initiate [pre-commit] (or [prek]) with:
 
   ```bash
   pre-commit install
   ```
+
+  Note that this is strictly optional. You can always use
+  `pre-commit run --all-files` without installing the pre-commit hooks.
 
   To update the recipe, periodically run:
 
@@ -94,6 +97,10 @@ Ready to contribute? Here's how to make a contribution.
   ```bash
   pre-commit gc
   ```
+
+You can instead use [prek] (replacing all above `pre-commit` commands with
+`prek` commands) which is written in rust, and faster than [pre-commit], but is
+still under development.
 
 - Create a branch for local development:
 
@@ -161,7 +168,7 @@ Before you submit a pull request, check that it meets these guidelines:
 
 ## Using [pre-commit]
 
-It is highly recommended to enable [pre-commit]. See
+It is highly recommended to enable [pre-commit] or [prek]. See
 [](#setup-development-environment) for installation instructions. To install the
 pre-commit hooks, run:
 
@@ -478,7 +485,7 @@ activate the development environment when in the parent directory.
 The only required tool is [uv], but it highly recommended to also install
 [just]. Other tools used are:
 
-- [pre-commit]
+- [pre-commit] or [prek]
 - [just]
 - [scriv]
 - [pyright]
@@ -539,6 +546,7 @@ nox -s {session} -- +P/++update-package
 [nox]: https://github.com/wntrblm/nox
 [pipx]: https://github.com/pypa/pipx
 [pre-commit]: https://pre-commit.com/
+[prek]: https://github.com/j178/prek
 [pyenv]: https://github.com/pyenv/pyenv
 [pyproject2conda]: https://github.com/wpk-nist-gov/pyproject2conda
 [pyright]: https://github.com/microsoft/pyright

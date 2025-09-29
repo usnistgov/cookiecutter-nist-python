@@ -756,7 +756,7 @@ def lint(
     """
     Run linters with pre-commit.
 
-    Defaults to `pre-commit run --all-files`.
+    Defaults to `pre-commit/prek run --all-files`.
     To run something else pass, e.g.,
     `nox -s lint -- --lint-run "pre-commit run --hook-stage manual --all-files`
     """
