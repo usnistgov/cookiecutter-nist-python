@@ -49,7 +49,7 @@ if TYPE_CHECKING:
 
 # Should only use on python version > 3.10
 if sys.version_info < (3, 10):
-    msg = "python>=3.10 required"
+    msg = "python>=3.10 required"  # pyright: ignore[reportUnreachable]
     raise RuntimeError(msg)
 
 # * Names ------------------------------------------------------------------------------
@@ -309,6 +309,7 @@ def install_dependencies(
 
     elif lock:  # pylint: disable=confusing-consecutive-elif
         # package?
+        package_args: tuple[str, ...]
         if include_no_editable_package:
             package_args = ("--no-editable", f"--reinstall-package={PACKAGE_NAME}")
         elif include_editable_package:
