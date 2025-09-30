@@ -262,6 +262,7 @@ def install_dependencies(
     no_dev: bool = True,
     no_default_groups: bool = False,
     only_group: bool = False,
+    include_no_editable_package: bool = False,
     include_editable_package: bool = False,
     lock: bool | None = None,
 ) -> None:
@@ -299,10 +300,22 @@ def install_dependencies(
             else:
                 session.log("Using cached install")
 
-        if include_editable_package:
+        if include_no_editable_package:
+            install_package(
+                session, f"--reinstall-package={PACKAGE_NAME}", installpkg="."
+            )
+        elif include_editable_package:
             install_package(session, editable=True, update=True)
 
     elif lock:  # pylint: disable=confusing-consecutive-elif
+        # package?
+        if include_no_editable_package:
+            package_args = ("--no-editable", f"--reinstall-package={PACKAGE_NAME}")
+        elif include_editable_package:
+            package_args = (f"--reinstall-package={PACKAGE_NAME}",)
+        else:
+            package_args = ("--no-install-project",)
+
         session.run_install(
             "uv",
             "sync",
@@ -316,15 +329,7 @@ def install_dependencies(
             ),
             *(["--only-group"] if only_group else ["--group"]),
             name,
-            # Handle package install here?
-            # "--no-editable",
-            # "--reinstall-package",
-            "--no-install-project",
-            *(
-                [f"--reinstall-package={PACKAGE_NAME}"]
-                if opts.reinstall_package and include_editable_package
-                else []
-            ),
+            *package_args,
             *(
                 []
                 if any("--python" in a for a in args)
@@ -640,16 +645,19 @@ def testdist(
     opts: SessionParams,
 ) -> None:
     """Test conda distribution."""
-    install_str = PACKAGE_NAME
-    if opts.version:
-        install_str = f"{install_str}=={opts.version}"
+    if opts.installpkg:
+        install_str = opts.installpkg
+    else:
+        install_str = PACKAGE_NAME
+        if opts.version:
+            install_str = f"{install_str}=={opts.version}"
 
     install_dependencies(session, name="test-extras", only_group=True, opts=opts)
 
     if isinstance(session.virtualenv, CondaEnv):
         session.conda_install(install_str)
     else:
-        session.install(install_str)
+        session.install(install_str, f"--reinstall-package={PACKAGE_NAME}")
 
     _test(
         session=session,
