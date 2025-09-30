@@ -272,6 +272,12 @@ uv-publish-test: (_uv-publish "--publish-url https://test.pypi.org/legacy/") && 
 lint-dist: (_twine "check --strict dist/*")
     {{ UVX_WITH_OPTS }} check-wheel-contents dist/*.whl
 
+# check the dist versions are correct
+[group("dist")]
+[group("lint")]
+check-dist-version version:
+    uv run --script tools/check_dist_version.py --version {{ version }} dist/*.whl dist/*.tar.gz
+
 [group("dist")]
 list-dist:
     tar -tzvf dist/*.tar.gz

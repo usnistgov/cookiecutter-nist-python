@@ -24,6 +24,7 @@
 [repo-link]: https://github.com/usnistgov/cookiecutter-nist-python
 [license-badge]: https://img.shields.io/pypi/l/cmomy?color=informational
 [license-link]: https://github.com/usnistgov/cookiecutter-nist-python/blob/main/LICENSE
+[changelog-link]: https://github.com/usnistgov/cookiecutter-nist-python/blob/main/CHANGELOG.md
 
 <!-- other links -->
 
@@ -98,6 +99,10 @@ cruft create [--checkout BRANCH-NAME] https://github.com/usnistgov/cookiecutter-
 
 See the [documentation][docs-link] for a look at `cookiecutter-nist-python` in
 action.
+
+## What's new?
+
+See [changelog][changelog-link].
 
 ## License
 
