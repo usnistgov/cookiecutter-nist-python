@@ -30,6 +30,7 @@
 [conda-link]: https://anaconda.org/{{ cookiecutter.conda_channel }}/{{ cookiecutter.project_name }}
 [license-badge]: https://img.shields.io/pypi/l/{{ cookiecutter.project_name }}?color=informational
 [license-link]: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/blob/main/LICENSE
+[changelog-link]: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/blob/main/CHANGELOG.md
 
 <!-- other links -->
 
@@ -81,6 +82,10 @@ conda install -c {{ cookiecutter.conda_channel}} {{ cookiecutter.project_name }}
 ## Documentation
 
 See the [documentation][docs-link] for further details.
+
+## What's new?
+
+See [changelog][changelog-link].
 
 ## License
 
