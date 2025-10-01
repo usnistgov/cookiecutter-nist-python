@@ -258,13 +258,7 @@ author = "{{ cookiecutter.full_name }}"
 # the built documents.
 #
 # The short X.Y version.
-def _get_version() -> str:
-    if (version := os.environ.get("SETUPTOOLS_SCM_PRETEND_VERSION")) is None:
-        version = {{ cookiecutter.project_slug }}.__version__
-    return version
-
-
-release = version = _get_version()
+release = version = {{ cookiecutter.project_slug }}.__version__
 
 
 # if always want to print "latest"
