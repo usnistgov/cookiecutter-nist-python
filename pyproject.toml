@@ -2,6 +2,7 @@
 name = "cookiecutter-nist-python"
 version = "0.5.0.dev"
 description = "Cookiecutter template for NIST python packages"
+readme = "README.md"
 keywords = [
     "cookiecutter-nist-python",
 ]
@@ -23,9 +24,6 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering",
-]
-dynamic = [
-    "readme",
 ]
 dependencies = [
 ]
