@@ -29,6 +29,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Scientific/Engineering",
 ]
 dependencies = [
@@ -111,6 +112,35 @@ typecheck = [
     { include-group = "pylint" },
     { include-group = "pytest" },
 ]
+
+# * uv -------------------------------------------------------------------------
+
+[tool.uv]
+managed = true
+default-groups = [ "dev" ]
+fork-strategy = "requires-python"
+required-version = ">=0.7.15"
+
+[tool.uv.pip]
+annotation-style = "line"
+generate-hashes = true
+
+[tool.uv.dependency-groups]
+dev.requires-python = ">=3.12"
+docs.requires-python = ">=3.12"
+docs-live.requires-python = ">=3.12"
+docs-spelling.requires-python = ">=3.12"
+# other tools
+cog.requires-python = ">=3.12"
+ipython.requires-python = ">=3.12"
+mypy.requires-python = ">=3.12"
+notebook.requires-python = ">=3.12"
+nox.requires-python = ">=3.12"
+
+[tool.uv.build-backend]
+source-include = [ "tests/**" ]
+
+# * Checks ---------------------------------------------------------------------
 
 [tool.repo-review]
 ignore = [
@@ -329,33 +359,6 @@ groups = [
 ]
 skip-package = true
 style = "requirements"
-
-# * uv -------------------------------------------------------------------------
-
-[tool.uv]
-managed = true
-default-groups = [ "dev" ]
-fork-strategy = "requires-python"
-required-version = ">=0.7.15"
-
-[tool.uv.pip]
-annotation-style = "line"
-generate-hashes = true
-
-[tool.uv.dependency-groups]
-dev.requires-python = ">=3.12"
-docs.requires-python = ">=3.12"
-docs-live.requires-python = ">=3.12"
-docs-spelling.requires-python = ">=3.12"
-# other tools
-cog.requires-python = ">=3.12"
-ipython.requires-python = ">=3.12"
-mypy.requires-python = ">=3.12"
-notebook.requires-python = ">=3.12"
-nox.requires-python = ">=3.12"
-
-[tool.uv.build-backend]
-source-include = [ "tests/**" ]
 
 # * Other tools ----------------------------------------------------------------
 
