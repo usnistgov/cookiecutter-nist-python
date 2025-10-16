@@ -32,7 +32,7 @@ repos:
     # * pyproject.toml
     # ** format
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: v2.10.0
+    rev: v2.11.0
     hooks:
       - id: pyproject-fmt
         args: [--indent=4, --keep-full-version]
@@ -123,7 +123,7 @@ repos:
         alias: requirements
     # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.2
+    rev: 0.9.3
     hooks:
       - id: uv-lock
         alias: requirements
