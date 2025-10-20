@@ -52,7 +52,7 @@ repos:
         stages: [manual]
     # ** repo review
   - repo: https://github.com/scientific-python/cookie
-    rev: 2025.10.01
+    rev: 2025.10.20
     hooks:
       - id: sp-repo-review
         stages: [manual]
@@ -123,7 +123,7 @@ repos:
         alias: requirements
     # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.3
+    rev: 0.9.4
     hooks:
       - id: uv-lock
         alias: requirements
