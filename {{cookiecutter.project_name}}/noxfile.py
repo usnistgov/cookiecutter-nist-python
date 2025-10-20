@@ -1,3 +1,11 @@
+#!/usr/bin/env -S uv run --script
+
+# /// script
+# dependencies = [
+#     "nox",
+# ]
+# ///
+
 # pylint: disable=wrong-import-position
 """Config file for nox."""
 
@@ -965,3 +973,7 @@ def _append_recipe(recipe_path: str | Path, append_path: str | Path) -> None:
 
     with recipe_path.open("w") as f:
         f.writelines([*recipe, "\n", *append])
+
+
+if __name__ == "__main__":
+    nox.main()
