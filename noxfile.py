@@ -2,7 +2,7 @@
 
 # /// script
 # dependencies = [
-#     "nox",
+#     "nox>=2024.10.9",
 # ]
 # ///
 
@@ -53,11 +53,6 @@ if TYPE_CHECKING:
 
     from nox import Session
 
-
-# Should only use on python version > 3.10
-if sys.version_info < (3, 10):
-    msg = "python>=3.10 required"  # pyright: ignore[reportUnreachable]
-    raise RuntimeError(msg)
 
 # * Names ------------------------------------------------------------------------------
 
