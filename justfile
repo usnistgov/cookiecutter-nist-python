@@ -343,4 +343,5 @@ readme-pdf:
 
 update-template-pre-commit-config:
     cd {{ "{{cookiecutter.project_name}}" }} && uvx prek autoupdate
-    uv run --script tools/update_pre_commit_deps.py {{ "{{cookiecutter.project_name}}" }}/.pre-commit-config.yaml
+    -uv run --script tools/update_pre_commit_deps.py {{ "{{cookiecutter.project_name}}" }}/.pre-commit-config.yaml
+    npx prettier --write {{ "{{cookiecutter.project_name}}" }}/.pre-commit-config.yaml

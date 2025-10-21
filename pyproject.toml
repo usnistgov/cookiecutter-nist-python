@@ -104,13 +104,14 @@ nox.requires-python = ">=3.12"
 
 [tool.repo-review]
 ignore = [
-    "GH",    # enable for actions
-    "PC140", # do this externally
-    "PC170", # pygrep
-    "PC901", # ci message
+    "GH",     # enable for actions
+    "PC140",  # do this externally
+    "PC170",  # pygrep
+    "PC901",  # ci message
     "RTD",
     "PP002",
     "PP003",
+    "NOX103", # I prefer using "nox.options.sessions"
 ]
 
 [tool.pyproject-fmt]

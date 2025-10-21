@@ -58,7 +58,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument(
         "--yaml-offset",
         type=int,
-        default=0,
+        default=2,
         help=_ARGUMENT_HELP_TEMPLATE.format("offset"),
     )
 
