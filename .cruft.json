@@ -1,7 +1,7 @@
 {
   "template": ".",
   "commit": "b9adc9f5772ece08d40ed1fc4b1474ea2ea64006",
-  "checkout": "develop",
+  "checkout": "main",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",
