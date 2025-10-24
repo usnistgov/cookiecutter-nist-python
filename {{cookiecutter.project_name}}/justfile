@@ -296,7 +296,7 @@ ipython *options:
 
 # update templates
 [group("tools")]
-cruft-update *options="--skip-apply-ask --checkout develop":
+cruft-update *options="--skip-apply-ask --checkout main":
     {{ UVX_WITH_OPTS }} cruft update {{ options }}
 
 # create changelog snippet with scriv

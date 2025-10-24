@@ -158,7 +158,7 @@ repos:
     rev: 2.16.0
     hooks:
       - id: cruft
-        args: [--checkout, develop]
+        args: [--checkout, main]
         stages: [manual]
 
   # * Cog
