@@ -46,7 +46,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument(
         "--yaml-mapping",
         type=int,
-        default=4,
+        default=2,
         help=_ARGUMENT_HELP_TEMPLATE.format("mapping"),
     )
     parser.add_argument(
