@@ -6,6 +6,26 @@ default_install_hook_types:
   - pre-commit
   - commit-msg
 repos:
+  # * meta hooks
+  - repo: meta
+    hooks:
+      - id: check-hooks-apply
+        stages: [manual]
+      - id: check-useless-excludes
+        stages: [manual]
+
+  # update requirements
+  - repo: local
+    hooks:
+      - id: update-additional-requirements
+        name: update-additional-requirements
+        entry: python tools/update_additional_dependencies.py
+        language: python
+        files: ^\.pre-commit-config\.yaml$
+        pass_filename: false
+        additional_dependencies:
+          - ruamel.yaml
+
   # * Top level
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
@@ -21,14 +41,6 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: mixed-line-ending
-  # * meta hooks
-  - repo: meta
-    hooks:
-      - id: check-hooks-apply
-        stages: [manual]
-      - id: check-useless-excludes
-        stages: [manual]
-
   # * pyproject.toml
   # ** format
   - repo: https://github.com/tox-dev/pyproject-fmt
@@ -45,7 +57,7 @@ repos:
       - id: validate-pyproject
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2025.10.25
+    rev: 2025.11.04
     hooks:
       - id: validate-pyproject
         name: validate-pyproject-schema-store
@@ -76,29 +88,34 @@ repos:
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.2
+    rev: v0.14.3
     hooks:
       - id: ruff-check
         alias: ruff
-        types_or: &ruff-types-or [python, pyi, jupyter]
         args: [--fix, --show-fixes]
       - id: ruff-format
         alias: ruff
-        types_or: *ruff-types-or
-  # To be replace by ruff analog when I find one ...
-  - repo: https://github.com/adamchainz/blacken-docs
-    rev: 1.20.0
+  - repo: https://github.com/adamtheturtle/doccmd-pre-commit
+    rev: v2025.10.27
     hooks:
-      - id: blacken-docs
+      - id: doccmd
+        name: "ruff format markdown"
+        alias: ruff
+        args:
+          - "--language"
+          - "python"
+          - "--no-pad-file"
+          - "--command"
+          - "ruff format"
         additional_dependencies:
-          - black==25.9.0
+          - ruff==0.14.3
 
   # * Spelling
   # ** typos
   # Revert to crate-ci/typos if https://github.com/crate-ci/typos/issues/390 is fixed.
   # - repo: https://github.com/crate-ci/typos
   - repo: https://github.com/adhtruong/mirrors-typos
-    rev: v1.38.1
+    rev: v1.39.0
     hooks:
       - id: typos
         exclude_types: [jupyter]
@@ -108,7 +125,8 @@ repos:
     rev: v2.4.1
     hooks:
       - id: codespell
-        additional_dependencies: [tomli]
+        additional_dependencies:
+          - tomli
         args: [-I, docs/spelling_wordlist.txt]
         exclude_types: [jupyter]
         exclude: ^uv[.]lock$|^requirements
@@ -123,7 +141,7 @@ repos:
         alias: requirements
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.5
+    rev: 0.9.7
     hooks:
       - id: uv-lock
         alias: requirements
@@ -145,13 +163,13 @@ repos:
   - repo: local
     hooks:
       - id: just-fmt
-        name: just-fmt
-        entry:
-          bash -c 'for x in "$@"; do just --fmt --unstable --justfile "$x";
-          done' --
-        language: system
+        name: justfile format
+        entry: python tools/just_fmt.py
+        language: python
         files: \.?[jJ]ustfile|.*\.just$
-        stages: [manual]
+        pass_filenames: true
+        additional_dependencies:
+          - rust-just==1.43.0
 
   # * Cruft
   - repo: https://github.com/cruft/cruft.git
@@ -167,10 +185,10 @@ repos:
       - id: cog-readme
         name: cog-readme
         alias: cog
-        entry:
+        entry: >-
           python tools/cog_runner.py --use-uvx --format=prettier
           --lint=markdownlint-cli2 --
-          # if need package, use --group=cog --no-dev --no-active/--isolated
+        # if need package, use --group=cog --no-dev --no-active/--isolated
         language: python
         files: ^README\.md$
         stages: [manual]
@@ -182,12 +200,10 @@ repos:
     hooks:
       - id: nbstripout
         args:
-          [
-            --keep-output,
-            --keep-count,
-            --extra-keys,
-            "metadata.kernelspec metadata.kernel_spec",
-          ]
+          - "--keep-output"
+          - "--keep-count"
+          - "--extra-keys"
+          - "metadata.kernelspec metadata.kernel_spec"
 
   - repo: https://github.com/nbQA-dev/nbQA
     rev: 1.9.1
@@ -196,7 +212,8 @@ repos:
       - id: nbqa
         name: nbqa-typos
         alias: typos
-        additional_dependencies: &typos-deps [typos==1.38.1] # make sure save version as above.
+        additional_dependencies: &typos-deps
+          - typos==1.39.0
         args: [typos, --nbqa-shell]
         # this can lead to errors, so use with care
         # args: [typos, --write-changes, --nbqa-shell]
@@ -212,21 +229,23 @@ repos:
       - id: nbqa
         name: nbqa-codespell
         alias: codespell
-        additional_dependencies: &codespell-deps [codespell==2.4.1, tomli] # make sure same as above
+        additional_dependencies: &codespell-deps
+          - codespell==2.4.1
+          - tomli
         args:
-          [codespell, --ignore-words=docs/spelling_wordlist.txt, --nbqa-shell]
+          - codespell
+          - "--ignore-words=docs/spelling_wordlist.txt"
+          - "--nbqa-shell"
         stages: [manual]
       - id: nbqa
         name: nbqa-codespell-markdown
         alias: codespell
         additional_dependencies: *codespell-deps
         args:
-          [
-            codespell,
-            --ignore-words=docs/spelling_wordlist.txt,
-            --nbqa-shell,
-            --nbqa-md,
-          ]
+          - "codespell"
+          - "--ignore-words=docs/spelling_wordlist.txt"
+          - "--nbqa-shell"
+          - "--nbqa-md"
         stages: [manual]
 
   # ** symlink in notebooks from example/usage to docs/example/usage

@@ -85,6 +85,11 @@ ruff: (lint "ruff")
 [group("lint")]
 cog: (lint-manual "cog" "--verbose")
 
+# update all supported additional dependencies
+[group("lint")]
+lint-upgrade: (pre-commit "autoupdate")
+    uv run --script tools/update_additional_dependencies.py --lastversion .pre-commit-config.yaml
+
 # * User setup -----------------------------------------------------------------
 
 # Create .autoenv.zsh files

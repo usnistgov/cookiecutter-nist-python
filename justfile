@@ -296,8 +296,8 @@ ipython *options:
 
 # update templates
 [group("tools")]
-cruft-update *options="--skip-apply-ask --checkout main":
-    {{ UVX_WITH_OPTS }} cruft update {{ options }}
+cruft-update branch:
+    {{ UVX_WITH_OPTS }} cruft update --skip-apply-ask --checkout {{ branch }}
 
 # create changelog snippet with scriv
 [group("tools")]
@@ -342,6 +342,6 @@ readme-pdf:
     pandoc -V colorlinks -V geometry:margin=0.8in README.md -o README.pdf
 
 update-template-pre-commit-config:
-    cd {{ "{{cookiecutter.project_name}}" }} && uvx prek autoupdate
-    -uv run --script tools/update_pre_commit_deps.py {{ "{{cookiecutter.project_name}}" }}/.pre-commit-config.yaml
-    npx prettier --write {{ "{{cookiecutter.project_name}}" }}/.pre-commit-config.yaml
+    uvx prek --cd {{ "{{cookiecutter.project_name}}" }} autoupdate
+    uv run --script tools/update_additional_dependencies.py --lastversion {{ "{{cookiecutter.project_name}}" }}/.pre-commit-config.yaml
+    uvx prek --cd {{ "{{cookiecutter.project_name}}" }} run prettier --files .pre-commit-config.yaml
