@@ -6,7 +6,7 @@
 # ]
 # ///
 # NOTE: adapted from https://github.com/pre-commit/sync-pre-commit-deps
-# ruff: noqa: C901, D100, D103, T201
+# ruff: noqa: C901, D100, D103, T201, PLR0914, PLR0912
 from __future__ import annotations
 
 import argparse
@@ -19,7 +19,7 @@ if TYPE_CHECKING:
     from collections.abc import Sequence
 
 
-SUPPORTED = frozenset(("black", "typos", "codespell"))
+SUPPORTED = frozenset(("rust-just", "typos", "codespell", "ruff-format"))
 
 _ARGUMENT_HELP_TEMPLATE = (
     "The `{}` argument to the YAML dumper. "
@@ -46,7 +46,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument(
         "--yaml-mapping",
         type=int,
-        default=4,
+        default=2,
         help=_ARGUMENT_HELP_TEMPLATE.format("mapping"),
     )
     parser.add_argument(
@@ -61,12 +61,17 @@ def main(argv: Sequence[str] | None = None) -> int:
         default=2,
         help=_ARGUMENT_HELP_TEMPLATE.format("offset"),
     )
+    parser.add_argument(
+        "--lastversion",
+        action="store_true",
+    )
 
     args = parser.parse_args(argv)
     filename: str = args.filename
     yaml_mapping: int = args.yaml_mapping
     yaml_sequence: int = args.yaml_sequence
     yaml_offset: int = args.yaml_offset
+    use_lastversion: bool = args.lastversion
 
     yaml = ruamel.yaml.YAML()
     yaml.preserve_quotes = True
@@ -85,10 +90,14 @@ def main(argv: Sequence[str] | None = None) -> int:
                     cleaned_rev = repo["rev"].removeprefix("v")
                     versions[hid] = cleaned_rev
 
-    # update for black
-    for hid in SUPPORTED:
-        if hid not in versions:
-            versions[hid] = _get_lastversion(hid)
+    # add ruff key
+    versions["ruff"] = versions["ruff-format"]
+
+    # update other versions
+    if use_lastversion:
+        for hid in SUPPORTED:
+            if hid not in versions:
+                versions[hid] = _get_lastversion(hid)
 
     updated = []
     for repo in loaded["repos"]:

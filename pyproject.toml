@@ -105,6 +105,7 @@ nox.requires-python = ">=3.12"
 [tool.repo-review]
 ignore = [
     "GH",     # enable for actions
+    "PC111",  # use doccmd instead of blacken docs
     "PC140",  # do this externally
     "PC170",  # pygrep
     "PC901",  # ci message
