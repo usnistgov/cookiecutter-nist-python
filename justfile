@@ -350,8 +350,8 @@ readme-pdf:
 
 update-template-pre-commit-config:
     uvx prek --cd {{ "{{cookiecutter.project_name}}" }} autoupdate
-    -uv run --no-config --script tools/requirements_lock.py --sync --upgrade requirements/pre-commit-additional-dependencies.txt
-    uv run --no-config --script \
+    -uv run --no-project --script tools/requirements_lock.py --sync --upgrade requirements/pre-commit-additional-dependencies.txt
+    uv run --no-project --script \
     tools/update_additional_dependencies_from_requirements.py \
     -r requirements/lock/pre-commit-additional-dependencies.txt \
     --dep=rust-just \
