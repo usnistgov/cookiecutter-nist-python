@@ -56,7 +56,7 @@ repos:
         stages: [manual]
   # ** repo review
   - repo: https://github.com/scientific-python/cookie
-    rev: 2025.10.20
+    rev: 2025.11.07
     hooks:
       - id: sp-repo-review
         stages: [manual]
@@ -80,7 +80,7 @@ repos:
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.3
+    rev: v0.14.4
     hooks:
       - id: ruff-check
         alias: ruff
@@ -100,7 +100,7 @@ repos:
           - "--command"
           - "ruff format"
         additional_dependencies:
-          - ruff==0.14.3
+          - ruff==0.14.4
 
   # * Spelling
   # ** typos
@@ -150,7 +150,8 @@ repos:
         name: update pre-commit additional_dependencies
         entry: python tools/update_additional_dependencies_from_requirements.py
         language: python
-        files: ^\.pre-commit-config\.yaml$|^requirements/lock/pre-commit-additional-dependencies\.txt$
+        files: >-
+          ^\.pre-commit-config\.yaml$|^requirements/lock/pre-commit-additional-dependencies\.txt$
         pass_filenames: false
         additional_dependencies:
           - ruamel.yaml

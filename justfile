@@ -87,8 +87,10 @@ cog: (lint-manual "cog" "--verbose")
 
 # update all supported additional dependencies
 [group("lint")]
-lint-upgrade: (pre-commit "autoupdate")
-    uv run --script tools/update_additional_dependencies.py --lastversion .pre-commit-config.yaml
+lint-upgrade:
+    just pre-commit autoupdate
+    just pre-commit run -v pip-compile --files requirements/pre-commit-additional-dependencies.txt
+    just pre-commit run -v update-pre-commit-additional-dependencies -a
 
 # * User setup -----------------------------------------------------------------
 
@@ -348,5 +350,10 @@ readme-pdf:
 
 update-template-pre-commit-config:
     uvx prek --cd {{ "{{cookiecutter.project_name}}" }} autoupdate
-    uv run --script tools/update_additional_dependencies.py --lastversion {{ "{{cookiecutter.project_name}}" }}/.pre-commit-config.yaml
+    -uv run --no-config --script tools/requirements_lock.py --sync --upgrade requirements/pre-commit-additional-dependencies.txt
+    uv run --no-config --script \
+    tools/update_additional_dependencies_from_requirements.py \
+    -r requirements/lock/pre-commit-additional-dependencies.txt \
+    --dep=rust-just \
+    {{ "{{cookiecutter.project_name}}" }}/.pre-commit-config.yaml
     uvx prek --cd {{ "{{cookiecutter.project_name}}" }} run prettier --files .pre-commit-config.yaml

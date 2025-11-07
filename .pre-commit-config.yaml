@@ -16,18 +16,6 @@ repos:
       - id: check-useless-excludes
         stages: [manual]
 
-  # update requirements
-  - repo: local
-    hooks:
-      - id: update-additional-requirements
-        name: update-additional-requirements
-        entry: python tools/update_additional_dependencies.py
-        language: python
-        files: ^\.pre-commit-config\.yaml$
-        pass_filename: false
-        additional_dependencies:
-          - ruamel.yaml
-
   # * Top level
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
@@ -43,6 +31,10 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: mixed-line-ending
+        # No commit to main.
+        # Use `commit-msg` so can still run `pre-commit run -a`
+      - id: no-commit-to-branch
+        stages: [commit-msg]
   # * pyproject.toml
   # ** format
   - repo: https://github.com/tox-dev/pyproject-fmt
@@ -153,6 +145,21 @@ repos:
         entry: python tools/requirements_lock.py
         pass_filenames: true
         files: ^requirements/[^/]*\.txt$
+  # ** update additional dependencies in .pre-commit-config.yaml
+  - repo: local
+    hooks:
+      - id: update-pre-commit-additional-dependencies
+        name: update pre-commit additional_dependencies
+        entry: python tools/update_additional_dependencies_from_requirements.py
+        language: python
+        files: ^\.pre-commit-config\.yaml$|^requirements/lock/pre-commit-additional-dependencies\.txt$
+        pass_filenames: false
+        additional_dependencies:
+          - ruamel.yaml
+          - requirements-parser
+        args:
+          - "--requirements=requirements/lock/pre-commit-additional-dependencies.txt"
+          - "--dep=rust-just"
 
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
@@ -164,11 +171,11 @@ repos:
   # * Justfile
   - repo: local
     hooks:
-      - id: just-fmt
+      - id: justfile-format
         name: justfile format
-        entry: python tools/just_fmt.py
+        entry: python tools/justfile_format.py
         language: python
-        files: \.?[jJ]ustfile|.*\.just$
+        files: \.?[jJ]ustfile$|.*\.just$
         pass_filenames: true
         additional_dependencies:
           - rust-just==1.43.0
