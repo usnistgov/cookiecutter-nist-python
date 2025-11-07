@@ -362,6 +362,16 @@ groups = [
 skip-package = true
 style = "requirements"
 
+[tool.pyproject2conda.envs.pre-commit-additional-dependencies]
+reqs = [
+    "rust-just",
+]
+groups = [
+    "cog",
+]
+skip-package = true
+style = "requirements"
+
 # * Other tools ----------------------------------------------------------------
 
 [tool.scriv]

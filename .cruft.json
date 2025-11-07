@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "6ac5f08c382db04e5c3bacefd0ce82d3b6989e05",
-  "checkout": "feature/doccmd",
+  "commit": "d11eb5457a5406dcb0455e0954c2b4c2be561c8c",
+  "checkout": "feature/protect-main",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",
@@ -19,7 +19,7 @@
       "__answers": "",
       "_copy_without_render": [],
       "_template": ".",
-      "_commit": "6ac5f08c382db04e5c3bacefd0ce82d3b6989e05"
+      "_commit": "d11eb5457a5406dcb0455e0954c2b4c2be561c8c"
     }
   },
   "directory": null

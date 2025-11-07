@@ -2,16 +2,16 @@
 # requires-python = ">=3.11"
 # dependencies = [
 #     "ruamel.yaml",
-#     "lastversion",
+#     "requirements-parser",
 # ]
 # ///
 # NOTE: adapted from https://github.com/pre-commit/sync-pre-commit-deps
-# ruff: noqa: C901, D100, D103, T201, PLR0914, PLR0912
+# ruff: noqa: D100, D103, T201
 from __future__ import annotations
 
 import argparse
-import pathlib
-from typing import TYPE_CHECKING
+from pathlib import Path
+from typing import TYPE_CHECKING, Any
 
 import ruamel.yaml
 
@@ -19,7 +19,7 @@ if TYPE_CHECKING:
     from collections.abc import Sequence
 
 
-SUPPORTED = frozenset(("rust-just", "typos", "codespell", "ruff-format"))
+SUPPORTED_FROM_ID = frozenset(("rust-just", "typos", "codespell", "ruff-format"))
 
 _ARGUMENT_HELP_TEMPLATE = (
     "The `{}` argument to the YAML dumper. "
@@ -28,17 +28,47 @@ _ARGUMENT_HELP_TEMPLATE = (
 )
 
 
-def _get_lastversion(package: str) -> str:
-    from lastversion import latest
+def _get_versions_from_ids(loaded: dict[str, Any]) -> dict[str, Any]:
+    versions = {}
+    for repo in loaded["repos"]:
+        if repo["repo"] not in {"local", "meta"}:
+            for hook in repo["hooks"]:
+                if (hid := hook["id"]) in SUPPORTED_FROM_ID:
+                    # `mirrors-mypy` uses versions with a 'v' prefix, so we
+                    # have to strip it out to get the mypy version.
+                    cleaned_rev = repo["rev"].removeprefix("v")
+                    versions[hid] = cleaned_rev
 
-    return latest(package, output_format="tag")
+    # add ruff key
+    versions["ruff"] = versions["ruff-format"]
+    return versions
+
+
+def _get_versions_from_requirements(
+    requirements_path: Path | None, dependencies: Sequence[str]
+) -> dict[str, Any]:
+    if requirements_path is None:
+        if dependencies:
+            msg = "have dependencies without a requirements_path file"
+            raise ValueError(msg)
+        return {}
+
+    from requirements import parse
+
+    versions = {}
+    with requirements_path.open(encoding="utf-8") as f:
+        for requirement in parse(f):
+            if requirement.name in dependencies:
+                versions[requirement.name] = requirement.specs[0][-1]
+    return versions
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "filename",
+        "path",
         default=".pre-commit-config.yaml",
+        type=Path,
         nargs="?",
         help="The pre-commit config file to sync to.",
     )
@@ -63,42 +93,38 @@ def main(argv: Sequence[str] | None = None) -> int:
         help=_ARGUMENT_HELP_TEMPLATE.format("offset"),
     )
     parser.add_argument(
-        "--lastversion",
-        action="store_true",
+        "-r",
+        "--requirements",
+        type=Path,
+        help="Requirements file to lookup pinned requirements.",
+    )
+    parser.add_argument(
+        "-d",
+        "--dep",
+        dest="dependencies",
+        type=str,
+        help="Dependency to lookup in requirements file.  Can specify multiple times",
+        action="append",
+        default=[],
     )
 
     args = parser.parse_args(argv)
-    filename: str = args.filename
+    path: Path = args.path
     yaml_mapping: int = args.yaml_mapping
     yaml_sequence: int = args.yaml_sequence
     yaml_offset: int = args.yaml_offset
-    use_lastversion: bool = args.lastversion
 
     yaml = ruamel.yaml.YAML()
     yaml.preserve_quotes = True
     yaml.indent(yaml_mapping, yaml_sequence, yaml_offset)
 
-    with pathlib.Path(filename).open(encoding="utf-8") as f:
+    with path.open(encoding="utf-8") as f:
         loaded = yaml.load(f)
 
-    versions = {}
-    for repo in loaded["repos"]:
-        if repo["repo"] not in {"local", "meta"}:
-            for hook in repo["hooks"]:
-                if (hid := hook["id"]) in SUPPORTED:
-                    # `mirrors-mypy` uses versions with a 'v' prefix, so we
-                    # have to strip it out to get the mypy version.
-                    cleaned_rev = repo["rev"].removeprefix("v")
-                    versions[hid] = cleaned_rev
-
-    # add ruff key
-    versions["ruff"] = versions["ruff-format"]
-
-    # update other versions
-    if use_lastversion:
-        for hid in SUPPORTED:
-            if hid not in versions:
-                versions[hid] = _get_lastversion(hid)
+    versions = _get_versions_from_ids(loaded)
+    versions.update(
+        _get_versions_from_requirements(args.requirements, args.dependencies)
+    )
 
     updated = []
     for repo in loaded["repos"]:
@@ -112,11 +138,11 @@ def main(argv: Sequence[str] | None = None) -> int:
                     updated.append((hook["id"], name))
 
     if updated:
-        print(f"Writing updates to {filename}:")
+        print(f"Writing updates to {path}:")
         for hid, name in updated:
             print(f"\tSetting {hid!r} dependency {name!r} to {versions[name]}")
 
-        with pathlib.Path(filename).open("w+", encoding="utf-8") as f:
+        with path.open("w+", encoding="utf-8") as f:
             yaml.dump(loaded, f)
         return 1
 

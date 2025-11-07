@@ -39,6 +39,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument(
         "filename",
         default=".pre-commit-config.yaml",
+        nargs="?",
         help="The pre-commit config file to sync to.",
     )
 
