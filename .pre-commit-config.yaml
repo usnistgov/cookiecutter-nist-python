@@ -150,7 +150,7 @@ repos:
     hooks:
       - id: update-pre-commit-additional-dependencies
         name: update pre-commit additional_dependencies
-        entry: python tools/update_additional_dependencies_from_requirements.py
+        entry: python tools/update_pre_commit_additional_dependencies.py
         language: python
         files: >-
           ^\.pre-commit-config\.yaml$|^requirements/lock/pre-commit-additional-dependencies\.txt$
@@ -160,7 +160,6 @@ repos:
           - requirements-parser
         args:
           - "--requirements=requirements/lock/pre-commit-additional-dependencies.txt"
-          - "--dep=rust-just"
 
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
@@ -200,3 +199,15 @@ repos:
         language: python
         stages: [manual]
         pass_filenames: false
+
+  # * Update pyproject.tool.uv.dependency-groups python-version minimum
+  - repo: local
+    hooks:
+      - id: update-pyproject-tool-uv-dependency-groups
+        name: update pyproject `tool.uv.dependency-groups` table
+        entry: python tools/update_pyproject_tool_uv_dependency_groups.py
+        language: python
+        files: ^pyproject.toml$|^\.python-version$
+        pass_filenames: false
+        additional_dependencies:
+          - tomlkit
