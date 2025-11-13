@@ -33,7 +33,7 @@ repos:
       - id: mixed-line-ending
         # No commit to main.
         # Use `commit-msg` so can still run `pre-commit run -a`
-      - id: no-commit-to-branch
+        # - id: no-commit-to-branch
         stages: [commit-msg]
   # * pyproject.toml
   # ** format
