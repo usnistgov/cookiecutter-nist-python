@@ -22,6 +22,15 @@ if sys.version_info < (3, 11):
     raise RuntimeError(msg)
 
 
+USE_PYTHON_MIN_VERSION = [
+    "test.txt",
+    "test-extras.txt",
+    "typecheck.txt",
+    "uvx-tools.txt",
+]
+USE_NO_DEPS = ["uvx-tools.txt", "pre-commit-additional-dependencies.txt"]
+
+
 def _get_min_python_version() -> str:
     with Path("pyproject.toml").open("rb") as f:
         import tomllib
@@ -47,8 +56,7 @@ def _lock_files(
     for path in paths:
         python_version = (
             min_python_version
-            if path.name
-            in {"test.txt", "test-extras.txt", "typecheck.txt", "uvx-tools.txt"}
+            if path.name in USE_PYTHON_MIN_VERSION
             else default_python_version
         )
 
@@ -66,11 +74,7 @@ def _lock_files(
             ),
             "-q",
             # don't include dependencies for uvx-tools
-            *(
-                ["--no-deps", "--no-strip-extras"]
-                if path.name == "uvx-tools.txt"
-                else []
-            ),
+            *(["--no-deps", "--no-strip-extras"] if path.name in USE_NO_DEPS else []),
             "--python-version",
             python_version,
             *(["--upgrade"] if upgrade else []),
