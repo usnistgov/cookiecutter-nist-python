@@ -1,6 +1,6 @@
 {
   "template": ".",
-  "commit": "0df2244284319f1db801133fad6e996cea1bee94",
+  "commit": "f2406f2af129d34b2187fe12b58cb2c4cc32271f",
   "checkout": "feature/update-pre-commit-hooks",
   "context": {
     "cookiecutter": {
@@ -19,7 +19,7 @@
       "__answers": "",
       "_copy_without_render": [],
       "_template": ".",
-      "_commit": "0df2244284319f1db801133fad6e996cea1bee94"
+      "_commit": "f2406f2af129d34b2187fe12b58cb2c4cc32271f"
     }
   },
   "directory": null

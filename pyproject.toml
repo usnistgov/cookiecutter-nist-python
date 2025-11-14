@@ -154,7 +154,7 @@ markers = [
 ]
 minversion = "8"
 log_cli_level = "INFO"
-xfail_strict = true
+strict_xfail = "true"
 filterwarnings = [
     "error",
     "ignore: Dirty template:copier.errors.DirtyLocalWarning",
