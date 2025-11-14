@@ -179,7 +179,7 @@ testpaths = [
 ]
 minversion = "8"
 log_cli_level = "INFO"
-xfail_strict = true
+strict_xfail = "true"
 filterwarnings = [ "error" ]
 
 [tool.coverage.run]

@@ -29,10 +29,6 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: mixed-line-ending
-        # No commit to main.
-        # Use `commit-msg` so can still run `pre-commit run -a`
-      - id: no-commit-to-branch
-        stages: [commit-msg]
   # * pyproject.toml
   # ** format
   - repo: https://github.com/tox-dev/pyproject-fmt
@@ -107,7 +103,7 @@ repos:
   # Revert to crate-ci/typos if https://github.com/crate-ci/typos/issues/390 is fixed.
   # - repo: https://github.com/crate-ci/typos
   - repo: https://github.com/adhtruong/mirrors-typos
-    rev: v1.39.1
+    rev: v1.39.2
     hooks:
       - id: typos
         exclude_types: [jupyter]
@@ -232,7 +228,7 @@ repos:
         name: nbqa-typos
         alias: typos
         additional_dependencies: &typos-deps
-          - typos==1.39.0
+          - typos==1.39.2
         args: [typos, --nbqa-shell]
         # this can lead to errors, so use with care
         # args: [typos, --write-changes, --nbqa-shell]

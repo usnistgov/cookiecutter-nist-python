@@ -31,10 +31,6 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: mixed-line-ending
-        # No commit to main.
-        # Use `commit-msg` so can still run `pre-commit run -a`
-        # - id: no-commit-to-branch
-        stages: [commit-msg]
   # * pyproject.toml
   # ** format
   - repo: https://github.com/tox-dev/pyproject-fmt
@@ -109,7 +105,7 @@ repos:
   # Revert to crate-ci/typos if https://github.com/crate-ci/typos/issues/390 is fixed.
   # - repo: https://github.com/crate-ci/typos
   - repo: https://github.com/adhtruong/mirrors-typos
-    rev: v1.39.1
+    rev: v1.39.2
     hooks:
       - id: typos
         exclude_types: [jupyter]
@@ -160,6 +156,8 @@ repos:
           - requirements-parser
         args:
           - "--requirements=requirements/lock/pre-commit-additional-dependencies.txt"
+          - ".pre-commit-config.yaml"
+          - "{{cookiecutter.project_name}}/.pre-commit-config.yaml"
 
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
