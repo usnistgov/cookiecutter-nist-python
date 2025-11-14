@@ -57,7 +57,7 @@
     <link rel="prev" title="cookiecutter-nist-python" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="2025-09-26"/>
+    <meta name="docbuild:last-update" content="2025-11-14"/>
   </head>
   
   
@@ -452,7 +452,7 @@ git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </sp
 </section>
 <section id="using-pre-commit">
 <h2>Using <a class="reference external" href="https://pre-commit.com/">pre-commit</a><a class="headerlink" href="#using-pre-commit" title="Link to this heading">#</a></h2>
-<p>It is highly recommended to enable <a class="reference external" href="https://pre-commit.com/">pre-commit</a>. See
+<p>It is highly recommended to enable <a class="reference external" href="https://pre-commit.com/">pre-commit</a> or <a class="reference external" href="https://github.com/j178/prek">prek</a>. See
 <a class="reference internal" href="#setup-development-environment"><span class="std std-ref">Setup development environment</span></a> for installation instructions. To install the
 pre-commit hooks, run:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pre-commit<span class="w"> </span>install
@@ -608,12 +608,17 @@ create the final recipe.</p>
 </section>
 <section id="building-distribution-for-pypi">
 <h2>Building distribution for pypi<a class="headerlink" href="#building-distribution-for-pypi" title="Link to this heading">#</a></h2>
-<p>The basic command is:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nox<span class="w"> </span>-s<span class="w"> </span>build
+<p>Set the package version by editing <code class="docutils literal notranslate"><span class="pre">project.version</span></code> in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> (or use
+<code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">version</span> <span class="pre">--bump</span></code>). To build the package, use:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>just<span class="w"> </span>build
 </pre></div>
 </div>
 <p>To upload the pypi distribution:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nox<span class="w"> </span>-s<span class="w"> </span>publish<span class="w"> </span>--<span class="w"> </span>+p<span class="w"> </span><span class="o">[</span>release,<span class="w"> </span>test<span class="o">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>just<span class="w"> </span>publish/uv-publish
+</pre></div>
+</div>
+<p>You should first run a test with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>just<span class="w"> </span>publish-test/uv-publish-test
 </pre></div>
 </div>
 <ul class="simple">
@@ -624,11 +629,11 @@ create the final recipe.</p>
 <section id="testing-pypi-or-conda-installs">
 <h2>Testing pypi or conda installs<a class="headerlink" href="#testing-pypi-or-conda-installs" title="Link to this heading">#</a></h2>
 <p>Run:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nox<span class="w"> </span>-s<span class="w"> </span>testdist-pypi<span class="w"> </span>--<span class="w"> </span>++version<span class="w"> </span><span class="o">[</span>version<span class="o">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nox<span class="w"> </span>-s<span class="w"> </span>testdist-pypi-<span class="o">{</span>python-version<span class="o">}</span><span class="w"> </span>--<span class="w"> </span>++version<span class="w"> </span><span class="o">[</span>version<span class="o">]</span>
 </pre></div>
 </div>
 <p>to test a specific version from pypi and</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nox<span class="w"> </span>-s<span class="w"> </span>testdist-conda<span class="w"> </span>--<span class="w"> </span>++version<span class="w"> </span><span class="o">[</span>version<span class="o">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nox<span class="w"> </span>-s<span class="w"> </span>testdist-conda-<span class="o">{</span>python-version<span class="o">}</span><span class="w"> </span>--<span class="w"> </span>++version<span class="w"> </span><span class="o">[</span>version<span class="o">]</span>
 </pre></div>
 </div>
 <p>to do likewise from conda.</p>
@@ -711,7 +716,7 @@ activate the development environment when in the parent directory.</p>
 <p>The only required tool is <a class="reference external" href="https://github.com/astral-sh/uv">uv</a>, but it highly recommended to also install
 <a class="reference external" href="https://github.com/casey/just">just</a>. Other tools used are:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://pre-commit.com/">pre-commit</a></p></li>
+<li><p><a class="reference external" href="https://pre-commit.com/">pre-commit</a> or <a class="reference external" href="https://github.com/j178/prek">prek</a></p></li>
 <li><p><a class="reference external" href="https://github.com/casey/just">just</a></p></li>
 <li><p><a class="reference external" href="https://github.com/nedbat/scriv">scriv</a></p></li>
 <li><p><a class="reference external" href="https://github.com/microsoft/pyright">pyright</a></p></li>
@@ -733,22 +738,8 @@ tooling in the “dev” environment, and also avoid creating a bunch of throw a
 </section>
 <section id="package-version">
 <h2>Package version<a class="headerlink" href="#package-version" title="Link to this heading">#</a></h2>
-<p>Versioning is handled with <a class="reference external" href="https://github.com/ofek/hatch-vcs">hatch-vcs</a>. The package version is set by the git
-tag. For convenience, you can override the version with nox setting
-<code class="docutils literal notranslate"><span class="pre">++version</span> <span class="pre">...</span></code>. This is useful for updating the docs, etc.</p>
-<p>Note that the version in a given environment/session can become stale. The
-easiest way to update the installed package version version is to reinstall the
-package. This can be done using the following:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># using pip</span>
-pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="w"> </span>--no-deps
-<span class="c1"># using uv</span>
-uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="w"> </span>--no-deps
-</pre></div>
-</div>
-<p>To do this in a given session, use:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nox<span class="w"> </span>-s<span class="w"> </span><span class="o">{</span>session<span class="o">}</span><span class="w"> </span>--<span class="w"> </span>+P/++update-package
-</pre></div>
-</div>
+<p>Versioning is handled by the <code class="docutils literal notranslate"><span class="pre">project.version</span></code> variable in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>. Use
+<code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">version</span> <span class="pre">--bump</span></code> to update the package version.</p>
 </section>
 <section id="using-setuptools-instead-of-hatchling">
 <h2>Using setuptools instead of hatchling<a class="headerlink" href="#using-setuptools-instead-of-hatchling" title="Link to this heading">#</a></h2>
@@ -897,7 +888,7 @@ By William P. Krekelberg
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on 2025-09-26.
+  Last updated on 2025-11-14.
   <br/>
 </p>
   </div>
