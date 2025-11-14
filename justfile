@@ -350,9 +350,10 @@ readme-pdf:
 
 update-template-pre-commit-config:
     uvx prek --cd {{ "{{cookiecutter.project_name}}" }} autoupdate
-    -uv run --no-project --script tools/requirements_lock.py --sync --upgrade requirements/pre-commit-additional-dependencies.txt
+    -uv run --no-project --script tools/requirements_lock.py \
+        --sync --upgrade requirements/pre-commit-additional-dependencies.txt
     uv run --no-project --script \
-        tools/update_pre_commit_additional_dependencies.py \
+        {{ "{{cookiecutter.project_name}}" }}/tools/update_pre_commit_additional_dependencies.py \
         -r requirements/lock/pre-commit-additional-dependencies.txt \
         {{ "{{cookiecutter.project_name}}" }}/.pre-commit-config.yaml
     uvx prek --cd {{ "{{cookiecutter.project_name}}" }} run prettier --files .pre-commit-config.yaml
