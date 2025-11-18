@@ -383,7 +383,7 @@ def get_package_wheel(
     if reuse and getattr(get_package_wheel, "_called", False):
         session.log("Reuse isolated build")
     else:
-        shutil.rmtree(dist_location)
+        shutil.rmtree(dist_location, ignore_errors=True)
         session.run_always("uv", "build", f"--out-dir={dist_location}", "--wheel")
 
         # save that this was called:
