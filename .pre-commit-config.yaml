@@ -66,21 +66,21 @@ repos:
       - id: validate-pyproject
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2025.11.14
+    rev: 2025.11.21
     hooks:
       - id: validate-pyproject
         name: validate-pyproject-schema-store
         stages: [manual]
   # ** repo review
   - repo: https://github.com/scientific-python/cookie
-    rev: 2025.11.10
+    rev: 2025.11.21
     hooks:
       - id: sp-repo-review
         stages: [manual]
 
   # * Prettier
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.6.2
+    rev: v3.7.4
     hooks:
       - id: prettier
         alias: markdownlint
@@ -88,7 +88,7 @@ repos:
 
   # * Markdown
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.19.0
+    rev: v0.20.0
     hooks:
       - id: markdownlint-cli2
         alias: markdownlint
@@ -97,7 +97,7 @@ repos:
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.5
+    rev: v0.14.9
     hooks:
       - id: ruff-check
         alias: ruff
@@ -105,7 +105,7 @@ repos:
       - id: ruff-format
         alias: ruff
   - repo: https://github.com/adamtheturtle/doccmd-pre-commit
-    rev: v2025.11.8.1
+    rev: v2025.12.10
     hooks:
       - id: doccmd
         name: "ruff format markdown"
@@ -117,14 +117,14 @@ repos:
           - "--command"
           - "ruff format"
         additional_dependencies:
-          - ruff==0.14.5
+          - ruff==0.14.9
 
   # * Spelling
   # ** typos
   # Revert to crate-ci/typos if https://github.com/crate-ci/typos/issues/390 is fixed.
   # - repo: https://github.com/crate-ci/typos
   - repo: https://github.com/adhtruong/mirrors-typos
-    rev: v1.39.2
+    rev: v1.40.0
     hooks:
       - id: typos
         exclude_types: [jupyter]
@@ -150,7 +150,7 @@ repos:
         alias: requirements
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.10
+    rev: 0.9.17
     hooks:
       - id: uv-lock
         alias: requirements
