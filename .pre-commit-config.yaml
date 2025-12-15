@@ -2,6 +2,10 @@
 # pre-commit run --all-files
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
+ci:
+  autofix_commit_msg: "style: pre-commit fixes"
+  autoupdate_schedule: "weekly"
+
 default_install_hook_types:
   - pre-commit
   - commit-msg
@@ -105,7 +109,7 @@ repos:
       - id: ruff-format
         alias: ruff
   - repo: https://github.com/adamtheturtle/doccmd-pre-commit
-    rev: v2025.12.10
+    rev: v2025.12.13
     hooks:
       - id: doccmd
         name: "ruff format markdown"
@@ -187,3 +191,25 @@ repos:
         language: python
         stages: [manual]
         pass_filenames: false
+
+  # * typecheck
+  # ** sync dependencies
+  # - repo: https://github.com/wpk-nist-gov/sync-pre-commit-hooks
+  #   rev: v0.2.0
+  #   hooks:
+  #     - id: fill-pre-commit-hook-deps
+  #       alias: typecheck
+  #       stages: [manual]
+  #       args:
+  #         - "--hook=basedpyright"
+  #         - "--group=typecheck"
+  #         - "--exclude=pylint"
+  # ** basedpyright
+  # - repo: https://github.com/DetachHead/basedpyright-pre-commit-mirror
+  #   rev: 1.36.1
+  #   hooks:
+  #     - id: basedpyright
+  #       alias: typecheck
+  #       files: ^(src/|tests/)
+  #       args: []
+  #       stages: [manual]

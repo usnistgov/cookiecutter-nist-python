@@ -188,7 +188,7 @@ repos:
         stages: [manual]
 
   # * typecheck
-  # * sync dependencies
+  # ** sync dependencies
   # - repo: https://github.com/wpk-nist-gov/sync-pre-commit-hooks
   #   rev: v0.2.0
   #   hooks:
@@ -199,7 +199,7 @@ repos:
   #         - "--hook=basedpyright"
   #         - "--group=typecheck"
   #         - "--exclude=pylint"
-
+  # ** basedpyright
   # - repo: https://github.com/DetachHead/basedpyright-pre-commit-mirror
   #   rev: 1.36.1
   #   hooks:

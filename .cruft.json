@@ -1,6 +1,6 @@
 {
   "template": ".",
-  "commit": "85924136bb73a1949f834215b43a4ee0946bb0ff",
+  "commit": "b98866b0741023a7c78e57ff60d7dd6b11b74da6",
   "checkout": "feature/update-hooks",
   "context": {
     "cookiecutter": {
@@ -19,7 +19,7 @@
       "__answers": "",
       "_copy_without_render": [],
       "_template": ".",
-      "_commit": "85924136bb73a1949f834215b43a4ee0946bb0ff"
+      "_commit": "b98866b0741023a7c78e57ff60d7dd6b11b74da6"
     }
   },
   "directory": null
