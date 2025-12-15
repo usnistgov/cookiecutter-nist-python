@@ -9,7 +9,6 @@
 # ///
 from __future__ import annotations
 
-import sys
 from argparse import ArgumentParser
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -22,11 +21,11 @@ if TYPE_CHECKING:
 
 def _get_parser() -> ArgumentParser:
     parser = ArgumentParser()
-    parser.add_argument(
+    _ = parser.add_argument(
         "--version",
         default="0.1.0",
     )
-    parser.add_argument("paths", nargs="+", type=Path)
+    _ = parser.add_argument("paths", nargs="+", type=Path)
     return parser
 
 
@@ -50,4 +49,4 @@ def main(args: Sequence[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    raise SystemExit(main())

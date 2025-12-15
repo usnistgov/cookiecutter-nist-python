@@ -90,7 +90,7 @@ cog: (lint-manual "cog" "--verbose")
 lint-upgrade:
     just pre-commit autoupdate
     uv run --no-project --script tools/requirements_lock.py --upgrade requirements/pre-commit-additional-dependencies.txt
-    just pre-commit run -v update-pre-commit-additional-dependencies -a
+    just pre-commit run -v sync-pre-commit-deps -a
 
 # * User setup -----------------------------------------------------------------
 
@@ -351,6 +351,6 @@ readme-pdf:
 update-template-pre-commit-config:
     uvx prek --cd {{ "{{cookiecutter.project_name}}" }} autoupdate
     -uv run --no-project --script tools/requirements_lock.py \
-        --sync --upgrade requirements/pre-commit-additional-dependencies.txt
-    just lint update-pre-commit-additional-dependencies
+        --upgrade requirements/pre-commit-additional-dependencies.txt
+    just lint sync-pre-commit-deps
     uvx prek --cd {{ "{{cookiecutter.project_name}}" }} run prettier --files .pre-commit-config.yaml

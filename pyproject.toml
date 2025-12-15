@@ -154,6 +154,7 @@ markers = [
 ]
 minversion = "8"
 log_cli_level = "INFO"
+log_level = "INFO"
 strict_xfail = "true"
 filterwarnings = [
     "error",
@@ -210,6 +211,9 @@ module = [ "cookiecutter.*" ]
 # ignore_errors = true
 # module = [  ]
 
+[tool.pyrefly]
+project-includes = [ "src", "tests" ]
+
 [tool.pyright]
 include = [
     "tests",
@@ -224,10 +228,47 @@ exclude = [
 ]
 pythonVersion = "3.11"
 typeCheckingMode = "strict"
+# typeCheckingMode = "standard"
+# strict = [
+#     "src",
+#     "tests",
+#     "noxfile.py",
+#     "tools/*.py",
+# ]
+reportOverlappingOverload = true
+reportPropertyTypeMismatch = true
+reportUntypedClassDecorator = true
+reportUntypedFunctionDecorator = true
 # Extra flags
 enableTypeIgnoreComments = false
 reportUnnecessaryTypeIgnoreComment = true
 reportUnreachable = "warning"
+
+deprecateTypingAliases = true
+enableReachabilityAnalysis = false
+reportCallInDefaultInitializer = true
+reportImplicitOverride = true
+reportImportCycles = true
+# reportMissingSuperCall = true
+reportUninitializedInstanceVariable = true
+reportUnusedCallResult = true
+
+# type-checkers should type-check; linters should lint
+reportImplicitStringConcatenation = false
+reportPrivateUsage = false                # dupe of PLC2701
+reportPrivateImportUsage = false          # dupe of PLC2701
+reportUnusedImport = false                # dupe of F401
+reportUnusedVariable = false              # dupe of F841
+
+[[tool.pyright.executionEnvironments]]
+root = "tests"
+# reportCallIssue = false
+# reportArgumentType = false
+# reportMissingImports = false
+reportUnusedCallResult = false
+
+[tool.ty.src]
+include = [ "src", "tests" ]
 
 [tool.pytype]
 inputs = [

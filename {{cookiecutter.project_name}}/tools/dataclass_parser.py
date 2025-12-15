@@ -47,7 +47,7 @@ from typing import (
     Annotated,
     Any,
     Literal,
-    Union,
+    Union,  # pyright: ignore[reportDeprecated]
     cast,
     get_args,
     get_origin,
@@ -145,7 +145,7 @@ class Option:
 
             flags = new_flags
 
-        parser.add_argument(*flags, **kwargs)
+        _ = parser.add_argument(*flags, **kwargs)
 
     @classmethod
     def factory(
@@ -396,4 +396,4 @@ def _is_union_type(t: Any) -> bool:
     import types
 
     origin = get_origin(t)
-    return origin is types.UnionType or origin is Union  # pylint: disable=consider-alternative-union-syntax)
+    return origin is types.UnionType or origin is Union  # pylint: disable=consider-alternative-union-syntax)   # pyright: ignore[reportDeprecated]

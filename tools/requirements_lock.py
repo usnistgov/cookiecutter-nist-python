@@ -84,7 +84,7 @@ def _lock_files(
         ]
 
         logger.info(shlex.join(options))
-        check_call(options)
+        _ = check_call(options)
 
 
 def _maybe_lock_or_sync(
@@ -108,20 +108,20 @@ def _maybe_lock_or_sync(
         ]
 
         logger.info(shlex.join(command))
-        check_call(command)
+        _ = check_call(command)
 
 
 def main(args: Sequence[str] | None = None) -> int:
     """Main script."""
     # pylint: disable=duplicate-code
     parser = ArgumentParser()
-    parser.add_argument(
+    _ = parser.add_argument(
         "--upgrade",
         "-U",
         action="store_true",
         help="Upgrade requirements",
     )
-    parser.add_argument(
+    _ = parser.add_argument(
         "--pip-compile-config-file",
         default=None,
         type=Path,
@@ -132,23 +132,23 @@ def main(args: Sequence[str] | None = None) -> int:
         pip-compile specific settings in ``requirements/uv.toml``.
         """,
     )
-    parser.add_argument(
+    _ = parser.add_argument(
         "--all-files",
         dest="all_files",
         action="store_true",
         help="Run ``uv pip compile`` on all files.",
     )
-    parser.add_argument(
+    _ = parser.add_argument(
         "--lock",
         action="store_true",
         help="Run ``uv lock``",
     )
-    parser.add_argument(
+    _ = parser.add_argument(
         "--sync",
         action="store_true",
         help="Run ``uv sync`` (overrides ``uv lock``)",
     )
-    parser.add_argument(
+    _ = parser.add_argument(
         "--sync-or-lock",
         action="store_true",
         help="""
@@ -156,7 +156,7 @@ def main(args: Sequence[str] | None = None) -> int:
         Overridden by ``--sync``.
         """,
     )
-    parser.add_argument(
+    _ = parser.add_argument(
         "paths",
         type=Path,
         nargs="*",
@@ -183,4 +183,4 @@ def main(args: Sequence[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    raise SystemExit(main())

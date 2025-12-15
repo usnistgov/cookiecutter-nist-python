@@ -6,8 +6,9 @@
 # ]
 # ///
 
-# pylint: disable=wrong-import-position
 """Config file for nox."""
+# pyright: reportUnusedCallResult=false
+# pylint: disable=wrong-import-position
 
 # * Imports ----------------------------------------------------------------------------
 from __future__ import annotations
@@ -74,11 +75,9 @@ nox.options.default_venv_backend = "uv"
 # if True, use uv lock/sync.  If False, use uv pip compile/sync...
 UV_LOCK = True
 
-PYTHON_ALL_VERSIONS = [
-    c.split()[-1]
-    for c in nox.project.load_toml("pyproject.toml")["project"]["classifiers"]
-    if c.startswith("Programming Language :: Python :: 3.")
-]
+PYTHON_ALL_VERSIONS = nox.project.python_versions(
+    nox.project.load_toml("pyproject.toml"),
+)
 PYTHON_DEFAULT_VERSION = Path(".python-version").read_text(encoding="utf-8").strip()
 
 UVX_LOCK_CONSTRAINTS = "requirements/lock/uvx-tools.txt"
@@ -90,7 +89,7 @@ class SessionOptionsDict(TypedDict, total=False):
     """Dict for options to nox.session."""
 
     python: str | list[str]
-    venv_backend: str | Callable[..., CondaEnv]
+    venv_backend: str | None
 
 
 CONDA_DEFAULT_KWS: SessionOptionsDict = {
