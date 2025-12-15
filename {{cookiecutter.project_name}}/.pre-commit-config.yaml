@@ -102,7 +102,7 @@ repos:
       - id: ruff-format
         alias: ruff
   - repo: https://github.com/adamtheturtle/doccmd-pre-commit
-    rev: v2025.12.10
+    rev: v2025.12.13
     hooks:
       - id: doccmd
         name: "ruff format markdown"
@@ -189,33 +189,25 @@ repos:
 
   # * typecheck
   # * sync dependencies
-  - repo: https://github.com/wpk-nist-gov/sync-pre-commit-hooks
-    rev: v0.2.0
-    hooks:
-      - id: fill-pre-commit-hook-deps
-        alias: typecheck
-        stages: [manual]
-        args:
-          - "--hook=basedpyright"
-          - "--group=typecheck"
-          - "--exclude=pylint"
+  # - repo: https://github.com/wpk-nist-gov/sync-pre-commit-hooks
+  #   rev: v0.2.0
+  #   hooks:
+  #     - id: fill-pre-commit-hook-deps
+  #       alias: typecheck
+  #       stages: [manual]
+  #       args:
+  #         - "--hook=basedpyright"
+  #         - "--group=typecheck"
+  #         - "--exclude=pylint"
 
-  - repo: https://github.com/DetachHead/basedpyright-pre-commit-mirror
-    rev: 1.36.1
-    hooks:
-      - id: basedpyright
-        alias: typecheck
-        files: ^(src/|tests/)
-        args: []
-        stages: [manual]
-        additional_dependencies:
-          {%- if cookiecutter.command_line_interface == "click" %}
-          - "click"
-          {%- endif %}
-          - "pytest"
-          {%- if cookiecutter.command_line_interface == "typer" %}
-          - "typer"
-          {%- endif %}
+  # - repo: https://github.com/DetachHead/basedpyright-pre-commit-mirror
+  #   rev: 1.36.1
+  #   hooks:
+  #     - id: basedpyright
+  #       alias: typecheck
+  #       files: ^(src/|tests/)
+  #       args: []
+  #       stages: [manual]
 
   # * Notebook specific --------------------------------------------------------
   # * Strip out metadata from notebooks
