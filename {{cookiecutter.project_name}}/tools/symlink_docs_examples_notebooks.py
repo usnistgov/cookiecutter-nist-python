@@ -9,7 +9,6 @@ from __future__ import annotations
 import logging
 import os
 import shutil
-import sys
 from argparse import ArgumentParser
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -86,12 +85,12 @@ def _create_doc_examples_symlinks(
 def main(args: Sequence[str] | None = None) -> int:
     """Main script"""
     parser = ArgumentParser()
-    parser.add_argument(
+    _ = parser.add_argument(
         "--example-path",
         type=Path,
         default="./examples",
     )
-    parser.add_argument(
+    _ = parser.add_argument(
         "--no-clean",
         action="store_true",
         help="default is to clean out `dos_example_path / usage`.  Pass this to skip clean.",
@@ -108,4 +107,4 @@ def main(args: Sequence[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    raise SystemExit(main())

@@ -47,7 +47,7 @@ def get_kernelspec_data() -> None:
 
     if to_remove:
         logger.info("removing kernels %s", to_remove)
-        check_output(["jupyter", "kernelspec", "remove", "-f", *to_remove])
+        _ = check_output(["jupyter", "kernelspec", "remove", "-f", *to_remove])
     else:
         logger.info("nothing to do")
 

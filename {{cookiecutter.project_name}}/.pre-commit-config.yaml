@@ -2,6 +2,10 @@
 # pre-commit run --all-files
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
+ci:
+  autofix_commit_msg: "style: pre-commit fixes"
+  autoupdate_schedule: "weekly"
+
 default_install_hook_types:
   - pre-commit
   - commit-msg
@@ -182,6 +186,36 @@ repos:
         language: python
         files: ^README\.md$
         stages: [manual]
+
+  # * typecheck
+  # * sync dependencies
+  - repo: https://github.com/wpk-nist-gov/sync-pre-commit-hooks
+    rev: v0.2.0
+    hooks:
+      - id: fill-pre-commit-hook-deps
+        alias: typecheck
+        stages: [manual]
+        args:
+          - "--hook=basedpyright"
+          - "--group=typecheck"
+          - "--exclude=pylint"
+
+  - repo: https://github.com/DetachHead/basedpyright-pre-commit-mirror
+    rev: 1.36.1
+    hooks:
+      - id: basedpyright
+        alias: typecheck
+        files: ^(src/|tests/)
+        args: []
+        stages: [manual]
+        additional_dependencies:
+          {%- if cookiecutter.command_line_interface == "click" %}
+          - "click"
+          {%- endif %}
+          - "pytest"
+          {%- if cookiecutter.command_line_interface == "typer" %}
+          - "typer"
+          {%- endif %}
 
   # * Notebook specific --------------------------------------------------------
   # * Strip out metadata from notebooks
