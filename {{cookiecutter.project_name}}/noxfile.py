@@ -831,18 +831,11 @@ def typecheck(  # noqa: C901
             session.run("just", c, external=True)
         elif c in {"mypy", "pyright", "basedpyright", "ty", "pyrefly"}:
             session.run(
-                "python",
-                "tools/typecheck.py",
+                "typecheck-runner",
                 *get_uvx_constraint_args(),
                 "--verbose",
-                f"--checker={c}",
+                f"--check={c}",
                 "--allow-errors",
-                "--",
-                *(
-                    opts.typecheck_options
-                    or (["src", "tests"] if c in {"ty", "pyrefly"} else [])
-                ),
-                *(["--color-output"] if c == "mypy" else []),
             )
         elif c == "pylint":
             session.run(

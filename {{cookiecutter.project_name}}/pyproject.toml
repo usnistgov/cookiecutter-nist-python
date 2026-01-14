@@ -83,6 +83,7 @@ docs = [
     "sphinx-copybutton",
 ]
 # other packages/tools
+basedpyright = [ "basedpyright>=1.31.3" ]
 cog = [ "cogapp" ]
 ipython = [ "ipython" ]
 mypy = [ "mypy>=1.15.0", "orjson" ]
@@ -91,6 +92,7 @@ nox = [ "nox>=2025.5.1" ]
 pylint = [ "pylint" ]
 pytest = [ "pytest" ]
 pytest-accept = [ "pytest-accept" ]
+typecheck-runner = [ "typecheck-runner>=0.1.0; python_version>'3.9'" ]
 # other environments
 docs-live = [
     "sphinx-autobuild",
@@ -111,6 +113,7 @@ test-notebook = [
 typecheck = [
     { include-group = "pylint" },
     { include-group = "pytest" },
+    { include-group = "typecheck-runner" },
 ]
 
 # * uv -------------------------------------------------------------------------
@@ -381,9 +384,11 @@ reqs = [
     "ty",
 ]
 groups = [
+    "basedpyright",
     "cog",
     "mypy",
     "nox",
+    "typecheck-runner",
 ]
 skip-package = true
 style = "requirements"
