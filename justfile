@@ -348,9 +348,12 @@ tuna-import:
 readme-pdf:
     pandoc -V colorlinks -V geometry:margin=0.8in README.md -o README.pdf
 
+COOKIE := "{{cookiecutter.project_name}}"
+
 update-template-pre-commit-config:
-    uvx prek --cd {{ "{{cookiecutter.project_name}}" }} autoupdate
+    cd {{ COOKIE }} && uvx prek -c .pre-commit-config.yaml autoupdate
     -uv run --no-project --script tools/requirements_lock.py \
         --upgrade requirements/pre-commit-additional-dependencies.txt
     just lint sync-pre-commit-deps
-    uvx prek --cd {{ "{{cookiecutter.project_name}}" }} run prettier --files .pre-commit-config.yaml
+    uvx prek run prettier --files .pre-commit-config.yaml
+    cd {{ COOKIE }} && uvx prek -c .pre-commit-config.yaml run prettier --files .pre-commit-config.yaml

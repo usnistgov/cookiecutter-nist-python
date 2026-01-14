@@ -30,7 +30,7 @@ repos:
       - id: sync-uv-dependency-groups
       - id: justfile-format
         additional_dependencies:
-          - rust-just==1.45.0
+          - rust-just==1.46.0
 
   # * Top level
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -63,7 +63,7 @@ repos:
       - id: validate-pyproject
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2025.11.21
+    rev: 2026.01.10
     hooks:
       - id: validate-pyproject
         name: validate-pyproject-schema-store
@@ -94,7 +94,7 @@ repos:
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.9
+    rev: v0.14.11
     hooks:
       - id: ruff-check
         alias: ruff
@@ -102,7 +102,7 @@ repos:
       - id: ruff-format
         alias: ruff
   - repo: https://github.com/adamtheturtle/doccmd-pre-commit
-    rev: v2025.12.13
+    rev: v2026.1.12
     hooks:
       - id: doccmd
         name: "ruff format markdown"
@@ -114,14 +114,14 @@ repos:
           - "--command"
           - "ruff format"
         additional_dependencies:
-          - ruff==0.14.9
+          - ruff==0.14.11
 
   # * Spelling
   # ** typos
   # Revert to crate-ci/typos if https://github.com/crate-ci/typos/issues/390 is fixed.
   # - repo: https://github.com/crate-ci/typos
   - repo: https://github.com/adhtruong/mirrors-typos
-    rev: v1.40.0
+    rev: v1.42.0
     hooks:
       - id: typos
         exclude_types: [jupyter]
@@ -147,7 +147,7 @@ repos:
         alias: requirements
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.17
+    rev: 0.9.25
     hooks:
       - id: uv-lock
         alias: requirements
@@ -160,7 +160,7 @@ repos:
 
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.10.0
+    rev: v4.11.3
     hooks:
       - id: commitizen
         stages: [commit-msg]
@@ -237,7 +237,7 @@ repos:
         name: nbqa-typos
         alias: typos
         additional_dependencies: &typos-deps
-          - typos==1.40.0
+          - typos==1.42.0
         args: [typos, --nbqa-shell]
         # this can lead to errors, so use with care
         # args: [typos, --write-changes, --nbqa-shell]
