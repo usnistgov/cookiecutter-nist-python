@@ -12,7 +12,7 @@ _nbqa_typecheck checker *files:
 
 [group("notebook")]
 [group("typecheck")]
-mypy-notebook *files=NOTEBOOKS: (_nbqa_typecheck "-cmypy" files)
+mypy-notebook *files=NOTEBOOKS: (_nbqa_typecheck "-cmypy[faster-cache]" files)
 
 [group("notebook")]
 [group("typecheck")]
@@ -39,7 +39,7 @@ pylint-notebook *files=NOTEBOOKS:
 
 [group("notebook")]
 [group("typecheck")]
-typecheck-notebook *files=NOTEBOOKS: (_nbqa_typecheck "-cmypy -cbasedpyright" files)
+typecheck-notebook *files=NOTEBOOKS: (_nbqa_typecheck "-cmypy[faster-cache] -cbasedpyright" files)
 
 [group("notebook")]
 [group("test")]
