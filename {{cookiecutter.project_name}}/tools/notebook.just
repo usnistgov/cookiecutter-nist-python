@@ -8,7 +8,7 @@ NOTEBOOKS := "examples/usage"
 _nbqa_typecheck checker *files:
     {{ UVX_WITH_OPTS }} \
     nbqa --nbqa-shell \
-    "uv run --active --no-project {{ TYPECHECK }} {{ UVX_OPTS }} {{ checker }}" -- {{ files }}
+    "uv run --active --no-project --no-config {{ TYPECHECK }} --stdout {{ UVX_OPTS }} {{ checker }}" -- {{ files }}
 
 [group("notebook")]
 [group("typecheck")]
