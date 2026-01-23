@@ -3,8 +3,10 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 ci:
+  autoupdate_commit_msg: "chore(deps): update pre-commit hooks"
   autofix_commit_msg: "style: pre-commit fixes"
   autoupdate_schedule: "weekly"
+  skip: []
 
 default_install_hook_types:
   - pre-commit
@@ -30,7 +32,7 @@ repos:
       - id: sync-uv-dependency-groups
       - id: justfile-format
         additional_dependencies:
-          - rust-just==1.45.0
+          - rust-just==1.46.0
 
       # update cookiecutter
       - id: sync-pre-commit-deps
@@ -70,7 +72,7 @@ repos:
       - id: validate-pyproject
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2025.11.21
+    rev: 2026.01.22
     hooks:
       - id: validate-pyproject
         name: validate-pyproject-schema-store
@@ -84,7 +86,7 @@ repos:
 
   # * Prettier
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.7.4
+    rev: v3.8.1
     hooks:
       - id: prettier
         alias: markdownlint
@@ -101,7 +103,7 @@ repos:
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.9
+    rev: v0.14.14
     hooks:
       - id: ruff-check
         alias: ruff
@@ -109,7 +111,7 @@ repos:
       - id: ruff-format
         alias: ruff
   - repo: https://github.com/adamtheturtle/doccmd-pre-commit
-    rev: v2025.12.13
+    rev: v2026.1.23.4
     hooks:
       - id: doccmd
         name: "ruff format markdown"
@@ -121,29 +123,18 @@ repos:
           - "--command"
           - "ruff format"
         additional_dependencies:
-          - ruff==0.14.9
+          - ruff==0.14.14
 
   # * Spelling
   # ** typos
   # Revert to crate-ci/typos if https://github.com/crate-ci/typos/issues/390 is fixed.
   # - repo: https://github.com/crate-ci/typos
   - repo: https://github.com/adhtruong/mirrors-typos
-    rev: v1.40.0
+    rev: v1.42.1
     hooks:
       - id: typos
         exclude_types: [jupyter]
         exclude: ^uv[.]lock$|^requirements
-  # ** codespell
-  - repo: https://github.com/codespell-project/codespell
-    rev: v2.4.1
-    hooks:
-      - id: codespell
-        additional_dependencies:
-          - tomli
-        args: [-I, docs/spelling_wordlist.txt]
-        exclude_types: [jupyter]
-        exclude: ^uv[.]lock$|^requirements
-        stages: [manual]
 
   # * Dependencies
   # ** pyproject2conda
@@ -154,7 +145,7 @@ repos:
         alias: requirements
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.17
+    rev: 0.9.26
     hooks:
       - id: uv-lock
         alias: requirements
@@ -167,7 +158,7 @@ repos:
 
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.10.0
+    rev: v4.12.1
     hooks:
       - id: commitizen
         stages: [commit-msg]
@@ -192,24 +183,37 @@ repos:
         stages: [manual]
         pass_filenames: false
 
-  # * typecheck
-  # ** sync dependencies
-  # - repo: https://github.com/wpk-nist-gov/sync-pre-commit-hooks
-  #   rev: v0.2.0
-  #   hooks:
-  #     - id: fill-pre-commit-hook-deps
-  #       alias: typecheck
-  #       stages: [manual]
-  #       args:
-  #         - "--hook=basedpyright"
-  #         - "--group=typecheck"
-  #         - "--exclude=pylint"
-  # ** basedpyright
-  # - repo: https://github.com/DetachHead/basedpyright-pre-commit-mirror
-  #   rev: 1.36.1
-  #   hooks:
-  #     - id: basedpyright
-  #       alias: typecheck
-  #       files: ^(src/|tests/)
-  #       args: []
-  #       stages: [manual]
+  # * Actions
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.36.0
+    hooks:
+      - id: check-github-workflows
+        alias: actions
+        priority: 0
+      - id: check-github-actions
+        alias: actions
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.10
+    hooks:
+      - id: actionlint
+        alias: actions
+        stages: [manual]
+        args:
+          - "-ignore=SC2129" # ignorable stylistic lint from shellcheck
+          - "-ignore=SC2016" # another shellcheck lint: seems to have false positives?
+        language: golang # means renovate will also update `additional_dependencies`
+        additional_dependencies:
+          # actionlint has a shellcheck integration which extracts shell scripts in `run:` steps from GitHub Actions
+          # and checks these with shellcheck. This is arguably its most useful feature,
+          # but the integration only works if shellcheck is installed
+          - "github.com/wasilibs/go-shellcheck/cmd/shellcheck@v0.11.1"
+        # see https://github.com/rhysd/actionlint/issues/46
+        exclude: ^\.github/actions
+        priority: 0
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+    # Zizmor version.
+    rev: v1.22.0
+    hooks:
+      # Run the linter.
+      - id: zizmor
+        alias: workflows

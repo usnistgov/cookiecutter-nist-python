@@ -11,14 +11,13 @@ license-files = [ "LICENSE" ]
 authors = [
     { name = "William P. Krekelberg", email = "wpk@nist.gov" },
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Science/Research",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -39,13 +38,11 @@ dev = [
     { include-group = "typecheck" },
 ]
 test = [
-    "cookiecutter",
-    "copier",
-    "copier-templates-extensions>=0.3.1",
     "pytest-cov",
     "pytest-sugar",
     "pytest-xdist",
     { include-group = "pytest" },
+    { include-group = "test-extras" },
 ]
 docs = [
     "autodocsumm",
@@ -54,13 +51,20 @@ docs = [
     "sphinx-book-theme",
     "sphinx-copybutton",
 ]
+test-extras = [
+    "cookiecutter",
+    "copier",
+    "copier-templates-extensions>=0.3.1",
+]
 # other packages/tools
+basedpyright = [ "basedpyright>=1.31.3" ]
 cog = [ "cogapp" ]
 ipython = [ "ipython" ]
-mypy = [ "mypy>=1.15.0", "orjson" ]
+mypy = [ "mypy[faster-cache]>=1.15.0" ]
 nox = [ "nox>=2025.5.1" ]
 pylint = [ "pylint" ]
 pytest = [ "pytest" ]
+typecheck-runner = [ "typecheck-runner>=0.1.0; python_version>'3.9'" ]
 # other environments
 docs-live = [
     "sphinx-autobuild",
@@ -74,6 +78,8 @@ docs-spelling = [
 typecheck = [
     { include-group = "pylint" },
     { include-group = "pytest" },
+    { include-group = "test-extras" },
+    { include-group = "typecheck-runner" },
 ]
 
 # * uv -------------------------------------------------------------------------
@@ -89,26 +95,25 @@ annotation-style = "line"
 generate-hashes = true
 
 [tool.uv.dependency-groups]
-dev.requires-python = ">=3.13"
-docs.requires-python = ">=3.13"
-docs-live.requires-python = ">=3.13"
-docs-spelling.requires-python = ">=3.13"
+dev.requires-python = ">=3.14"
+docs.requires-python = ">=3.14"
+docs-live.requires-python = ">=3.14"
+docs-spelling.requires-python = ">=3.14"
 # other tools
-cog.requires-python = ">=3.13"
-ipython.requires-python = ">=3.13"
-mypy.requires-python = ">=3.13"
-nox.requires-python = ">=3.13"
+cog.requires-python = ">=3.14"
+ipython.requires-python = ">=3.14"
+mypy.requires-python = ">=3.14"
+nox.requires-python = ">=3.14"
 
 # * Checks ---------------------------------------------------------------------
 
 [tool.repo-review]
 ignore = [
-    "GH",     # enable for actions
     "PC111",  # use doccmd instead of blacken-docs
     "PC140",  # do this externally
+    "PC160",  # use typos
     "PC170",  # pygrep
     "PC901",  # ci message
-    "RTD",
     "PP002",
     "PP003",
     "NOX103", # I prefer using "nox.options.sessions"
@@ -212,7 +217,7 @@ module = [ "cookiecutter.*" ]
 # module = [  ]
 
 [tool.pyrefly]
-project-includes = [ "src", "tests" ]
+project-includes = [ "tests" ]
 
 [tool.pyright]
 include = [
@@ -226,7 +231,6 @@ exclude = [
     "**/.mypy_cache",
     "**/.numba_cache",
 ]
-pythonVersion = "3.11"
 typeCheckingMode = "strict"
 # typeCheckingMode = "standard"
 # strict = [
@@ -268,13 +272,7 @@ root = "tests"
 reportUnusedCallResult = false
 
 [tool.ty.src]
-include = [ "src", "tests" ]
-
-[tool.pytype]
-inputs = [
-    "src",
-    "tests",
-]
+include = [ "tests" ]
 
 # * Dependency creation --------------------------------------------------------
 
@@ -311,15 +309,16 @@ reqs = [
     "prek",
     "pyrefly>=0.37.0",
     "pyright>=1.1.396",
-    "basedpyright>=1.31.3",
     "scriv",
     "twine>=5.0.0",
     "ty",
 ]
 groups = [
+    "basedpyright",
     "cog",
     "mypy",
     "nox",
+    "typecheck-runner",
 ]
 skip-package = true
 style = "requirements"

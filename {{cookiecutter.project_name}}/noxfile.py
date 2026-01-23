@@ -78,6 +78,7 @@ UV_LOCK = True
 PYTHON_ALL_VERSIONS = nox.project.python_versions(
     nox.project.load_toml("pyproject.toml"),
 )
+PYTHON_TEST_VERSIONS = PYTHON_ALL_VERSIONS
 PYTHON_DEFAULT_VERSION = Path(".python-version").read_text(encoding="utf-8").strip()
 
 UVX_LOCK_CONSTRAINTS = "requirements/lock/uvx-tools.txt"
@@ -154,7 +155,9 @@ class SessionParams(DataclassParser):
     no_cov: bool = False
 
     # coverage
-    coverage: list[Literal["erase", "combine", "report", "html", "open"]] | None = None
+    coverage: (
+        list[Literal["erase", "combine", "report", "html", "open", "markdown"]] | None
+    ) = None
 
     # docs
     docs: (
@@ -468,7 +471,7 @@ def pre_commit_run(
 def test_all(session: Session) -> None:
     """Run all tests and coverage."""
     session.notify("coverage-erase")
-    for py in PYTHON_ALL_VERSIONS:
+    for py in PYTHON_TEST_VERSIONS:
         session.notify(f"test-{py}")
     session.notify("coverage")
 
@@ -536,7 +539,9 @@ def _test(
     if not test_no_pytest:
         opts = combine_list_str(test_options or [])
         if not no_cov:
-            session.env["COVERAGE_FILE"] = str(Path(session.create_tmp()) / ".coverage")
+            session.env["COVERAGE_FILE"] = str(
+                Path(session.create_tmp()) / f".coverage-{sys.platform}"
+            )
 
             if not any(o.startswith("--cov") for o in opts):
                 opts.append(f"--cov={IMPORT_NAME}")
@@ -570,7 +575,7 @@ def test(
     )
 
 
-nox.session(**ALL_KWS)(test)
+nox.session(python=PYTHON_TEST_VERSIONS)(test)
 nox.session(name="test-conda", **CONDA_ALL_KWS)(test)
 
 
@@ -637,6 +642,15 @@ def coverage(
         elif c == "open":
             open_webpage(path="htmlcov/index.html")
 
+        elif c == "markdown":
+            with Path("coverage.md").open("w", encoding="utf-8") as f:
+                uvx_run(
+                    session,
+                    "coverage",
+                    "report",
+                    "--format=markdown",
+                    stdout=f,
+                )
         else:
             uvx_run(
                 session,
@@ -681,7 +695,7 @@ def testdist(
     )
 
 
-nox.session(name="testdist-pypi", **ALL_KWS)(testdist)
+nox.session(name="testdist-pypi", python=PYTHON_TEST_VERSIONS)(testdist)
 nox.session(name="testdist-conda", **CONDA_ALL_KWS)(testdist)
 
 
@@ -830,19 +844,14 @@ def typecheck(  # noqa: C901
         if c.endswith("-notebook"):
             session.run("just", c, external=True)
         elif c in {"mypy", "pyright", "basedpyright", "ty", "pyrefly"}:
+            checker = "mypy[faster-cache]" if c == "mypy" else c
             session.run(
-                "python",
-                "tools/typecheck.py",
+                "typecheck-runner",
                 *get_uvx_constraint_args(),
                 "--verbose",
-                f"--checker={c}",
+                f"--check={checker}",
                 "--allow-errors",
-                "--",
-                *(
-                    opts.typecheck_options
-                    or (["src", "tests"] if c in {"ty", "pyrefly"} else [])
-                ),
-                *(["--color-output"] if c == "mypy" else []),
+                external=False,
             )
         elif c == "pylint":
             session.run(

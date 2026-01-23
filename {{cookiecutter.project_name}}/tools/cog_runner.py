@@ -130,7 +130,7 @@ def main(args: Sequence[str] | None = None) -> int:
         files=opts.files,
         extras=extras,
         use_uvx=opts.use_uvx,
-        env={"COLUMNS": "90"},
+        env={"COLUMNS": "90", "NO_COLOR": "1"},
         constraints=opts.constraints,
         constraints_locked=opts.constraints_locked,
     )

@@ -8,14 +8,13 @@ from importlib.metadata import version as _version
 
 from .core import example_function
 
-try:
+try:  # noqa: RUF067
     __version__ = _version("{{ cookiecutter.project_name }}")
 except PackageNotFoundError:  # pragma: no cover
     __version__ = "999"
 
 
 __author__ = """{{ cookiecutter.full_name }}"""
-__email__ = "{{ cookiecutter.email }}"
 
 
 __all__ = [
