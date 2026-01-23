@@ -1,5 +1,6 @@
 """Check distribution versions."""
 # pyright: reportUnknownMemberType=false,reportUnknownVariableType=false
+# ruff: noqa: T201
 
 # /// script
 # requires-python = ">=3.12"
@@ -40,12 +41,17 @@ def main(args: Sequence[str] | None = None) -> int:
     parser = _get_parser()
     options = parser.parse_args(args)
 
-    for path in options.paths:
-        if (version := _get_version(path)) != options.version:
-            msg = f"{version=} not equal to specified version={options.version}"
-            raise ValueError(msg)
+    target_version: str = options.version.lstrip("v")
 
-    return 0
+    print("target_version:", target_version)
+    code = 0
+    for path in options.paths:
+        if (version := _get_version(path)) != target_version:
+            code += 1
+        print(f"{path} {version=}")
+
+    print("Success: versions match" if not code else "Error: version mismatch")
+    return code
 
 
 if __name__ == "__main__":

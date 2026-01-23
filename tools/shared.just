@@ -10,7 +10,7 @@ UVX_OPTS := "--constraints=" + CONSTRAINTS_LOCK
 UVX_WITH_OPTS := UVX + " " + UVX_OPTS
 UVRUN_OPTS := ""
 UVRUN := trim("uv run " + UVRUN_OPTS)
-TYPECHECK := "tools/typecheck.py -v"
+TYPECHECK := "-m typecheck_runner -v"
 
 # * Functions ------------------------------------------------------------------
 

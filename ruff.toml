@@ -59,6 +59,9 @@ pylint.max-args = 15
 pylint.max-positional-args = 15
 pylint.max-public-methods = 30
 
+[lint.ruff]
+strictly-empty-init-modules = false
+
 [lint.per-file-ignores]
 "docs/conf.py" = [
     "ERA",    # - Some helpful commented out code in conf.py
