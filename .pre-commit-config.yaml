@@ -112,7 +112,7 @@ repos:
       - id: ruff-format
         alias: ruff
   - repo: https://github.com/adamtheturtle/doccmd-pre-commit
-    rev: v2026.1.23.4
+    rev: v2026.1.25
     hooks:
       - id: doccmd
         name: "ruff format markdown"
@@ -186,7 +186,7 @@ repos:
 
   # * Actions
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.36.0
+    rev: 0.36.1
     hooks:
       - id: check-github-workflows
         alias: actions
