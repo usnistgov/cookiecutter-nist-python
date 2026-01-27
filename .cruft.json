@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "da8c1b27646fdbdc8cd47282e7a11a477348cf39",
-  "checkout": "feature/bugfix-notebook-just",
+  "commit": "6b1f656acfde80dd089088b2de41d5e620ebc7f9",
+  "checkout": "feature/update-pre-commit",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",
@@ -19,7 +19,7 @@
       "__answers": "",
       "_copy_without_render": [],
       "_template": ".",
-      "_commit": "da8c1b27646fdbdc8cd47282e7a11a477348cf39"
+      "_commit": "6b1f656acfde80dd089088b2de41d5e620ebc7f9"
     }
   },
   "directory": null
