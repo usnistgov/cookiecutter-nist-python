@@ -12,6 +12,42 @@ updates:
       actions:
         patterns:
           - "*"
+  - package-ecosystem: github-actions
+    directory: "/.github/actions/setup-cached-uv-and-python/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      # https://blog.yossarian.net/2025/11/21/We-should-all-be-using-dependency-cooldowns
+      default-days: 7
+    groups:
+      actions:
+        patterns:
+          - "*"
+  # update workflows in template
+  - package-ecosystem: github-actions
+    directory: "/{{cookiecutter.project_name}}/.github/workflows/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      # https://blog.yossarian.net/2025/11/21/We-should-all-be-using-dependency-cooldowns
+      default-days: 7
+    groups:
+      actions:
+        patterns:
+          - "*"
+  # update actions in template
+  - package-ecosystem: github-actions
+    directory: "/{{cookiecutter.project_name}}/.github/actions/setup-cached-uv-and-python/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      # https://blog.yossarian.net/2025/11/21/We-should-all-be-using-dependency-cooldowns
+      default-days: 7
+    groups:
+      actions:
+        patterns:
+          - "*"
+  # update uv
   - package-ecosystem: "uv"
     directory: "/"
     schedule:
