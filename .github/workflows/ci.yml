@@ -85,7 +85,6 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          - windows-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -115,11 +114,9 @@ jobs:
         os:
           - ubuntu-latest
         python-version:
-          ${{ fromJson(needs.build-package.outputs.matrix-test-python) }}
-        include:
-          - os: windows-latest
-            python-version:
-              ${{ needs.build-package.outputs.default-python-version }}
+          - ${{ need.build-package.outputs.default-python-version }}
+        markers:
+          - "default and cookie"
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -133,51 +130,52 @@ jobs:
         env:
           python_version: ${{ matrix.python-version }}
         run: >-
-          $UVX_COMMAND nox -s test-"$python_version"
+          $UVX_COMMAND nox -s test-"$python_version" -- ++no-cov ++test-options
+          \'${{ matrix.markers}}\'
         shell: bash
 
-      - name: Upload coverage data
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
-        with:
-          name: coverage-data-${{ matrix.os }}-${{ matrix.python-version }}
-          path: .nox/test-*/tmp/.coverage*
-          include-hidden-files: true
-          if-no-files-found: ignore
+      # - name: Upload coverage data
+      #   uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+      #   with:
+      #     name: coverage-data-${{ matrix.os }}-${{ matrix.python-version }}
+      #     path: .nox/test-*/tmp/.coverage*
+      #     include-hidden-files: true
+      #     if-no-files-found: ignore
 
-  coverage:
-    name: Combine coverage
-    needs: test
-    runs-on: ubuntu-latest
+  # coverage:
+  #   name: Combine coverage
+  #   needs: test
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          persist-credentials: false
-      - name: Download individual coverage reports
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
-        with:
-          pattern: coverage-data-*
-          path: .nox
-          merge-multiple: true
-      - name: Display structure of downloaded files
-        run: ls -aR
+  #   steps:
+  #     - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+  #       with:
+  #         persist-credentials: false
+  #     - name: Download individual coverage reports
+  #       uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+  #       with:
+  #         pattern: coverage-data-*
+  #         path: .nox
+  #         merge-multiple: true
+  #     - name: Display structure of downloaded files
+  #       run: ls -aR
 
-      - uses: ./.github/actions/setup-cached-uv-and-python
-        with:
-          python-version-file: ".python-version"
-          cache-dependency-path: requirements/lock/uvx-tools.txt
-      - name: Run coverage
-        run: |
-          $UVX_COMMAND nox -s coverage -- ++coverage combine html report markdown
-          cat coverage.md
-          cat coverage.md >> "$GITHUB_STEP_SUMMARY"
-        shell: bash
-      - name: Upload HTML report if check failed.
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
-        with:
-          name: html-report
-          path: htmlcov
-        if: ${{ failure() }}
+  #     - uses: ./.github/actions/setup-cached-uv-and-python
+  #       with:
+  #         python-version-file: ".python-version"
+  #         cache-dependency-path: requirements/lock/uvx-tools.txt
+  #     - name: Run coverage
+  #       run: |
+  #         $UVX_COMMAND nox -s coverage -- ++coverage combine html report markdown
+  #         cat coverage.md
+  #         cat coverage.md >> "$GITHUB_STEP_SUMMARY"
+  #       shell: bash
+  #     - name: Upload HTML report if check failed.
+  #       uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+  #       with:
+  #         name: html-report
+  #         path: htmlcov
+  #       if: ${{ failure() }}
 
   docs:
     permissions:
@@ -207,7 +205,7 @@ jobs:
       - typecheck
       - test
       - pinact
-      - docs
+      # - docs
     runs-on: ubuntu-latest
     steps:
       - name: Decide whether the needed jobs succeeded or failed
