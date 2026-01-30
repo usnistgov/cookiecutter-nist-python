@@ -304,8 +304,8 @@ ipython *options:
 
 # update templates
 [group("tools")]
-cruft-update branch:
-    {{ UVX_WITH_OPTS }} cruft update --skip-apply-ask --checkout {{ branch }}
+cruft-update:
+    {{ UVX_WITH_OPTS }} cruft update --skip-apply-ask --checkout $(git branch --show-current)
 
 # create changelog snippet with scriv
 [group("tools")]

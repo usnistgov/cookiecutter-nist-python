@@ -105,7 +105,7 @@ repos:
       - id: ruff-format
         alias: ruff
   - repo: https://github.com/adamtheturtle/doccmd-pre-commit
-    rev: v2026.1.27.3
+    rev: v2026.1.28
     hooks:
       - id: doccmd
         name: "ruff format markdown"
@@ -139,7 +139,7 @@ repos:
         alias: requirements
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.27
+    rev: 0.9.28
     hooks:
       - id: uv-lock
         alias: requirements
@@ -212,7 +212,7 @@ repos:
     hooks:
       # Run the linter.
       - id: zizmor
-        alias: workflows
+        alias: actions
 
   # * typecheck
   # ** sync dependencies
