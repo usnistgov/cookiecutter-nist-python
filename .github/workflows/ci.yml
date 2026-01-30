@@ -131,12 +131,18 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache-dependency-path: uv.lock
 
+      - name: Setup git
+        run: |
+          git config --global init.defaultBranch main
+
+      - uses: extractions/setup-just@e33e0265a09d6d736e2ee1e0eb685ef1de4669ff # v3.0.0
+
       - name: Test with nox
         env:
           python_version: ${{ matrix.python-version }}
         run: >-
           $UVX_COMMAND nox -s test-"$python_version" -- ++no-cov ++test-options
-          \'${{ matrix.markers}}\'
+          -m \'${{ matrix.markers}}\'
         shell: bash
 
       # - name: Upload coverage data
