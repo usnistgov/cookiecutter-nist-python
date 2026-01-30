@@ -1,7 +1,5 @@
 # * Variables ------------------------------------------------------------------
 
-set shell := ["bash", "-c"]
-
 PACKAGE_NAME := "cookiecutter-nist-python"
 IMPORT_NAME := "cookiecutter_nist_python"
 CONSTRAINTS_MIN := "requirements/uvx-tools.txt"
@@ -34,5 +32,5 @@ nox *options:
 [group("lint")]
 [group("tools")]
 pre-commit *commands:
-    @[[ ! -f {{ CONSTRAINTS_MIN }} ]] && touch {{ CONSTRAINTS_MIN }} || true
+    @[ ! -f {{ CONSTRAINTS_MIN }} ] && touch {{ CONSTRAINTS_MIN }} || true
     {{ UVX }} --constraints={{ CONSTRAINTS_MIN }} prek -c .pre-commit-config.yaml {{ commands }} # using prek
