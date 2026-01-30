@@ -4,6 +4,7 @@ import "tools/shared.just"
 import? "tools/notebook.just"
 
 set unstable := true
+set shell := ["bash", "-c"]
 
 # * Defaults
 _default:
