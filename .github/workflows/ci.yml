@@ -71,10 +71,11 @@ jobs:
             prek-v1|${{ runner.os }}|${{ runner.arch }}|${{ env.pythonLocation
             }}|${{ hashFiles('./**/.pre-commit-config.yaml') }}
       - name: Run prek
+        env:
+          SKIP: typecheck
         run: >-
           $UVX_COMMAND prek run --show-diff-on-failure --color=always
-          --all-files --hook-stage=manual cog-readme requirements
-          validate-pyproject-schema-store sp-repo-review cruft actionlint
+          --all-files --hook-stage=manual -v
 
   typecheck:
     name: Typecheck package
