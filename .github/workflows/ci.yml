@@ -17,7 +17,7 @@ env:
 permissions: {}
 
 jobs:
-  build-package:
+  get-parameters:
     name: Build & verify package
     runs-on: ubuntu-latest
     steps:
@@ -31,9 +31,14 @@ jobs:
         run: |
           import os
           import json
+          import tomllib
           from pathlib import Path
 
-          python_versions = ["3.10", "3.14"]
+          python_versions = []
+          for classifier in tomllib.loads(Path("pyproject.toml").read_text())["project"]["classifiers"]:
+            if match := re.match(r"Programming Language :: Python :: (\d+\.\d+)$", classifier):
+              python_versions.append(match.group(1))
+
           default_python_version = Path(".python-version").read_text().strip()
 
           # min max and default pythons
@@ -106,7 +111,7 @@ jobs:
 
   test:
     name: Test package across pythons
-    needs: build-package
+    needs: get-parameters
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -114,7 +119,7 @@ jobs:
         os:
           - ubuntu-latest
         python-version:
-          - ${{ needs.build-package.outputs.default-python-version }}
+          - ${{ needs.get-parameters.outputs.default-python-version }}
         markers:
           - "default and cookie"
     steps:
