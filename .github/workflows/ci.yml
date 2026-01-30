@@ -114,7 +114,7 @@ jobs:
         os:
           - ubuntu-latest
         python-version:
-          - ${{ need.build-package.outputs.default-python-version }}
+          - ${{ needs.build-package.outputs.default-python-version }}
         markers:
           - "default and cookie"
     steps:
