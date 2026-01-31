@@ -20,4 +20,4 @@ dependencies:
   - pytest-xdist
   - pip
   - pip:
-      - copier-templates-extensions>=0.3.1
+      - copier-template-extensions>=0.3.1

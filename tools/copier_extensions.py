@@ -6,7 +6,7 @@ import datetime
 from collections.abc import Mapping
 from typing import Any
 
-from copier_templates_extensions import ContextHook
+from copier_template_extensions import ContextHook
 
 
 class SmartDict(Mapping[Any, Any]):
