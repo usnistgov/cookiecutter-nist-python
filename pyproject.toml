@@ -54,7 +54,7 @@ docs = [
 test-extras = [
     "cookiecutter",
     "copier",
-    "copier-templates-extensions>=0.3.1",
+    "copier-template-extensions>=0.3.1",
 ]
 # other packages/tools
 basedpyright = [ "basedpyright>=1.31.3" ]
@@ -288,7 +288,7 @@ deps = "pip"
 
 [tool.pyproject2conda.dependencies]
 pytest-accept = { pip = true }
-copier-templates-extensions = { pip = true }
+copier-template-extensions = { pip = true }
 
 [tool.pyproject2conda.envs.dev]
 groups = "dev"

@@ -24,7 +24,7 @@ nox *options:
 # [group("lint")]
 # [group("tools")]
 # pre-commit *commands:
-#     @[[ ! -f {{ CONSTRAINTS_MIN }} ]] && touch {{ CONSTRAINTS_MIN }} || true
+#     @[ ! -f {{ CONSTRAINTS_MIN }} ] && touch {{ CONSTRAINTS_MIN }} || true
 #     {{ UVX }} --constraints={{ CONSTRAINTS_MIN }} --with=pre-commit-uv pre-commit {{ commands }}  # using pre-commit
 ## Using prek
 

@@ -343,7 +343,7 @@ cog = [
 dev = [
     { name = "cookiecutter", marker = "python_full_version >= '3.14'" },
     { name = "copier", marker = "python_full_version >= '3.14'" },
-    { name = "copier-templates-extensions", marker = "python_full_version >= '3.14'" },
+    { name = "copier-template-extensions", marker = "python_full_version >= '3.14'" },
     { name = "mypy", extra = ["faster-cache"], marker = "python_full_version >= '3.14'" },
     { name = "nox", marker = "python_full_version >= '3.14'" },
     { name = "pylint", marker = "python_full_version >= '3.14'" },
@@ -395,7 +395,7 @@ pytest = [
 test = [
     { name = "cookiecutter" },
     { name = "copier" },
-    { name = "copier-templates-extensions" },
+    { name = "copier-template-extensions" },
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-sugar" },
@@ -404,12 +404,12 @@ test = [
 test-extras = [
     { name = "cookiecutter" },
     { name = "copier" },
-    { name = "copier-templates-extensions" },
+    { name = "copier-template-extensions" },
 ]
 typecheck = [
     { name = "cookiecutter" },
     { name = "copier" },
-    { name = "copier-templates-extensions" },
+    { name = "copier-template-extensions" },
     { name = "pylint" },
     { name = "pytest" },
     { name = "typecheck-runner" },
@@ -426,7 +426,7 @@ cog = [{ name = "cogapp", marker = "python_full_version >= '3.14'" }]
 dev = [
     { name = "cookiecutter", marker = "python_full_version >= '3.14'" },
     { name = "copier", marker = "python_full_version >= '3.14'" },
-    { name = "copier-templates-extensions", marker = "python_full_version >= '3.14'", specifier = ">=0.3.1" },
+    { name = "copier-template-extensions", marker = "python_full_version >= '3.14'", specifier = ">=0.3.1" },
     { name = "mypy", extras = ["faster-cache"], marker = "python_full_version >= '3.14'", specifier = ">=1.15.0" },
     { name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2025.5.1" },
     { name = "pylint", marker = "python_full_version >= '3.14'" },
@@ -468,7 +468,7 @@ pytest = [{ name = "pytest" }]
 test = [
     { name = "cookiecutter" },
     { name = "copier" },
-    { name = "copier-templates-extensions", specifier = ">=0.3.1" },
+    { name = "copier-template-extensions", specifier = ">=0.3.1" },
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-sugar" },
@@ -477,12 +477,12 @@ test = [
 test-extras = [
     { name = "cookiecutter" },
     { name = "copier" },
-    { name = "copier-templates-extensions", specifier = ">=0.3.1" },
+    { name = "copier-template-extensions", specifier = ">=0.3.1" },
 ]
 typecheck = [
     { name = "cookiecutter" },
     { name = "copier" },
-    { name = "copier-templates-extensions", specifier = ">=0.3.1" },
+    { name = "copier-template-extensions", specifier = ">=0.3.1" },
     { name = "pylint" },
     { name = "pytest" },
     { name = "typecheck-runner", marker = "python_full_version >= '3.10'", specifier = ">=0.1.0" },
@@ -524,18 +524,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/8a/47/1a6638b4323a9eba2f19f4b1364bd77fcdb2b525a1c1cccb1f73422ff97e/copier_template_extensions-0.3.3.tar.gz", hash = "sha256:86bd5e2e89c94b6f9321e4078781b4456c5658b820bcae49ac60fd1e1dd23c10", size = 34991, upload-time = "2025-07-15T10:40:41.309Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c6/da/117372469b9bb1555ae7f8a0b1f3e00345044e6006c50f3f6d3cb20c9843/copier_template_extensions-0.3.3-py3-none-any.whl", hash = "sha256:bf6bbdebada26132640d6e1128723fa1ff7eb59d008de07a7543c51e0facb0ea", size = 9893, upload-time = "2025-07-15T10:40:39.928Z" },
-]
-
-[[package]]
-name = "copier-templates-extensions"
-version = "0.3.2"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "copier-template-extensions" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/59/f7/fc2724189696f71f6f49a3418c67243a469d21a5f6529085a5a7b733fdd8/copier_templates_extensions-0.3.2.tar.gz", hash = "sha256:8a24826b656499605c0d2283a9a63d087fb68d735c6fc12f862bfe9d97d990d5", size = 2261, upload-time = "2025-07-15T10:07:59.315Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/1f/66/71ca710da97f61d9aa219631c2f3c86b99fc22ce40f536d6109fb4c71a79/copier_templates_extensions-0.3.2-py3-none-any.whl", hash = "sha256:a177ee34f3388ab1152ac8260a81bb8e798894df62567c40afcad7b4bd387f64", size = 3177, upload-time = "2025-07-15T10:07:58.178Z" },
 ]
 
 [[package]]
