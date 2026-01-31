@@ -110,6 +110,7 @@ repos:
       - id: doccmd
         name: "ruff format markdown"
         alias: ruff
+        language_version: "3.14"
         args:
           - "--language"
           - "python"
