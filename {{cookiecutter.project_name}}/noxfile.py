@@ -458,6 +458,7 @@ def pre_commit_run(
     )
     return uvx_run(
         session,
+        f"--python={PYTHON_DEFAULT_VERSION}",
         *pre_commit_args,
         *args,
         **kwargs,
