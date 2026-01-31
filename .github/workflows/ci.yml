@@ -41,16 +41,19 @@ jobs:
               python_versions.append(match.group(1))
 
           default_python_version = Path(".python-version").read_text().strip()
+          min_python_version = python_versions[0]
 
           # min max and default pythons
           matrix_test_python = list({ python_versions[0], python_versions[-1], default_python_version})
 
           with open(os.getenv("GITHUB_OUTPUT"), "a") as f:
             f.write(f"{default_python_version=:s}\n")
+            f.write(f"{min_python_version=:s}\n")
             f.write(f"matrix_test_python={json.dumps(matrix_test_python)}\n")
     outputs:
       default-python-version:
         ${{ steps.versions.outputs.default_python_version }}
+      min-python-version: ${{ steps.versions.outputs.min_python_version }}
       matrix-test-python: ${{ steps.versions.outputs.matrix_test_python }}
 
   lint:
@@ -129,7 +132,10 @@ jobs:
           persist-credentials: false
       - uses: ./.github/actions/setup-cached-uv-and-python
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: |
+            ${{ needs.get-parameters.outputs.min-python-version }}
+            ${{ needs.get-parameters.outputs.default-python-version }}
+            ${{ matrix.python-version }}
           cache-dependency-path: uv.lock
 
       - name: Setup git

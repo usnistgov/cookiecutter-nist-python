@@ -458,7 +458,7 @@ def pre_commit_run(
     )
     return uvx_run(
         session,
-        f"--python={PYTHON_DEFAULT_VERSION}",
+        # f"--python={PYTHON_DEFAULT_VERSION}",  # noqa: ERA001
         *pre_commit_args,
         *args,
         **kwargs,
