@@ -224,8 +224,9 @@ jobs:
       - lint
       - typecheck
       - test
+      # - coverage
       - pinact
-      # - docs
+      - docs
     runs-on: ubuntu-latest
     steps:
       - name: Decide whether the needed jobs succeeded or failed

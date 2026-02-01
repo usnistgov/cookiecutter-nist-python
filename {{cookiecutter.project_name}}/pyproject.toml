@@ -123,9 +123,8 @@ default-groups = [ "dev" ]
 fork-strategy = "requires-python"
 required-version = ">=0.7.15"
 
-[tool.uv.pip]
-annotation-style = "line"
-generate-hashes = true
+[tool.uv.build-backend]
+source-include = [ "tests/**" ]
 
 [tool.uv.dependency-groups]
 dev.requires-python = ">=3.14"
@@ -139,8 +138,9 @@ mypy.requires-python = ">=3.14"
 notebook.requires-python = ">=3.14"
 nox.requires-python = ">=3.14"
 
-[tool.uv.build-backend]
-source-include = [ "tests/**" ]
+[tool.uv.pip]
+annotation-style = "line"
+generate-hashes = true
 
 # * Checks ---------------------------------------------------------------------
 
@@ -159,6 +159,7 @@ toplevel = [ "{{ cookiecutter.project_slug }}" ]
 src_dir = [ "src" ]
 
 [tool.pyproject-fmt]
+
 # max_supported_python = "3.13"
 
 # * Testing --------------------------------------------------------------------
@@ -184,8 +185,11 @@ log_level = "INFO"
 strict_xfail = "true"
 filterwarnings = [ "error" ]
 
-[tool.coverage.run]
-branch = true
+[tool.coverage.paths]
+source = [
+    "src/",
+    ".nox/**/site-packages/",
+]
 
 [tool.coverage.report]
 show_missing = true
@@ -201,11 +205,8 @@ include = [
     "src/*",
 ]
 
-[tool.coverage.paths]
-source = [
-    "src/",
-    ".nox/**/site-packages/",
-]
+[tool.coverage.run]
+branch = true
 
 # * typecheck ---------------------------------------------------------------------
 
@@ -322,9 +323,36 @@ deps = "pip"
 [tool.pyproject2conda.dependencies]
 pytest-accept = { pip = true }
 
+[tool.pyproject2conda.envs.build]
+groups = "build-system.requires"
+skip-package = true
+style = "requirements"
+
 [tool.pyproject2conda.envs.dev]
 groups = "dev"
 style = [ "requirements", "yaml" ]
+
+[tool.pyproject2conda.envs.docs]
+groups = "docs"
+style = "requirements"
+
+[tool.pyproject2conda.envs.docs-live]
+groups = "docs-live"
+style = "requirements"
+
+[tool.pyproject2conda.envs.docs-spelling]
+groups = "docs-spelling"
+style = "requirements"
+
+[tool.pyproject2conda.envs.pre-commit-additional-dependencies]
+reqs = [
+    "rust-just",
+]
+groups = [
+    "cog",
+]
+skip-package = true
+style = "requirements"
 
 [tool.pyproject2conda.envs.test]
 groups = "test"
@@ -341,26 +369,9 @@ style = [ "requirements", "yaml" ]
 groups = "test-notebook"
 style = "requirements"
 
-[tool.pyproject2conda.envs.docs]
-groups = "docs"
-style = "requirements"
-
-[tool.pyproject2conda.envs.docs-live]
-groups = "docs-live"
-style = "requirements"
-
-[tool.pyproject2conda.envs.docs-spelling]
-groups = "docs-spelling"
-style = "requirements"
-
 [tool.pyproject2conda.envs.typecheck]
 groups = "typecheck"
 python = "all"
-style = "requirements"
-
-[tool.pyproject2conda.envs.build]
-groups = "build-system.requires"
-skip-package = true
 style = "requirements"
 
 [tool.pyproject2conda.envs.uvx-tools]
@@ -385,16 +396,6 @@ groups = [
     "mypy",
     "nox",
     "typecheck-runner",
-]
-skip-package = true
-style = "requirements"
-
-[tool.pyproject2conda.envs.pre-commit-additional-dependencies]
-reqs = [
-    "rust-just",
-]
-groups = [
-    "cog",
 ]
 skip-package = true
 style = "requirements"

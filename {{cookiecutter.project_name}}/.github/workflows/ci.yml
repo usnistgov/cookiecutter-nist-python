@@ -221,6 +221,7 @@ jobs:
       - lint
       - typecheck
       - test
+      - coverage
       - pinact
       - docs
     runs-on: ubuntu-latest
