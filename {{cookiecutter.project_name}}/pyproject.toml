@@ -38,11 +38,13 @@ dependencies = [
     "typer",
     {%- endif %}
 ]
-urls.Documentation = "https://pages.nist.gov/{{ cookiecutter.project_name }}/"
-urls.Homepage = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name}}"
-{%- if cookiecutter.command_line_interface != "none" %}
-scripts.{{ cookiecutter.project_slug }} = "{{ cookiecutter.project_slug}}.cli:main"
-{%- endif %}
+{% if cookiecutter.command_line_interface != "none" -%}
+[project.scripts]
+{{ cookiecutter.project_slug }} = "{{ cookiecutter.project_slug}}.cli:main"
+{% endif -%}
+[project.urls]
+Documentation = "https://pages.nist.gov/{{ cookiecutter.project_name }}/"
+Homepage = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name}}"
 
 [dependency-groups]
 dev = [
@@ -68,8 +70,8 @@ docs = [
     "furo",
     {%- endif %}
     "myst-nb",
-    # myst-parser, ipython,
     "sphinx>=5.3.0",
+    # myst-parser, ipython,
     {%- if cookiecutter.command_line_interface == "argparse" %}
     "sphinx-argparse",
     {%- endif %}
@@ -146,12 +148,12 @@ generate-hashes = true
 
 [tool.repo-review]
 ignore = [
+    "NOX103", # I prefer using "nox.options.sessions"
     "PC111",  # use doccmd instead of blacken-docs
     "PC140",  # do this externally
     "PC160",  # use typos
     "PC170",  # pygrep
     "PC901",  # ci message
-    "NOX103", # I prefer using "nox.options.sessions"
 ]
 
 [tool.check-wheel-contents]
@@ -159,20 +161,28 @@ toplevel = [ "{{ cookiecutter.project_slug }}" ]
 src_dir = [ "src" ]
 
 [tool.pyproject-fmt]
-
+indent = 4
 # max_supported_python = "3.13"
+keep_full_version = true
+expand_tables = [
+    "project.entry-points",
+    "project.optional-dependencies",
+    "project.scripts",
+    "project.urls",
+]
+collapse_tables = [  ]
 
 # * Testing --------------------------------------------------------------------
 
 [tool.pytest.ini_options]
 addopts = [
-    "-ra",
+    "--cov-config=pyproject.toml",
+    "--doctest-glob=*.md",
+    "--doctest-modules",
+    "--pyargs",
     "--strict-config",
     "--strict-markers",
-    "--doctest-modules",
-    "--doctest-glob=*.md",
-    "--pyargs",
-    "--cov-config=pyproject.toml",
+    "-ra",
 ]
 testpaths = [
     "README.md",
@@ -188,18 +198,19 @@ filterwarnings = [ "error" ]
 [tool.coverage.paths]
 source = [
     "src/",
+    # needed for testing source if not editable install
     ".nox/**/site-packages/",
 ]
 
 [tool.coverage.report]
 show_missing = true
 exclude_also = [
-    "if TYPE_CHECKING:",
     "@overload",
+    "if TYPE_CHECKING:",
 ]
 omit = [
-    "*/vendored/*",
     "*/_typing.py",
+    "*/vendored/*",
 ]
 include = [
     "src/*",
@@ -221,10 +232,10 @@ warn_unused_configs = true
 warn_unreachable = true
 exclude = [
     ".eggs",
-    ".tox",
     ".nox",
-    ".venv",
     ".numba_cache",
+    ".tox",
+    ".venv",
     "docs",
 ]
 check_untyped_defs = true
@@ -252,12 +263,12 @@ include = [
     "tests",
 ]
 exclude = [
-    "**/__pycache__",
-    ".tox/**",
-    ".nox/**",
-    ".venv/**",
     "**/.mypy_cache",
     "**/.numba_cache",
+    "**/__pycache__",
+    ".nox/**",
+    ".tox/**",
+    ".venv/**",
 ]
 typeCheckingMode = "strict"
 # typeCheckingMode = "standard"
@@ -381,8 +392,8 @@ reqs = [
     "cruft",
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
-    "pre-commit>=4.0.0",
     "pre-commit-uv",
+    "pre-commit>=4.0.0",
     "prek",
     "pyrefly>=0.37.0",
     "pyright>=1.1.396",

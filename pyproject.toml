@@ -90,10 +90,6 @@ default-groups = [ "dev" ]
 fork-strategy = "requires-python"
 required-version = ">=0.7.15"
 
-[tool.uv.pip]
-annotation-style = "line"
-generate-hashes = true
-
 [tool.uv.dependency-groups]
 dev.requires-python = ">=3.14"
 docs.requires-python = ">=3.14"
@@ -106,6 +102,10 @@ mypy.requires-python = ">=3.14"
 nox.requires-python = ">=3.14"
 
 # * Checks ---------------------------------------------------------------------
+
+[tool.uv.pip]
+annotation-style = "line"
+generate-hashes = true
 
 [tool.repo-review]
 ignore = [
@@ -120,6 +120,7 @@ ignore = [
 ]
 
 [tool.pyproject-fmt]
+
 # max_supported_python = "3.13"
 
 # * Testing --------------------------------------------------------------------
@@ -166,9 +167,6 @@ filterwarnings = [
     "ignore: Dirty template:copier.errors.DirtyLocalWarning",
 ]
 
-[tool.coverage.run]
-branch = true
-
 [tool.coverage.report]
 show_missing = true
 exclude_also = [
@@ -181,6 +179,9 @@ omit = [
 include = [
     "src/*",
 ]
+
+[tool.coverage.run]
+branch = true
 
 # * typecheck ---------------------------------------------------------------------
 
@@ -293,6 +294,16 @@ copier-template-extensions = { pip = true }
 [tool.pyproject2conda.envs.dev]
 groups = "dev"
 
+[tool.pyproject2conda.envs.pre-commit-additional-dependencies]
+reqs = [
+    "rust-just",
+]
+groups = [
+    "cog",
+]
+skip-package = true
+style = "requirements"
+
 [tool.pyproject2conda.envs.test]
 groups = "test"
 python = "all"
@@ -319,16 +330,6 @@ groups = [
     "mypy",
     "nox",
     "typecheck-runner",
-]
-skip-package = true
-style = "requirements"
-
-[tool.pyproject2conda.envs.pre-commit-additional-dependencies]
-reqs = [
-    "rust-just",
-]
-groups = [
-    "cog",
 ]
 skip-package = true
 style = "requirements"
