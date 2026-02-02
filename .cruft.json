@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "1b2c752ad8477e77048bcbd8636ffed8a2568486",
-  "checkout": "feature/update-ci",
+  "commit": "d026836bce326939a838a6d2c85180d110256f10",
+  "checkout": "main",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",
@@ -19,7 +19,7 @@
       "__answers": "",
       "_copy_without_render": [],
       "_template": ".",
-      "_commit": "1b2c752ad8477e77048bcbd8636ffed8a2568486"
+      "_commit": "d026836bce326939a838a6d2c85180d110256f10"
     }
   },
   "directory": null
