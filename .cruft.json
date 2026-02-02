@@ -1,6 +1,6 @@
 {
   "template": ".",
-  "commit": "67f7d200caa86bd4b13d589b277f3d75fb7a2e51",
+  "commit": "1b2c752ad8477e77048bcbd8636ffed8a2568486",
   "checkout": "feature/update-ci",
   "context": {
     "cookiecutter": {
@@ -19,7 +19,7 @@
       "__answers": "",
       "_copy_without_render": [],
       "_template": ".",
-      "_commit": "67f7d200caa86bd4b13d589b277f3d75fb7a2e51"
+      "_commit": "1b2c752ad8477e77048bcbd8636ffed8a2568486"
     }
   },
   "directory": null

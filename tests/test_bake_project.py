@@ -61,6 +61,7 @@ def check_directory(
             ".prettierignore",
             ".python-version",
             ".pylintrc.toml",
+            ".taplo.toml",
             "pyproject.toml",
             "noxfile.py",
             "ruff.toml",
