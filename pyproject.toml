@@ -27,8 +27,9 @@ classifiers = [
 ]
 dependencies = [
 ]
-urls.Documentation = "https://pages.nist.gov/cookiecutter-nist-python/"
-urls.Homepage = "https://github.com/usnistgov/cookiecutter-nist-python"
+[project.urls]
+Documentation = "https://pages.nist.gov/cookiecutter-nist-python/"
+Homepage = "https://github.com/usnistgov/cookiecutter-nist-python"
 
 [dependency-groups]
 dev = [
@@ -48,6 +49,7 @@ docs = [
     "autodocsumm",
     "myst-parser",
     "sphinx>=5.3.0",
+    # myst-parser, ipython,
     "sphinx-book-theme",
     "sphinx-copybutton",
 ]
@@ -109,6 +111,7 @@ generate-hashes = true
 
 [tool.repo-review]
 ignore = [
+    "NOX103", # I prefer using "nox.options.sessions"
     "PC111",  # use doccmd instead of blacken-docs
     "PC140",  # do this externally
     "PC160",  # use typos
@@ -116,47 +119,55 @@ ignore = [
     "PC901",  # ci message
     "PP002",
     "PP003",
-    "NOX103", # I prefer using "nox.options.sessions"
 ]
 
 [tool.pyproject-fmt]
-
+indent = 4
 # max_supported_python = "3.13"
+keep_full_version = true
+expand_tables = [
+    "project.entry-points",
+    "project.optional-dependencies",
+    "project.scripts",
+    "project.urls",
+]
+collapse_tables = [  ]
 
 # * Testing --------------------------------------------------------------------
 
 [tool.pytest.ini_options]
 addopts = [
-    "-ra",
+    "--cov-config=pyproject.toml",
+    "--doctest-glob=*.md",
+    "--doctest-modules",
+    "--pyargs",
     "--strict-config",
     "--strict-markers",
-    "--doctest-modules",
-    "--doctest-glob=*.md",
-    "--cov-config=pyproject.toml",
+    "-ra",
     "-s",
 ]
 testpaths = [
     "tests",
 ]
 markers = [
-    "default: default template",
-    "furo: furo theme",
     "book: sphinx book theme",
-    "nocli: no command-line interface",
     "click: Click cli",
-    "typer: Typer template",
-    "test: run tests",
-    "lint: run linting",
-    "docs: make docs",
-    "typecheck: run type checkers",
-    "mypystrict: run mypy --strict",
-    "create: simple test on path creation",
-    "longname: a project with a long name",
-    "disable: test that has been disabled by default",
-    "version: update-version-scm (disabled by default)",
     "cookie: cookiecutter",
     "copier: run copier tests",
+    "create: simple test on path creation",
+    "default: default template",
+    "disable: test that has been disabled by default",
+    "docs: make docs",
+    "furo: furo theme",
+    "lint: run linting",
+    "longname: a project with a long name",
+    "mypystrict: run mypy --strict",
+    "nocli: no command-line interface",
     "notebook: run typing/test on notebook",
+    "test: run tests",
+    "typecheck: run type checkers",
+    "typer: Typer template",
+    "version: update-version-scm (disabled by default)",
 ]
 minversion = "8"
 log_cli_level = "INFO"
@@ -170,8 +181,8 @@ filterwarnings = [
 [tool.coverage.report]
 show_missing = true
 exclude_also = [
-    "if TYPE_CHECKING:",
     "@overload",
+    "if TYPE_CHECKING:",
 ]
 omit = [
     "*/vendored/*",
@@ -195,10 +206,10 @@ warn_unused_configs = true
 warn_unreachable = true
 exclude = [
     ".eggs",
-    ".tox",
     ".nox",
-    ".venv",
     ".numba_cache",
+    ".tox",
+    ".venv",
     "docs",
 ]
 check_untyped_defs = true
@@ -225,12 +236,12 @@ include = [
     "tests",
 ]
 exclude = [
-    "**/__pycache__",
-    ".tox/**",
-    ".nox/**",
-    ".venv/**",
     "**/.mypy_cache",
     "**/.numba_cache",
+    "**/__pycache__",
+    ".nox/**",
+    ".tox/**",
+    ".venv/**",
 ]
 typeCheckingMode = "strict"
 # typeCheckingMode = "standard"
@@ -315,8 +326,8 @@ reqs = [
     "cruft",
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",
-    "pre-commit>=4.0.0",
     "pre-commit-uv",
+    "pre-commit>=4.0.0",
     "prek",
     "pyrefly>=0.37.0",
     "pyright>=1.1.396",
