@@ -153,7 +153,6 @@ ignore = [
     "PC140",  # do this externally
     "PC160",  # use typos
     "PC170",  # pygrep
-    "PC901",  # ci message
 ]
 
 [tool.check-wheel-contents]
