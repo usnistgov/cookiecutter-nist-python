@@ -50,7 +50,7 @@ main = typer.main.get_command(app)
 def get_parser() -> argparse.ArgumentParser:
     """Create parser."""
     parser = argparse.ArgumentParser()
-    parser.add_argument("_", nargs="*")
+    _ = parser.add_argument("_", nargs="*")
 
     return parser
 
