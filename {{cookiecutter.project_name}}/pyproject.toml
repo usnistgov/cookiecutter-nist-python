@@ -153,7 +153,6 @@ ignore = [
     "PC140",  # do this externally
     "PC160",  # use typos
     "PC170",  # pygrep
-    "PC901",  # ci message
 ]
 
 [tool.check-wheel-contents]
@@ -171,6 +170,9 @@ expand_tables = [
     "project.urls",
 ]
 collapse_tables = [  ]
+
+[tool.typos.default.extend-identifiers]
+CPY = "CPY"
 
 # * Testing --------------------------------------------------------------------
 
@@ -256,6 +258,7 @@ enable_error_code = [
 
 [tool.pyrefly]
 project-includes = [ "src", "tests" ]
+enabled-ignores = [ "pyrefly" ]
 
 [tool.pyright]
 include = [
@@ -309,6 +312,10 @@ root = "tests"
 # reportArgumentType = false
 # reportMissingImports = false
 reportUnusedCallResult = false
+
+[tool.ty.analysis]
+# Disable support for `type: ignore` comments
+respect-type-ignore-comments = false
 
 [tool.ty.src]
 include = [ "src", "tests" ]
@@ -399,7 +406,7 @@ reqs = [
     "pyright>=1.1.396",
     "scriv",
     "twine>=5.0.0",
-    "ty",
+    "ty>=0.0.14",
 ]
 groups = [
     "basedpyright",
