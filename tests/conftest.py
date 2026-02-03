@@ -180,6 +180,7 @@ def pytest_collection_modifyitems(
     config: pytest.Config, items: list[pytest.Item]
 ) -> None:
     for item in items:
+        # pyrefly: ignore [missing-attribute]
         marker = item.originalname.split("_")[-1]  # type: ignore[attr-defined]  # pyright: ignore[reportUnknownVariableType,reportUnknownMemberType,reportAttributeAccessIssue]
         item.add_marker(getattr(pytest.mark, marker))  # pyright: ignore[reportUnknownArgumentType]
 
