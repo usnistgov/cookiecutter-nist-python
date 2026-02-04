@@ -23,7 +23,7 @@ repos:
 
   # * sync dependencies
   - repo: https://github.com/wpk-nist-gov/sync-pre-commit-hooks
-    rev: v0.2.0
+    rev: v0.3.0
     hooks:
       - id: sync-pre-commit-deps
         args:
@@ -34,6 +34,10 @@ repos:
       - id: justfile-format
         additional_dependencies:
           - rust-just==1.46.0
+      - id: check-file-extension
+        args:
+          # exclude `.rej` files from cruft
+          - "--ext=.rej"
 
   # * Top level
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -225,7 +229,7 @@ repos:
   # * typecheck
   # ** sync dependencies
   - repo: https://github.com/wpk-nist-gov/sync-pre-commit-hooks
-    rev: v0.2.0
+    rev: v0.3.0
     hooks:
       - id: fill-pre-commit-hook-deps
         alias: typecheck
