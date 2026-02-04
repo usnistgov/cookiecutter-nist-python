@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "b9d4d937a7981f149aada0601f027d1f3e693cd2",
-  "checkout": "feature/update-sp-repo-review",
+  "commit": "11bf54b80725e5f0d1dc43d3791b56249d7d54bf",
+  "checkout": "feature/update-deps",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",
@@ -19,7 +19,7 @@
       "__answers": "",
       "_copy_without_render": [],
       "_template": ".",
-      "_commit": "b9d4d937a7981f149aada0601f027d1f3e693cd2"
+      "_commit": "11bf54b80725e5f0d1dc43d3791b56249d7d54bf"
     }
   },
   "directory": null
