@@ -132,7 +132,7 @@ repos:
   # Revert to crate-ci/typos if https://github.com/crate-ci/typos/issues/390 is fixed.
   # - repo: https://github.com/crate-ci/typos
   - repo: https://github.com/adhtruong/mirrors-typos
-    rev: v1.43.0
+    rev: v1.43.1
     hooks:
       - id: typos
         exclude_types: [jupyter]
@@ -147,7 +147,7 @@ repos:
         alias: requirements
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.28
+    rev: 0.9.29
     hooks:
       - id: uv-lock
         alias: requirements
@@ -160,7 +160,7 @@ repos:
 
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.13.2
+    rev: v4.13.4
     hooks:
       - id: commitizen
         stages: [commit-msg]
@@ -272,7 +272,7 @@ repos:
         name: nbqa-typos
         alias: typos
         additional_dependencies: &typos-deps
-          - typos==1.43.0
+          - typos==1.43.1
         args: [typos, --nbqa-shell]
         # this can lead to errors, so use with care
         # args: [typos, --write-changes, --nbqa-shell]
