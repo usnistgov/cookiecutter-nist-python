@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "11bf54b80725e5f0d1dc43d3791b56249d7d54bf",
-  "checkout": "feature/update-deps",
+  "commit": "53930d471e427676d1d56b4ed836424bee0fb90a",
+  "checkout": "main",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",
@@ -19,7 +19,7 @@
       "__answers": "",
       "_copy_without_render": [],
       "_template": ".",
-      "_commit": "11bf54b80725e5f0d1dc43d3791b56249d7d54bf"
+      "_commit": "53930d471e427676d1d56b4ed836424bee0fb90a"
     }
   },
   "directory": null
