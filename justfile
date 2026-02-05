@@ -308,6 +308,10 @@ ipython *options:
 cruft-update:
     {{ UVX_WITH_OPTS }} cruft update --skip-apply-ask --checkout $(git branch --show-current)
 
+[group("tools")]
+copier-update *options="-r main --trust -A":
+    {{ UVX_WITH_OPTS }} copier update {{ options }}
+
 # create changelog snippet with scriv
 [group("tools")]
 scriv-create *options="--add --edit":
