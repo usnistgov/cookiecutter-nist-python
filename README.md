@@ -40,6 +40,7 @@
 [nist-pages]: https://pages.nist.gov/pages-root/
 [cookiecutter-pypackage]:  https://github.com/audreyfeldroy/cookiecutter-pypackage/
 [conda]: https://docs.conda.io/en/latest/
+[copier]: https://github.com/copier-org/copier
 [virtualenv]: https://virtualenv.pypa.io/en/latest/
 [pyproject2conda]: https://github.com/usnistgov/pyproject2conda
 
@@ -76,21 +77,29 @@ request for wanted features and suggestions!
 
 <!-- start-installation -->
 
-To generate a package using [cookiecutter], run:
+Generate with [cookiecutter]:
 
 ```bash
 cookiecutter [--checkout BRANCH-NAME] https://github.com/usnistgov/cookiecutter-nist-python.git
 ```
 
-where the optional argument in brackets can be used to specify a specific
-branch.
-
-Alternatively (and highly recommended) is to use [cruft]. This allows for the
-template files to be updated as the template is updated. For this, you can run:
+Generate with [cruft]:
 
 ```bash
 cruft create [--checkout BRANCH-NAME] https://github.com/usnistgov/cookiecutter-nist-python.git
 ```
+
+Generate with [copier]:
+
+<!-- markdownlint-disable MD013 -->
+
+```bash
+copier copy --trust [-r BRANCH-NAME] https://github.com/usnistgov/cookiecutter-nist-python.git destination/path
+```
+
+<!-- markdownlint-enable MD013 -->
+
+As the template uses jinja2, you'll need the `--trust` flag using copier.
 
 <!-- end-installation -->
 <!-- end-docs -->
