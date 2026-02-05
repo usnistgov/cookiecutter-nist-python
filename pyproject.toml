@@ -330,6 +330,8 @@ python = "all"
 reqs = [
     # these used solely for specking tools to be used with uvx --constraints=...
     "conda-lock>=2.5.5",
+    "copier",
+    "copier-template-extensions>=0.3.1",
     "cruft",
     "grayskull>=2.5.3",
     "nbqa>=1.8.4",

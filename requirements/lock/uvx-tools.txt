@@ -12,6 +12,14 @@ conda-lock==4.0.0 \
     --hash=sha256:050305a490861baa98d6c3876ed7b394707a67587d939548aac5e20b91b41d36 \
     --hash=sha256:979aacb4f67eb375f5d84ffbc7afc93c881ab9a513558c7461ed955fe243a3f6
     # via -r requirements/uvx-tools.txt
+copier==9.11.3 \
+    --hash=sha256:ab4bc7e2944edc030b4c14ec84fffd6bf810b9b8fd56938e8ccbab1b169ea6ca \
+    --hash=sha256:f4da98c7f3dd2243480433541b3b4d9daa788bce13b7b6d43c0c6d84bd50e889
+    # via -r requirements/uvx-tools.txt
+copier-template-extensions==0.3.3 \
+    --hash=sha256:86bd5e2e89c94b6f9321e4078781b4456c5658b820bcae49ac60fd1e1dd23c10 \
+    --hash=sha256:bf6bbdebada26132640d6e1128723fa1ff7eb59d008de07a7543c51e0facb0ea
+    # via -r requirements/uvx-tools.txt
 cruft==2.16.0 \
     --hash=sha256:184662853fbc1c16c0137fe0e9444e0cbe95e40362f5ebb2d9fae33d9223e73f \
     --hash=sha256:96adb81f814300a9db0fca690eaa063547f5d3c25f486ac0a366cf8da5cdfb79
@@ -95,16 +103,16 @@ prek==0.3.1 \
     --hash=sha256:e21142300d139e8c7f3970dd8aa66391cb43cd17c0c4ee65ff1af48856bb6a4b \
     --hash=sha256:f4a0e40785d39b8feae0d7ecf5534789811a2614114ab47f4e344a2ebd75ac10
     # via -r requirements/uvx-tools.txt
-pyrefly==0.51.0 \
-    --hash=sha256:0aa2db0cbf9f1d8c77a98464d12bcae7bdcbdaad80098a0456abf51d6f2ee275 \
-    --hash=sha256:40055df65c184d825081e7177b99d277c8a1cb29c6e41a54ff40828d355aa467 \
-    --hash=sha256:4013f914d3b523a9b1afc25a620a011406f7745ad5cfc5781ec95235bc9cd583 \
-    --hash=sha256:4a6eeffd5649d393bf457b7c1253f89b33295d475b1cae0f9a21377986708804 \
-    --hash=sha256:525e654aa50bc32bdfdd505dbc233b0cfab8ed2917a62b178c3156e2f80062c0 \
-    --hash=sha256:65689401e35b7d01a1394cdb1bafd46e2f49369b0f9891a333bce3568f100ce2 \
-    --hash=sha256:99467db60f148bb6965c45cdc3e769d94b704100e9d57b6455cc6796e5a9e7b1 \
-    --hash=sha256:bc14eb4f273a5ec2be7318c70a8e5a50e2e9f7a42de3a7f73fb0cfdc7f6996d2 \
-    --hash=sha256:beace17854735136134848e5a0e8678b6862ee1144eaeb27f1bb70ff1f8fd9ca
+pyrefly==0.51.1 \
+    --hash=sha256:10e4ee82a90e493a07d4d8bc9683185005169f17454ad56d37c19f4794387581 \
+    --hash=sha256:252d920b21a1ce0e00f077f560e48913370fbff3b6aab4426902eab9a57f5bee \
+    --hash=sha256:42c05e88da2f18aeab45e9b0384ef8e776630ed270c8bfcb33e0668757ea2d4f \
+    --hash=sha256:5835c93e568a7507926095b67ef269ecf3842eba604c0ac49290943b2b3bb21b \
+    --hash=sha256:7d4b9c13edf6a0c1ef1fb80c8429ed1ce023d6c1faa282032b32900bc4ae7fc1 \
+    --hash=sha256:8ce1693457a4d856faf35ec519f7866ee13dd79d7db085e95caec8eaa21f1450 \
+    --hash=sha256:c0f30432cfaf13c7c2d4188c94146cdaab2ce52bbd292d48c7d18ad4a168ecfb \
+    --hash=sha256:c48ec5c9f24361e903e1c60a0a32099ddd1d12b47c314414a980db2129ff040d \
+    --hash=sha256:cffebed312e85c4af91b9e398cf26c988ad4b442e815300e8478c1e0176f826a
     # via -r requirements/uvx-tools.txt
 pyright==1.1.408 \
     --hash=sha256:090b32865f4fdb1e0e6cd82bf5618480d48eecd2eb2e70f960982a3d9a4c17c1 \

@@ -108,9 +108,6 @@ Ready to contribute? Here's how to make a contribution.
   git checkout -b name-of-your-bugfix-or-feature
   ```
 
-  Now you can make your changes locally. Alternatively, we recommend using
-  [git-flow].
-
 - When you're done making changes, check that your changes pass the pre-commit
   checks: tests.
 
@@ -196,29 +193,6 @@ documentation creation, etc. One downside of using [tox] with this particular
 workflow is the need for multiple scripts, while with [nox], most everything is
 self contained in the file `noxfile.py`. [nox] also allows for a mix of [conda]
 and [virtualenv] environments.
-
-### Installing interpreters for virtualenv creation
-
-If using virtualenvs across multiple python versions (e.g., `test`, `typecheck`,
-etc), you'll need to install python interpreters for each version. If using
-[pyenv], you should be good to go.
-
-Instead of using [pyenv], I use [uv] to manage python versions. For example:
-
-```bash
-uv python install python3.12
-```
-
-I also set the global [uv] config file (`~/.config/uv/uv.toml` on mac and linux)
-to use only managed python:
-
-```toml
-python-preference = "only-managed"
-
-```
-
-[nox] is setup to automatically work with [uv]. Note that the python interpreter
-may need to be installed before it can be used with [nox]
 
 ### Nox session options
 
@@ -490,28 +464,7 @@ activate the development environment when in the parent directory.
 ### Development tools
 
 The only required tool is [uv], but it highly recommended to also install
-[just]. Other tools used are:
-
-- [pre-commit] or [prek]
-- [just]
-- [scriv]
-- [pyright]
-- [cruft]
-- [commitizen]
-
-which can be installed using:
-
-```bash
-uv tool install pre-commit
-```
-
-Note that the repo is setup to automatically use [uvx] for many of these tools.
-Behind the scenes, the `justfile` and `noxfile.py` will invoke [uvx] with
-constraints from `requirements/lock/uvx-tools.txt`. This will run the tool with
-with the proper version. Note that if the tool is already installed with the
-proper version, [uvx] will use it. This prevents having to install a bunch of
-tooling in the "dev" environment, and also avoid creating a bunch of throw away
-[nox] environments.
+[just].
 
 ## Package version
 
@@ -524,8 +477,6 @@ Versioning is handled by the `project.version` variable in `pyproject.toml`. Use
 [conda]: https://docs.conda.io/en/latest/
 [condax]: https://github.com/mariusvniekerk/condax
 [conventional-style]: https://www.conventionalcommits.org/en/v1.0.0/
-[cruft]: https://github.com/cruft/cruft
-[git-flow]: https://github.com/nvie/gitflow
 [just]: https://github.com/casey/just
 [mamba]: https://github.com/mamba-org/mamba
 [mypy]: https://github.com/python/mypy
@@ -534,7 +485,6 @@ Versioning is handled by the `project.version` variable in `pyproject.toml`. Use
 [pipx]: https://github.com/pypa/pipx
 [pre-commit]: https://pre-commit.com/
 [prek]: https://github.com/j178/prek
-[pyenv]: https://github.com/pyenv/pyenv
 [pyproject2conda]: https://github.com/wpk-nist-gov/pyproject2conda
 [pyright]: https://github.com/microsoft/pyright
 [scriv]: https://github.com/nedbat/scriv

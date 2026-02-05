@@ -310,7 +310,7 @@ cruft-update:
 
 [group("tools")]
 copier-update *options="-r main --trust -A":
-    {{ UVX_WITH_OPTS }} copier update {{ options }}
+    {{ UVX_WITH_OPTS }} --with copier-template-extensions copier update {{ options }}
 
 # create changelog snippet with scriv
 [group("tools")]
