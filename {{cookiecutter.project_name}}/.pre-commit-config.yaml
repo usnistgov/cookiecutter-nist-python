@@ -34,10 +34,15 @@ repos:
       - id: justfile-format
         additional_dependencies:
           - rust-just==1.46.0
-      - id: check-file-extension
-        args:
-          # exclude `.rej` files from cruft
-          - "--ext=.rej"
+
+  # * Forbidden files
+  - repo: local
+    hooks:
+      - id: forbidden-files
+        name: forbidden files
+        entry: Found forbidden file.
+        language: fail
+        files: \.(rej|bak)$
 
   # * Top level
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -47,6 +52,7 @@ repos:
         exclude: ^uv[.]lock
       - id: check-case-conflict
       - id: check-merge-conflict
+        args: [--assume-in-merge]
       - id: check-symlinks
       - id: check-yaml
       - id: check-json
@@ -151,7 +157,7 @@ repos:
         alias: requirements
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.29
+    rev: 0.9.30
     hooks:
       - id: uv-lock
         alias: requirements
