@@ -148,7 +148,7 @@ repos:
   # Revert to crate-ci/typos if https://github.com/crate-ci/typos/issues/390 is fixed.
   # - repo: https://github.com/crate-ci/typos
   - repo: https://github.com/adhtruong/mirrors-typos
-    rev: v1.43.1
+    rev: v1.43.2
     hooks:
       - id: typos
         exclude_types: [jupyter]
@@ -161,9 +161,11 @@ repos:
     hooks:
       - id: pyproject2conda-project
         alias: requirements
+        args:
+          - "--custom-command=prek run pyproject2conda-project --all-files"
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.30
+    rev: 0.10.0
     hooks:
       - id: uv-lock
         alias: requirements
