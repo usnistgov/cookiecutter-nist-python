@@ -68,7 +68,7 @@ def _run_linters(
         command = [
             "uvx",
             *([f"--constraints={constraints}"] if constraints else []),
-            "pre-commit",
+            "prek",
             "run",
             linter,
             "--files",
