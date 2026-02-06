@@ -1,8 +1,8 @@
 {% raw -%}
 name: Update repository with Cruft
 on:
-  schedule:
-    - cron: "0 2 * * 1" # Every Monday at 2am
+  # schedule:
+  #   - cron: "0 2 * * 1" # Every Monday at 2am
   workflow_dispatch:
 
 permissions:
@@ -54,8 +54,8 @@ jobs:
       - name: Run update if available
         if: steps.check.outputs.has_changes == '1'
         run: |
-          git config --global user.email "you@example.com"
-          git config --global user.name "GitHub"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
 
           cruft update --skip-apply-ask --refresh-private-variables
           git restore --staged .

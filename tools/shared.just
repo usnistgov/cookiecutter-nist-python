@@ -19,18 +19,13 @@ TYPECHECK := "-m typecheck_runner -v"
 nox *options:
     {{ UVX_WITH_OPTS }} nox {{ options }}
 
-## Using pre-commit
-# run pre-commit
-# [group("lint")]
-# [group("tools")]
-# pre-commit *commands:
-#     @[ ! -f {{ CONSTRAINTS_MIN }} ] && touch {{ CONSTRAINTS_MIN }} || true
-#     {{ UVX }} --constraints={{ CONSTRAINTS_MIN }} --with=pre-commit-uv pre-commit {{ commands }}  # using pre-commit
-## Using prek
-
 # run pre-commit
 [group("lint")]
 [group("tools")]
 pre-commit *commands:
     @[[ ! -f {{ CONSTRAINTS_MIN }} ]] && touch {{ CONSTRAINTS_MIN }} || true
     {{ UVX }} --constraints={{ CONSTRAINTS_MIN }} prek -c .pre-commit-config.yaml {{ commands }} # using prek
+
+[group("lint")]
+[group("tools")]
+prek *commands: (pre-commit commands)
