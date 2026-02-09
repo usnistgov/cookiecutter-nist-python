@@ -25,15 +25,15 @@ classifiers = [
     "Programming Language :: Python :: 3.14",
     "Topic :: Scientific/Engineering",
 ]
-dependencies = [
-]
+dependencies = []
+
 [project.urls]
 Documentation = "https://pages.nist.gov/cookiecutter-nist-python/"
 Homepage = "https://github.com/usnistgov/cookiecutter-nist-python"
 
 [dependency-groups]
 dev = [
-    { include-group = "mypy" },      # so can use dmypy
+    { include-group = "mypy" },  # so can use dmypy
     { include-group = "nox" },
     { include-group = "test" },
     { include-group = "typecheck" },
@@ -53,20 +53,9 @@ docs = [
     "sphinx-book-theme",
     "sphinx-copybutton",
 ]
-test-extras = [
-    "cookiecutter",
-    "copier",
-    "copier-template-extensions>=0.3.1",
-]
 # other packages/tools
 basedpyright = [ "basedpyright>=1.31.3" ]
 cog = [ "cogapp" ]
-ipython = [ "ipython" ]
-mypy = [ "mypy[faster-cache]>=1.15.0" ]
-nox = [ "nox>=2025.5.1" ]
-pylint = [ "pylint" ]
-pytest = [ "pytest" ]
-typecheck-runner = [ "typecheck-runner>=0.1.0; python_version>'3.9'" ]
 # other environments
 docs-live = [
     "sphinx-autobuild",
@@ -77,37 +66,43 @@ docs-spelling = [
     "sphinxcontrib-spelling",
     { include-group = "docs" },
 ]
+ipython = [ "ipython" ]
+mypy = [ "mypy[faster-cache]>=1.15.0" ]
+nox = [ "nox>=2025.5.1" ]
+pylint = [ "pylint" ]
+pytest = [ "pytest" ]
+test-extras = [
+    "cookiecutter",
+    "copier",
+    "copier-template-extensions>=0.3.1",
+]
 typecheck = [
     { include-group = "pylint" },
     { include-group = "pytest" },
     { include-group = "test-extras" },
     { include-group = "typecheck-runner" },
 ]
+typecheck-runner = [ "typecheck-runner>=0.1.0; python_version>'3.9'" ]
 
 # * uv -------------------------------------------------------------------------
 
 [tool.uv]
-managed = true
-default-groups = [ "dev" ]
-fork-strategy = "requires-python"
 required-version = ">=0.7.15"
-
-[tool.uv.dependency-groups]
-dev.requires-python = ">=3.14"
-docs.requires-python = ">=3.14"
-docs-live.requires-python = ">=3.14"
-docs-spelling.requires-python = ">=3.14"
+default-groups = [ "dev" ]
 # other tools
-cog.requires-python = ">=3.14"
-ipython.requires-python = ">=3.14"
-mypy.requires-python = ">=3.14"
-nox.requires-python = ">=3.14"
-
+dependency-groups.cog.requires-python = ">=3.14"
+dependency-groups.dev.requires-python = ">=3.14"
+dependency-groups.docs-live.requires-python = ">=3.14"
+dependency-groups.docs-spelling.requires-python = ">=3.14"
+dependency-groups.docs.requires-python = ">=3.14"
+dependency-groups.ipython.requires-python = ">=3.14"
+dependency-groups.mypy.requires-python = ">=3.14"
+dependency-groups.nox.requires-python = ">=3.14"
+fork-strategy = "requires-python"
+managed = true
 # * Checks ---------------------------------------------------------------------
-
-[tool.uv.pip]
-annotation-style = "line"
-generate-hashes = true
+pip.annotation-style = "line"
+pip.generate-hashes = true
 
 [tool.repo-review]
 ignore = [
@@ -130,15 +125,15 @@ expand_tables = [
     "project.scripts",
     "project.urls",
 ]
-collapse_tables = [  ]
+collapse_tables = []
 
-[tool.typos.default.extend-identifiers]
-CPY = "CPY"
+[tool.typos]
+default.extend-identifiers.CPY = "CPY"
 
+[tool.pytest]
 # * Testing --------------------------------------------------------------------
 
-[tool.pytest.ini_options]
-addopts = [
+ini_options.addopts = [
     "--cov-config=pyproject.toml",
     "--doctest-glob=*.md",
     "--doctest-modules",
@@ -148,10 +143,10 @@ addopts = [
     "-ra",
     "-s",
 ]
-testpaths = [
+ini_options.testpaths = [
     "tests",
 ]
-markers = [
+ini_options.markers = [
     "book: sphinx book theme",
     "click: Click cli",
     "cookie: cookiecutter",
@@ -171,30 +166,28 @@ markers = [
     "typer: Typer template",
     "version: update-version-scm (disabled by default)",
 ]
-minversion = "8"
-log_cli_level = "INFO"
-log_level = "INFO"
-strict_xfail = "true"
-filterwarnings = [
+ini_options.minversion = "8"
+ini_options.log_cli_level = "INFO"
+ini_options.log_level = "INFO"
+ini_options.strict_xfail = "true"
+ini_options.filterwarnings = [
     "error",
     "ignore: Dirty template:copier.errors.DirtyLocalWarning",
 ]
 
-[tool.coverage.report]
-show_missing = true
-exclude_also = [
+[tool.coverage]
+run.branch = true
+report.exclude_also = [
     "@overload",
     "if TYPE_CHECKING:",
 ]
-omit = [
-    "*/vendored/*",
-]
-include = [
+report.include = [
     "src/*",
 ]
-
-[tool.coverage.run]
-branch = true
+report.omit = [
+    "*/vendored/*",
+]
+report.show_missing = true
 
 # * typecheck ---------------------------------------------------------------------
 
@@ -221,10 +214,7 @@ enable_error_code = [
     "redundant-expr",
     "truthy-bool",
 ]
-
-[[tool.mypy.overrides]]
-ignore_missing_imports = true
-module = [ "cookiecutter.*" ]
+overrides = [ { ignore_missing_imports = true, module = [ "cookiecutter.*" ] } ]
 
 # [[tool.mypy.overrides]]
 # ignore_errors = true
@@ -262,7 +252,6 @@ reportUntypedFunctionDecorator = true
 enableTypeIgnoreComments = false
 reportUnnecessaryTypeIgnoreComment = true
 reportUnreachable = "warning"
-
 deprecateTypingAliases = true
 enableReachabilityAnalysis = false
 reportCallInDefaultInitializer = true
@@ -271,27 +260,24 @@ reportImportCycles = true
 # reportMissingSuperCall = true
 reportUninitializedInstanceVariable = true
 reportUnusedCallResult = true
-
 # type-checkers should type-check; linters should lint
 reportImplicitStringConcatenation = false
-reportPrivateUsage = false                # dupe of PLC2701
-reportPrivateImportUsage = false          # dupe of PLC2701
-reportUnusedImport = false                # dupe of F401
-reportUnusedVariable = false              # dupe of F841
+reportPrivateUsage = false  # dupe of PLC2701
+reportPrivateImportUsage = false  # dupe of PLC2701
+reportUnusedImport = false  # dupe of F401
+reportUnusedVariable = false  # dupe of F841
+executionEnvironments = [
+    { root = "tests" },
+    # reportCallIssue = false
+    # reportArgumentType = false
+    # reportMissingImports = false
+    { reportUnusedCallResult = false },
+]
 
-[[tool.pyright.executionEnvironments]]
-root = "tests"
-# reportCallIssue = false
-# reportArgumentType = false
-# reportMissingImports = false
-reportUnusedCallResult = false
-
-[tool.ty.analysis]
+[tool.ty]
 # Disable support for `type: ignore` comments
-respect-type-ignore-comments = false
-
-[tool.ty.src]
-include = [ "tests" ]
+analysis.respect-type-ignore-comments = false
+src.include = [ "tests" ]
 
 # * Dependency creation --------------------------------------------------------
 
@@ -304,30 +290,20 @@ python = "default"
 channels = "conda-forge"
 style = "yaml"
 deps = "pip"
-
-[tool.pyproject2conda.dependencies]
-pytest-accept = { pip = true }
-copier-template-extensions = { pip = true }
-
-[tool.pyproject2conda.envs.dev]
-groups = "dev"
-
-[tool.pyproject2conda.envs.pre-commit-additional-dependencies]
-reqs = [
+dependencies.pytest-accept = { pip = true }
+dependencies.copier-template-extensions = { pip = true }
+envs.dev.groups = "dev"
+envs.pre-commit-additional-dependencies.reqs = [
     "rust-just",
 ]
-groups = [
+envs.pre-commit-additional-dependencies.groups = [
     "cog",
 ]
-skip-package = true
-style = "requirements"
-
-[tool.pyproject2conda.envs.test]
-groups = "test"
-python = "all"
-
-[tool.pyproject2conda.envs.uvx-tools]
-reqs = [
+envs.pre-commit-additional-dependencies.skip-package = true
+envs.pre-commit-additional-dependencies.style = "requirements"
+envs.test.groups = "test"
+envs.test.python = "all"
+envs.uvx-tools.reqs = [
     # these used solely for specking tools to be used with uvx --constraints=...
     "conda-lock>=2.5.5",
     "copier",
@@ -342,15 +318,15 @@ reqs = [
     "twine>=5.0.0",
     "ty>=0.0.14",
 ]
-groups = [
+envs.uvx-tools.groups = [
     "basedpyright",
     "cog",
     "mypy",
     "nox",
     "typecheck-runner",
 ]
-skip-package = true
-style = "requirements"
+envs.uvx-tools.skip-package = true
+envs.uvx-tools.style = "requirements"
 
 # * Other tools ----------------------------------------------------------------
 
