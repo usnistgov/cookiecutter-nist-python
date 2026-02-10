@@ -7,7 +7,7 @@ reorder_arrays = true
 
 [[rule]]
 include = [ "**/pyproject.toml" ]
-keys = [ "dependency-groups", "project" ]
+keys = [ "project" ]
 
 [rule.formatting]
 reorder_arrays = false

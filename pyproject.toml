@@ -26,14 +26,16 @@ classifiers = [
     "Topic :: Scientific/Engineering",
 ]
 dependencies = [
+    # core dependencies
 ]
+
 [project.urls]
 Documentation = "https://pages.nist.gov/cookiecutter-nist-python/"
 Homepage = "https://github.com/usnistgov/cookiecutter-nist-python"
 
 [dependency-groups]
 dev = [
-    { include-group = "mypy" },      # so can use dmypy
+    { include-group = "mypy" },
     { include-group = "nox" },
     { include-group = "test" },
     { include-group = "typecheck" },
@@ -53,21 +55,9 @@ docs = [
     "sphinx-book-theme",
     "sphinx-copybutton",
 ]
-test-extras = [
-    "cookiecutter",
-    "copier",
-    "copier-template-extensions>=0.3.1",
-]
-# other packages/tools
+# other envs
 basedpyright = [ "basedpyright>=1.31.3" ]
 cog = [ "cogapp" ]
-ipython = [ "ipython" ]
-mypy = [ "mypy[faster-cache]>=1.15.0" ]
-nox = [ "nox>=2025.5.1" ]
-pylint = [ "pylint" ]
-pytest = [ "pytest" ]
-typecheck-runner = [ "typecheck-runner>=0.1.0; python_version>'3.9'" ]
-# other environments
 docs-live = [
     "sphinx-autobuild",
     { include-group = "docs" },
@@ -77,37 +67,45 @@ docs-spelling = [
     "sphinxcontrib-spelling",
     { include-group = "docs" },
 ]
+ipython = [ "ipython" ]
+mypy = [ "mypy[faster-cache]>=1.15.0" ]
+nox = [ "nox>=2025.5.1" ]
+pylint = [ "pylint" ]
+pytest = [ "pytest" ]
+test-extras = [
+    "cookiecutter",
+    "copier",
+    "copier-template-extensions>=0.3.1",
+]
 typecheck = [
     { include-group = "pylint" },
     { include-group = "pytest" },
     { include-group = "test-extras" },
     { include-group = "typecheck-runner" },
 ]
+typecheck-runner = [ "typecheck-runner>=0.1.0; python_version>'3.9'" ]
 
 # * uv -------------------------------------------------------------------------
 
 [tool.uv]
-managed = true
+required-version = ">=0.7.15"
 default-groups = [ "dev" ]
 fork-strategy = "requires-python"
-required-version = ">=0.7.15"
+managed = true
+pip.annotation-style = "line"
+pip.generate-hashes = true
 
 [tool.uv.dependency-groups]
+cog.requires-python = ">=3.14"
 dev.requires-python = ">=3.14"
-docs.requires-python = ">=3.14"
 docs-live.requires-python = ">=3.14"
 docs-spelling.requires-python = ">=3.14"
-# other tools
-cog.requires-python = ">=3.14"
+docs.requires-python = ">=3.14"
 ipython.requires-python = ">=3.14"
 mypy.requires-python = ">=3.14"
 nox.requires-python = ">=3.14"
 
 # * Checks ---------------------------------------------------------------------
-
-[tool.uv.pip]
-annotation-style = "line"
-generate-hashes = true
 
 [tool.repo-review]
 ignore = [
@@ -129,8 +127,12 @@ expand_tables = [
     "project.optional-dependencies",
     "project.scripts",
     "project.urls",
+    "tool.pyproject2conda",
+    "tool.pyright.executionEnvironments",
+    "tool.pytest",
+    "tool.typos",
+    "tool.uv.dependency-groups",
 ]
-collapse_tables = [  ]
 
 [tool.typos.default.extend-identifiers]
 CPY = "CPY"
@@ -180,21 +182,19 @@ filterwarnings = [
     "ignore: Dirty template:copier.errors.DirtyLocalWarning",
 ]
 
-[tool.coverage.report]
-show_missing = true
-exclude_also = [
+[tool.coverage]
+run.branch = true
+report.exclude_also = [
     "@overload",
     "if TYPE_CHECKING:",
 ]
-omit = [
-    "*/vendored/*",
-]
-include = [
+report.include = [
     "src/*",
 ]
-
-[tool.coverage.run]
-branch = true
+report.omit = [
+    "*/vendored/*",
+]
+report.show_missing = true
 
 # * typecheck ---------------------------------------------------------------------
 
@@ -221,10 +221,7 @@ enable_error_code = [
     "redundant-expr",
     "truthy-bool",
 ]
-
-[[tool.mypy.overrides]]
-ignore_missing_imports = true
-module = [ "cookiecutter.*" ]
+overrides = [ { ignore_missing_imports = true, module = [ "cookiecutter.*" ] } ]
 
 # [[tool.mypy.overrides]]
 # ignore_errors = true
@@ -259,25 +256,23 @@ reportPropertyTypeMismatch = true
 reportUntypedClassDecorator = true
 reportUntypedFunctionDecorator = true
 # Extra flags
-enableTypeIgnoreComments = false
-reportUnnecessaryTypeIgnoreComment = true
-reportUnreachable = "warning"
-
 deprecateTypingAliases = true
 enableReachabilityAnalysis = false
+enableTypeIgnoreComments = false
 reportCallInDefaultInitializer = true
 reportImplicitOverride = true
 reportImportCycles = true
 # reportMissingSuperCall = true
 reportUninitializedInstanceVariable = true
+reportUnnecessaryTypeIgnoreComment = true
+reportUnreachable = "warning"
 reportUnusedCallResult = true
-
 # type-checkers should type-check; linters should lint
 reportImplicitStringConcatenation = false
-reportPrivateUsage = false                # dupe of PLC2701
-reportPrivateImportUsage = false          # dupe of PLC2701
-reportUnusedImport = false                # dupe of F401
-reportUnusedVariable = false              # dupe of F841
+reportPrivateUsage = false
+reportPrivateImportUsage = false
+reportUnusedImport = false
+reportUnusedVariable = false
 
 [[tool.pyright.executionEnvironments]]
 root = "tests"
@@ -286,12 +281,10 @@ root = "tests"
 # reportMissingImports = false
 reportUnusedCallResult = false
 
-[tool.ty.analysis]
+[tool.ty]
 # Disable support for `type: ignore` comments
-respect-type-ignore-comments = false
-
-[tool.ty.src]
-include = [ "tests" ]
+analysis.respect-type-ignore-comments = false
+src.include = [ "tests" ]
 
 # * Dependency creation --------------------------------------------------------
 
@@ -361,5 +354,3 @@ new_fragment_template = "file: changelog.d/templates/new_fragment.md.j2"
 
 [tool.commitizen]
 use_shortcuts = true
-
-[tool.cruft]
