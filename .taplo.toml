@@ -20,6 +20,7 @@ keys = [
     "dependency-groups",
     "project",
     "tool.coverage",
+    "tool.mypy.overrides",
     "tool.pyproject2conda",
     "tool.uv",
 ]
