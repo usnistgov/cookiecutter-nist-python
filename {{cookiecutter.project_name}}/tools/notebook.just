@@ -4,6 +4,7 @@
 import "shared.just"
 
 NOTEBOOKS := "examples/usage"
+KERNEL_NAME := PACKAGE_NAME
 
 _nbqa_typecheck checker *files:
     {{ UVX_WITH_OPTS }} \
@@ -51,7 +52,8 @@ test-notebook *files=NOTEBOOKS:
     -x {{ files }}
 
 [group("notebook")]
-install-ipykernel: (nox "-s install-ipykernel")
+install-ipykernel:
+    uv run -m ipykernel install --user --name {{ PACKAGE_NAME }} --display-name "PYTHON [venv: {{ PACKAGE_NAME }}]"
 
 # Execute notebooks inplace using nbclient
 [group("notebook")]

@@ -38,7 +38,7 @@ dev = [
     { include-group = "mypy" },
     { include-group = "nox" },
     { include-group = "test" },
-    { include-group = "typecheck" },
+    { include-group = "type" },
 ]
 test = [
     "pytest-cov",
@@ -47,11 +47,17 @@ test = [
     { include-group = "pytest" },
     { include-group = "test-extras" },
 ]
+type = [
+    { include-group = "pylint" },
+    { include-group = "pytest" },
+    { include-group = "test-extras" },
+    { include-group = "typecheck-runner" },
+]
 docs = [
     "autodocsumm",
     "myst-parser",
     "sphinx>=5.3.0",
-    # myst-parser, ipython,
+    # other
     "sphinx-book-theme",
     "sphinx-copybutton",
 ]
@@ -76,12 +82,6 @@ test-extras = [
     "cookiecutter",
     "copier",
     "copier-template-extensions>=0.3.1",
-]
-typecheck = [
-    { include-group = "pylint" },
-    { include-group = "pytest" },
-    { include-group = "test-extras" },
-    { include-group = "typecheck-runner" },
 ]
 typecheck-runner = [ "typecheck-runner>=0.1.0; python_version>'3.9'" ]
 
@@ -119,20 +119,21 @@ ignore = [
 ]
 
 [tool.pyproject-fmt]
-indent = 4
-# max_supported_python = "3.13"
-keep_full_version = true
 expand_tables = [
     "project.entry-points",
     "project.optional-dependencies",
     "project.scripts",
     "project.urls",
+    "tool.mypy.overrides",
     "tool.pyproject2conda",
     "tool.pyright.executionEnvironments",
     "tool.pytest",
     "tool.typos",
     "tool.uv.dependency-groups",
 ]
+# max_supported_python = "3.13"
+indent = 4
+keep_full_version = true
 
 [tool.typos.default.extend-identifiers]
 CPY = "CPY"
@@ -153,6 +154,7 @@ addopts = [
 testpaths = [
     "tests",
 ]
+# markers
 markers = [
     "book: sphinx book theme",
     "click: Click cli",
@@ -173,14 +175,15 @@ markers = [
     "typer: Typer template",
     "version: update-version-scm (disabled by default)",
 ]
-minversion = "8"
-log_cli_level = "INFO"
-log_level = "INFO"
-strict_xfail = "true"
+# other options
 filterwarnings = [
     "error",
     "ignore: Dirty template:copier.errors.DirtyLocalWarning",
 ]
+log_cli_level = "INFO"
+log_level = "INFO"
+minversion = "8"
+strict_xfail = "true"
 
 [tool.coverage]
 run.branch = true
@@ -199,13 +202,6 @@ report.show_missing = true
 # * typecheck ---------------------------------------------------------------------
 
 [tool.mypy]
-files = [
-    "tests",
-]
-warn_unused_ignores = true
-warn_return_any = true
-warn_unused_configs = true
-warn_unreachable = true
 exclude = [
     ".eggs",
     ".nox",
@@ -214,27 +210,31 @@ exclude = [
     ".venv",
     "docs",
 ]
+files = [
+    "tests",
+]
+# options
 check_untyped_defs = true
-strict = false
 enable_error_code = [
     "ignore-without-code",
     "redundant-expr",
     "truthy-bool",
 ]
-overrides = [ { ignore_missing_imports = true, module = [ "cookiecutter.*" ] } ]
+strict = false
+warn_return_any = true
+warn_unreachable = true
+warn_unused_configs = true
+warn_unused_ignores = true
 
-# [[tool.mypy.overrides]]
-# ignore_errors = true
-# module = [  ]
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = [ "cookiecutter.*" ]
 
 [tool.pyrefly]
-project-includes = [ "tests" ]
 enabled-ignores = [ "pyrefly" ]
+project-includes = [ "tests" ]
 
 [tool.pyright]
-include = [
-    "tests",
-]
 exclude = [
     "**/.mypy_cache",
     "**/.numba_cache",
@@ -242,6 +242,9 @@ exclude = [
     ".nox/**",
     ".tox/**",
     ".venv/**",
+]
+include = [
+    "tests",
 ]
 typeCheckingMode = "strict"
 # typeCheckingMode = "standard"
@@ -269,8 +272,8 @@ reportUnreachable = "warning"
 reportUnusedCallResult = true
 # type-checkers should type-check; linters should lint
 reportImplicitStringConcatenation = false
-reportPrivateUsage = false
 reportPrivateImportUsage = false
+reportPrivateUsage = false
 reportUnusedImport = false
 reportUnusedVariable = false
 
