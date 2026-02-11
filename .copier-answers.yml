@@ -1,0 +1,15 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v0.6.0-125-gc983642
+_src_path: .
+command_line_interface: none
+conda_channel: wpk-nist
+email: wpk@nist.gov
+full_name: William P. Krekelberg
+github_username: usnistgov
+project_name: cookiecutter-nist-python
+project_short_description: All the boilerplate you need to create a Python package.
+project_slug: cookiecutter_nist_python
+pypi_username: wpk-nist
+sphinx_theme: sphinx_book_theme
+sphinx_use_autodocsumm: true
+year: '2023'
