@@ -5,7 +5,7 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-      time: "10:00"
+      time: "06:00"
     cooldown:
       default-days: 7
     groups:
@@ -16,7 +16,7 @@ updates:
     directory: ".github/actions/setup-cached-uv-and-python"
     schedule:
       interval: "daily"
-      time: "10:00"
+      time: "06:00"
     cooldown:
       default-days: 7
     groups:
@@ -28,7 +28,7 @@ updates:
     directory: "{{cookiecutter.project_name}}/.github/workflows"
     schedule:
       interval: "daily"
-      time: "10:00"
+      time: "06:00"
     cooldown:
       default-days: 7
     groups:
@@ -40,7 +40,7 @@ updates:
     directory: "{{cookiecutter.project_name}}/.github/actions/setup-cached-uv-and-python"
     schedule:
       interval: "daily"
-      time: "10:00"
+      time: "06:00"
     cooldown:
       default-days: 7
     groups:
@@ -52,6 +52,6 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-      time: "10:00"
+      time: "06:00"
     cooldown:
       default-days: 7
