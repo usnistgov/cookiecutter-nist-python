@@ -80,11 +80,6 @@ repos:
     rev: v2.15.2
     hooks:
       - id: pyproject-fmt
-  # ** validate
-  - repo: https://github.com/abravalheri/validate-pyproject
-    rev: v0.25
-    hooks:
-      - id: validate-pyproject
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
     rev: 2026.01.22
