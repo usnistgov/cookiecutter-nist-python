@@ -1,14 +1,10 @@
-# need this to pick up requires-python from pyproject.toml
-# extend = "./pyproject.toml"
-extend-include = [
-    "*.ipynb",
-]
 extend-exclude = [
     ".numba_cache",
     ".venv",
     "dist-conda",
-    # "tests/",
-    # "src/testpackage_book_nocli/tests",
+]
+extend-include = [
+    "*.ipynb",
 ]
 fix = true
 # unsafe-fixes = true
@@ -21,12 +17,14 @@ preview = true
 select = [
     "ALL",
 ]
+# fixable/unfixable
 # fixable = ["ALL"]
 unfixable = [
     "ERA",
     "PLR6104",
     "T",
 ]
+# ignores
 ignore = [
     "ANN401",  # - Any ok sometimes
     "COM",     # - flake8-commas, formatter should take care of this?
@@ -49,17 +47,22 @@ ignore = [
     "S607",    # - start-process-with-partial-path
     "TID252",  # - Allow relative imports
 ]
-# Use extend-ignore for project specific ignores. Prefer lint.extend-per-file-ignores."src/**/*.py" below
-# extend-ignore = [ ]
-isort.known-first-party = [
+
+[lint.isort]
+known-first-party = [
     "{{ cookiecutter.project_slug }}",
 ]
-pydocstyle.convention = "numpy"
-pylint.max-args = 15
-pylint.max-positional-args = 15
-pylint.max-public-methods = 30
 
-ruff.strictly-empty-init-modules = false
+[lint.pydocstyle]
+convention = "numpy"
+
+[lint.pylint]
+max-args = 15
+max-positional-args = 15
+max-public-methods = 30
+
+[lint.ruff]
+strictly-empty-init-modules = false
 
 [lint.per-file-ignores]
 "docs/conf.py" = [
@@ -75,7 +78,6 @@ ruff.strictly-empty-init-modules = false
 ]
 
 # Project specific ignores (avoid changing per-file-ignores directly)
-# extend-per-file-ignores."path/to/file.py" = [ ... ]
 [lint.extend-per-file-ignores]
 "**/*.ipynb" = [
     # "B018",  # - Don't remove useless expressions in notebooks

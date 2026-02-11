@@ -55,13 +55,18 @@ dev = [
     { include-group = "pytest-accept" },
     { include-group = "test" },
     { include-group = "test-notebook" },
-    { include-group = "typecheck" },
+    { include-group = "type" },
 ]
 test = [
     "pytest-cov",
     "pytest-sugar",
     "pytest-xdist",
     { include-group = "pytest" },
+]
+type = [
+    { include-group = "pylint" },
+    { include-group = "pytest" },
+    { include-group = "typecheck-runner" },
 ]
 docs = [
     {%- if cookiecutter.sphinx_use_autodocsumm %}
@@ -110,11 +115,6 @@ test-notebook = [
     "nbval",
     { include-group = "test" },
 ]
-typecheck = [
-    { include-group = "pylint" },
-    { include-group = "pytest" },
-    { include-group = "typecheck-runner" },
-]
 typecheck-runner = [ "typecheck-runner>=0.1.0; python_version>'3.9'" ]
 
 # * uv -------------------------------------------------------------------------
@@ -151,13 +151,10 @@ ignore = [
 ]
 
 [tool.check-wheel-contents]
-toplevel = [ "{{ cookiecutter.project_slug }}" ]
 src_dir = [ "src" ]
+toplevel = [ "{{ cookiecutter.project_slug }}" ]
 
 [tool.pyproject-fmt]
-indent = 4
-# max_supported_python = "3.13"
-keep_full_version = true
 expand_tables = [
     "project.entry-points",
     "project.optional-dependencies",
@@ -169,6 +166,9 @@ expand_tables = [
     "tool.typos",
     "tool.uv.dependency-groups",
 ]
+# max_supported_python = "3.13"
+indent = 4
+keep_full_version = true
 
 [tool.typos.default.extend-identifiers]
 CPY = "CPY"
@@ -190,11 +190,12 @@ testpaths = [
     "{{ cookiecutter.project_slug }}",
     "tests",
 ]
-minversion = "8"
+# other options
+filterwarnings = [ "error" ]
 log_cli_level = "INFO"
 log_level = "INFO"
+minversion = "8"
 strict_xfail = "true"
-filterwarnings = [ "error" ]
 
 [tool.coverage]
 run.branch = true
@@ -219,14 +220,6 @@ report.show_missing = true
 # * typecheck ---------------------------------------------------------------------
 
 [tool.mypy]
-files = [
-    "src",
-    "tests",
-]
-warn_unused_ignores = true
-warn_return_any = true
-warn_unused_configs = true
-warn_unreachable = true
 exclude = [
     ".eggs",
     ".nox",
@@ -235,13 +228,22 @@ exclude = [
     ".venv",
     "docs",
 ]
-check_untyped_defs = true
+files = [
+    "src",
+    "tests",
+]
 strict = true
+# options
+check_untyped_defs = true
 enable_error_code = [
     "ignore-without-code",
     "redundant-expr",
     "truthy-bool",
 ]
+warn_return_any = true
+warn_unreachable = true
+warn_unused_configs = true
+warn_unused_ignores = true
 
 # [[tool.mypy.overrides]]
 # ignore_missing_imports = true
@@ -252,14 +254,10 @@ enable_error_code = [
 # module = [  ]
 
 [tool.pyrefly]
-project-includes = [ "src", "tests" ]
 enabled-ignores = [ "pyrefly" ]
+project-includes = [ "src", "tests" ]
 
 [tool.pyright]
-include = [
-    "src",
-    "tests",
-]
 exclude = [
     "**/.mypy_cache",
     "**/.numba_cache",
@@ -267,6 +265,10 @@ exclude = [
     ".nox/**",
     ".tox/**",
     ".venv/**",
+]
+include = [
+    "src",
+    "tests",
 ]
 typeCheckingMode = "strict"
 # typeCheckingMode= "standard"
@@ -288,14 +290,14 @@ reportCallInDefaultInitializer = true
 reportImplicitOverride = true
 reportImportCycles = true
 # reportMissingSuperCall = true
+reportUninitializedInstanceVariable = true
 reportUnnecessaryTypeIgnoreComment = true
 reportUnreachable = "warning"
-reportUninitializedInstanceVariable = true
 reportUnusedCallResult = true
 # type-checkers should type-check; linters should lint
 reportImplicitStringConcatenation = false
-reportPrivateUsage = false
 reportPrivateImportUsage = false
+reportPrivateUsage = false
 reportUnusedImport = false
 reportUnusedVariable = false
 
@@ -326,26 +328,8 @@ deps = "pip"
 [tool.pyproject2conda.dependencies]
 pytest-accept = { pip = true }
 
-[tool.pyproject2conda.envs.build]
-groups = "build-system.requires"
-skip-package = true
-style = "requirements"
-
 [tool.pyproject2conda.envs.dev]
 groups = "dev"
-style = [ "requirements", "yaml" ]
-
-[tool.pyproject2conda.envs.docs]
-groups = "docs"
-style = "requirements"
-
-[tool.pyproject2conda.envs.docs-live]
-groups = "docs-live"
-style = "requirements"
-
-[tool.pyproject2conda.envs.docs-spelling]
-groups = "docs-spelling"
-style = "requirements"
 
 [tool.pyproject2conda.envs.pre-commit-additional-dependencies]
 reqs = [
@@ -360,22 +344,11 @@ style = "requirements"
 [tool.pyproject2conda.envs.test]
 groups = "test"
 python = "all"
-style = [ "requirements", "yaml" ]
 
 [tool.pyproject2conda.envs.test-extras]
 groups = "test-extras"
 python = "all"
 skip-package = true
-style = [ "requirements", "yaml" ]
-
-[tool.pyproject2conda.envs.test-notebook]
-groups = "test-notebook"
-style = "requirements"
-
-[tool.pyproject2conda.envs.typecheck]
-groups = "typecheck"
-python = "all"
-style = "requirements"
 
 [tool.pyproject2conda.envs.uvx-tools]
 reqs = [
