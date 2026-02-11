@@ -160,6 +160,7 @@ expand_tables = [
     "project.optional-dependencies",
     "project.scripts",
     "project.urls",
+    "tool.mypy.overrides",
     "tool.pyproject2conda",
     "tool.pyright.executionEnvironments",
     "tool.pytest",

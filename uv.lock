@@ -406,7 +406,7 @@ test-extras = [
     { name = "copier" },
     { name = "copier-template-extensions" },
 ]
-typecheck = [
+type = [
     { name = "cookiecutter" },
     { name = "copier" },
     { name = "copier-template-extensions" },
@@ -479,7 +479,7 @@ test-extras = [
     { name = "copier" },
     { name = "copier-template-extensions", specifier = ">=0.3.1" },
 ]
-typecheck = [
+type = [
     { name = "cookiecutter" },
     { name = "copier" },
     { name = "copier-template-extensions", specifier = ">=0.3.1" },
