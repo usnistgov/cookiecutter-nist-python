@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "df1e63cea5586e557c531de373fc34836f70d7ab",
-  "checkout": "feature/update-taplo-config",
+  "commit": "3e62ffc2956a8b66dce4e96a3f6043b25d88319b",
+  "checkout": "feature/update-taplo",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",
@@ -19,7 +19,7 @@
       "__answers": "",
       "_copy_without_render": [],
       "_template": ".",
-      "_commit": "df1e63cea5586e557c531de373fc34836f70d7ab"
+      "_commit": "3e62ffc2956a8b66dce4e96a3f6043b25d88319b"
     }
   },
   "directory": null
