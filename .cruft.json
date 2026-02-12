@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "3b6f493f385c75fcde11e45e001e5c8f93d8c231",
-  "checkout": "feature/remove-validate-pyproject",
+  "commit": "4c762cd5396e32d1b82e0340252647b31d81a874",
+  "checkout": "feature/edit-pyproject",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",
@@ -19,7 +19,7 @@
       "__answers": "",
       "_copy_without_render": [],
       "_template": ".",
-      "_commit": "3b6f493f385c75fcde11e45e001e5c8f93d8c231"
+      "_commit": "4c762cd5396e32d1b82e0340252647b31d81a874"
     }
   },
   "directory": null

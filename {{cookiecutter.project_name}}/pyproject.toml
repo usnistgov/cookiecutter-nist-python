@@ -89,7 +89,7 @@ docs = [
     {%- endif %}
     "sphinx-copybutton",
 ]
-# other envs/packages
+# other groups
 basedpyright = [ "basedpyright>=1.31.3" ]
 cog = [ "cogapp" ]
 docs-live = [
@@ -155,6 +155,7 @@ src_dir = [ "src" ]
 toplevel = [ "{{ cookiecutter.project_slug }}" ]
 
 [tool.pyproject-fmt]
+# max_supported_python = "3.13"
 expand_tables = [
     "project.entry-points",
     "project.optional-dependencies",
@@ -167,7 +168,6 @@ expand_tables = [
     "tool.typos",
     "tool.uv.dependency-groups",
 ]
-# max_supported_python = "3.13"
 indent = 4
 keep_full_version = true
 
@@ -191,7 +191,7 @@ testpaths = [
     "{{ cookiecutter.project_slug }}",
     "tests",
 ]
-# other options
+# options
 filterwarnings = [ "error" ]
 log_cli_level = "INFO"
 log_level = "INFO"
@@ -279,21 +279,21 @@ typeCheckingMode = "strict"
 #     "noxfile.py",
 #     "tools/*.py",
 # ]
-reportOverlappingOverload = true
-reportPropertyTypeMismatch = true
-reportUntypedClassDecorator = true
-reportUntypedFunctionDecorator = true
-# Extra flags
+# options
+# reportMissingSuperCall = true
 deprecateTypingAliases = true
 enableReachabilityAnalysis = false
 enableTypeIgnoreComments = false
 reportCallInDefaultInitializer = true
 reportImplicitOverride = true
 reportImportCycles = true
-# reportMissingSuperCall = true
+reportOverlappingOverload = true
+reportPropertyTypeMismatch = true
 reportUninitializedInstanceVariable = true
 reportUnnecessaryTypeIgnoreComment = true
 reportUnreachable = "warning"
+reportUntypedClassDecorator = true
+reportUntypedFunctionDecorator = true
 reportUnusedCallResult = true
 # type-checkers should type-check; linters should lint
 reportImplicitStringConcatenation = false
