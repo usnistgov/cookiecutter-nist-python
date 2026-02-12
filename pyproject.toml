@@ -61,7 +61,7 @@ docs = [
     "sphinx-book-theme",
     "sphinx-copybutton",
 ]
-# other envs
+# other groups
 basedpyright = [ "basedpyright>=1.31.3" ]
 cog = [ "cogapp" ]
 docs-live = [
@@ -119,6 +119,7 @@ ignore = [
 ]
 
 [tool.pyproject-fmt]
+# max_supported_python = "3.13"
 expand_tables = [
     "project.entry-points",
     "project.optional-dependencies",
@@ -131,7 +132,6 @@ expand_tables = [
     "tool.typos",
     "tool.uv.dependency-groups",
 ]
-# max_supported_python = "3.13"
 indent = 4
 keep_full_version = true
 
@@ -175,7 +175,7 @@ markers = [
     "typer: Typer template",
     "version: update-version-scm (disabled by default)",
 ]
-# other options
+# options
 filterwarnings = [
     "error",
     "ignore: Dirty template:copier.errors.DirtyLocalWarning",
