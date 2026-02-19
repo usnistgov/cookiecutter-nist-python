@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "26179d2edca22b82e6c3cf665693550d6e6fceec",
-  "checkout": "feature/update-requirements",
+  "commit": "e90254f0fb38e410fa7d22eff43fbe6a6857e720",
+  "checkout": "feature/update-uv-dependabot",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",
@@ -19,7 +19,7 @@
       "__answers": "",
       "_copy_without_render": [],
       "_template": ".",
-      "_commit": "26179d2edca22b82e6c3cf665693550d6e6fceec"
+      "_commit": "e90254f0fb38e410fa7d22eff43fbe6a6857e720"
     }
   },
   "directory": null
