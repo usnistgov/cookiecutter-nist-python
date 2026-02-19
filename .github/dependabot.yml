@@ -56,3 +56,7 @@ updates:
       time: "06:00"
     cooldown:
       default-days: 7
+    groups:
+      actions:
+        patterns:
+          - "*"
