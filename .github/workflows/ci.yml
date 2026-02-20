@@ -205,7 +205,9 @@ jobs:
   docs:
     permissions:
       contents: write
-    uses: ./.github/workflows/reusable-docs.yml
+    uses: ./.github/workflows/docs.yml
+    with:
+      deploy: false
 
   pinact:
     name: Pin actions

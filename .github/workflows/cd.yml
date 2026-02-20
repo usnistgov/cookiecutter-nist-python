@@ -1,0 +1,31 @@
+name: CD
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: "Force deploy."
+        required: false
+        type: boolean
+        default: false
+  release:
+    types:
+      - published
+
+env:
+  FORCE_COLOR: "3"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  docs:
+    permissions:
+      contents: write
+    uses: ./.github/workflows/docs.yml
+    with:
+      deploy:
+        ${{ (github.event_name == 'release' && github.event.action ==
+        'published') || (github.event_name == 'workflow_dispatch' &&
+        inputs.deploy) }}
