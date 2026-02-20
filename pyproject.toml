@@ -1,6 +1,6 @@
 [project]
 name = "cookiecutter-nist-python"
-version = "0.6.0"
+version = "0.7.0"
 description = "Cookiecutter template for NIST python packages"
 readme = "README.md"
 keywords = [
