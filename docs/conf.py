@@ -22,6 +22,8 @@
 # import cookiecutter_nist_python
 from pathlib import Path
 
+import tomllib
+
 # -- General configuration ---------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -242,7 +244,9 @@ author = "William P. Krekelberg"
 # the built documents.
 #
 # The short X.Y version.
-release = version = "latest"
+release = version = tomllib.loads(
+    Path("../pyproject.toml").read_text(encoding="utf-8")
+)["project"]["version"]
 
 # if always want to print "latest"
 # release = "latest"
