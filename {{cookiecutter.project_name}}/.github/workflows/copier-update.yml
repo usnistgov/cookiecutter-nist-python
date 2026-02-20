@@ -1,5 +1,5 @@
 {% raw -%}
-name: Update repository with copier
+name: Copier update repository
 on:
   schedule:
     - cron: "0 2 * * 1" # Every Monday at 2am
