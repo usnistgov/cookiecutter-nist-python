@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "4a9fa5ad1e480274b5cc83494e906a10bb5708b3",
-  "checkout": "feature/add-smoke-test",
+  "commit": "af1ded14fa31f0093ae2954920010774344b8357",
+  "checkout": "feature/nox-coverage-options",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",
@@ -19,7 +19,7 @@
       "__answers": "",
       "_copy_without_render": [],
       "_template": ".",
-      "_commit": "4a9fa5ad1e480274b5cc83494e906a10bb5708b3"
+      "_commit": "af1ded14fa31f0093ae2954920010774344b8357"
     }
   },
   "directory": null
