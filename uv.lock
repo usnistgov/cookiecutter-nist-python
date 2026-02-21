@@ -2093,14 +2093,14 @@ wheels = [
 
 [[package]]
 name = "typecheck-runner"
-version = "0.1.5"
+version = "0.1.6"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "packaging" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/8f/c2/b66cd3d6057abf6e2c2b88c3c6081d5929ac1bb3be57c6aaaf58b331432c/typecheck_runner-0.1.5.tar.gz", hash = "sha256:2c056aa26acb486cc0d8825ec391b9f52aa9abba2c74a4f0d36ab4d83bea7de6", size = 13371, upload-time = "2026-01-21T14:22:19.098Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/23/f3/0370a9fc99f924ac3598ad4eb1f8ec97c3ab491d79a172b466fae912fad8/typecheck_runner-0.1.6.tar.gz", hash = "sha256:a97f7ce67bf6397fe0e0e4072c1813a8961dc8e8233d0745d2702c29cd61e88d", size = 13940, upload-time = "2026-02-20T19:06:01.279Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/27/69/a092cefa2cedc2d31bc9b38df598c63e5b1214db218ed28dee2815ffdc2b/typecheck_runner-0.1.5-py3-none-any.whl", hash = "sha256:2071d945d4aae2f262ce72b84e17cca28d0863723c9ab2284f98e8e7d758ac48", size = 10560, upload-time = "2026-01-21T14:22:18.038Z" },
+    { url = "https://files.pythonhosted.org/packages/e1/a9/d5b7feffc2159a976d0d2c1552b966e27cf014584004331eabc1387c0cb0/typecheck_runner-0.1.6-py3-none-any.whl", hash = "sha256:ae402b59bb3d6239e619d94aaa07ca4404b4b308d70daf2c0550238fdd1ccc7b", size = 10578, upload-time = "2026-02-20T19:05:59.993Z" },
 ]
 
 [[package]]
