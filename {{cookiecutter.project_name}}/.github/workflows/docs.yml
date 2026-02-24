@@ -1,4 +1,3 @@
-{% raw -%}
 name: Docs build and deploy
 
 on:
@@ -54,11 +53,10 @@ jobs:
 
       - name: Deploy docs
         uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e # v4.0.0
-        if: ${{ inputs.deploy }}
+        if: {% raw %}${{ inputs.deploy }}{% endraw %}
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
           publish_dir: ./docs/_build/html
           publish_branch: nist-pages
-          force_orphan: ${{ inputs.no-history }}
-          commit_message: ${{ github.event.head_commit.message }}
-{%- endraw %}
+          force_orphan: {% raw %}${{ inputs.no-history }}{% endraw %}
+          commit_message: {% raw %}${{ github.event.head_commit.message }}{% endraw %}
