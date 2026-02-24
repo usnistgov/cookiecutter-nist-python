@@ -19,13 +19,13 @@ outputs:
     description:
       "The installed Python or PyPy version. Useful when given a version range
       as input."
-    value: {% raw %}${{ steps.setup-python.outputs.python-version }}{% endraw %}
+    value: ${{ "{{ steps.setup-python.outputs.python-version }}" }}
   cache-hit:
     description: "A boolean value to indicate a cache entry was found"
-    value: {% raw %}${{ steps.setup-python.outputs.cache-hit }}{% endraw %}
+    value: ${{ "{{ steps.setup-python.outputs.cache-hit }}" }}
   python-path:
     description: "The absolute path to the Python or PyPy executable."
-    value: {% raw %}${{ steps.setup-python.outputs.pytyhon-path }}{% endraw %}
+    value: ${{ "{{ steps.setup-python.outputs.pytyhon-path }}" }}
 
 runs:
   using: composite
@@ -34,10 +34,10 @@ runs:
       id: setup-python
       uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
       with:
-        python-version: {% raw %}${{ inputs.python-version }}{% endraw %}
-        python-version-file: {% raw %}${{ inputs.python-version-file }}{% endraw %}
+        python-version: ${{ "{{ inputs.python-version }}" }}
+        python-version-file: ${{ "{{ inputs.python-version-file }}" }}
     - name: Setup cached uv
       id: setup-cached-uv
       uses: hynek/setup-cached-uv@757bedc3f972eb7227a1aa657651f15a8527c817 # v2.3.0
       with:
-        cache-dependency-path: {% raw %}${{ inputs.cache-dependency-path }}{% endraw %}
+        cache-dependency-path: ${{ "{{ inputs.cache-dependency-path }}" }}

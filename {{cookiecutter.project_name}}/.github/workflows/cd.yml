@@ -16,7 +16,7 @@ env:
   FORCE_COLOR: "3"
 
 concurrency:
-  group: {% raw %}${{ github.workflow }}-${{ github.ref }}{% endraw %}
+  group: ${{ "{{ github.workflow }}" }}-${{ "{{ github.ref }}" }}
   cancel-in-progress: true
 
 jobs:
@@ -26,9 +26,9 @@ jobs:
     uses: ./.github/workflows/docs.yml
     with:
       deploy:
-        {% raw %}${{ (github.event_name == 'release' && github.event.action ==
+        ${{ "{{ (github.event_name == 'release' && github.event.action ==
         'published') || (github.event_name == 'workflow_dispatch' &&
-        inputs.deploy) }}{% endraw %}
+        inputs.deploy) }}" }}
 
   # would like to do this with a reusable workflow
   # see https://github.com/pypa/gh-action-pypi-publish/issues/166
@@ -39,12 +39,11 @@ jobs:
   #   uses: ./.github/workflows/pypi-package.yml
   #   with:
   #     deploy:
-  #       {% raw %}${{ (github.event_name == 'release' && github.event.action ==
+  #       ${{ "{{ (github.event_name == 'release' && github.event.action ==
   #       'published') || (github.event_name == 'workflow_dispatch' &&
-  #       inputs.deploy) }}{% endraw %}
+  #       inputs.deploy) }}" }}
   #     check-package:
-  #       {% raw %}${{ github.event_name == 'release' && github.event.action == 'published'
-  #       }}{% endraw %}
+  #       ${{ "{{ github.event_name == 'release' && github.event.action == 'published' }}" }}
   #     smoke-test: false
   dist:
     name: Build and verify package
@@ -77,16 +76,16 @@ jobs:
       - name: Check version
         if: github.event_name == 'release' && github.event.action == 'published'
         env:
-          tag_name: {% raw %}${{ github.event.release.tag_name }}{% endraw %}
+          tag_name: ${{ "{{ github.event.release.tag_name }}" }}
         run: >-
-          {% raw %}uv run --script tools/check_dist_version.py --version "$tag_name" --
-          "${DIST}"/*.whl "${DIST}"/*.tar.gz{% endraw %}
+          uv run --script tools/check_dist_version.py --version "$tag_name" --
+          "${DIST}"/*.whl "${DIST}"/*.tar.gz
 
   smoke-test:
     name: Smoke test package
     if:
-      {% raw %}${{ (github.event_name == 'release' && github.event.action == 'published')
-      || (github.event_name == 'workflow_dispatch' && inputs.deploy) }}{% endraw %}
+      ${{ "{{ (github.event_name == 'release' && github.event.action == 'published')
+      || (github.event_name == 'workflow_dispatch' && inputs.deploy) }}" }}
     needs:
       - dist
     runs-on: ubuntu-latest
@@ -113,8 +112,8 @@ jobs:
   publish-testpypi:
     name: Publish package to testpypi
     if:
-      {% raw %}${{ (github.event_name == 'release' && github.event.action == 'published')
-      || (github.event_name == 'workflow_dispatch' && inputs.deploy) }}{% endraw %}
+      ${{ "{{ (github.event_name == 'release' && github.event.action == 'published')
+      || (github.event_name == 'workflow_dispatch' && inputs.deploy) }}" }}
     needs:
       - dist
       - smoke-test
@@ -137,8 +136,8 @@ jobs:
   publish-pypi:
     name: Publish package to pypi
     if:
-      {% raw %}${{ (github.event_name == 'release' && github.event.action == 'published')
-      || (github.event_name == 'workflow_dispatch' && inputs.deploy) }}{% endraw %}
+      ${{ "{{ (github.event_name == 'release' && github.event.action == 'published')
+      || (github.event_name == 'workflow_dispatch' && inputs.deploy) }}" }}
     needs:
       - dist
       - smoke-test
