@@ -179,6 +179,7 @@ markers = [
 filterwarnings = [
     "error",
     "ignore: Dirty template:copier.errors.DirtyLocalWarning",
+    "ignore: urllib3:Warning",
 ]
 log_cli_level = "INFO"
 log_level = "INFO"

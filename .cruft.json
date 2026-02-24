@@ -1,7 +1,7 @@
 {
   "template": ".",
-  "commit": "af1ded14fa31f0093ae2954920010774344b8357",
-  "checkout": "feature/nox-coverage-options",
+  "commit": "78b556db7412f57b521d3ba35c97f1e8e1082e32",
+  "checkout": "feature/update-deps",
   "context": {
     "cookiecutter": {
       "project_name": "cookiecutter-nist-python",
@@ -19,7 +19,7 @@
       "__answers": "",
       "_copy_without_render": [],
       "_template": ".",
-      "_commit": "af1ded14fa31f0093ae2954920010774344b8357"
+      "_commit": "78b556db7412f57b521d3ba35c97f1e8e1082e32"
     }
   },
   "directory": null
