@@ -71,12 +71,12 @@ repos:
       - id: taplo-lint
         args: ["--no-schema"]
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: v2.16.1
+    rev: v2.16.2
     hooks:
       - id: pyproject-fmt
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2026.02.20
+    rev: 2026.02.22
     hooks:
       - id: validate-pyproject
         name: validate-pyproject-schema-store
@@ -262,7 +262,7 @@ repos:
   # * Notebook specific --------------------------------------------------------
   # * Strip out metadata from notebooks
   - repo: https://github.com/kynan/nbstripout
-    rev: 0.9.0
+    rev: 0.9.1
     hooks:
       - id: nbstripout
         args:
