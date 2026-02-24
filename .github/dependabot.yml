@@ -4,9 +4,9 @@ updates:
   - package-ecosystem: github-actions
     directories:
       - "/"
-      - "/.github/actions/setup-cached-uv-and-python"
-      - "/{{cookiecutter.project_name}}/.github/workflows"
-      - "/{{cookiecutter.project_name}}/.github/actions/setup-cached-uv-and-python"
+      - ".github/actions/setup-cached-uv-and-python"
+      - "{{cookiecutter.project_name}}/.github/workflows"
+      - "{{cookiecutter.project_name}}/.github/actions/setup-cached-uv-and-python"
     schedule:
       interval: daily
       time: "06:00"
