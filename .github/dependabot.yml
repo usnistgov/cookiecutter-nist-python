@@ -24,29 +24,29 @@ updates:
         patterns:
           - "*"
   # update workflows in template
-  - package-ecosystem: github-actions
-    directory: "/{{cookiecutter.project_name}}/.github/workflows"
-    schedule:
-      interval: "daily"
-      time: "06:00"
-    cooldown:
-      default-days: 7
-    groups:
-      actions:
-        patterns:
-          - "*"
-  # update actions in template
-  - package-ecosystem: github-actions
-    directory: "/{{cookiecutter.project_name}}/.github/actions/setup-cached-uv-and-python"
-    schedule:
-      interval: "daily"
-      time: "06:00"
-    cooldown:
-      default-days: 7
-    groups:
-      actions:
-        patterns:
-          - "*"
+  # - package-ecosystem: github-actions
+  #   directory: "/{{cookiecutter.project_name}}/.github/workflows"
+  #   schedule:
+  #     interval: "daily"
+  #     time: "06:00"
+  #   cooldown:
+  #     default-days: 7
+  #   groups:
+  #     actions:
+  #       patterns:
+  #         - "*"
+  # # update actions in template
+  # - package-ecosystem: github-actions
+  #   directory: "/{{cookiecutter.project_name}}/.github/actions/setup-cached-uv-and-python"
+  #   schedule:
+  #     interval: "daily"
+  #     time: "06:00"
+  #   cooldown:
+  #     default-days: 7
+  #   groups:
+  #     actions:
+  #       patterns:
+  #         - "*"
   # update uv
   - package-ecosystem: "uv"
     directory: "/"
