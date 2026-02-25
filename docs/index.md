@@ -9,6 +9,7 @@
 
 tutorial
 license
+ci
 contributing
 authors
 changelog
