@@ -18,9 +18,9 @@ trigger `on: push` or `on: pull_request` workflows.
   - Under `Settings -> Secrets and variables -> Actions -> Secrets` add `PAT`
     with generated token. You can also use [gh](https://cli.github.com/) using
 
-   ```bash
-    gh secret set PAT
-    ```
+  ```bash
+   gh secret set PAT
+  ```
 
 ## Trusted publishing
 
