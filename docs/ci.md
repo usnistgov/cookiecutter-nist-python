@@ -16,7 +16,11 @@ trigger `on: push` or `on: pull_request` workflows.
     with `contents: write`, `pull_requests: write` and `workflows: write`
     permissions.
   - Under `Settings -> Secrets and variables -> Actions -> Secrets` add `PAT`
-    with generated token.
+    with generated token. You can also use [gh](https://cli.github.com/) using
+
+   ```bash
+    gh secret set PAT
+    ```
 
 ## Trusted publishing
 
