@@ -1,7 +1,7 @@
-name: Bump pre-commit hook versions
+name: Update pre-commit hook versions
 on:
   schedule:
-    - cron: "0 2 * * 1" # Every Monday at 2am
+    - cron: "0 2 * * 0,2,4" # Every sun, tues, thur at 2am
   workflow_dispatch:
 
 permissions:
@@ -27,30 +27,17 @@ jobs:
       - name: Update pre-commit hooks
         run: just lint-upgrade
 
-      - name: Check for changes
-        continue-on-error: false
-        id: check
-        run: |
-          if ! git diff --quiet -- .copier-answers.yml; then
-            CHANGES=1
-          else
-            CHANGES=0
-          fi
-          echo "has_changes=$CHANGES" >> "$GITHUB_OUTPUT"
-
       - name: Git config
-        if: steps.check.outputs.has_changes == '1'
         run: |
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          git restore --staged .
 
       - name: Create pull request
-        if: steps.check.outputs.has_changes == '1'
         id: cpr
         uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8.1.0
         with:
-          token: ${{ secrets.PAT }}
+          # token: ${{ secrets.PAT }}  # use when have permissions
+          token: ${{ secrets.GITHUB_TOKEN }}
           add-paths: .
           commit-message: "chore(deps): update template pre-commit hooks"
           title: "chore(deps): update template pre-commit hooks"

@@ -5,7 +5,7 @@
 ci:
   autoupdate_commit_msg: "chore(deps): update pre-commit hooks"
   autofix_commit_msg: "style: pre-commit fixes"
-  autoupdate_schedule: "weekly"
+  autoupdate_schedule: "quarterly"
   skip:
     - uv-lock
     - pip-compile
@@ -160,7 +160,7 @@ repos:
           - "--custom-command=prek run pyproject2conda-project --all-files"
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.10.5
+    rev: 0.10.6
     hooks:
       - id: uv-lock
         alias: requirements
@@ -173,7 +173,7 @@ repos:
 
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v4.13.8
+    rev: v4.13.9
     hooks:
       - id: commitizen
         stages: [commit-msg]
