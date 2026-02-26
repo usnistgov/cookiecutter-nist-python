@@ -4,25 +4,27 @@ The following should be setup on the github page of the repo.
 
 ## Copier/cruft update
 
-By default, the cruft/copier update workflows use `GITHUB_TOKEN` to create pull
-requests. Enable [pull requests from workflows] under
-`Settings -> Actions -> General` tab of the github repo.
+By default, the generated repo will have `.github/workflows/copier-update.yml`
+or `.github/workflows/cruft-update.yml`. These will periodically check for
+updates to the template and create a pr with changes. These require a token to
+trigger `on: push` and `on: pull_request` workflows, and to update workflow
+files. Create the token using one of the following:
 
-To allow pull requests to trigger `on: push` and `on: pul_request` workflows,
-and to update workflow files, you'll need to instead use a (fine-grained or
-classic) personal access token.
+- [Classic personal access token][PAT-classic] with `repo` and `workflows` scope
+- [Fine-grained personal access token][PAT-fine] with `contents: write`,
+  `pull_requests: write` and `workflows: write` permissions.
 
-- [Create token] with `contents: write`, `pull_requests: write` and
-  `workflows: write` permissions.
+Also, [allow workflows to create pull requests][pr-from-workflows]
+
+Add the token to the github repo using either:
+
 - Under `Settings -> Secrets and variables -> Actions -> Secrets` add `PAT` with
-  generated token. You can also use [gh] using
+  generated token.
+- Use [github cli][gh]:
 
-```bash
- gh secret set PAT
-```
-
-- Edit token in `.github/workflows/copier[cruft]-update.yml` to use
-  `${{ secrets.PAT }}`
+  ```bash
+  gh secret set PAT
+  ```
 
 ## Trusted publishing
 
@@ -39,10 +41,12 @@ It is a good idea to setup a merge rule. This can be done under
 - Select `Require status checks to pass`. Add `pre-commit.ci - pr` and
   `required-checks-pass` to the `Status checks that are required` list.
 
-[pull requests from workflows]:
+[pr-from-workflows]:
   https://github.blog/changelog/2022-05-03-github-actions-prevent-github-actions-from-creating-and-approving-pull-requests/
-[Create token]:
-  https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens
 [gh]: https://cli.github.com/
 [pypi]: https://pypi.org/
 [test.pypi]: https://test.pypi.org/
+[PAT-classic]:
+  https://github.com/peter-evans/create-pull-request#:~:text=Classic-,Personal%20Access%20Token%20(PAT),-with%20repo%20scope
+[PAT-fine]:
+  https://github.com/peter-evans/create-pull-request#:~:text=Fine%2Dgrained-,Personal%20Access%20Token%20(PAT),-with%20contents%3A%20write
