@@ -21,7 +21,7 @@ classic) personal access token.
  gh secret set PAT
 ```
 
-- Edit token in `.github/workflows/cruft[copier]-update.yml` to use
+- Edit token in `.github/workflows/copier[cruft]-update.yml` to use
   `${{ secrets.PAT }}`
 
 ## Trusted publishing
