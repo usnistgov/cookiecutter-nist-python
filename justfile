@@ -309,8 +309,13 @@ cruft-update:
     {{ UVX_WITH_OPTS }} cruft update --skip-apply-ask --checkout $(git branch --show-current)
 
 [group("tools")]
-copier-update *options="-r main --trust -A":
-    {{ UVX_WITH_OPTS }} --with copier-template-extensions copier update {{ options }}
+copier-update *options="":
+    {{ UVX_WITH_OPTS }} --with copier-template-extensions \
+    copier update \
+    -r $(git branch --show-current) \
+    --trust
+    -A
+    {{ options }}
 
 # create changelog snippet with scriv
 [group("tools")]
