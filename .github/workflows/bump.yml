@@ -40,6 +40,7 @@ jobs:
           add-paths: .
           commit-message: "chore(deps): update template pre-commit hooks"
           title: "chore(deps): update template pre-commit hooks"
+          labels: dependencies
           branch: prek/autoupdate
           delete-branch: true
           body: |

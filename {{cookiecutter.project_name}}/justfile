@@ -296,6 +296,13 @@ list-dist:
     unzip -vl dist/*.whl
     du -skhc dist/*
 
+# * GitHub cli -----------------------------------------------------------------
+
+# sync labels with template
+[group("tools")]
+gh-label-sync:
+    gh label clone usnistgov/cookiecutter-nist-python
+
 # * Other tools ----------------------------------------------------------------
 
 # Run ipython with ephemeral current environment
