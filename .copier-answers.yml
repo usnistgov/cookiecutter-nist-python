@@ -1,6 +1,6 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
 _commit: v0.7.0-31-g97bc45b
-_src_path: ../cookiecutter-nist-python
+_src_path: .
 command_line_interface: none
 conda_channel: wpk-nist
 email: wpk@nist.gov
