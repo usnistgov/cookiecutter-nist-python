@@ -305,8 +305,11 @@ ipython *options:
 
 # update templates
 [group("tools")]
-cruft-update:
-    {{ UVX_WITH_OPTS }} cruft update --skip-apply-ask --checkout $(git branch --show-current)
+cruft-update *options="":
+    {{ UVX_WITH_OPTS }} \
+    cruft update --skip-apply-ask \
+    -r $(git branch --show-current) \
+    {{ options }}
 
 [group("tools")]
 copier-update *options="":
