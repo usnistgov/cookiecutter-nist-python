@@ -311,10 +311,8 @@ cruft-update:
 [group("tools")]
 copier-update *options="":
     {{ UVX_WITH_OPTS }} --with copier-template-extensions \
-    copier update \
+    copier update --trust -A \
     -r $(git branch --show-current) \
-    --trust
-    -A
     {{ options }}
 
 # create changelog snippet with scriv
