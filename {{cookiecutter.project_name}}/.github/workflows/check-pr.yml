@@ -31,8 +31,8 @@ jobs:
         with:
           type_labels:
             '{"feat": "enhancement", "fix": "bug", "docs": "documentation",
-            "breaking": "breaking", "test": "testing", "ci": "github_actions"}'
-          ignored_types: '["build", "chore", "perf", "refactor", "style"]'
+            "breaking": "breaking", "test": "testing"}'
+          ignored_types: '["build", "chore", "ci", "perf", "refactor", "style"]'
           ignore_label: internal
 
   label-from-files:
