@@ -30,7 +30,7 @@ jobs:
         with:
           type_labels:
             '{"feat": "enhancement", "fix": "bug", "docs": "documentation",
-            "perf": "internal", "test": "testing", "breaking": "breaking"}'
+            "test": "testing", "breaking": "breaking"}'
           ignored_types: '["style", "refactor", "perf", "chore"]'
           ignore_label: internal
 
