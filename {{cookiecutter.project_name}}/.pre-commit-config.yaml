@@ -110,7 +110,7 @@ repos:
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.2
+    rev: v0.15.4
     hooks:
       - id: ruff-check
         alias: ruff
@@ -118,7 +118,7 @@ repos:
       - id: ruff-format
         alias: ruff
   - repo: https://github.com/adamtheturtle/doccmd-pre-commit
-    rev: v2026.2.15
+    rev: v2026.2.27.1
     hooks:
       - id: doccmd
         name: "ruff format markdown"
@@ -130,7 +130,7 @@ repos:
           - "--command"
           - "ruff format"
         additional_dependencies:
-          - ruff==0.15.2
+          - ruff==0.15.4
 
   # * Spelling
   # ** typos
@@ -154,7 +154,7 @@ repos:
           - "--custom-command=prek run pyproject2conda-project --all-files"
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.10.6
+    rev: 0.10.7
     hooks:
       - id: uv-lock
         alias: requirements
@@ -196,7 +196,7 @@ repos:
 
   # * Actions
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.36.2
+    rev: 0.37.0
     hooks:
       - id: check-github-workflows
         alias: actions
