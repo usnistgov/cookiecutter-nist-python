@@ -21,11 +21,11 @@ jobs:
             branch: cruft/update
             commit-message: "chore(template): accept new cruft update"
             title: "chore(template): accept new cruft update"
-          - add-paths: .cruft.json
-            body: Use this to reject the changes in this repository.
-            branch: cruft/reject
-            commit-message: "chore(template): reject new cruft update"
-            title: "chore(template): reject new cruft update"
+          # - add-paths: .cruft.json
+          #   body: Use this to reject the changes to this repository.
+          #   branch: cruft/reject
+          #   commit-message: "chore(template): reject new cruft update"
+          #   title: "chore(template): reject new cruft update"
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
