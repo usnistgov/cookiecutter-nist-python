@@ -11,7 +11,7 @@ on: # zizmor: ignore[dangerous-triggers]
 permissions: {}
 
 jobs:
-  validate_title:
+  validate-title:
     runs-on: ubuntu-slim
     permissions:
       pull-requests: read
@@ -21,7 +21,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ "{{ secrets.GITHUB_TOKEN }}" }}
 
-  label_from_title:
+  label-from-title:
     permissions:
       contents: read
       pull-requests: write
@@ -35,7 +35,8 @@ jobs:
           ignored_types: '["style", "refactor", "perf", "chore"]'
           ignore_label: internal
 
-  labeler:
+  label-from-files:
+    needs: label-from-title
     permissions:
       contents: read
       pull-requests: write
