@@ -13,7 +13,7 @@ dependencies:
           - "requirements/**/*"
           - "uv.lock"
 
-github_action:
+github_actions:
   - changed-files:
       - any-glob-to-any-file:
           - ".github/**/*"
