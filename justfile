@@ -91,7 +91,7 @@ cog: (lint-manual "cog" "--verbose")
 lint-upgrade:
     just pre-commit autoupdate
     uv run --no-project --script tools/requirements_lock.py --upgrade requirements/pre-commit-additional-dependencies.txt
-    just pre-commit run -v sync-pre-commit-deps -a
+    -just pre-commit run -v sync-pre-commit-deps -a
 
 # * User setup -----------------------------------------------------------------
 
@@ -363,11 +363,11 @@ readme-pdf:
 COOKIE := "{{cookiecutter.project_name}}"
 
 template-lint-upgrade:
-    cd {{ COOKIE }} && uvx prek -c .pre-commit-config.yaml autoupdate
-    -uv run --no-project --script tools/requirements_lock.py \
+    cd {{ COOKIE }} && uvx -c../requirements/lock/uvx-tools.txt prek -c .pre-commit-config.yaml autoupdate
+    uv run --no-project --script tools/requirements_lock.py \
         --upgrade requirements/pre-commit-additional-dependencies.txt
-    just lint sync-pre-commit-deps
-    uvx prek run prettier --files .pre-commit-config.yaml
-    cd {{ COOKIE }} && uvx prek -c .pre-commit-config.yaml run prettier --files .pre-commit-config.yaml
+    -just lint sync-pre-commit-deps
+    -{{ UVX_WITH_OPTS }} prek run prettier --files .pre-commit-config.yaml
+    -cd {{ COOKIE }} && uvx -c../requirements/lock/uvx-tools.txt prek -c .pre-commit-config.yaml run prettier --files .pre-commit-config.yaml
 
 alias update-template-pre-commit-config := template-lint-upgrade
