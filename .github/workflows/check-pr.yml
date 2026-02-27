@@ -1,5 +1,4 @@
 name: "PR checks"
-
 on: # zizmor: ignore[dangerous-triggers]
   pull_request_target:
     types:
@@ -22,13 +21,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   label_from_title:
+    permissions:
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-slim
     steps:
       - uses: bcoe/conventional-release-labels@886f696738527c7be444262c327c89436dfb95a8 # v1.3.1
         with:
           type_labels:
             '{"feat": "enhancement", "fix": "bug", "docs": "documentation",
-            "perf": "internal", "test": "testing", "breaking": "breaking"}'
+            "test": "testing", "breaking": "breaking"}'
           ignored_types: '["style", "refactor", "perf", "chore"]'
           ignore_label: internal
 
