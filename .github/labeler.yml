@@ -1,4 +1,4 @@
-version: 1
+version: v1
 # Labels are applied based on conventional commits standard
 # https://www.conventionalcommits.org/en/v1.0.0/
 # These labels are later used in release notes. See .github/release.yml
