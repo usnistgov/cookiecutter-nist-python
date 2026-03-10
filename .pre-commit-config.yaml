@@ -29,7 +29,8 @@ repos:
       - id: sync-pre-commit-deps
         args:
           - &sync-requirements "--requirements=requirements/lock/pre-commit-additional-dependencies.txt"
-        files: ^\.pre-commit-config\.yaml$|^requirements/lock/pre-commit-additional-dependencies\.txt$
+        files: 
+          ^\.pre-commit-config\.yaml$|^requirements/lock/pre-commit-additional-dependencies\.txt$
       - id: sync-uv-dependency-groups
       - id: justfile-format
         additional_dependencies:
@@ -82,7 +83,7 @@ repos:
       - id: pyproject-fmt
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2026.03.03
+    rev: 2026.03.06
     hooks:
       - id: validate-pyproject
         name: validate-pyproject-schema-store
@@ -116,7 +117,7 @@ repos:
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.4
+    rev: v0.15.5
     hooks:
       - id: ruff-check
         alias: ruff
@@ -136,7 +137,7 @@ repos:
           - "--command"
           - "ruff format"
         additional_dependencies:
-          - ruff==0.15.4
+          - ruff==0.15.5
 
   # * Spelling
   # ** typos
@@ -160,7 +161,7 @@ repos:
           - "--custom-command=prek run pyproject2conda-project --all-files"
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.10.8
+    rev: 0.10.9
     hooks:
       - id: uv-lock
         alias: requirements
@@ -219,7 +220,7 @@ repos:
         priority: 0
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
     # Zizmor version.
-    rev: v1.22.0
+    rev: v1.23.1
     hooks:
       # Run the linter.
       - id: zizmor
