@@ -29,8 +29,7 @@ repos:
       - id: sync-pre-commit-deps
         args:
           - &sync-requirements "--requirements=requirements/lock/pre-commit-additional-dependencies.txt"
-        files: 
-          ^\.pre-commit-config\.yaml$|^requirements/lock/pre-commit-additional-dependencies\.txt$
+        files: ^\.pre-commit-config\.yaml$|^requirements/lock/pre-commit-additional-dependencies\.txt$
       - id: sync-uv-dependency-groups
       - id: justfile-format
         additional_dependencies:
