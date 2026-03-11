@@ -135,6 +135,10 @@ expand_tables = [
 indent = 4
 keep_full_version = true
 
+[tool.typos.default]
+# nbqa generated
+extend-ignore-re = [ "# %%NBQA-.*" ]
+
 [tool.typos.default.extend-identifiers]
 CPY = "CPY"
 
