@@ -118,7 +118,6 @@ test-notebook = [
 typecheck-runner = [ "typecheck-runner>=0.1.0; python_version>'3.9'" ]
 
 # * uv -------------------------------------------------------------------------
-
 [tool.uv]
 required-version = ">=0.7.15"
 default-groups = [ "dev" ]
@@ -140,7 +139,6 @@ notebook.requires-python = ">=3.14"
 nox.requires-python = ">=3.14"
 
 # * Checks ---------------------------------------------------------------------
-
 [tool.repo-review]
 ignore = [
     "NOX103", # I prefer using "nox.options.sessions"
@@ -183,7 +181,6 @@ CPY = "CPY"
 check-file = false
 
 # * Testing --------------------------------------------------------------------
-
 [tool.pytest.ini_options]
 addopts = [
     "--cov-config=pyproject.toml",
@@ -232,7 +229,6 @@ report.omit = [
 report.show_missing = true
 
 # * typecheck ---------------------------------------------------------------------
-
 [tool.mypy]
 exclude = [
     ".eggs",
@@ -262,11 +258,11 @@ warn_unused_ignores = true
 # [[tool.mypy.overrides]]
 # ignore_missing_imports = true
 # module = [  ]
-
+#
 # [[tool.mypy.overrides]]
 # ignore_errors = true
 # module = [  ]
-
+#
 [tool.pyrefly]
 enabled-ignores = [ "pyrefly" ]
 project-includes = [ "src", "tests" ]
@@ -328,7 +324,6 @@ analysis.respect-type-ignore-comments = false
 src.include = [ "src", "tests" ]
 
 # * Dependency creation --------------------------------------------------------
-
 [tool.pyproject2conda]
 user-config = "config/userconfig.toml"
 template-python = "requirements/py{py}-{env}"
@@ -391,7 +386,6 @@ skip-package = true
 style = "requirements"
 
 # * Other tools ----------------------------------------------------------------
-
 [tool.scriv]
 format = "md"
 md_header_level = "2"
