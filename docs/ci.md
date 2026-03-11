@@ -16,14 +16,17 @@ files. Create the token using one of the following:
 
 Also, [allow workflows to create pull requests][pr-from-workflows]
 
-Add the token to the github repo using either:
+You'll also need to use add an environment `pull-request` under
+`Settings -> Environments`.
 
-- Under `Settings -> Secrets and variables -> Actions -> Secrets` add `PAT` with
-  generated token.
+Add the token to the github repo `pull-request`environment using either:
+
+- Under `Settings -> Environments -> pull-request -> Environment secrets` add
+  `PAT` with generated token.
 - Use [github cli][gh]:
 
   ```bash
-  gh secret set PAT
+  gh secret set PAT --env pull-request
   ```
 
 ## Trusted publishing

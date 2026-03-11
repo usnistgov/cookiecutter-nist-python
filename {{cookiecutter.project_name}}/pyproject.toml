@@ -171,8 +171,16 @@ expand_tables = [
 indent = 4
 keep_full_version = true
 
+[tool.typos.default]
+# nbqa generated
+extend-ignore-re = [ "# %%NBQA-.*" ]
+
 [tool.typos.default.extend-identifiers]
 CPY = "CPY"
+
+[tool.typos.type.jupyter]
+# only check file name for notebooks.  Use nbaq for contents.
+check-file = false
 
 # * Testing --------------------------------------------------------------------
 
@@ -200,10 +208,15 @@ strict_xfail = "true"
 
 [tool.coverage]
 run.branch = true
+run.source = [
+    "{{ cookiecutter.project_slug }}",
+]
 paths.source = [
     "src/",
     # needed for testing source if not editable install
     ".nox/**/site-packages/",
+    "*/.nox/**/site-packages",
+    "*/src",
 ]
 report.exclude_also = [
     "@overload",
