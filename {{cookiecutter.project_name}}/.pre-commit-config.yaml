@@ -76,7 +76,7 @@ repos:
       - id: pyproject-fmt
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2026.03.03
+    rev: 2026.03.10
     hooks:
       - id: validate-pyproject
         name: validate-pyproject-schema-store
@@ -110,7 +110,7 @@ repos:
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.4
+    rev: v0.15.5
     hooks:
       - id: ruff-check
         alias: ruff
@@ -130,12 +130,10 @@ repos:
           - "--command"
           - "ruff format"
         additional_dependencies:
-          - ruff==0.15.4
+          - ruff==0.15.5
 
   # * Spelling
   # ** typos
-  # Revert to crate-ci/typos if https://github.com/crate-ci/typos/issues/390 is fixed.
-  # - repo: https://github.com/crate-ci/typos
   - repo: https://github.com/adhtruong/mirrors-typos
     rev: v1.44.0
     hooks:
@@ -154,7 +152,7 @@ repos:
           - "--custom-command=prek run pyproject2conda-project --all-files"
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.10.8
+    rev: 0.10.9
     hooks:
       - id: uv-lock
         alias: requirements
@@ -223,7 +221,7 @@ repos:
         priority: 0
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
     # Zizmor version.
-    rev: v1.22.0
+    rev: v1.23.1
     hooks:
       # Run the linter.
       - id: zizmor
@@ -280,16 +278,23 @@ repos:
         alias: typos
         additional_dependencies: &typos-deps
           - typos==1.44.0
-        args: [typos, --nbqa-shell]
-        # this can lead to errors, so use with care
-        # args: [typos, --write-changes, --nbqa-shell]
+        args:
+          - typos
+          - --force-exclude
+          - --no-check-filenames
+          - --write-changes
+          - --nbqa-shell
       - id: nbqa
         name: nbqa-typos-markdown
         alias: typos
         additional_dependencies: *typos-deps
-        args: [typos, --nbqa-shell, --nbqa-md]
-        # this can lead to errors, so use with care
-        # args: [typos, --write-changes, --nbqa-shell, --nbqa-md]
+        args:
+          - typos
+          - --force-exclude
+          - --no-check-filenames
+          - --write-changes
+          - --nbqa-shell
+          - --nbqa-md
 
   # ** symlink in notebooks from example/usage to docs/example/usage
   - repo: local
