@@ -53,7 +53,7 @@ jobs:
               python_versions.append(match.group(1))
 
           default_python_version = Path(".python-version").read_text().strip()
-          extra_python_versions = [_.strip() for _ in os.getenv("EXTRA_PYTHON_VERSIONS", "").split(",")]
+          extra_python_versions = [_.strip() for _ in os.getenv("EXTRA_PYTHON_VERSIONS", "").split(",") if _]
 
           min_python_version = python_versions[0]
           max_python_version = python_versions[-1]
