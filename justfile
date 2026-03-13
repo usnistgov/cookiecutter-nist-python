@@ -330,6 +330,10 @@ scriv-collect version *options="--keep":
     git add CHANGELOG.md
 
 [group("tools")]
+rooster-release *options="":
+    {{ UVX_WITH_OPTS }} rooster release
+
+[group("tools")]
 auto-changelog:
     {{ UVX_WITH_OPTS }} \
     auto-changelog \
