@@ -106,6 +106,10 @@ pyright==1.1.408 \
     --hash=sha256:090b32865f4fdb1e0e6cd82bf5618480d48eecd2eb2e70f960982a3d9a4c17c1 \
     --hash=sha256:f28f2321f96852fa50b5829ea492f6adb0e6954568d1caa3f3af3a5f555eb684
     # via -r requirements/uvx-tools.txt
+rooster==0.1.1 \
+    --hash=sha256:c9823122f0c2b035985e70384323cdd353477af988e0f065bc302646a49da482 \
+    --hash=sha256:d052503f84e6847842d946f64a4e217032a8f3177edf954da8a886896c574f84
+    # via -r requirements/uvx-tools.txt
 scriv==1.8.0 \
     --hash=sha256:7b1a105dd411ac541998250fc8594742419f94cee984ca1257c5ebf5af21918b \
     --hash=sha256:f00f51325b2f4bc96b16fbb1239d4ab577cc2422301a5dd4f5f9378aae2549e0

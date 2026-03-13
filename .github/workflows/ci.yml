@@ -3,6 +3,11 @@ on:
   push:
     branches: [main]
   pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
   workflow_dispatch:
 
 concurrency:
@@ -13,6 +18,7 @@ env:
   FORCE_COLOR: "3"
   UVX_CONSTRAINT: requirements/lock/uvx-tools.txt
   UVX_COMMAND: uvx -crequirements/lock/uvx-tools.txt
+  NOX_COMMAND: uvx -crequirements/lock/uvx-tools.txt nox
   # EXTRA_PYTHON_VERSIONS: "pypy-3.11"
 
 permissions: {}
@@ -24,6 +30,12 @@ jobs:
     outputs:
       should_skip: ${{ steps.skip_check.outputs.should_skip }}
     steps:
+      - name: Don't run CI on draft PR
+        if:
+          github.event_name == 'pull_request' && github.event.pull_request.draft
+          == true
+        run: exit 1
+
       - id: skip_check
         uses: fkirc/skip-duplicate-actions@f75f66ce1886f00957d99748a42c724f4330bdcf # v5.3.1
         with:
@@ -69,7 +81,6 @@ jobs:
           print("{minmax_python_versions=}")
           print("{minmax_default_python_versions=}")
           print("{all_python_version=}")
-
 
           with open(os.getenv("GITHUB_OUTPUT"), "a") as f:
             f.write(f"{default_python_version=:s}\n")
@@ -154,6 +165,9 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
+          # - windows-latest
+        session:
+          - test
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -163,14 +177,16 @@ jobs:
           python-version-file: ".python-version"
           cache-dependency-path: uv.lock
       - name: Get python version
+        id: python_version
         run: |
           python_version=$(cat .python-version)
-          echo "python_version=${python_version}" >> "$GITHUB_ENV"
+          echo "python_version=${python_version}" >> "$GITHUB_OUTPUT"
         shell: bash
       - name: typecheck
         env:
-          python_version: ${{ env.python_version }}
-        run: $UVX_COMMAND nox -s typecheck-"$python_version"
+          python_version: ${{ steps.python_version.outputs.python_version }}
+          session: ${{ matrix.session }}
+        run: $NOX_COMMAND -s "${session}-${python_version}"
         shell: bash
 
   test:
@@ -252,12 +268,12 @@ jobs:
   #         cache-dependency-path: requirements/lock/uvx-tools.txt
   #     - name: Run coverage
   #       run: |
-  #         $UVX_COMMAND nox -s coverage -- ++coverage combine html markdown
+  #         $NOX_COMMAND -s coverage -- ++coverage combine html markdown
   #         cat coverage.md
   #         cat coverage.md >> "$GITHUB_STEP_SUMMARY"
 
   #         # fail if under 100%
-  #         $UVX_COMMAND nox -s coverage -- ++coverage report ++coverage-options --fail-under=100
+  #         $NOX_COMMAND -s coverage -- ++coverage report ++coverage-options --fail-under=100
   #       shell: bash
   #     - name: Upload HTML report if check failed.
   #       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
