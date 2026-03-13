@@ -331,7 +331,7 @@ scriv-collect version *options="--keep":
 
 [group("tools")]
 rooster-release *options="":
-    {{ UVX_WITH_OPTS }} rooster release
+    {{ UVX_WITH_OPTS }} rooster release {{ options }}
 
 [group("tools")]
 auto-changelog:
