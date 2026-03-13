@@ -3,3 +3,5 @@
 # Changelog
 
 Changelog for `{{ cookiecutter.project_name }}`
+
+## Initial release
