@@ -76,7 +76,7 @@ repos:
       - id: pyproject-fmt
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2026.03.10
+    rev: 2026.03.13
     hooks:
       - id: validate-pyproject
         name: validate-pyproject-schema-store
@@ -110,7 +110,7 @@ repos:
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.5
+    rev: v0.15.6
     hooks:
       - id: ruff-check
         alias: ruff
@@ -130,7 +130,7 @@ repos:
           - "--command"
           - "ruff format"
         additional_dependencies:
-          - ruff==0.15.5
+          - ruff==0.15.6
 
   # * Spelling
   # ** typos
@@ -152,7 +152,7 @@ repos:
           - "--custom-command=prek run pyproject2conda-project --all-files"
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.10.9
+    rev: 0.10.10
     hooks:
       - id: uv-lock
         alias: requirements
