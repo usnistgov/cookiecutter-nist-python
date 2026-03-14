@@ -56,16 +56,18 @@ jobs:
             options=""
           fi
 
-          if ! uvx -crequirements/lock/uvx-tools.txt rooster release "$options"; then
-            # also run uv
-            uv lock
+          # run rooster
+          uvx -crequirements/lock/uvx-tools.txt rooster release "$options" || true
+
+          if ! git diff --quiet -- pyproject.toml; then
             changed='true'
+            uv lock
           else
             changed='false'
           fi
 
           echo "changed=$changed" >> "$GITHUB_OUTPUT"
-        shell: bash
+        shell: bash -euxo pipefail {0}
 
       - id: message
         if: steps.bump.outputs.changed == 'true'
