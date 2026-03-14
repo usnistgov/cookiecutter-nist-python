@@ -4,8 +4,8 @@ The following should be setup on the github page of the repo.
 
 ## Copier/cruft update
 
-By default, the generated repo will have `.github/workflows/copier-update.yml`
-or `.github/workflows/cruft-update.yml`. These will periodically check for
+By default, the generated repo will have `.github/workflows/update-copier.yml`
+or `.github/workflows/update-cruft.yml`. These will periodically check for
 updates to the template and create a pr with changes. These require a token to
 trigger `on: push` and `on: pull_request` workflows, and to update workflow
 files. Create the token using one of the following:
