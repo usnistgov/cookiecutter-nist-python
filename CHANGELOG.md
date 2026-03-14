@@ -1,7 +1,24 @@
 <!-- markdownlint-disable MD024 -->
 
+
 # Changelog
 
 Changelog for `cookiecutter-nist-python`
+
+## 0.7.1
+
+Released on 2026-03-14.
+
+### Bug fixes
+
+- fix: add missing docs to skip ([#85](https://github.com/usnistgov/cookiecutter-nist-python/pull/85))
+
+### Documentation
+
+- docs: dummy update ([#64](https://github.com/usnistgov/cookiecutter-nist-python/pull/64))
+
+### Contributors
+
+- [@wpk-nist-gov](https://github.com/wpk-nist-gov)
 
 ## Initial release
