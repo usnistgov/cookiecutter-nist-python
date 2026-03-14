@@ -46,6 +46,7 @@ jobs:
           version: ${{ inputs.version || '' }}
           bump: ${{ inputs.bump || '' }}
           event_name: ${{ github.event_name }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # rooster bump version
           if [ "$version" != "" ]; then
