@@ -27,7 +27,7 @@ jobs:
     name: Rooster update
     runs-on: ubuntu-slim
     # only allow on main branch
-    # if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     environment:
       name: pull-request
     steps:
