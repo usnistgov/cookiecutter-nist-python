@@ -15,6 +15,10 @@ on:
         type: string
         default: ""
 
+concurrency:
+  group: ${{ "{{ github.workflow }}" }}-${{ "{{ github.ref }}" }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
   pull-requests: write
@@ -103,9 +107,9 @@ jobs:
           message = f"chore(bump): bump {package_name} from {current_version} to {new_version}"
 
           # if want to use new version release branch
-          # branch = f"release/v{new_version}"
+          branch = f"release/v{new_version}"
           # if want to just have one release branch going
-          branch = f"release/next-release"
+          # branch = f"release/next-release"
 
           with open(os.getenv("GITHUB_OUTPUT"), "a") as f:
             f.write(f"{message=:s}\n")
@@ -122,7 +126,7 @@ jobs:
           commit-message: ${{ "{{ steps.message.outputs.message }}" }}
           title: ${{ "{{ steps.message.outputs.message }}" }}
           labels: |
-            internal
+            release
           draft: true # create as draft pull request to avoid too many checks
           branch: ${{ "{{ steps.message.outputs.branch }}" }}
           delete-branch: true
