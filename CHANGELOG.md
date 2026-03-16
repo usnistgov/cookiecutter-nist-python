@@ -1,6 +1,7 @@
-<!-- markdownlint-disable MD024 -->
-
 # Changelog
+
+<!-- markdownlint-disable-file -->
+
 
 Changelog for `cookiecutter-nist-python`
 
