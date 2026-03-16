@@ -49,7 +49,7 @@ jobs:
       - name: Get current package version
         id: version
         run: |
-          echo "current_version=$(uv version --short)" >> "$GITHUB_OUTPUT"
+          echo "current_version=$(uv version --short --color=never)" >> "$GITHUB_OUTPUT"
 
       - name: Numba cache
         id: numba-cache-restore
