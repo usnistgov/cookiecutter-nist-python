@@ -8,15 +8,12 @@ concurrency:
   group: ${{ "{{ github.workflow }}" }}-${{ "{{ github.ref }}" }}
   cancel-in-progress: true
 
-permissions:
-  contents: write
-
 jobs:
-
   # for debugging
   info:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    permissions: {}
     steps:
       - name: PR info
         env:
@@ -38,6 +35,8 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pull-request
+    permissions:
+      contents: write
     steps:
       - name: PR info
         env:
@@ -50,7 +49,6 @@ jobs:
           echo "RELEASE_BRANCH - $RELEASE_BRANCH"
           echo "OWNER       - $OWNER"
           echo "RELEASE     - $RELEASE"
-
 
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -65,6 +63,7 @@ jobs:
           python-version: ">=3.11"
 
       - name: Get version
+        id: version
         shell: python
         run: |
           import os
