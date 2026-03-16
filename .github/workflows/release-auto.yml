@@ -84,4 +84,4 @@ jobs:
           RELEASE_COMMIT: ${{ github.event.pull_request.merge_commit_sha }}
           TAG: ${{ steps.version.outputs.tag }}
         run: |
-          gh release "$TAG" --generate-notes --target "$RELEASE_COMMIT"
+          gh release create "$TAG" --generate-notes --target "$RELEASE_COMMIT"
