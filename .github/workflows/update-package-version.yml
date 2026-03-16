@@ -32,6 +32,7 @@ jobs:
     runs-on: ubuntu-slim
     # only allow on main branch
     if:
+      # prettier-ignore
       github.ref == 'refs/heads/main' && github.repository_owner == 'usnistgov'
     environment:
       name: pull-request
