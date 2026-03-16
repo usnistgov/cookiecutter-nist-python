@@ -103,6 +103,7 @@ jobs:
 
           project = tomllib.loads(Path("pyproject.toml").read_text())["project"]
 
+          current_version = os.getenv("current_version")
           new_version = project["version"]
           package_name = project["name"]
 
