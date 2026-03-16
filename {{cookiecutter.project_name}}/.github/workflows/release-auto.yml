@@ -15,8 +15,8 @@ jobs:
   release:
     name: Create release
     if:
-      github.event.pull_request.merged == true && github.repository_owner ==
-      '{{ cookiecutter.github_username }}'
+      # prettier-ignore
+      github.event.pull_request.merged == true && github.repository_owner == '{{ cookiecutter.github_username }}'
     runs-on: ubuntu-latest
     environment:
       name: pull-request
