@@ -117,7 +117,7 @@ jobs:
 
           with open(os.getenv("GITHUB_OUTPUT"), "a") as f:
             f.write(f"{title=:s}\n")
-            f.write(f"{commit_message=:s}")
+            f.write(f"{commit_message=:s}\n")
             f.write(f"{branch=:s}\n")
         shell: python
 
