@@ -360,7 +360,7 @@ major-labels = [ "breaking" ]
 minor_labels = [ "enhancement" ]
 patch-labels = [ "bug", "documentation" ]
 # options
-ignore-labels = [ "github_actions", "internal", "testing" ]
+ignore-labels = [ "internal", "testing" ]
 require-labels = [ "breaking", "bug", "documentation", "enhancement" ]
 version_files = [
     "pyproject.toml",
