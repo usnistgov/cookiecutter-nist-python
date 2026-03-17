@@ -33,7 +33,7 @@ repos:
       - id: sync-uv-dependency-groups
       - id: justfile-format
         additional_dependencies:
-          - rust-just==1.47.0
+          - rust-just==1.47.1
 
       # update cookiecutter
       - id: sync-pre-commit-deps
@@ -77,12 +77,12 @@ repos:
       - id: taplo-lint
         args: ["--no-schema"]
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: v2.18.1
+    rev: v2.19.0
     hooks:
       - id: pyproject-fmt
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2026.03.13
+    rev: 2026.03.15
     hooks:
       - id: validate-pyproject
         name: validate-pyproject-schema-store
@@ -158,7 +158,7 @@ repos:
           - "--custom-command=prek run pyproject2conda-project --all-files"
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.10.10
+    rev: 0.10.11
     hooks:
       - id: uv-lock
         alias: requirements
