@@ -122,7 +122,7 @@ typecheck-runner = [ "typecheck-runner>=0.1.0; python_version>'3.9'" ]
 required-version = ">=0.7.15"
 default-groups = [ "dev" ]
 fork-strategy = "requires-python"
-# exclude-newer = "7 days"
+exclude-newer = "7 days"
 managed = true
 build-backend.source-include = [ "tests/**" ]
 pip.annotation-style = "line"
