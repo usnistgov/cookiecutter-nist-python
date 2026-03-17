@@ -144,67 +144,6 @@ CPY = "CPY"
 [tool.typos.files]
 extend-exclude = [ ".copier-answers.y*ml" ]
 
-# * Testing --------------------------------------------------------------------
-[tool.pytest.ini_options]
-addopts = [
-    "--cov-config=pyproject.toml",
-    "--doctest-glob=*.md",
-    "--doctest-modules",
-    "--pyargs",
-    "--strict-config",
-    "--strict-markers",
-    "-ra",
-    "-s",
-]
-testpaths = [
-    "tests",
-]
-# markers
-markers = [
-    "book: sphinx book theme",
-    "click: Click cli",
-    "cookie: cookiecutter",
-    "copier: run copier tests",
-    "create: simple test on path creation",
-    "default: default template",
-    "disable: test that has been disabled by default",
-    "docs: make docs",
-    "furo: furo theme",
-    "lint: run linting",
-    "longname: a project with a long name",
-    "mypystrict: run mypy --strict",
-    "nocli: no command-line interface",
-    "notebook: run typing/test on notebook",
-    "test: run tests",
-    "typecheck: run type checkers",
-    "typer: Typer template",
-    "version: update-version-scm (disabled by default)",
-]
-# options
-filterwarnings = [
-    "error",
-    "ignore: Dirty template:copier.errors.DirtyLocalWarning",
-    "ignore: urllib3:Warning",
-]
-log_cli_level = "INFO"
-log_level = "INFO"
-minversion = "8"
-strict_xfail = "true"
-
-[tool.coverage]
-run.branch = true
-report.exclude_also = [
-    "@overload",
-    "if TYPE_CHECKING:",
-]
-report.include = [
-    "src/*",
-]
-report.omit = [
-    "*/vendored/*",
-]
-report.show_missing = true
-
 # * typecheck ---------------------------------------------------------------------
 [tool.mypy]
 exclude = [
@@ -286,6 +225,67 @@ reportUnusedCallResult = false
 # Disable support for `type: ignore` comments
 analysis.respect-type-ignore-comments = false
 src.include = [ "tests" ]
+
+# * Testing --------------------------------------------------------------------
+[tool.pytest.ini_options]
+addopts = [
+    "--cov-config=pyproject.toml",
+    "--doctest-glob=*.md",
+    "--doctest-modules",
+    "--pyargs",
+    "--strict-config",
+    "--strict-markers",
+    "-ra",
+    "-s",
+]
+testpaths = [
+    "tests",
+]
+# markers
+markers = [
+    "book: sphinx book theme",
+    "click: Click cli",
+    "cookie: cookiecutter",
+    "copier: run copier tests",
+    "create: simple test on path creation",
+    "default: default template",
+    "disable: test that has been disabled by default",
+    "docs: make docs",
+    "furo: furo theme",
+    "lint: run linting",
+    "longname: a project with a long name",
+    "mypystrict: run mypy --strict",
+    "nocli: no command-line interface",
+    "notebook: run typing/test on notebook",
+    "test: run tests",
+    "typecheck: run type checkers",
+    "typer: Typer template",
+    "version: update-version-scm (disabled by default)",
+]
+# options
+filterwarnings = [
+    "error",
+    "ignore: Dirty template:copier.errors.DirtyLocalWarning",
+    "ignore: urllib3:Warning",
+]
+log_cli_level = "INFO"
+log_level = "INFO"
+minversion = "8"
+strict_xfail = "true"
+
+[tool.coverage]
+run.branch = true
+report.exclude_also = [
+    "@overload",
+    "if TYPE_CHECKING:",
+]
+report.include = [
+    "src/*",
+]
+report.omit = [
+    "*/vendored/*",
+]
+report.show_missing = true
 
 # * Dependency creation --------------------------------------------------------
 [tool.pyproject2conda]
