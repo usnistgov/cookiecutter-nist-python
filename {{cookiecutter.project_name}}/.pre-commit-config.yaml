@@ -33,7 +33,7 @@ repos:
       - id: sync-uv-dependency-groups
       - id: justfile-format
         additional_dependencies:
-          - rust-just==1.47.1
+          - rust-just==1.46.0
 
   # * Forbidden files
   - repo: local
