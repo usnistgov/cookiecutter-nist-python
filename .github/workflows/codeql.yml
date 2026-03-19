@@ -13,45 +13,9 @@ on:
     - cron: "19 12 * * 5"
   workflow_dispatch:
 
-# jobs:
-#   analyze:
-#     name: Analyze (${{ matrix.language }})
-#     runs-on: ubuntu-latest
-#     permissions:
-#       actions: read
-#       contents: read
-#       security-events: write
-
-#     strategy:
-#       fail-fast: false
-#       matrix:
-#         include:
-#           # - language: actions
-#           - language: python
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-#         with:
-#           persist-credentials: false
-
-#       - name: Initialize CodeQL
-#         uses: github/codeql-action/init@0d579ffd059c29b07949a3cce3983f0780820c98 # v4.32.6
-#         with:
-#           languages: ${{ matrix.language }}
-#           # build-mode: none
-#           # config: |
-#           #   paths-ignore:
-#           #     - "{{cookiecutter.project_name}}/"
-
-#       - name: Autobuild
-#         uses: github/codeql-action/autobuild@0d579ffd059c29b07949a3cce3983f0780820c98 # v4.32.6
-
-#       - name: Perform CodeQL Analysis
-#         uses: github/codeql-action/init@0d579ffd059c29b07949a3cce3983f0780820c98 # v4.32.6
-
 jobs:
   analyze:
-    name: Analyze
+    name: Analyze (${{ matrix.language }})
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -61,8 +25,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [python]
-
+        include:
+          - language: actions
+          - language: python
     steps:
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -73,9 +38,45 @@ jobs:
         uses: github/codeql-action/init@0d579ffd059c29b07949a3cce3983f0780820c98 # v4.32.6
         with:
           languages: ${{ matrix.language }}
+          # build-mode: none
+          config: |
+            paths-ignore:
+              - "{{cookiecutter.project_name}}/"
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@0d579ffd059c29b07949a3cce3983f0780820c98 # v4.32.6
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@0d579ffd059c29b07949a3cce3983f0780820c98 # v4.32.6
+
+
+# jobs:
+#   analyze:
+#     name: Analyze
+#     runs-on: ubuntu-latest
+#     permissions:
+#       actions: read
+#       contents: read
+#       security-events: write
+
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         language: [python]
+
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+#         with:
+#           persist-credentials: false
+
+#       - name: Initialize CodeQL
+#         uses: github/codeql-action/init@0d579ffd059c29b07949a3cce3983f0780820c98 # v4.32.6
+#         with:
+#           languages: ${{ matrix.language }}
+
+#       - name: Autobuild
+#         uses: github/codeql-action/autobuild@0d579ffd059c29b07949a3cce3983f0780820c98 # v4.32.6
+
+#       - name: Perform CodeQL Analysis
+#         uses: github/codeql-action/analyze@0d579ffd059c29b07949a3cce3983f0780820c98 # v4.32.6
