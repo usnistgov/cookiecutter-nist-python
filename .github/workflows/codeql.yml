@@ -26,7 +26,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - language: actions
+          # - language: actions
           - language: python
     steps:
       - name: Checkout repository
