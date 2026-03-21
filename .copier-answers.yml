@@ -1,5 +1,5 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: v0.8.0-1-g0a9f415
+_commit: v0.8.0-22-g0f0dde92
 _src_path: .
 command_line_interface: none
 conda_channel: wpk-nist
