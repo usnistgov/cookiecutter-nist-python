@@ -1,20 +1,21 @@
 #!/usr/bin/env bash
 # Run update-copier on all of my repos
 
-repos="
-usnistgov/cmomy
-usnistgov/tmmc-lnpy
-usnistgov/thermoextrap
-usnistgov/module-utilities
-usnistgov/pyproject2conda
-usnistgov/analphipy
-usnistgov/open-notebook
-usnistgov/uv-workon
-wpk-nist-gov/sync-pre-commit-hooks
-wpk-nist-gov/typecheck-runner
-"
+repos=(
+    usnistgov/cmomy
+    usnistgov/tmmc-lnpy
+    usnistgov/thermoextrap
+    usnistgov/module-utilities
+    usnistgov/pyproject2conda
+    usnistgov/analphipy
+    usnistgov/open-notebook
+    usnistgov/uv-workon
+    wpk-nist-gov/sync-pre-commit-hooks
+    wpk-nist-gov/typecheck-runner
+)
 
-for repo in $repos; do
+failed_repos=""
+for repo in "${repos[@]}"; do
     echo "repo: $repo"
     if gh workflow run update-copier.yml --repo "$repo"; then
         echo "Successfully triggered workflow for $repo"
