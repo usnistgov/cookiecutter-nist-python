@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Run update-copier on all of my repos
 
 repos="
