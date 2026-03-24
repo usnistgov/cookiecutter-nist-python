@@ -63,8 +63,11 @@ extensions = [
     # - pretty things up?
     # "sphinx_design"
     # - myst stuff
+    {%- if cookiecutter.use_jupyter %}
     "myst_nb",
-    # "myst_parser",
+    {%- else %}
+    "myst_parser",
+    {%- endif %}
     {%- if cookiecutter.command_line_interface in ["click", "typer"] %}
     "sphinx_click",
     {%- endif %}
@@ -125,9 +128,9 @@ myst_substitutions = {
 
 myst_url_schemes = ("http", "https", "mailto")
 
+{%- if cookiecutter.use_jupyter %}
 nb_execution_mode = "cache"
 # nb_execution_mode = "auto"
-
 # set the kernel name
 nb_kernel_rgx_aliases = {
     "{{ cookiecutter.project_name }}.*": "python3",
@@ -138,6 +141,7 @@ nb_execution_allow_errors = True
 
 # Whether to remove stderr
 nb_output_stderr = "remove"
+{% endif %}
 
 # - top level variables --------------------------------------------------------
 # set github_username variable to be subbed later.

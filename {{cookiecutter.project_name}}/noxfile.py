@@ -9,11 +9,11 @@
 """Config file for nox."""
 # pyright: reportUnusedCallResult=false
 # pylint: disable=wrong-import-position
+# ruff: noqa: C901
 
 # * Imports ----------------------------------------------------------------------------
 from __future__ import annotations
 
-import shlex
 import shutil
 import sys
 from dataclasses import dataclass
@@ -196,15 +196,17 @@ class SessionParams(DataclassParser):
             "basedpyright",
             "pylint",
             "all",
+            "ty",
+            "pyrefly",
+            {%- if cookiecutter.use_jupyter %}
             "mypy-notebook",
             "pyright-notebook",
             "basedpyright-notebook",
             "pylint-notebook",
             "typecheck-notebook",
-            "ty",
-            "pyrefly",
             "ty-notebook",
             "pyrefly-notebook",
+            {%- endif %}
         ]
     ] = add_option("--typecheck", "-m")
     typecheck_run: RUN_ANNO = None
@@ -534,6 +536,8 @@ def test(
 nox.session(python=PYTHON_TEST_VERSIONS)(test)
 nox.session(name="test-conda", **CONDA_ALL_KWS)(test)
 
+{%- if cookiecutter.use_jupyter %}
+
 
 @nox.session(name="test-notebook", **DEFAULT_KWS)
 @add_opts
@@ -541,6 +545,8 @@ def test_notebook(session: nox.Session, opts: SessionParams) -> None:
     """Run pytest --nbval."""
     install_dependencies(session, name="test-notebook", opts=opts)
     install_package(session, editable=False, update=True, installpkg=opts.installpkg)
+
+    import shlex
 
     test_nbval_opts = shlex.split(
         """
@@ -566,6 +572,7 @@ def test_notebook(session: nox.Session, opts: SessionParams) -> None:
         test_options=test_options,
         no_cov=opts.no_cov,
     )
+{%- endif %}
 
 
 @nox.session(python=False)
@@ -662,7 +669,7 @@ nox.session(name="testdist-conda", **CONDA_ALL_KWS)(testdist)
 # # ** Docs
 @nox.session(name="docs", **DEFAULT_KWS)
 @add_opts
-def docs(  # noqa: C901
+def docs(
     session: nox.Session,
     opts: SessionParams,
 ) -> None:
@@ -762,14 +769,18 @@ def lint(
     `nox -s lint -- --lint-run "pre-commit run --hook-stage manual --all-files`
     """
     pre_commit_run(
-        session, "--all-files", *(opts.lint_options or []), use_prek=opts.lint_use_prek
+        session,
+        "--all-files",
+        "--show-diff-on-failure",
+        *(opts.lint_options or []),
+        use_prek=opts.lint_use_prek,
     )
 
 
 # ** type checking
 @nox.session(name="typecheck", **ALL_KWS)
 @add_opts
-def typecheck(  # noqa: C901
+def typecheck(
     session: nox.Session,
     opts: SessionParams,
 ) -> None:
@@ -801,9 +812,7 @@ def typecheck(  # noqa: C901
         raise TypeError
 
     for c in cmd:
-        if c.endswith("-notebook"):
-            session.run("just", c, external=True)
-        elif c in {"mypy", "pyright", "basedpyright", "ty", "pyrefly"}:
+        if c in {"mypy", "pyright", "basedpyright", "ty", "pyrefly"}:
             checker = "mypy[faster-cache]" if c == "mypy" else c
             session.run(
                 "typecheck-runner",
@@ -823,6 +832,10 @@ def typecheck(  # noqa: C901
                 "src",
                 "tests",
             )
+        {%- if cookiecutter.use_jupyter %}
+        elif c.endswith("-notebook"):
+            session.run("just", c, external=True)
+        {%- endif %}
         else:
             session.log(f"Skipping unknown command {c}")
 

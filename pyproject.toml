@@ -134,10 +134,6 @@ expand_tables = [
 indent = 4
 keep_full_version = true
 
-[tool.typos.default]
-# nbqa generated
-extend-ignore-re = [ "# %%NBQA-.*" ]
-
 [tool.typos.default.extend-identifiers]
 CPY = "CPY"
 
@@ -326,12 +322,10 @@ reqs = [
     "copier",
     "copier-template-extensions>=0.3.1",
     "grayskull>=2.5.3",
-    "nbqa>=1.8.4",
     "prek",
     "pyrefly>=0.37.0",
     "pyright>=1.1.396",
     "rooster>=0.1.1",
-    "scriv",
     "twine>=5.0.0",
     "ty>=0.0.14",
 ]
@@ -346,11 +340,6 @@ skip-package = true
 style = "requirements"
 
 # * Other tools ----------------------------------------------------------------
-[tool.scriv]
-format = "md"
-md_header_level = "2"
-new_fragment_template = "file: changelog.d/templates/new_fragment.md.j2"
-
 [tool.commitizen]
 use_shortcuts = true
 

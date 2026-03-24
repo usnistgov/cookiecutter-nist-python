@@ -1,7 +1,7 @@
 [build-system]
 build-backend = "uv_build"
 requires = [
-    "uv-build>=0.10.11,<0.11.0",
+    "uv-build>=0.11.0,<0.12.0",
 ]
 
 [project]
@@ -50,11 +50,15 @@ Homepage = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutte
 [dependency-groups]
 dev = [
     { include-group = "mypy" },
+    {%- if cookiecutter.use_jupyter %}
     { include-group = "notebook" },
+    {%- endif %}
     { include-group = "nox" },
     { include-group = "pytest-accept" },
     { include-group = "test" },
+    {%- if cookiecutter.use_jupyter %}
     { include-group = "test-notebook" },
+    {%- endif %}
     { include-group = "type" },
 ]
 test = [
@@ -75,9 +79,13 @@ docs = [
     {%- if cookiecutter.sphinx_theme == "furo" %}
     "furo",
     {%- endif %}
+    {%- if cookiecutter.use_jupyter %}
     "myst-nb",
+    {%- else %}
+    "myst-parser",
+    {%- endif %}
     "sphinx>=5.3.0",
-    # myst-parser, ipython,
+    # other
     {%- if cookiecutter.command_line_interface == "argparse" %}
     "sphinx-argparse",
     {%- endif %}
@@ -103,7 +111,9 @@ docs-spelling = [
 ]
 ipython = [ "ipython" ]
 mypy = [ "mypy[faster-cache]>=1.15.0" ]
+{%- if cookiecutter.use_jupyter %}
 notebook = [ "ipykernel", "nbclient" ]
+{%- endif %}
 nox = [ "nox>=2025.5.1" ]
 pylint = [ "pylint" ]
 pytest = [ "pytest" ]
@@ -111,10 +121,12 @@ pytest-accept = [ "pytest-accept" ]
 test-extras = [
     { include-group = "test" },
 ]
+{%- if cookiecutter.use_jupyter %}
 test-notebook = [
     "nbval",
     { include-group = "test" },
 ]
+{%- endif %}
 typecheck-runner = [ "typecheck-runner>=0.1.0; python_version>'3.9'" ]
 
 # * uv -------------------------------------------------------------------------
@@ -136,7 +148,9 @@ docs-spelling.requires-python = ">=3.14"
 docs.requires-python = ">=3.14"
 ipython.requires-python = ">=3.14"
 mypy.requires-python = ">=3.14"
+{%- if cookiecutter.use_jupyter %}
 notebook.requires-python = ">=3.14"
+{%- endif %}
 nox.requires-python = ">=3.14"
 
 # * Checks ---------------------------------------------------------------------
@@ -170,16 +184,22 @@ expand_tables = [
 indent = 4
 keep_full_version = true
 
+{%- if cookiecutter.use_jupyter %}
+
 [tool.typos.default]
 # nbqa generated
 extend-ignore-re = [ "# %%NBQA-.*" ]
+{%- endif %}
 
 [tool.typos.default.extend-identifiers]
 CPY = "CPY"
 
+{%- if cookiecutter.use_jupyter %}
+
 [tool.typos.type.jupyter]
 # only check file name for notebooks.  Use nbaq for contents.
 check-file = false
+{%- endif %}
 
 # * typecheck ---------------------------------------------------------------------
 [tool.mypy]
@@ -364,16 +384,21 @@ skip-package = true
 reqs = [
     # these used solely for specking tools to be run via uvx ...
     "conda-lock>=2.5.5",
+    {%- if cookiecutter.__copier %}
     "copier",
     "copier-template-extensions>=0.3.1",
+    {%- endif %}
+    {%- if not cookiecutter.__copier %}
     "cruft",
+    {%- endif %}
     "grayskull>=2.5.3",
+    {%- if cookiecutter.use_jupyter %}
     "nbqa>=1.8.4",
+    {%- endif %}
     "prek",
     "pyrefly>=0.37.0",
     "pyright>=1.1.396",
     "rooster>=0.1.1",
-    "scriv",
     "twine>=5.0.0",
     "ty>=0.0.14",
 ]
@@ -388,11 +413,6 @@ skip-package = true
 style = "requirements"
 
 # * Other tools ----------------------------------------------------------------
-[tool.scriv]
-format = "md"
-md_header_level = "2"
-new_fragment_template = "file: changelog.d/templates/new_fragment.md.j2"
-
 [tool.commitizen]
 use_shortcuts = true
 

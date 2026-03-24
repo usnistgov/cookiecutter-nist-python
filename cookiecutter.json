@@ -10,8 +10,10 @@
   "command_line_interface": ["none", "click", "typer", "argparse"],
   "sphinx_use_autodocsumm": true,
   "sphinx_theme": ["sphinx_book_theme", "furo"],
+  "use_jupyter": false,
   "year": "{% now 'utc', '%Y' %}",
   "__answers": "",
+  "__copier": false,
   "_copy_without_render": [],
   "__prompts__": {
     "project_name": "The name of the project",
@@ -35,6 +37,7 @@
       "sphinx_book_theme": "Sphinx book theme",
       "furo": "Furo theme"
     },
+    "use_jupyter": "Use `jupyter` notebooks in development",
     "year": "Copyright/creation year"
   }
 }
