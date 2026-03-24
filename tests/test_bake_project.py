@@ -42,6 +42,7 @@ def check_directory(
     files: list[str] | None = None,
     directories: list[str] | None = None,
     ignore_paths: list[str] | None = None,
+    use_jupyter: bool = True,
 ) -> None:
     """Check path for files and directories"""
     path = Path(path)
@@ -81,15 +82,15 @@ def check_directory(
             ".git",
             # These are created from the template
             ".github",
-            "changelog.d",
             "config",
             "docs",
-            "examples",
             "requirements",
             "src",
             "tests",
             "tools",
         ]
+        if use_jupyter:
+            directories.append("examples")
 
     files = _add_extras(files, extra_files)
     directories = _add_extras(directories, extra_directories)
@@ -117,7 +118,6 @@ def get_python_version() -> str:
 
 
 # ** fixtures
-# @pytest.mark.create
 def test_baked_create(example_path: Path) -> None:
     logging.info("in directory %s", Path.cwd())
     assert Path.cwd().resolve() == example_path.resolve()
@@ -125,8 +125,9 @@ def test_baked_create(example_path: Path) -> None:
     extra_files = (
         [".copier-answers.yml"] if "copier" in str(example_path.name) else None
     )
+    use_jupyter = "nojupyter" not in str(example_path.name)
 
-    check_directory(path=example_path, extra_files=extra_files)
+    check_directory(path=example_path, extra_files=extra_files, use_jupyter=use_jupyter)
 
 
 @pytest.mark.disable
@@ -135,7 +136,6 @@ def test_baked_version(example_path: Path) -> None:
         run_inside_dir("nox -s build -- ++build version", example_path)
 
 
-# @pytest.mark.test
 def test_baked_test(example_path: Path, nox_opts: str, nox_session_opts: str) -> None:
     run_inside_dir(
         f"nox {nox_opts} -s test-{get_python_version()} -- {nox_session_opts}",
@@ -143,20 +143,11 @@ def test_baked_test(example_path: Path, nox_opts: str, nox_session_opts: str) ->
     )
 
 
-# @pytest.mark.lint
 def test_baked_lint(example_path: Path, nox_opts: str, nox_session_opts: str) -> None:
     if get_python_version() == DEFAULT_PYTHON:
-        try:
-            run_inside_dir(
-                f"nox {nox_opts} -s lint -- {nox_session_opts}", example_path
-            )
-        except Exception:
-            logging.info("git diff")
-            run_inside_dir("git diff", example_path)
-            raise
+        run_inside_dir(f"nox {nox_opts} -s lint -- {nox_session_opts}", example_path)
 
 
-# @pytest.mark.docs
 def test_baked_docs(example_path: Path, nox_opts: str, nox_session_opts: str) -> None:
     if get_python_version() == DEFAULT_PYTHON:
         run_inside_dir(
@@ -187,6 +178,9 @@ def test_baked_mypystrict(
 def test_baked_notebook(
     example_path: Path, nox_opts: str, nox_session_opts: str
 ) -> None:
+    if "nojupyter" in example_path.name:
+        pytest.skip("no jupyter")
+
     if (py := get_python_version()) == DEFAULT_PYTHON:
         run_inside_dir(
             f"nox {nox_opts} -s typecheck-{py} -- +m clean typecheck-notebook {nox_session_opts}",

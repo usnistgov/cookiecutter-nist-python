@@ -17,11 +17,12 @@
 #     "command_line_interface",
 #     "sphinx_use_autodocsumm",
 #     "sphinx_theme",
+#     "use_jupyter",
 #     default=True,
 #   ) + "\n",
 # )
 #
-
+# print(cc.year.yaml() + "\n")
 #
 # from datetime import datetime
 # print("  default: {}".format(datetime.now().year))
@@ -86,6 +87,10 @@ sphinx_theme:
     "Sphinx book theme": sphinx_book_theme
     "Furo theme": furo
   default: sphinx_book_theme
+
+use_jupyter:
+  type: bool
+  help: Use `jupyter` notebooks in development
 
 year:
   type: str

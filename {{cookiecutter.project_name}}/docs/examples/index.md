@@ -11,5 +11,7 @@ $ nox -s docs -- -d symlink
 :maxdepth: 2
 
 example-usage
+{% if cookiecutter.use_jupyter %}
 usage/demo
+{% endif %}
 ```

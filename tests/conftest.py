@@ -22,12 +22,13 @@ ROOT = (Path(__file__).parent / "..").resolve()
 OUTPUT_PATH = ROOT / "cached_examples"
 
 
-SPHINX_THEMES_AND_CLI = [
-    ("book", "nocli"),
-    ("book", "typer"),
-    ("book", "click"),
-    ("book", "argparse"),
-    ("furo", "typer"),
+SPHINX_THEMES_CLI_JUPYTER = [
+    ("book", "nocli", True),
+    ("book", "nocli", False),
+    ("book", "typer", True),
+    ("book", "click", True),
+    ("book", "argparse", True),
+    ("furo", "typer", True),
 ]
 
 MARKER_MAP = {
@@ -37,11 +38,12 @@ MARKER_MAP = {
     "click": "click",
     "typer": "typer",
     "argparse": "argparse",
+    "jupyter": "jupyter",
 }
 
 PARAMS: list[Any] = []
 for style in ("cookie", "copier"):
-    for theme, cli in SPHINX_THEMES_AND_CLI:
+    for theme, cli, use_jupyter in SPHINX_THEMES_CLI_JUPYTER:
         sphinx_theme, command_line_interface = (MARKER_MAP[k] for k in (theme, cli))
 
         def _update_project_name(d: dict[str, Any], style: str) -> dict[str, Any]:
@@ -49,19 +51,23 @@ for style in ("cookie", "copier"):
                 d["project_name"] += f"-{style}"
             return d
 
+        jupyter_tag = "" if use_jupyter else "-nojupyter"
+        jupyter_mark = "jupyter" if use_jupyter else "nojupyter"
+
         d = _update_project_name(
             {
-                "project_name": f"testpackage-{theme}-{cli}",
+                "project_name": f"testpackage-{theme}-{cli}{jupyter_tag}",
                 "style": style,
                 "extra_context": {
                     "sphinx_theme": sphinx_theme,
                     "command_line_interface": command_line_interface,
+                    "use_jupyter": use_jupyter,
                 },
             },
             style=style,
         )
 
-        marks = [getattr(pytest.mark, k) for k in (theme, cli, style)]
+        marks = [getattr(pytest.mark, k) for k in (theme, cli, style, jupyter_mark)]
         if theme == "book" and cli == "nocli":
             # add in default
             PARAMS.append(pytest.param(d, marks=[*marks, pytest.mark.default]))
@@ -150,9 +156,10 @@ def example_path(
         f"just lock {'--upgrade' if requirements_upgrade else ''}",
         str(path),
     )
-    run_inside_dir(
-        "uv run --no-project tools/symlink_docs_examples_notebooks.py", str(path)
-    )
+    if (path / "tools" / "symlink_docs_examples_notebooks.py").exists():
+        run_inside_dir(
+            "uv run --no-project tools/symlink_docs_examples_notebooks.py", str(path)
+        )
 
     run_inside_dir("git add .", path)
 
