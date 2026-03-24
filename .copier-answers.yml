@@ -1,5 +1,5 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: v0.8.0-22-g0f0dde92
+_commit: v0.8.0-34-gf49317a6
 _src_path: .
 command_line_interface: none
 conda_channel: wpk-nist
@@ -12,4 +12,5 @@ project_slug: cookiecutter_nist_python
 pypi_username: wpk-nist
 sphinx_theme: sphinx_book_theme
 sphinx_use_autodocsumm: true
+use_jupyter: false
 year: '2023'

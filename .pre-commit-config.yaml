@@ -35,13 +35,6 @@ repos:
         additional_dependencies:
           - rust-just==1.47.1
 
-      # update cookiecutter
-      - id: sync-pre-commit-deps
-        args:
-          - *sync-requirements
-          - "--config"
-          - "{{cookiecutter.project_name}}/.pre-commit-config.yaml"
-
   # * Forbidden files
   - repo: local
     hooks:
