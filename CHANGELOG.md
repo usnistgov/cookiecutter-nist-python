@@ -5,6 +5,18 @@
 
 Changelog for `cookiecutter-nist-python`
 
+## 0.9.0
+
+Released on 2026-03-24.
+
+### Documentation
+
+- feat: add `use_jupyter` input ([#124](https://github.com/usnistgov/cookiecutter-nist-python/pull/124))
+
+### Contributors
+
+- [@wpk-nist-gov](https://github.com/wpk-nist-gov)
+
 ## 0.8.0
 
 Released on 2026-03-17.

@@ -9,7 +9,7 @@ resolution-markers = [
 ]
 
 [options]
-exclude-newer = "2026-03-17T19:06:10.482249Z"
+exclude-newer = "2026-03-17T19:28:35.739494502Z"
 exclude-newer-span = "P7D"
 
 [[package]]
@@ -338,7 +338,7 @@ wheels = [
 
 [[package]]
 name = "cookiecutter-nist-python"
-version = "0.8.0"
+version = "0.9.0"
 source = { virtual = "." }
 
 [package.dev-dependencies]
