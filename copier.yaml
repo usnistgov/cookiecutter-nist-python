@@ -21,7 +21,7 @@
 #   ) + "\n",
 # )
 #
-# print(cc.year.yaml() + "\n")
+
 #
 # from datetime import datetime
 # print("  default: {}".format(datetime.now().year))

@@ -12,6 +12,7 @@
   "sphinx_theme": ["sphinx_book_theme", "furo"],
   "year": "{% now 'utc', '%Y' %}",
   "__answers": "",
+  "__copier": false,
   "_copy_without_render": [],
   "__prompts__": {
     "project_name": "The name of the project",

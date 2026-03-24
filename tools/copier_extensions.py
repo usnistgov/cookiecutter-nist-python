@@ -54,6 +54,11 @@ def __answers(context):
     return context["_copier_conf"]["answers_file"]
 
 
+@CookiecutterContext.register
+def __copier(context):  # noqa: ARG001
+    return True
+
+
 class CookiecutterNamespace(ContextHook):
     def hook(self, context):
         context["cookiecutter"] = CookiecutterContext(context)
