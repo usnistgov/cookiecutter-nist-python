@@ -33,7 +33,7 @@ repos:
       - id: sync-uv-dependency-groups
       - id: justfile-format
         additional_dependencies:
-          - rust-just==1.47.0
+          - rust-just==1.47.1
 
       # update cookiecutter
       - id: sync-pre-commit-deps
@@ -158,7 +158,7 @@ repos:
           - "--custom-command=prek run pyproject2conda-project --all-files"
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.10.12
+    rev: 0.11.0
     hooks:
       - id: uv-lock
         alias: requirements
