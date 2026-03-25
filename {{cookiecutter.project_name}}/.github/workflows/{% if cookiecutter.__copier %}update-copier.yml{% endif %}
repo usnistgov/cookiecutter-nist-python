@@ -83,7 +83,7 @@ jobs:
               conflict_message="Resolve conflicts."
               commit_message="$commit_message [skip ci]"
             # check for new untracked files
-            elif [ -n "$(git status --untracked-files=normal --porcelain)" ]; then
+            elif [ -n "$(git status --porcelain | grep '^??')" ]; then
               automergeable='false'
             fi
           fi
