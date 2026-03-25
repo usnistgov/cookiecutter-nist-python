@@ -55,10 +55,10 @@ def get_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     """Console script for {{cookiecutter.project_slug}}."""
     parser = get_parser()
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     print("Arguments: " + str(args._))  # noqa: T201
     print(f"Replace this message by putting your code into {PACKAGE}.cli.main")  # noqa: T201

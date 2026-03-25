@@ -27,6 +27,8 @@ see, e.g., {py:meth}`~{{ cookiecutter.project_slug }}.example_function`
 
 ## Executable
 
+{%- if cookiecutter.use_jupyter %}
+
 ### jupytext
 
 ```{code-cell} ipython3
@@ -40,3 +42,4 @@ b = 2
 ```{code-cell} ipython3
 print(example_function(a, b))
 ```
+{%- endif %}

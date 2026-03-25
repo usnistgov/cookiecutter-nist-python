@@ -126,7 +126,7 @@ jobs:
           echo "prek_version=${prek_version}" >> "$GITHUB_ENV"
 
       - name: Setup prek
-        uses: j178/prek-action@0bb87d7f00b0c99306c8bcb8b8beba1eb581c037 # v1.1.0
+        uses: j178/prek-action@79f765515bd648eb4d6bb1b17277b7cb22cb6468 # v2.0.0
         with:
           prek-version: ${{ env.prek_version }}
           install-only: true
@@ -220,6 +220,16 @@ jobs:
             ${{ matrix.python-version }}
           cache-dependency-path: uv.lock
 
+      - name: Prek cache
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
+        with:
+          path: |
+            ~/.cache/prek
+          key:
+            prek-cache|${{ runner.os }}|${{ runner.arch }}|${{
+            env.pythonLocation }}|${{ hashFiles(env.UVX_CONSTRAINT) }}|${{
+            hashFiles('.pre-commit-config.yaml') }}
+
       - name: Setup git
         run: |
           git config --global init.defaultBranch main
@@ -230,9 +240,14 @@ jobs:
         env:
           python_version: ${{ matrix.python-version }}
         run: >-
-          $UVX_COMMAND nox -s test-"$python_version" -- ++no-cov ++test-options
-          -m \'${{ matrix.markers }}\'
+          $NOX_COMMAND -s test-"$python_version" -- ++no-cov ++test-options -m
+          \'${{ matrix.markers }}\'
         shell: bash
+
+      - name: cache info
+        run: |
+          $UVX_COMMAND prek cache dir
+          ls -aR ~/.cache/prek
 
   #     - name: Upload coverage data
   #       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
