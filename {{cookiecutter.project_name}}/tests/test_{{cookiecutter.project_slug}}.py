@@ -27,7 +27,14 @@ def response() -> tuple[int, int]:
 def test_example_function(response: tuple[int, int]) -> None:
     expected = 3
     assert example_function(*response) == expected
-{%- if cookiecutter.command_line_interface in ["click", "typer"] %}
+{%- if cookiecutter.command_line_interface == "argparse" %}
+
+
+def test_command_line_interface() -> None:
+    from {{ cookiecutter.project_slug }} import cli
+
+    assert not cli.main([])
+{%- elif cookiecutter.command_line_interface in ["click", "typer"] %}
 
 
 def test_command_line_interface() -> None:
