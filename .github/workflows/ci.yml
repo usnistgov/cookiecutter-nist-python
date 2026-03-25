@@ -224,7 +224,7 @@ jobs:
         uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         with:
           path: |
-            ${{ github.workspace }}/.cache/prek
+            ~/.cache/prek
           key:
             prek-cache|${{ runner.os }}|${{ runner.arch }}|${{
             env.pythonLocation }}|${{ hashFiles(env.UVX_CONSTRAINT) }}|${{
@@ -243,6 +243,12 @@ jobs:
           $UVX_COMMAND nox -s test-"$python_version" -- ++no-cov ++test-options
           -m \'${{ matrix.markers }}\'
         shell: bash
+
+      - name: cache info
+        run: |
+          $UVX_COMMAND prek cache dir
+          echo ~/.cache/prek
+          ls -aR ~/.cache/prek
 
   #     - name: Upload coverage data
   #       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
