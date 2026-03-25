@@ -227,8 +227,8 @@ jobs:
             ${{ github.workspace }}/.cache/prek
           key:
             prek-cache|${{ runner.os }}|${{ runner.arch }}|${{
-            env.pythonLocation }}|${{ hashFiles(${{ env.UVX_CONSTRAINT }})
-            }}|${{ hashFiles(".pre-commit-config.yaml") }}
+            env.pythonLocation }}|${{ hashFiles(env.UVX_CONSTRAINT) }}|${{
+            hashFiles('.pre-commit-config.yaml') }}
 
       - name: Setup git
         run: |
