@@ -79,7 +79,7 @@ jobs:
               conflict_message="Resolve conflicts."
               commit_message="$commit_message [skip ci]"
             # check for new untracked files
-            elif [ -n "$(git status --porcelain | grep '^??')" ]; then
+            elif git status --porcelain | grep -q '^??'; then
               automergeable='false'
             fi
           fi
@@ -99,7 +99,7 @@ jobs:
             git config --global user.name "github-actions[bot]"
             git restore --staged .
           fi
-        shell: bash -euxo pipefail {0}
+        shell: bash -euxo {0}
 
       - name: Create pull request
         if: steps.check.outputs.changed == 'true'
