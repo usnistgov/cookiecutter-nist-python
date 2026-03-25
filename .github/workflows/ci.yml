@@ -220,6 +220,17 @@ jobs:
             ${{ matrix.python-version }}
           cache-dependency-path: uv.lock
 
+      - name: Prek cache
+        id: numba-cache-restore
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
+        with:
+          path: |
+            ${{ github.workspace }}/.cache/prek
+          key:
+            numba-cache|${{ runner.os }}|${{ runner.arch }}|${{
+            env.pythonLocation }}|${{ hashFiles(${{ env.UVX_CONSTRAINT }})
+            }}|${{ hashFiles(".pre-commit-config.yaml") }}
+
       - name: Setup git
         run: |
           git config --global init.defaultBranch main
