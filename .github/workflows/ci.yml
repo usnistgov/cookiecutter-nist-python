@@ -240,14 +240,13 @@ jobs:
         env:
           python_version: ${{ matrix.python-version }}
         run: >-
-          $UVX_COMMAND nox -s test-"$python_version" -- ++no-cov ++test-options
-          -m \'${{ matrix.markers }}\'
+          $NOX_COMMAND -s test-"$python_version" -- ++no-cov ++test-options -m
+          \'${{ matrix.markers }}\'
         shell: bash
 
       - name: cache info
         run: |
           $UVX_COMMAND prek cache dir
-          echo ~/.cache/prek
           ls -aR ~/.cache/prek
 
   #     - name: Upload coverage data
