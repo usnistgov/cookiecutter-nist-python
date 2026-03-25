@@ -3,6 +3,12 @@ on:
   # schedule:
   #   - cron: "0 2 * * 1" # Every Monday at 2am
   workflow_dispatch:
+    inputs:
+      automerge:
+        description: "enable automerge"
+        required: false
+        type: boolean
+        default: false
 
 concurrency:
   group: ${{ "{{ github.workflow }}" }}-${{ "{{ github.ref }}" }}
@@ -11,6 +17,9 @@ concurrency:
 permissions:
   contents: write
   pull-requests: write
+
+env:
+  AUTOMERGE: "false"
 
 jobs:
   update:
@@ -134,8 +143,10 @@ jobs:
 
       - name: automerge
         if:
-          ${{ "{{ steps.cpr.outputs.pull-request-number &&
-          steps.check.outputs.conflict_message == '' }}" }}
+          ${{ "{{ (inputs.automerge || env.AUTOMERGE = 'true') &&
+          steps.cpr.outputs.pull-request-number &&
+          steps.check.outputs.conflict_message == ''  &&
+          steps.check.outputs.automergeable == 'true' }}" }}
         env:
           NUMBER: ${{ "{{ steps.cpr.outputs.pull-request-number }}" }}
           # Need PAT if want to start other actions.  Use GITHUB_TOKEN if not.
