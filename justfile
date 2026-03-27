@@ -329,8 +329,7 @@ COOKIE := "{{cookiecutter.project_name}}"
 
 template-lint-upgrade:
     cd {{ COOKIE }} && uvx -c../requirements/lock/uvx-tools.txt prek -c .pre-commit-config.yaml autoupdate
-    uv run --no-project --script tools/requirements_lock.py \
-        --upgrade requirements/pre-commit-additional-dependencies.txt
+    -[[ -f requirements/pre-commit-additional-dependencies.txt ]] && uv run --no-project --script tools/requirements_lock.py --upgrade requirements/pre-commit-additional-dependencies.txt
     -just lint sync-pre-commit-deps
     -{{ UVX_WITH_OPTS }} prek run prettier --files .pre-commit-config.yaml
     -cd {{ COOKIE }} && uvx -c../requirements/lock/uvx-tools.txt prek -c .pre-commit-config.yaml run prettier --files .pre-commit-config.yaml
