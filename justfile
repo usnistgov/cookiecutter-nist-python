@@ -342,5 +342,5 @@ alias update-template-pre-commit-config := template-lint-upgrade
 copier-update *options="":
     {{ UVX_WITH_OPTS }} --with copier-template-extensions \
     copier update --trust -A \
-    -r main \
+    -r $(git branch --show-current) \
     {{ options }}
