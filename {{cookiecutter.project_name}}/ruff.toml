@@ -11,7 +11,7 @@ fix = true
 
 [format]
 docstring-code-format = true
-preview = true  # needed for markdown support
+preview = true               # needed for markdown support
 
 [lint]
 preview = true
