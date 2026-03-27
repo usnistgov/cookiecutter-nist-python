@@ -5,6 +5,18 @@
 
 Changelog for `cookiecutter-nist-python`
 
+## 0.10.0
+
+Released on 2026-03-27.
+
+### Enhancements
+
+- feat: use native markdown ruff formatting ([#136](https://github.com/usnistgov/cookiecutter-nist-python/pull/136))
+
+### Contributors
+
+- [@wpk-nist-gov](https://github.com/wpk-nist-gov)
+
 ## 0.9.0
 
 Released on 2026-03-24.
