@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 # Run update-copier on all of my repos
+# extra options passed to gh workflow run
+
+set -exu
 
 repos=(
     usnistgov/cmomy
@@ -17,7 +20,7 @@ repos=(
 failed_repos=""
 for repo in "${repos[@]}"; do
     echo "repo: $repo"
-    if gh workflow run update-copier.yml --repo "$repo"; then
+    if gh workflow run update-copier.yml --repo "$repo" "$@"; then
         echo "Successfully triggered workflow for $repo"
     else
         echo "ERROR: Failed to trigger workflow for $repo" >&2
