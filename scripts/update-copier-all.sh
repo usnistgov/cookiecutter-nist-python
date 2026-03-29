@@ -17,20 +17,20 @@ repos=(
     wpk-nist-gov/typecheck-runner
 )
 
-failed_repos=""
+failed_repos=()
 for repo in "${repos[@]}"; do
     echo "repo: $repo"
     if gh workflow run update-copier.yml --repo "$repo" "$@"; then
         echo "Successfully triggered workflow for $repo"
     else
         echo "ERROR: Failed to trigger workflow for $repo" >&2
-        failed_repos="$failed_repos $repo"
+        failed_repos+=("$repo")
     fi
 done
 
-if [ -n "$failed_repos" ]; then
+if [ "${#failed_repos[@]}" -gt 0 ]; then
     echo "The following repositories failed to trigger the workflow:" >&2
-    for repo in $failed_repos; do
+    for repo in "${failed_repos[@]}"; do
         echo "  - $repo" >&2
     done
     exit 1

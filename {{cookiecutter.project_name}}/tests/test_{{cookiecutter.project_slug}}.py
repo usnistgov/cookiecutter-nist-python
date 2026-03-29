@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import re
+
 import pytest
+
 {%- if cookiecutter.command_line_interface in ["click", "typer"] %}
 from click.testing import CliRunner
 {%- endif %}
@@ -16,7 +19,8 @@ from {{ cookiecutter.project_slug }} import example_function
 def test_version() -> None:
     from {{ cookiecutter.project_slug }} import __version__
 
-    assert __version__ != "999"
+    assert isinstance(__version__, str)
+    assert re.match(r"^\d+\.\d+\.\d+$", __version__) is not None
 
 
 @pytest.fixture

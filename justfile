@@ -47,7 +47,7 @@ clean-test: (_clean ".coverage" "htmlcov")
 
 # clean cache files
 [group("clean")]
-clean-cache: && (_clean ".dmypy.json" ".pytype" "tuna-loadtime.log" ".nox/*/tmp" ".nox/.cache") (find_and_clean "." ".*cache")
+clean-cache: && (_clean ".dmypy.json" ".pytype" "tuna-loadtime.log" ".nox/*/tmp" ".nox/.cache" "cached_examples") (find_and_clean "." ".*cache")
     just _clean cached_examples
 
 # clean backup/checkpoint files
