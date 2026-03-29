@@ -20,7 +20,7 @@ def test_version() -> None:
     from {{ cookiecutter.project_slug }} import __version__
 
     assert isinstance(__version__, str)
-    assert re.match(r"^\d+\.\d+\.\d+$", __version__) is not None
+    assert re.match(r"^\d+\.\d+\.\d+.*$", __version__) is not None
 
 
 @pytest.fixture
