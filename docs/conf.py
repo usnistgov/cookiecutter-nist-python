@@ -19,7 +19,7 @@
 
 """Build docs."""
 
-# import cookiecutter_nist_python
+from importlib.util import find_spec
 from pathlib import Path
 
 import tomllib
@@ -457,11 +457,6 @@ linkcheck_ignore = ["https://doi.org/"]
 
 
 # only set spelling stuff if installed:
-try:
-    import sphinxcontrib.spelling  # noqa: F401
-
+if find_spec("sphinxcontrib.spelling") is not None:
     extensions += ["sphinxcontrib.spelling"]
     spelling_word_list_filename = "spelling_wordlist.txt"
-
-except ImportError:
-    pass
