@@ -244,11 +244,6 @@ jobs:
           \'${{ matrix.markers }}\'
         shell: bash
 
-      - name: cache info
-        run: |
-          $UVX_COMMAND prek cache dir
-          ls -aR ~/.cache/prek
-
   #     - name: Upload coverage data
   #       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
   #       with:
