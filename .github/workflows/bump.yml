@@ -68,8 +68,8 @@ jobs:
 
       - name: automerge
         env:
-          NUMBER: ${{ "{{ steps.cpr.outputs.pull-request-number }}" }}
+          NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
           # Need PAT if want to start other actions.  Use GITHUB_TOKEN if not.
-          GH_TOKEN: ${{ "{{ secrets.PAT }}" }}
+          GH_TOKEN: ${{ secrets.PAT }}
         run: |
           gh pr merge -m --auto "$NUMBER"
