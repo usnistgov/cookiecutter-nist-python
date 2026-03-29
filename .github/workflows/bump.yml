@@ -1,4 +1,4 @@
-name: Update pre-commit hook versions
+name: Update dependencies and pre-commit hook versions
 on:
   schedule:
     - cron: "0 6 * * 0,2,4" # Every sun, tues, thur at 6am utc
@@ -27,6 +27,8 @@ jobs:
         run: just template-lint-upgrade
       - name: Update pre-commit hooks
         run: just lint-upgrade
+      - name: Update requirements
+        run: just lock --upgrade
 
       - name: Git config
         run: |
