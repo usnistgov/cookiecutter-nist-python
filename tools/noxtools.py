@@ -17,8 +17,6 @@ if TYPE_CHECKING:
 
     from nox import Session
 
-    PathLike = str | Path
-
 
 # * Top level installation functions ---------------------------------------------------
 def py_prefix(python_version: Any) -> str:

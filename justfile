@@ -47,7 +47,7 @@ clean-test: (_clean ".coverage" "htmlcov")
 
 # clean cache files
 [group("clean")]
-clean-cache: && (_clean ".dmypy.json" ".pytype" "tuna-loadtime.log" ".nox/*/tmp" ".nox/.cache") (find_and_clean "." ".*cache")
+clean-cache: && (_clean ".dmypy.json" ".pytype" "tuna-loadtime.log" ".nox/*/tmp" ".nox/.cache" "cached_examples") (find_and_clean "." ".*cache")
     just _clean cached_examples
 
 # clean backup/checkpoint files
@@ -75,7 +75,7 @@ lint-manual *commands: (pre-commit "run --all-files --hook-stage=manual" command
 
 alias lint-all := lint-manual
 
-# run prettier/markdownlint/pypoject-fmt
+# run prettier/markdownlint/pyproject-fmt
 [group("lint")]
 prettier: (lint "pyproject-fmt") (lint-manual "markdownlint")
 
@@ -221,7 +221,7 @@ typecheck-all *checkers="mypy basedpyright": (nox "-s typecheck -- +m" checkers)
 
 # * docs -----------------------------------------------------------------------
 
-# build docs.  Optioons {html, spelling, livehtml, linkcheck, open}.
+# build docs.  Options {html, spelling, livehtml, linkcheck, open}.
 [group("docs")]
 [group("nox")]
 docs *options="html": (nox "-s docs -- +d" options)
