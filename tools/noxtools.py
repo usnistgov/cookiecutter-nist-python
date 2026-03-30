@@ -170,7 +170,7 @@ def session_run_commands(
     if commands:
         kws.update(external=external)
         for opt in combine_list_list_str(commands):
-            _ = session.run(*opt, **kws)
+            _: Any = session.run(*opt, **kws)
 
 
 # * Caching -------------------------------------------------------------------

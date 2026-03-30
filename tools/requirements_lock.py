@@ -120,7 +120,7 @@ def _maybe_copy_lockfile(lock_path: Path) -> Path | None:
     with tempfile.TemporaryDirectory(delete=False) as tmp_dir:
         new_path = Path(tmp_dir) / lock_path.name
         logger.info("backing up current uv.lock to %s", new_path)
-        shutil.copy2(lock_path, new_path)
+        _ = shutil.copy2(lock_path, new_path)
     return new_path
 
 
@@ -169,7 +169,7 @@ def _maybe_lock_or_sync(
         old_lock_path, lock_path
     ):
         logger.info("only exclude-newer timestamp changed.  Keeping old file")
-        shutil.move(old_lock_path, lock_path)
+        _ = shutil.move(old_lock_path, lock_path)
 
 
 def main(args: Sequence[str] | None = None) -> int:
