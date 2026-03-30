@@ -1,4 +1,4 @@
-"""Utilities to wonferrk with nox"""
+"""Utilities to work with nox"""
 
 from __future__ import annotations
 
