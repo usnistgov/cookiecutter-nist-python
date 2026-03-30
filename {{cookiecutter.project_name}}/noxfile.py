@@ -368,6 +368,7 @@ def install_package(
     installpkg: str | None = None,
 ) -> None:
     """Install current package."""
+    run: Callable[..., Any]
     if installpkg is not None:
         run = session.run
         opts = [*args, installpkg]
@@ -449,7 +450,7 @@ def uvx_run(
     session: Session, *args: str | PathLike[str], locked: bool = True, **kwargs: Any
 ) -> Any:
     """Run command using uvx"""
-    return session.run("uvx", *get_uvx_constraint_args(locked), *args, **kwargs)
+    return session.run("uvx", *get_uvx_constraint_args(locked), *args, **kwargs)  # pyright: ignore[reportUnknownVariableType]
 
 
 def pre_commit_run(

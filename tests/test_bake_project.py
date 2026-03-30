@@ -168,6 +168,15 @@ def test_baked_typecheck(
     )
 
 
+def test_baked_typechecktools(
+    example_path: Path,
+) -> None:
+    run_inside_dir(
+        "just typecheck-tools",
+        example_path,
+    )
+
+
 def test_baked_mypystrict(
     example_path: Path, nox_opts: str, nox_session_opts: str
 ) -> None:
