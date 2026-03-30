@@ -5,6 +5,18 @@
 
 Changelog for `cookiecutter-nist-python`
 
+## 0.11.0
+
+Released on 2026-03-30.
+
+### Enhancements
+
+- feat: avoid updating exclude-newer in uv.lock ([#146](https://github.com/usnistgov/cookiecutter-nist-python/pull/146))
+
+### Contributors
+
+- [@wpk-nist-gov](https://github.com/wpk-nist-gov)
+
 ## 0.10.0
 
 Released on 2026-03-27.
