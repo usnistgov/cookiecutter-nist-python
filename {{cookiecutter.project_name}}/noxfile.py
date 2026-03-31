@@ -848,7 +848,7 @@ def typecheck(
                 "tests",
             )
         {%- if cookiecutter.use_jupyter %}
-        elif c == "typecheck-tool" or c.endswith("-notebook"):
+        elif c == "typecheck-tools" or c.endswith("-notebook"):
         {%- else %}
         elif c == "typecheck-tools":
         {%- endif %}

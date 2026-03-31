@@ -23,7 +23,7 @@ def py_prefix(python_version: Any) -> str:
     """
     Get python prefix.
 
-    `python="3.8` -> "py38"
+    `python="3.8"` -> "py38"
     """
     if isinstance(python_version, str):
         return "py" + python_version.replace(".", "")
@@ -94,9 +94,9 @@ def infer_requirement_path(
 
     if lock:
         if filename.endswith(".yaml"):
-            filename = filename.rstrip(".yaml") + "-conda-lock.yml"
+            filename = filename.removesuffix(".yaml") + "-conda-lock.yml"
         elif filename.endswith(".yml"):
-            filename = filename.rstrip(".yml") + "-conda-lock.yml"
+            filename = filename.removesuffix(".yml") + "-conda-lock.yml"
         elif filename.endswith(".txt"):
             pass
         else:
@@ -221,8 +221,9 @@ def check_hash_path_for_change(
     """
     Checks a json file `hash_path` for hashes of `other_paths`.
 
-    if specify target_path and no hash_path, set `hash_path=target_path.parent / (target_path.name + ".hash.json")`.
-    if specify hash_path and no target, set
+    if specify target_path and no hash_path, set `hash_path=target_path.parent
+    / (target_path.name + ".hash.json")`. if specify hash_path and no target,
+    set `target_path=hash_path`
 
     Parameters
     ----------
