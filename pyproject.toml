@@ -255,6 +255,7 @@ markers = [
     "notebook: run typing/test on notebook",
     "test: run tests",
     "typecheck: run type checkers",
+    "typechecktools: run type checkers over tools",
     "typer: Typer template",
     "version: update-version-scm (disabled by default)",
 ]

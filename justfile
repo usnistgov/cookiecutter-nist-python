@@ -208,8 +208,7 @@ typecheck *options: (_typecheck "-cmypy[faster-cache] -cbasedpyright -cpyrefly -
 [group("tools")]
 [group("typecheck")]
 @typecheck-tools *files="noxfile.py tools/*.py":
-    -just TYPECHECK_UVRUN_OPTS="--only-group=nox --only-group=typecheck-runner" mypy -- --strict {{ files }}
-    just TYPECHECK_UVRUN_OPTS="--only-group=nox --only-group=typecheck-runner" basedpyright -- {{ files }}
+    -just TYPECHECK_UVRUN_OPTS="--only-group=nox --only-group=typecheck-runner" _typecheck "-c'mypy[faster-cache] --strict' -cbasedpyright -cpyrefly -cty" {{ files }}
     just TYPECHECK_UVRUN_OPTS="--only-group=nox --only-group=pylint" pylint {{ files }}
 
 # ** typecheck all
