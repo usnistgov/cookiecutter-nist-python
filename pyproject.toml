@@ -48,6 +48,7 @@ test = [
     { include-group = "test-extras" },
 ]
 type = [
+    { include-group = "nox" },
     { include-group = "pylint" },
     { include-group = "pytest" },
     { include-group = "test-extras" },
@@ -142,16 +143,11 @@ extend-exclude = [ ".copier-answers.y*ml" ]
 
 # * typecheck ---------------------------------------------------------------------
 [tool.mypy]
-exclude = [
-    ".eggs",
-    ".nox",
-    ".numba_cache",
-    ".tox",
-    ".venv",
-    "docs",
-]
 files = [
     "tests",
+    # tools
+    "noxfile.py",
+    "tools",
 ]
 # options
 check_untyped_defs = true
@@ -172,7 +168,13 @@ module = [ "cookiecutter.*" ]
 
 [tool.pyrefly]
 enabled-ignores = [ "pyrefly" ]
-project-includes = [ "tests" ]
+project-includes = [
+    "tests",
+    # tools
+    "noxfile.py",
+    "tools",
+]
+search-path = [ "." ]
 
 [tool.pyright]
 exclude = [
@@ -185,6 +187,9 @@ exclude = [
 ]
 include = [
     "tests",
+    # tools
+    "noxfile.py",
+    "tools",
 ]
 typeCheckingMode = "strict"
 # options
@@ -220,7 +225,12 @@ reportUnusedCallResult = false
 [tool.ty]
 # Disable support for `type: ignore` comments
 analysis.respect-type-ignore-comments = false
-src.include = [ "tests" ]
+src.include = [
+    "tests",
+    # tools
+    "noxfile.py",
+    "tools",
+]
 
 # * Testing --------------------------------------------------------------------
 [tool.pytest.ini_options]
@@ -250,12 +260,10 @@ markers = [
     "furo: furo theme",
     "lint: run linting",
     "longname: a project with a long name",
-    "mypystrict: run mypy --strict",
     "nocli: no command-line interface",
-    "notebook: run typing/test on notebook",
+    "notebook: run test on notebook",
     "test: run tests",
     "typecheck: run type checkers",
-    "typechecktools: run type checkers over tools",
     "typer: Typer template",
     "version: update-version-scm (disabled by default)",
 ]

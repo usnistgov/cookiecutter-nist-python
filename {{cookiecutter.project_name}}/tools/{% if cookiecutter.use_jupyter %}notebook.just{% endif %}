@@ -59,6 +59,6 @@ install-ipykernel:
 [group("notebook")]
 execute-notebooks *files="examples/usage/*.ipynb":
     {{ UVRUN }} --group="notebook" --no-dev \
-    jupyter execute --inplace --allow-errors {{ files }}
+    jupyter execute --inplace {{ files }}
     just pre-commit run nbstripout --all-files  || true
 {%- endraw %}

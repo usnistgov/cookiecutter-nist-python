@@ -1,4 +1,5 @@
 """Script to create example files"""
+# pylint: disable=duplicate-code
 
 from __future__ import annotations
 
@@ -12,7 +13,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator
+    from collections.abc import Generator
 
 FORMAT = "%(message)s [%(name)s - %(levelname)s]"
 logging.basicConfig(level=logging.INFO, format=FORMAT)
@@ -35,7 +36,7 @@ EXTRA_CONTEXTS: dict[str, dict[str, str]] = {
 
 
 @contextmanager
-def inside_dir(dirpath: str | Path) -> Iterator[None]:
+def inside_dir(dirpath: str | Path) -> Generator[None]:
     """
     Execute code from inside the given directory
     :param dirpath: String, path of the directory the command is being run.
@@ -83,7 +84,7 @@ def bake(
 ) -> None:
     """Bake a cookiecutter"""
     from cookiecutter.main import (  # pyright: ignore[reportMissingTypeStubs]
-        cookiecutter,  # pyright: ignore[reportUnknownVariableType]
+        cookiecutter,
     )
 
     if template is None:
@@ -96,7 +97,7 @@ def bake(
     extra_context.setdefault("project_name", _project_name(name))
 
     logger.info("baking %s", output_dir)
-    cookiecutter(
+    _ = cookiecutter(
         template=str(template),
         output_dir=str(output_dir),
         no_input=no_input,
@@ -111,8 +112,8 @@ def bake(
 
     # git init?
     if not (rendered_dir / ".git").exists():
-        run_inside_dir("git init", rendered_dir)
-        run_inside_dir("git add .", rendered_dir)
+        _ = run_inside_dir("git init", rendered_dir)
+        _ = run_inside_dir("git add .", rendered_dir)
 
 
 def clean_directories(names: str | list[str]) -> None:
@@ -175,7 +176,7 @@ def main() -> None:
     }
 
     for v in commands.values():
-        v.add_argument(
+        _ = v.add_argument(
             "values",
             choices=choices,
             help="examples to apply to",
