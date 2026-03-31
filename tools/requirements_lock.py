@@ -161,12 +161,12 @@ def _maybe_lock_or_sync(
     ]
 
     logger.info(shlex.join(command))
-    _out = check_call(command)
+    _ = check_call(command)
 
     if old_lock_path is not None:
         if _only_changed_exclude_newer_time(old_lock_path, lock_path):
             logger.info("only exclude-newer timestamp changed.  Keeping old file")
-            _ = shutil.move(old_lock_path, lock_path)
+            _ = shutil.move(old_lock_path, lock_path)  # pylint: disable=redefined-variable-type
         else:
             old_lock_path.unlink()
 
