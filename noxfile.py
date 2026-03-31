@@ -198,6 +198,7 @@ class SessionParams(DataclassParser):
             "all",
             "ty",
             "pyrefly",
+            "typecheck-tools",
         ]
     ] = add_option("--typecheck", "-m")
     typecheck_run: RUN_ANNO = None
@@ -733,7 +734,7 @@ def typecheck(
 
     cmd = opts.typecheck or []
     if not opts.typecheck_run and not cmd:
-        cmd = ["mypy", "basedpyright"]
+        cmd = ["all"]
 
     if "all" in cmd:
         cmd = ["mypy", "basedpyright", "pyrefly", "ty", "pylint"]
@@ -774,6 +775,8 @@ def typecheck(
                 "--enable-all-extensions",
                 "tests",
             )
+        elif c == "typecheck-tools":
+            uvx_run(session, "--from=rust-just", "just", c)
         else:
             session.log(f"Skipping unknown command {c}")
 

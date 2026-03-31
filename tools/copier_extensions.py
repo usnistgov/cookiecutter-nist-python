@@ -1,5 +1,6 @@
 """Hooks for copier"""
 # pyright: reportImplicitOverride=false, reportUnusedFunction=false
+# pylint: disable=missing-class-docstring
 
 from __future__ import annotations
 
@@ -28,7 +29,7 @@ class SmartDict(Mapping[Any, Any]):
 
     @classmethod
     def register(cls, func: Func) -> Func:
-        cls._computed_keys[func.__name__] = func
+        cls._computed_keys[func.__name__] = func  # ty: ignore[unresolved-attribute]
         return func
 
     def __getitem__(self, item: Any) -> Any:
@@ -67,6 +68,6 @@ def __copier(context: Mapping[str, Any]) -> bool:  # noqa: ARG001
     return True
 
 
-class CookiecutterNamespace(ContextHook):
+class CookiecutterNamespace(ContextHook):  # pylint: disable=abstract-method
     def hook(self, context: dict[str, Any]) -> None:
         context["cookiecutter"] = CookiecutterContext(context)
