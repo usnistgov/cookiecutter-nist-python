@@ -168,25 +168,6 @@ def test_baked_typecheck(
     )
 
 
-def test_baked_typechecktools(
-    example_path: Path,
-) -> None:
-    run_inside_dir(
-        "just typecheck-tools",
-        example_path,
-    )
-
-
-def test_baked_mypystrict(
-    example_path: Path, nox_opts: str, nox_session_opts: str
-) -> None:
-    if (py := get_python_version()) == DEFAULT_PYTHON:
-        run_inside_dir(
-            f"nox {nox_opts} -s typecheck-{py} -- +m clean mypy ++typecheck-options --strict {nox_session_opts}",
-            example_path,
-        )
-
-
 def test_baked_notebook(
     example_path: Path, nox_opts: str, nox_session_opts: str
 ) -> None:
@@ -195,10 +176,6 @@ def test_baked_notebook(
 
     if (py := get_python_version()) == DEFAULT_PYTHON:
         run_inside_dir(
-            f"nox {nox_opts} -s typecheck-{py} -- +m clean typecheck-notebook {nox_session_opts}",
-            example_path,
-        )
-        run_inside_dir(
-            f"nox {nox_opts} -s test-notebook -- {nox_session_opts}",
+            f"nox {nox_opts} -s test-notebook-{py} -- {nox_session_opts}",
             example_path,
         )

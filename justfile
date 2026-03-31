@@ -197,8 +197,17 @@ pyrefly *options: (_typecheck "-cpyrefly" options)
 # Run pylint (with optional args)
 [group("lint")]
 [group("typecheck")]
-pylint *options="tests":
-    {{ UVRUN }} {{ TYPECHECK_UVRUN_OPTS }} pylint {{ PYLINT_OPTS }} {{ options }}
+pylint:
+    #!/usr/bin/env sh
+    set -exu
+    possible=("src" "tests" "noxfile.py" "tools" "scripts")
+    options=()
+    for d in "${possible[@]}"; do
+        if [ -e "$d" ]; then
+            options+=("$d")
+        fi
+    done
+    {{ UVRUN }} {{ TYPECHECK_UVRUN_OPTS }} pylint {{ PYLINT_OPTS }} "${options[@]}"
 
 # Run all checkers (with optional directories)
 [group("typecheck")]

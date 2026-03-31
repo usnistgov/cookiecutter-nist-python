@@ -188,7 +188,7 @@ def pytest_collection_modifyitems(
 ) -> None:
     for item in items:
         # pyrefly: ignore [missing-attribute]
-        marker = item.originalname.split("_")[-1]  # type: ignore[attr-defined]  # pyright: ignore[reportUnknownVariableType,reportUnknownMemberType,reportAttributeAccessIssue]
+        marker = item.originalname.split("_")[-1]  # type: ignore[attr-defined]  # pyright: ignore[reportUnknownVariableType,reportUnknownMemberType,reportAttributeAccessIssue] # ty: ignore[unresolved-attribute]
         item.add_marker(getattr(pytest.mark, marker))  # pyright: ignore[reportUnknownArgumentType]
 
     if config.getoption("--enable"):
@@ -261,7 +261,7 @@ def _bake_project(
 
     if style == "cookie":
         from cookiecutter.main import (  # pyright: ignore[reportMissingTypeStubs]
-            cookiecutter,  # pyright: ignore[reportUnknownVariableType]
+            cookiecutter,
         )
 
         cookiecutter(

@@ -198,7 +198,6 @@ class SessionParams(DataclassParser):
             "all",
             "ty",
             "pyrefly",
-            "typecheck-tools",
         ]
     ] = add_option("--typecheck", "-m")
     typecheck_run: RUN_ANNO = None
@@ -724,7 +723,7 @@ def lint(
 # ** type checking
 @nox.session(name="typecheck", **ALL_KWS)
 @add_opts
-def typecheck(
+def typecheck(  # noqa: PLR0912
     session: nox.Session,
     opts: SessionParams,
 ) -> None:
@@ -737,7 +736,13 @@ def typecheck(
         cmd = ["all"]
 
     if "all" in cmd:
-        cmd = ["mypy", "basedpyright", "pyrefly", "ty", "pylint"]
+        cmd = [
+            "mypy",
+            "basedpyright",
+            "pyrefly",
+            "ty",
+            "pylint",
+        ]
 
     # set the cache directory for mypy
     session.env["MYPY_CACHE_DIR"] = str(Path(session.create_tmp()) / ".mypy_cache")
@@ -746,39 +751,50 @@ def typecheck(
         cmd = list(cmd)
         cmd.remove("clean")
 
-        for name in (".mypy_cache", ".pytype"):
+        for name in (".mypy_cache",):
             p = Path(session.create_tmp()) / name
             if p.exists():
                 session.log(f"removing cache {p}")
                 shutil.rmtree(p)
 
-    if not isinstance(session.python, str):
-        raise TypeError
-
+    # do all typecheckers in one go
+    typecheckers: list[str] = []
+    othercheckers: list[str] = []
     for c in cmd:
         if c in {"mypy", "pyright", "basedpyright", "ty", "pyrefly"}:
-            checker = "mypy[faster-cache]" if c == "mypy" else c
-            session.run(
-                "typecheck-runner",
-                *get_uvx_constraint_args(),
-                "--verbose",
-                f"--check={checker}",
-                "--allow-errors",
-                external=False,
-            )
-        elif c == "pylint":
+            typecheckers.append(f"--check={'mypy[faster-cache]' if c == 'mypy' else c}")
+        else:
+            othercheckers.append(c)
+
+    if typecheckers:
+        session.run(
+            "typecheck-runner",
+            *get_uvx_constraint_args(),
+            "--verbose",
+            *typecheckers,
+            "--",
+            external=False,
+        )
+
+    for other in othercheckers:
+        if other == "pylint":
+            paths = [
+                x
+                for x in ("src", "tests", "noxfile.py", "scripts", "tools")
+                if Path(x).exists()
+            ]
             session.run(
                 "pylint",
                 # A bit dangerous, but needed to allow pylint
                 # to work across versions.
                 "--disable=unrecognized-option",
                 "--enable-all-extensions",
-                "tests",
+                *paths,
             )
-        elif c == "typecheck-tools":
-            uvx_run(session, "--from=rust-just", "just", c)
+        elif other.endswith("-notebook"):
+            uvx_run(session, "--from=rust-just", "just", other)
         else:
-            session.log(f"Skipping unknown command {c}")
+            session.log(f"Skipping unknown command {other}")
 
 
 # ** Dist conda
