@@ -5,6 +5,18 @@
 
 Changelog for `cookiecutter-nist-python`
 
+## 0.12.0
+
+Released on 2026-03-31.
+
+### Enhancements
+
+- feat: better typecheck-tools ([#152](https://github.com/usnistgov/cookiecutter-nist-python/pull/152))
+
+### Contributors
+
+- [@wpk-nist-gov](https://github.com/wpk-nist-gov)
+
 ## 0.11.0
 
 Released on 2026-03-30.
