@@ -36,8 +36,6 @@ USE_NO_DEPS = ["uvx-tools.txt", "pre-commit-additional-dependencies.txt"]
 
 def _get_min_python_version() -> str:
     with Path("pyproject.toml").open("rb") as f:
-        import tomllib
-
         return next(  # type: ignore[no-any-return]
             c.split()[-1]
             for c in tomllib.load(f)["project"]["classifiers"]
@@ -163,7 +161,7 @@ def _maybe_lock_or_sync(
     ]
 
     logger.info(shlex.join(command))
-    _ = check_call(command)
+    _out = check_call(command)
 
     if old_lock_path is not None and _only_changed_exclude_newer_time(
         old_lock_path, lock_path

@@ -198,12 +198,13 @@ class SessionParams(DataclassParser):
             "all",
             "ty",
             "pyrefly",
+            "typecheck-tools",
             {%- if cookiecutter.use_jupyter %}
+            "typecheck-notebook",
             "mypy-notebook",
             "pyright-notebook",
             "basedpyright-notebook",
             "pylint-notebook",
-            "typecheck-notebook",
             "ty-notebook",
             "pyrefly-notebook",
             {%- endif %}
@@ -800,10 +801,14 @@ def typecheck(
 
     cmd = opts.typecheck or []
     if not opts.typecheck_run and not cmd:
-        cmd = ["mypy", "basedpyright"]
+        cmd = ["all"]
 
     if "all" in cmd:
+        {%- if cookiecutter.use_jupyter %}
+        cmd = ["mypy", "basedpyright", "pyrefly", "ty", "pylint", "typecheck-notebook"]
+        {%- else %}
         cmd = ["mypy", "basedpyright", "pyrefly", "ty", "pylint"]
+        {%- endif %}
 
     # set the cache directory for mypy
     session.env["MYPY_CACHE_DIR"] = str(Path(session.create_tmp()) / ".mypy_cache")
@@ -843,9 +848,11 @@ def typecheck(
                 "tests",
             )
         {%- if cookiecutter.use_jupyter %}
-        elif c.endswith("-notebook"):
-            session.run("just", c, external=True)
+        elif c == "typecheck-tool" or c.endswith("-notebook"):
+        {%- else %}
+        elif c == "typecheck-tools":
         {%- endif %}
+            uvx_run(session, "--from=rust-just", "just", c)
         else:
             session.log(f"Skipping unknown command {c}")
 

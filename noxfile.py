@@ -361,50 +361,59 @@ def install_package(
     """Install current package."""
 
 
-def get_package_wheel(
-    session: Session,
-    opts: str | Iterable[str] | None = None,
-    extras: str | Iterable[str] | None = None,
-    reuse: bool = True,
-) -> str:
-    """
-    Build the package in return the build location.
+class _GetPackageWheel:
+    """Interface to get_package_wheel"""
 
-    This is similar to how tox does isolated builds.
+    def __init__(self) -> None:
+        self._called = False
 
-    Note that the first time this is called,
+    def __call__(
+        self,
+        session: Session,
+        opts: str | Iterable[str] | None = None,
+        extras: str | Iterable[str] | None = None,
+        reuse: bool = True,
+    ) -> str:
+        """
+        Build the package in return the build location.
 
-    Should be straightforward to extend this to isolated builds
-    that depend on python version (something like have session build-3.11 ....)
-    """
-    dist_location = Path(session.cache_dir) / "dist"
-    if reuse and getattr(get_package_wheel, "_called", False):
-        session.log("Reuse isolated build")
-    else:
-        shutil.rmtree(dist_location, ignore_errors=True)
-        session.run_always("uv", "build", f"--out-dir={dist_location}", "--wheel")
+        This is similar to how tox does isolated builds.
 
-        # save that this was called:
-        if reuse:
-            get_package_wheel._called = True  # type: ignore[attr-defined]  # pyright: ignore[reportFunctionMemberAccess] # noqa: SLF001  # pylint: disable=protected-access
+        Note that the first time this is called,
 
-    paths = list(dist_location.glob("*.whl"))
-    if len(paths) != 1:
-        msg = f"something wonky with paths {paths}"
-        raise ValueError(msg)
+        Should be straightforward to extend this to isolated builds
+        that depend on python version (something like have session build-3.11 ....)
+        """
+        dist_location = Path(session.cache_dir) / "dist"
+        if reuse and self._called:
+            session.log("Reuse isolated build")
+        else:
+            shutil.rmtree(dist_location, ignore_errors=True)
+            session.run_always("uv", "build", f"--out-dir={dist_location}", "--wheel")
 
-    path = f"{PACKAGE_NAME}@{paths[0]}"
-    if extras:
-        if not isinstance(extras, str):
-            extras = ",".join(extras)
-        path = f"{path}[{extras}]"
+            # save that this was called:
+            if reuse:
+                self._called = True
 
-    if opts:
-        if not isinstance(opts, str):
-            opts = " ".join(opts)
-        path = f"{path} {opts}"
+        paths = list(dist_location.glob("*.whl"))
+        if len(paths) != 1:
+            msg = f"something wonky with paths {paths}"
+            raise ValueError(msg)
 
-    return path
+        path = f"{PACKAGE_NAME}@{paths[0]}"
+        if extras:
+            if not isinstance(extras, str):
+                extras = ",".join(extras)
+            path = f"{path}[{extras}]"
+
+        if opts:
+            if not isinstance(opts, str):
+                opts = " ".join(opts)
+            path = f"{path} {opts}"
+        return path
+
+
+get_package_wheel = _GetPackageWheel()
 
 
 # * uvx runner ----------------------------------------------------------------

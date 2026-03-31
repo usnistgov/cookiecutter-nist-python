@@ -12,7 +12,7 @@ from typing import TYPE_CHECKING
 from nox.logger import logger
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable, Iterator
+    from collections.abc import Generator, Iterable
     from typing import Any
 
     from nox import Session
@@ -170,7 +170,7 @@ def session_run_commands(
     if commands:
         kws.update(external=external)
         for opt in combine_list_list_str(commands):
-            _: Any = session.run(*opt, **kws)
+            _ = session.run(*opt, **kws)  # pyright: ignore[reportUnknownVariableType]
 
 
 # * Caching -------------------------------------------------------------------
@@ -180,7 +180,7 @@ def check_for_change_manager(
     hash_path: str | Path | None = None,
     target_path: str | Path | None = None,
     force_write: bool = False,
-) -> Iterator[bool]:
+) -> Generator[bool]:
     """
     Context manager to look for changes in dependencies.
 
