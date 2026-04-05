@@ -67,14 +67,14 @@ repos:
       - id: pyproject-fmt
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2026.03.31
+    rev: 2026.04.03
     hooks:
       - id: validate-pyproject
         name: validate-pyproject-schema-store
         stages: [manual]
   # ** repo review
   - repo: https://github.com/scientific-python/cookie
-    rev: 2026.03.02
+    rev: 2026.04.04
     hooks:
       - id: sp-repo-review
         stages: [manual]
@@ -106,7 +106,7 @@ repos:
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.8
+    rev: v0.15.9
     hooks:
       - id: ruff-check
         alias: ruff
@@ -119,7 +119,7 @@ repos:
   # * Spelling
   # ** typos
   - repo: https://github.com/adhtruong/mirrors-typos
-    rev: v1.44.0
+    rev: v1.45.0
     hooks:
       - id: typos
         exclude_types: [jupyter]
@@ -223,7 +223,7 @@ repos:
         name: nbqa-typos
         alias: typos
         additional_dependencies: &typos-deps
-          - typos==1.44.0
+          - typos==1.45.0
         args:
           - typos
           - --force-exclude
