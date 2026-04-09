@@ -2,7 +2,7 @@
 
 import "tools/shared.just"
 
-set unstable := true
+set unstable
 set shell := ["bash", "-c"]
 
 # * Defaults
