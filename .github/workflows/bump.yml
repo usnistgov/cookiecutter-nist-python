@@ -1,4 +1,4 @@
-name: Update dependencies and pre-commit hook versions
+name: Update dependencies and pre-commit hooks
 on:
   schedule:
     - cron: "0 6 * * 0,2,4" # Every sun, tues, thur at 6am utc
@@ -23,12 +23,12 @@ jobs:
           cache-dependency-path: requirements/lock/uvx-tools.txt
       - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b # v3.1.0
 
+      - name: Update requirements
+        run: just lock --upgrade
       - name: Update template pre-commit hooks
         run: just template-lint-upgrade
       - name: Update pre-commit hooks
         run: just lint-upgrade
-      - name: Update requirements
-        run: just lock --upgrade
 
       - name: Git config
         run: |
@@ -41,8 +41,9 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           add-paths: .
-          commit-message: "chore(deps): update template pre-commit hooks"
-          title: "chore(deps): update template pre-commit hooks"
+          commit-message:
+            "chore(deps): update dependencies and pre-commit hooks"
+          title: "chore(deps): update dependencies and pre-commit hooks"
           labels: dependencies
           branch: prek/autoupdate
           delete-branch: true
