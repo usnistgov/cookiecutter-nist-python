@@ -87,10 +87,13 @@ cog: (lint-manual "cog" "--verbose")
 
 # update all supported additional dependencies
 [group("lint")]
-lint-upgrade:
-    just pre-commit autoupdate
-    -[[ -f requirements/pre-commit-additional-dependencies.txt ]] && uv run --no-project --script tools/requirements_lock.py --upgrade requirements/pre-commit-additional-dependencies.txt
-    -just pre-commit run -v sync-pre-commit-deps -a
+lint-upgrade: (pre-commit "autoupdate") lint-sync-deps template-lint-upgrade
+
+# sync dependencies (used primarily with lint-upgrade)
+[group("lint")]
+lint-sync-deps:
+    [[ -f requirements/pre-commit-additional-dependencies.txt ]] && uv run --no-project --script tools/requirements_lock.py --upgrade requirements/pre-commit-additional-dependencies.txt || true
+    just pre-commit run -v sync-pre-commit-deps -a || true
 
 # * User setup -----------------------------------------------------------------
 
