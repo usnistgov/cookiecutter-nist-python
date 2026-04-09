@@ -19,41 +19,39 @@ REPOS = [
 ]
 
 
-def _get_options() -> tuple[str, list[str]]:
+def _get_options() -> list[str]:
     from argparse import ArgumentParser
 
     parser = ArgumentParser(description=__doc__)
 
     _ = parser.add_argument(
-        "-w",
-        "--workflow",
-        default="update-copier.yml",
-        help="workflow file name.  [default %(default)s]",
+        "args",
+        nargs="*",
+        default=["workflow", "run", "update-copier.yml"],
+        help="Command to run with gh. [default %(default)s]",
     )
+
     _ = parser.add_argument(
         "--automerge", action="store_true", help="Add option `-F automerge=true`"
     )
 
     options, extra_args = parser.parse_known_args()
 
-    workflow = options.workflow
-
-    args = [*(["-F", "automerge=true"] if options.automerge else []), *extra_args]
-
-    return workflow, args
+    return [
+        *options.args,
+        *extra_args,
+        *(["-F", "automerge=true"] if options.automerge else []),
+    ]
 
 
 def _main() -> int:
-    workflow, args = _get_options()
-
-    print("workflow:", workflow)
-    print("args:", args)
+    args = _get_options()
 
     from subprocess import call
 
     out = 0
     for repo in REPOS:
-        cmd = ["gh", "workflow", "run", workflow, "--repo", repo, *args]
+        cmd = ["gh", *args, "--repo", repo]
         print(shlex.join(cmd))
         out += call(cmd)
     return out
