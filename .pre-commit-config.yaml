@@ -106,7 +106,7 @@ repos:
 
   # Just
   - repo: https://github.com/wpk-nist-gov/just-pre-commit
-    rev: v1.48.1
+    rev: v1.49.0
     hooks:
       - id: justfile-format
 
@@ -142,7 +142,7 @@ repos:
           - "--custom-command=prek run pyproject2conda-project --all-files"
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.11.4
+    rev: 0.11.6
     hooks:
       - id: uv-lock
         alias: requirements
