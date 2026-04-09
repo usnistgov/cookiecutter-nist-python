@@ -128,7 +128,7 @@ test-notebook = [
     { include-group = "test" },
 ]
 {%- endif %}
-typecheck-runner = [ "typecheck-runner>=0.1.0; python_version>'3.9'" ]
+typecheck-runner = [ "typecheck-runner>=0.1.6; python_version>'3.9'" ]
 
 # * uv -------------------------------------------------------------------------
 [tool.uv]
