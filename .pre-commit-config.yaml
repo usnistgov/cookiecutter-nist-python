@@ -24,6 +24,7 @@ repos:
   - repo: https://github.com/wpk-nist-gov/sync-pre-commit-hooks
     rev: v0.5.1
     hooks:
+      - id: forbidden-files
       - id: sync-pre-commit-deps
       - id: sync-uv-dependency-groups
 
@@ -32,15 +33,6 @@ repos:
         args:
           - "--config"
           - "{{cookiecutter.project_name}}/.pre-commit-config.yaml"
-
-  # * Forbidden files
-  - repo: local
-    hooks:
-      - id: forbidden-files
-        name: forbidden files
-        entry: Found forbidden file.
-        language: fail
-        files: \.(rej|bak)$
 
   # * Top level
   - repo: https://github.com/pre-commit/pre-commit-hooks

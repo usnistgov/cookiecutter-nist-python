@@ -157,6 +157,11 @@ lock *options: (_requirements "--lock" options)
 [group("requirements")]
 requirements *options: (_requirements "--sync-or-lock" options)
 
+# Upgrade pyproject.toml dependency min versions using uv-upx
+[group("requirements")]
+pyproject-upgrade-min-versions:
+    uvx --from "uv-upx>=0.4.3" uv-upx upgrade run --no-sync
+
 # * Typecheck ---------------------------------------------------------------------
 
 TYPECHECK_UVRUN_OPTS := "--only-group=type"

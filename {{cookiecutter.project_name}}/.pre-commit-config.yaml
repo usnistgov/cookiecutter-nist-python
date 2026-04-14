@@ -23,10 +23,10 @@ repos:
   - repo: https://github.com/wpk-nist-gov/sync-pre-commit-hooks
     rev: v0.5.1
     hooks:
+      - id: forbidden-files
       - id: sync-pre-commit-deps
       - id: sync-uv-build-deps
       - id: sync-uv-dependency-groups
-      - id: forbidden-files
 
   # * Top level
   - repo: https://github.com/pre-commit/pre-commit-hooks
