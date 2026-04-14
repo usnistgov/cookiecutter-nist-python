@@ -19,7 +19,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, cast
 
 from packaging.version import Version
-from ruamel.yaml import (  # type: ignore[import-not-found]  # pyrefly: ignore[missing-import]  # ty: ignore[unresolved-import]
+from ruamel.yaml import (  # type: ignore[import-not-found]  # pyrefly: ignore[missing-import]  # ty: ignore[unresolved-import]  # pylint: disable=import-error
     YAML,
 )
 
