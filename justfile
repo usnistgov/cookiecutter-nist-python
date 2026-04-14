@@ -350,6 +350,7 @@ template-lint-upgrade:
     -just lint sync-pre-commit-deps
     -{{ UVX_WITH_OPTS }} prek run prettier --files .pre-commit-config.yaml
     -cd {{ COOKIE }} && uvx -c../requirements/lock/uvx-tools.txt prek -c .pre-commit-config.yaml run prettier --files .pre-commit-config.yaml
+    -uv run tools/sync_template_uv_build_deps.py
 
 alias update-template-pre-commit-config := template-lint-upgrade
 

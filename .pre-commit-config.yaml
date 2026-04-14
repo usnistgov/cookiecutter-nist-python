@@ -22,7 +22,7 @@ repos:
 
   # * sync dependencies
   - repo: https://github.com/wpk-nist-gov/sync-pre-commit-hooks
-    rev: v0.3.0
+    rev: v0.5.1
     hooks:
       - id: sync-pre-commit-deps
       - id: sync-uv-dependency-groups
@@ -68,7 +68,7 @@ repos:
       - id: taplo-lint
         args: ["--no-schema"]
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: v2.21.0
+    rev: v2.21.1
     hooks:
       - id: pyproject-fmt
   # ** validate (schema-store)
@@ -125,7 +125,7 @@ repos:
   # * Spelling
   # ** typos
   - repo: https://github.com/adhtruong/mirrors-typos
-    rev: v1.45.0
+    rev: v1.45.1
     hooks:
       - id: typos
         exclude_types: [jupyter]
@@ -201,7 +201,7 @@ repos:
         priority: 0
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
     # Zizmor version.
-    rev: v1.24.0
+    rev: v1.24.1
     hooks:
       # Run the linter.
       - id: zizmor
