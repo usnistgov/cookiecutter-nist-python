@@ -1,7 +1,7 @@
-name: Update repo with copier
+name: Update repo with cruft
 on:
-  schedule:
-    - cron: "0 6 * * 1" # Every Monday at 6am
+  # schedule:
+  #   - cron: "0 6 * * 1" # Every Monday at 6am
   workflow_dispatch:
     inputs:
       automerge:
@@ -19,7 +19,6 @@ permissions:
   pull-requests: write
 
 env:
-  COPIER_OPTIONS: "--trust -A -r main -c 3"
   AUTOMERGE: "false"
 
 jobs:
@@ -34,28 +33,25 @@ jobs:
         include:
           - add-paths: .
             body: Use this to merge the changes to this repository.
-            branch: copier/update
-            commit-message: "chore(template): accept new copier update"
-            title: "chore(template): accept new copier update"
-          # - add-paths: .copier-answers.yml
+            branch: cruft/update
+            commit-message: "chore(template): accept new cruft update"
+            title: "chore(template): accept new cruft update"
+          # - add-paths: .cruft.json
           #   body: Use this to reject the changes to this repository.
-          #   branch: copier/reject
-          #   commit-message: "chore(template): reject new copier update"
-          #   title: "chore(template): reject new copier update"
+          #   branch: cruft/reject
+          #   commit-message: "chore(template): reject new cruft update"
+          #   title: "chore(template): reject new cruft update"
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-          fetch-depth: 0
       - uses: ./.github/actions/setup-cached-uv-and-python
         with:
           python-version-file: ".python-version"
           cache-dependency-path: requirements/lock/uvx-tools.txt
-      - name: Install copier
-        run:
-          uv tool install -crequirements/lock/uvx-tools.txt --with
-          copier-template-extensions copier
-      - name: Copier update
+      - name: Install cruft
+        run: uv tool install -crequirements/lock/uvx-tools.txt cruft
+      - name: Cruft update
         continue-on-error: false
         id: check
         env:
@@ -66,13 +62,13 @@ jobs:
           commit_message="$commit_message_in"
           automergeable='true'
 
-          if [ -f .copier-answers.yml ]; then
-            copier update ${{ "{{ env.COPIER_OPTIONS }}" }}
-            if ! git diff --quiet -- .copier-answers.yml; then
+          if [ -f .cruft.json ]; then
+            cruft update --skip-apply-ask --refresh-private-variables
+            if ! git diff --quiet -- .cruft.json; then
               changed='true'
             fi
           else
-            echo "No .copier-answers.yml file"
+            echo "No .cruft.json file"
             exit 1
           fi
 
@@ -105,10 +101,18 @@ jobs:
           fi
         shell: bash -eux {0}
 
+      - name: Install just
+        if: steps.check.outputs.changed == 'true'
+        uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4.0.0
+
+      - name: Sync requirements
+        if: steps.check.outputs.changed == 'true'
+        run: just lock
+
       - name: Create pull request
         if: steps.check.outputs.changed == 'true'
         id: cpr
-        uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8.1.0
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
           token: ${{ "{{ secrets.PAT }}" }}
           add-paths: ${{ "{{ matrix.add-paths }}" }}
@@ -126,7 +130,7 @@ jobs:
             Files changed (`git status --short`):
             ${{ "{{ steps.check.outputs.files_changed }}" }}
 
-            [copier](https://github.com/copier-org/copier) has detected updates from the Cookiecutter repository.
+            [Cruft](https://cruft.github.io/cruft/) has detected updates from the Cookiecutter repository.
 
       - name: Pull request info
         if: ${{ "{{ steps.cpr.outputs.pull-request-number }}" }}
@@ -136,7 +140,7 @@ jobs:
           OPERATION: ${{ "{{ steps.cpr.outputs.pull-request-operation }}" }}
           SHA: ${{ "{{ steps.cpr.outputs.pull-request-sha }}" }}
           BRANCH: ${{ "{{ steps.cpr.outputs.pull-request-branch }}" }}
-          VERIFIED: ${{ "{{ steps.cpr.outputs.pull-request-commits-verified }}" }}
+          VERIFIED: ${{ "steps.cpr.outputs.pull-request-commits-verified" }}
         run: |
           echo "Pull Request Number    - $NUMBER"
           echo "Pull Request URL       - $URL"
