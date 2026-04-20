@@ -100,6 +100,9 @@ year:
 # [[[end]]]
 
 # * Copier options
+_exclude:
+  - ".github/workflows/update-cruft.yml"
+
 _templates_suffix: ""
 
 _subdirectory: "{% raw %}{{cookiecutter.project_name}}{% endraw %}"
