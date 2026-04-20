@@ -107,7 +107,7 @@ jobs:
 
       - name: Sync requirements
         if: steps.check.outputs.changed == 'true'
-        run: just lock
+        run: just lock || true
 
       - name: Create pull request
         if: steps.check.outputs.changed == 'true'
