@@ -105,6 +105,14 @@ jobs:
           fi
         shell: bash -eux {0}
 
+      - name: Install just
+        if: steps.check.outputs.changed == 'true'
+        uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4.0.0
+
+      - name: Sync requirements
+        if: steps.check.outputs.changed == 'true'
+        run: just lock
+
       - name: Create pull request
         if: steps.check.outputs.changed == 'true'
         id: cpr
