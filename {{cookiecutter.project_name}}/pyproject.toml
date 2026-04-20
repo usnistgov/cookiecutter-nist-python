@@ -111,7 +111,7 @@ docs-spelling = [
     { include-group = "docs" },
 ]
 ipython = [ "ipython" ]
-mypy = [ "mypy[faster-cache]>=1.20.0" ]
+mypy = [ "mypy[faster-cache]>=1.20.1" ]
 {%- if cookiecutter.use_jupyter %}
 notebook = [ "ipykernel", "nbclient" ]
 {%- endif %}
