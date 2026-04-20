@@ -9,7 +9,7 @@ resolution-markers = [
 ]
 
 [options]
-exclude-newer = "2026-04-13T13:37:56.832796665Z"
+exclude-newer = "2026-04-13T15:26:23.999797Z"
 exclude-newer-span = "P7D"
 
 [[package]]
@@ -437,13 +437,13 @@ dev = [
     { name = "copier", marker = "python_full_version >= '3.14'" },
     { name = "copier-template-extensions", marker = "python_full_version >= '3.14'", specifier = ">=0.3.1" },
     { name = "mypy", extras = ["faster-cache"], marker = "python_full_version >= '3.14'", specifier = ">=1.20.1" },
-    { name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2025.5.1" },
+    { name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2026.4.10" },
     { name = "pylint", marker = "python_full_version >= '3.14'" },
     { name = "pytest", marker = "python_full_version >= '3.14'" },
     { name = "pytest-cov", marker = "python_full_version >= '3.14'" },
     { name = "pytest-sugar", marker = "python_full_version >= '3.14'" },
     { name = "pytest-xdist", marker = "python_full_version >= '3.14'" },
-    { name = "typecheck-runner", marker = "python_full_version >= '3.14'", specifier = ">=0.1.6" },
+    { name = "typecheck-runner", marker = "python_full_version >= '3.14'", specifier = ">=0.2.0" },
 ]
 docs = [
     { name = "autodocsumm", marker = "python_full_version >= '3.14'" },
@@ -471,7 +471,7 @@ docs-spelling = [
 ]
 ipython = [{ name = "ipython", marker = "python_full_version >= '3.14'" }]
 mypy = [{ name = "mypy", extras = ["faster-cache"], marker = "python_full_version >= '3.14'", specifier = ">=1.20.1" }]
-nox = [{ name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2025.5.1" }]
+nox = [{ name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2026.4.10" }]
 pylint = [{ name = "pylint" }]
 pytest = [{ name = "pytest" }]
 test = [
@@ -492,12 +492,12 @@ type = [
     { name = "cookiecutter" },
     { name = "copier" },
     { name = "copier-template-extensions", specifier = ">=0.3.1" },
-    { name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2025.5.1" },
+    { name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2026.4.10" },
     { name = "pylint" },
     { name = "pytest" },
-    { name = "typecheck-runner", marker = "python_full_version >= '3.10'", specifier = ">=0.1.6" },
+    { name = "typecheck-runner", marker = "python_full_version >= '3.10'", specifier = ">=0.2.0" },
 ]
-typecheck-runner = [{ name = "typecheck-runner", marker = "python_full_version >= '3.10'", specifier = ">=0.1.6" }]
+typecheck-runner = [{ name = "typecheck-runner", marker = "python_full_version >= '3.10'", specifier = ">=0.2.0" }]
 
 [[package]]
 name = "copier"
