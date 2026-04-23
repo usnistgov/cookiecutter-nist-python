@@ -117,17 +117,17 @@ def pytest_addoption(parser: pytest.Parser) -> None:
 
 @pytest.fixture(scope="session")
 def nox_opts(pytestconfig: pytest.Config) -> str:
-    return pytestconfig.getoption("nox_opts")  # type: ignore[no-any-return]
+    return pytestconfig.getoption("nox_opts")  # type: ignore[no-any-return]  # pyright: ignore[reportReturnType]
 
 
 @pytest.fixture(scope="session")
 def nox_session_opts(pytestconfig: pytest.Config) -> str:
-    return pytestconfig.getoption("nox_session_opts")  # type: ignore[no-any-return]
+    return pytestconfig.getoption("nox_session_opts")  # type: ignore[no-any-return]  # pyright: ignore[reportReturnType]
 
 
 @pytest.fixture(scope="session")
 def requirements_upgrade(pytestconfig: pytest.Config) -> bool:
-    return pytestconfig.getoption("upgrade")  # type: ignore[no-any-return]
+    return pytestconfig.getoption("upgrade")  # type: ignore[no-any-return]  # pyright: ignore[reportReturnType]
 
 
 # * Fixtures ---------------------------------------------------------------------------
