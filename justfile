@@ -87,7 +87,7 @@ cog: (lint-manual "cog" "--verbose")
 
 # update all supported additional dependencies
 [group("lint")]
-lint-upgrade: (pre-commit "autoupdate") lint-sync-deps template-lint-upgrade
+lint-upgrade: (pre-commit "autoupdate" "--cooldown-days=7") lint-sync-deps template-lint-upgrade
 
 # sync dependencies (used primarily with lint-upgrade)
 [group("lint")]
@@ -350,7 +350,7 @@ readme-pdf:
 COOKIE := "{{cookiecutter.project_name}}"
 
 template-lint-upgrade:
-    cd {{ COOKIE }} && uvx -c../requirements/lock/uvx-tools.txt prek -c .pre-commit-config.yaml autoupdate
+    cd {{ COOKIE }} && uvx -c../requirements/lock/uvx-tools.txt prek -c .pre-commit-config.yaml autoupdate --cooldown-days=7
     -[[ -f requirements/pre-commit-additional-dependencies.txt ]] && uv run --no-project --script tools/requirements_lock.py --upgrade requirements/pre-commit-additional-dependencies.txt
     -just lint sync-pre-commit-deps
     -{{ UVX_WITH_OPTS }} prek run prettier --files .pre-commit-config.yaml

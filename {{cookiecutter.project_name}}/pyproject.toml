@@ -1,12 +1,12 @@
 [build-system]
 build-backend = "uv_build"
 requires = [
-    "uv-build>=0.11.8,<0.12.0",
+    "uv-build>=0.11.7,<0.12.0",
 ]
 
 [project]
 name = "{{ cookiecutter.project_name }}"
-version = "0.1.0.dev0"
+version = "0.1.0"
 description = "{{ cookiecutter.project_short_description }}"
 readme = "README.md"
 keywords = [
@@ -385,24 +385,24 @@ skip-package = true
 [tool.pyproject2conda.envs.uvx-tools]
 reqs = [
     # these used solely for specking tools to be run via uvx ...
-    "conda-lock>=2.5.5",
+    "conda-lock>=4.0.0",
     {%- if cookiecutter.__copier %}
-    "copier",
-    "copier-template-extensions>=0.3.1",
+    "copier-template-extensions>=0.3.3",
+    "copier>=9.14.3",
     {%- endif %}
     {%- if not cookiecutter.__copier %}
-    "cruft",
+    "cruft>=2.16.0",
     {%- endif %}
-    "grayskull>=2.5.3",
+    "grayskull>=3.1.0",
     {%- if cookiecutter.use_jupyter %}
     "nbqa>=1.8.4",
     {%- endif %}
-    "prek",
-    "pyrefly>=0.37.0",
-    "pyright>=1.1.396",
+    "prek>=0.3.10",
+    "pyrefly>=0.61.1",
+    "pyright>=1.1.408",
     "rooster>=0.1.1",
-    "twine>=5.0.0",
-    "ty>=0.0.14",
+    "twine>=6.2.0",
+    "ty>=0.0.31",
 ]
 groups = [
     "basedpyright",
