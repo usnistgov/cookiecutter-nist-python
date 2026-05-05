@@ -88,7 +88,7 @@ typecheck-runner = [ "typecheck-runner>=0.2.0; python_version>'3.9'" ]
 
 # * uv -------------------------------------------------------------------------
 [tool.uv]
-required-version = ">=0.7.15"
+required-version = ">=0.11.8"
 default-groups = [ "dev" ]
 fork-strategy = "requires-python"
 exclude-newer = "7 days"
