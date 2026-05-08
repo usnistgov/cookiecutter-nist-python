@@ -34,15 +34,20 @@ USE_NO_DEPS = ["uvx-tools.txt", "pre-commit-additional-dependencies.txt"]
 
 
 def _get_min_python_version() -> str:
-    with Path("pyproject.toml").open("rb") as f:
-        version: str | None = next(
-            (
-                c.split()[-1]
-                for c in tomllib.load(f)["project"]["classifiers"]
-                if c.startswith("Programming Language :: Python :: 3.")
-            ),
-            None,
-        )
+    data: list[str] = (
+        tomllib
+        .loads(Path("pyproject.toml").read_text(encoding="utf-8"))
+        .get("project", {})
+        .get("classifiers", [])
+    )
+    version: str | None = next(
+        (
+            c.split()[-1]
+            for c in data
+            if c.startswith("Programming Language :: Python :: 3.")
+        ),
+        None,
+    )
     if version is None:
         msg = (
             "Could not determine minimum Python version: no "

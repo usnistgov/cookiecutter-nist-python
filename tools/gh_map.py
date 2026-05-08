@@ -28,7 +28,7 @@ def _get_options() -> list[str]:
         "args",
         nargs="*",
         default=["workflow", "run", "update-copier.yml"],
-        help="Command to run with gh. [default %(default)s]",
+        help="Command to run with gh. [default: %(default)s]",
     )
 
     _ = parser.add_argument(
@@ -44,17 +44,17 @@ def _get_options() -> list[str]:
     ]
 
 
-def _main() -> int:
+def _main() -> bool:
     args = _get_options()
 
     from subprocess import call
 
-    out = 0
+    failure = False
     for repo in REPOS:
         cmd = ["gh", *args, "--repo", repo]
         print(shlex.join(cmd))
-        out += call(cmd)
-    return 1 if out > 0 else 0
+        failure = bool(call(cmd)) or failure
+    return failure
 
 
 if __name__ == "__main__":
