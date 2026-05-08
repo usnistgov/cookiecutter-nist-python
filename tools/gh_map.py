@@ -53,7 +53,7 @@ def _main() -> bool:
     for repo in REPOS:
         cmd = ["gh", *args, "--repo", repo]
         print(shlex.join(cmd))
-        failure = (call(cmd) != 0) or failure
+        failure = bool(call(cmd)) or failure
     return failure
 
 
