@@ -20,7 +20,7 @@ logging.basicConfig(level=logging.INFO, format=FORMAT)
 logger = logging.getLogger("requirements_lock")
 
 if sys.version_info < (3, 11):
-    msg = "python>3.11 required"  # pyright: ignore[reportUnreachable]
+    msg = "Python >=3.11 required"  # pyright: ignore[reportUnreachable]
     raise RuntimeError(msg)
 
 
