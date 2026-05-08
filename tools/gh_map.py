@@ -54,7 +54,7 @@ def _main() -> int:
         cmd = ["gh", *args, "--repo", repo]
         print(shlex.join(cmd))
         out += call(cmd)
-    return out
+    return 1 if out > 0 else 0
 
 
 if __name__ == "__main__":

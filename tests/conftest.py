@@ -103,14 +103,12 @@ def pytest_addoption(parser: pytest.Parser) -> None:
         "--upgrade",
         "-U",
         action="store_true",
-        default="",
         help="Upgrade requirements",
     )
 
     parser.addoption(
         "--enable",
         action="store_true",
-        default=False,
         help="enable some tests turned off by default",
     )
 
@@ -187,9 +185,8 @@ def pytest_collection_modifyitems(
     config: pytest.Config, items: list[pytest.Item]
 ) -> None:
     for item in items:
-        # pyrefly: ignore [missing-attribute]
-        marker = item.originalname.split("_")[-1]  # type: ignore[attr-defined]  # pyright: ignore[reportUnknownVariableType,reportUnknownMemberType,reportAttributeAccessIssue] # ty: ignore[unresolved-attribute]
-        item.add_marker(getattr(pytest.mark, marker))  # pyright: ignore[reportUnknownArgumentType]
+        marker = (getattr(item, "originalname", None) or item.name).split("_")[-1]
+        item.add_marker(getattr(pytest.mark, marker))
 
     if config.getoption("--enable"):
         # allow update version

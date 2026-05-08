@@ -6,7 +6,7 @@ from pathlib import Path
 
 
 def remove_update_copier() -> None:
-    """Remove unused update-copier.yml file"""
+    """Remove unused update-copier.yml file."""
     path = Path(".github/workflows/update-copier.yml")
     path.unlink(missing_ok=True)
 
