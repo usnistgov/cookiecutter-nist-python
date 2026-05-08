@@ -115,7 +115,7 @@ def _maybe_lock_or_sync(
     if not (lock or sync):
         return
 
-    # update lock_path
+    # Execute uv lock or sync command.
     command = [
         "uv",
         ("sync" if sync else "lock"),
