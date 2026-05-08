@@ -199,7 +199,7 @@ def main(args: Sequence[str] | None = None) -> int:
         type=int,
         default=None,
         help="""
-        Calculate ``--exclude-newer`` options from ``today`` less ``cooldown_days``.
+        Calculate ``--exclude-newer`` from ``current date`` minus ``<cooldown_days>``.
         """,
     )
     _ = parser.add_argument(
