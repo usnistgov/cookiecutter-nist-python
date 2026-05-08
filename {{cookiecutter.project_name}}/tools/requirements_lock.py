@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import datetime
 import logging
 import shlex
 import sys
@@ -62,8 +63,6 @@ def _get_default_version() -> str:
 
 
 def _get_exclude_newer_option(cooldown_days: int) -> str:
-    import datetime
-
     date = datetime.datetime.now(tz=datetime.UTC).date() - datetime.timedelta(
         days=cooldown_days
     )
