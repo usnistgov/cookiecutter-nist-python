@@ -35,7 +35,7 @@ USE_NO_DEPS = ["uvx-tools.txt", "pre-commit-additional-dependencies.txt"]
 
 def _get_min_python_version() -> str:
     with Path("pyproject.toml").open("rb") as f:
-        version = next(
+        version: str | None = next(
             (
                 c.split()[-1]
                 for c in tomllib.load(f)["project"]["classifiers"]
