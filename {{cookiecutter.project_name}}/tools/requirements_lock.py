@@ -35,11 +35,21 @@ USE_NO_DEPS = ["uvx-tools.txt", "pre-commit-additional-dependencies.txt"]
 
 def _get_min_python_version() -> str:
     with Path("pyproject.toml").open("rb") as f:
-        return next(  # type: ignore[no-any-return]
-            c.split()[-1]
-            for c in tomllib.load(f)["project"]["classifiers"]
-            if c.startswith("Programming Language :: Python :: 3.")
+        version = next(
+            (
+                c.split()[-1]
+                for c in tomllib.load(f)["project"]["classifiers"]
+                if c.startswith("Programming Language :: Python :: 3.")
+            ),
+            None,
         )
+    if version is None:
+        msg = (
+            "Could not determine minimum Python version: no "
+            "'Programming Language :: Python :: 3.x' classifier found in pyproject.toml."
+        )
+        raise RuntimeError(msg)
+    return version
 
 
 def _get_default_version() -> str:
