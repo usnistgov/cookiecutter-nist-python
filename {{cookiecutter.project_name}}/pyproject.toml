@@ -388,7 +388,7 @@ reqs = [
     "conda-lock>=4.0.0",
     {%- if cookiecutter.__copier %}
     "copier-template-extensions>=0.3.3",
-    "copier>=9.14.3",
+    "copier>=9.15.0",
     {%- endif %}
     {%- if not cookiecutter.__copier %}
     "cruft>=2.16.0",
