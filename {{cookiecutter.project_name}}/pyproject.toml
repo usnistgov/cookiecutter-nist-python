@@ -393,16 +393,16 @@ reqs = [
     {%- if not cookiecutter.__copier %}
     "cruft>=2.16.0",
     {%- endif %}
-    "grayskull>=3.1.0",
+    "grayskull>=3.1.1",
     {%- if cookiecutter.use_jupyter %}
     "nbqa>=1.9.1",
     {%- endif %}
     "prek>=0.3.11",
-    "pyrefly>=0.62.0",
+    "pyrefly>=0.63.1",
     "pyright>=1.1.409",
     "rooster>=0.1.1",
     "twine>=6.2.0",
-    "ty>=0.0.32",
+    "ty>=0.0.34",
 ]
 groups = [
     "basedpyright",
