@@ -110,7 +110,7 @@ repos:
   # * Spelling
   # ** typos
   - repo: https://github.com/adhtruong/mirrors-typos
-    rev: v1.46.0
+    rev: v1.46.1
     hooks:
       - id: typos
         exclude_types: [jupyter]
@@ -127,7 +127,7 @@ repos:
           - "--custom-command=prek run pyproject2conda-project --all-files"
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.11.11
+    rev: 0.11.12
     hooks:
       - id: uv-lock
         alias: requirements
@@ -214,7 +214,7 @@ repos:
         name: nbqa-typos
         alias: typos
         additional_dependencies: &typos-deps
-          - typos==1.46.0
+          - typos==1.46.1
         args:
           - typos
           - --force-exclude
