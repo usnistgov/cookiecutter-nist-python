@@ -99,7 +99,7 @@ docs = [
     "sphinx-copybutton",
 ]
 # other groups
-basedpyright = [ "basedpyright>=1.39.3" ]
+basedpyright = [ "basedpyright>=1.39.4" ]
 cog = [ "cogapp" ]
 docs-live = [
     "sphinx-autobuild",
@@ -111,7 +111,7 @@ docs-spelling = [
     { include-group = "docs" },
 ]
 ipython = [ "ipython" ]
-mypy = [ "mypy[faster-cache]>=2.0.0" ]
+mypy = [ "mypy[faster-cache]>=2.1.0" ]
 {%- if cookiecutter.use_jupyter %}
 notebook = [ "ipykernel", "nbclient" ]
 {%- endif %}
