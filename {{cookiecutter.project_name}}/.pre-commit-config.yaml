@@ -58,7 +58,7 @@ repos:
       - id: pyproject-fmt
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2026.05.15
+    rev: 2026.05.18
     hooks:
       - id: validate-pyproject
         name: validate-pyproject-schema-store
@@ -127,7 +127,7 @@ repos:
           - "--custom-command=prek run pyproject2conda-project --all-files"
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.11.14
+    rev: 0.11.15
     hooks:
       - id: uv-lock
         alias: requirements
