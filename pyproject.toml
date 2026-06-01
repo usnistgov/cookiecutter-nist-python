@@ -63,7 +63,7 @@ docs = [
     "sphinx-copybutton",
 ]
 # other groups
-basedpyright = [ "basedpyright>=1.39.4" ]
+basedpyright = [ "basedpyright>=1.39.6" ]
 cog = [ "cogapp" ]
 docs-live = [
     "sphinx-autobuild",
