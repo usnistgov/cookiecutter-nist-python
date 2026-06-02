@@ -26,7 +26,7 @@ SPHINX_THEMES_CLI_JUPYTER = [
     ("book", "nocli", True),
     ("book", "nocli", False),
     ("book", "typer", True),
-    ("book", "click", True),
+    ("book", "click", False),
     ("book", "argparse", True),
     ("furo", "typer", True),
 ]

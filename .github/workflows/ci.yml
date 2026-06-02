@@ -204,9 +204,9 @@ jobs:
         python-version:
           - ${{ needs.get-parameters.outputs.default-python-version }}
         markers:
-          - "default and cookie and jupyter"
-          - "book and argparse and copier and nojupyter"
-          - "book and click and cookie and nojupyter"
+          - "book and nocli and cookie and nojupyter"
+          - "book and argparse and cookie and jupyter"
+          - "book and click and copier and nojupyter"
           - "furo and typer and copier and jupyter"
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
