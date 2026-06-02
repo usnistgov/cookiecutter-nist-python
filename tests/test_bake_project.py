@@ -140,6 +140,7 @@ def test_baked_test(example_path: Path, nox_opts: str, nox_session_opts: str) ->
     run_inside_dir(
         f"nox {nox_opts} -s test-{get_python_version()} -- {nox_session_opts}",
         example_path,
+        env={"TYPER_USE_RICH": "False"},
     )
 
 

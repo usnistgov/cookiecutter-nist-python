@@ -6,10 +6,12 @@ import re
 
 import pytest
 
-{%- if cookiecutter.command_line_interface in ["click", "typer"] %}
+{%- if cookiecutter.command_line_interface == "click" %}
 from click.testing import CliRunner
+{%- elif cookiecutter.command_line_interface == "typer" %}
+from typer.testing import CliRunner
 {%- endif %}
-{% if cookiecutter.command_line_interface in ["click", "typer"] %}
+{% if cookiecutter.command_line_interface != "none" %}
 from {{ cookiecutter.project_slug }} import cli, example_function
 {%- else %}
 from {{ cookiecutter.project_slug }} import example_function
@@ -35,8 +37,6 @@ def test_example_function(response: tuple[int, int]) -> None:
 
 
 def test_command_line_interface() -> None:
-    from {{ cookiecutter.project_slug }} import cli
-
     assert not cli.main([])
 {%- elif cookiecutter.command_line_interface in ["click", "typer"] %}
 
@@ -45,10 +45,10 @@ def test_command_line_interface() -> None:
     """Test the CLI."""
     runner = CliRunner()
     result = runner.invoke(cli.main)
-    assert result.exit_code == 0
+    assert not result.exit_code
     assert "{{ cookiecutter.project_slug }}.cli.main" in result.output
     help_result = runner.invoke(cli.main, ["--help"])
-    assert help_result.exit_code == 0
+    assert not help_result.exit_code
     assert "--help" in help_result.output
     assert "Show this message and exit." in help_result.output
 {%- endif %}

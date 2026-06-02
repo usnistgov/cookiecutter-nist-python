@@ -93,10 +93,13 @@ docs = [
     {%- if cookiecutter.sphinx_theme == "sphinx_book_theme" %}
     "sphinx-book-theme",
     {%- endif %}
-    {%- if cookiecutter.command_line_interface in ["click", "typer"] %}
+    {%- if cookiecutter.command_line_interface == "click" %}
     "sphinx-click",
     {%- endif %}
     "sphinx-copybutton",
+    {%- if cookiecutter.command_line_interface == "typer" %}
+    "sphinxcontrib-typer",
+    {%- endif %}
 ]
 # other groups
 basedpyright = [ "basedpyright>=1.39.6" ]
@@ -153,6 +156,13 @@ mypy.requires-python = ">=3.14"
 notebook.requires-python = ">=3.14"
 {%- endif %}
 nox.requires-python = ">=3.14"
+{%- if cookiecutter.command_line_interface == "typer" %}
+
+[tool.uv.exclude-newer-package]
+# NOTE: remove this when able
+typer = "6 days"
+sphinxcontrib-typer = "0 days"
+{%- endif %}
 
 # * Checks ---------------------------------------------------------------------
 [tool.repo-review]
@@ -181,6 +191,7 @@ expand_tables = [
     "tool.pytest",
     "tool.typos",
     "tool.uv.dependency-groups",
+    "tool.uv.exclude-newer-package",
 ]
 indent = 4
 keep_full_version = true

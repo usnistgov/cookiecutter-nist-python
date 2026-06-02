@@ -8,7 +8,7 @@
 
    example_function
 ```
-{%- if cookiecutter.command_line_interface in ["click", "typer"] %}
+{%- if cookiecutter.command_line_interface == "click" %}
 
 ```{eval-rst}
 
@@ -16,6 +16,18 @@
     :prog: {{ cookiecutter.project_slug }}
     :nested: full
 ```
+
+
+{%- elif cookiecutter.command_line_interface == "typer" %}
+
+```{eval-rst}
+.. typer:: {{ cookiecutter.project_slug }}.cli:main
+    :prog: {{ cookiecutter.project_slug }}
+    :width: 80
+    :show-nested:
+    :make-sections:
+```
+
 
 {%- elif cookiecutter.command_line_interface == "argparse" %}
 
