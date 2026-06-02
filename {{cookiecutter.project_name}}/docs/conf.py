@@ -69,10 +69,11 @@ extensions = [
     {%- else %}
     "myst_parser",
     {%- endif %}
-    {%- if cookiecutter.command_line_interface in ["click", "typer"] %}
+    {%- if cookiecutter.command_line_interface == "click" %}
     "sphinx_click",
-    {%- endif %}
-    {%- if cookiecutter.command_line_interface == "argparse" %}
+    {%- elif cookiecutter.command_line_interface == "typer" %}
+    "sphinxcontrib.typer",
+    {%- elif cookiecutter.command_line_interface == "argparse" %}
     "sphinxarg.ext",
     {%- endif %}
 ]
