@@ -191,6 +191,7 @@ expand_tables = [
     "tool.pytest",
     "tool.typos",
     "tool.uv.dependency-groups",
+    "tool.uv.exclude-newer-package",
 ]
 indent = 4
 keep_full_version = true

@@ -29,19 +29,15 @@ def main() -> int:
 
 {%- elif cookiecutter.command_line_interface == 'typer' %}
 
-app = typer.Typer()
+main = typer.Typer()
 
 
-@app.command()
+@main.command()
 def func() -> int:
     """Console script for {{cookiecutter.project_slug}}."""
     print(f"Replace this message by putting your code into {PACKAGE}.cli.main")  # noqa: T201
     print("See click documentation at https://typer.tiangolo.com/")  # noqa: T201
     return 0
-
-
-# get the click function. For use with sphinx-click
-main = typer.main.get_command(app)
 
 
 {%- elif cookiecutter.command_line_interface == 'argparse' %}

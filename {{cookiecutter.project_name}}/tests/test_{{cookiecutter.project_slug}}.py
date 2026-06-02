@@ -6,10 +6,12 @@ import re
 
 import pytest
 
-{%- if cookiecutter.command_line_interface in ["click", "typer"] %}
+{%- if cookiecutter.command_line_interface == "click" %}
 from click.testing import CliRunner
+{%- elif cookiecutter.command_line_interface == "typer" %}
+from typer.testing import CliRunner
 {%- endif %}
-{% if cookiecutter.command_line_interface in ["click", "typer"] %}
+{% if cookiecutter.command_line_interface != "none" %}
 from {{ cookiecutter.project_slug }} import cli, example_function
 {%- else %}
 from {{ cookiecutter.project_slug }} import example_function
@@ -35,8 +37,6 @@ def test_example_function(response: tuple[int, int]) -> None:
 
 
 def test_command_line_interface() -> None:
-    from {{ cookiecutter.project_slug }} import cli
-
     assert not cli.main([])
 {%- elif cookiecutter.command_line_interface in ["click", "typer"] %}
 
