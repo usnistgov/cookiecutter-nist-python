@@ -240,7 +240,6 @@ jobs:
       - name: Test with nox
         env:
           python_version: ${{ matrix.python-version }}
-          TYPER_USE_RICH: False
         run: >-
           $NOX_COMMAND -s test-"$python_version" -- ++no-cov ++test-options -m
           \'${{ matrix.markers }}\'
