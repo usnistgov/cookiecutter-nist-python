@@ -471,7 +471,7 @@ typecheck-runner = [
 [package.metadata]
 
 [package.metadata.requires-dev]
-basedpyright = [{ name = "basedpyright", specifier = ">=1.39.4" }]
+basedpyright = [{ name = "basedpyright", specifier = ">=1.39.6" }]
 cog = [{ name = "cogapp", marker = "python_full_version >= '3.14'" }]
 dev = [
     { name = "cookiecutter", marker = "python_full_version >= '3.14'" },
