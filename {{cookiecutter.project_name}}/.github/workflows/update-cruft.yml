@@ -33,7 +33,7 @@ jobs:
         include:
           - add-paths: .
             body: Use this to merge the changes to this repository.
-            branch: cruft/update
+            branch: update/cruft
             commit-message: "chore(template): accept new cruft update"
             title: "chore(template): accept new cruft update"
           # - add-paths: .cruft.json
