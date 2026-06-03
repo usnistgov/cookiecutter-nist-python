@@ -132,7 +132,7 @@ def test_baked_create(example_path: Path) -> None:
 
 @pytest.mark.disable
 def test_baked_version(example_path: Path) -> None:
-    if get_python_version() == "DEFAULT_PYTHON":
+    if get_python_version() == DEFAULT_PYTHON:
         run_inside_dir("nox -s build -- ++build version", example_path)
 
 
