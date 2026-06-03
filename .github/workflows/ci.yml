@@ -204,7 +204,7 @@ jobs:
         python-version:
           - ${{ needs.get-parameters.outputs.default-python-version }}
         markers:
-          - "book and nocli and cookie and nojupyter"
+          - "book and nocli and cookie and nojupyter and longname"
           - "book and argparse and cookie and jupyter"
           - "book and click and copier and nojupyter"
           - "furo and typer and copier and jupyter"
