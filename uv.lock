@@ -462,8 +462,10 @@ type = [
     { name = "copier" },
     { name = "copier-template-extensions" },
     { name = "nox", marker = "python_full_version >= '3.14'" },
+    { name = "packaging" },
     { name = "pylint" },
     { name = "pytest" },
+    { name = "requirements-parser" },
     { name = "typecheck-runner" },
 ]
 typecheck-runner = [
@@ -538,8 +540,10 @@ type = [
     { name = "copier", specifier = ">=9.15.1" },
     { name = "copier-template-extensions", specifier = ">=0.3.3" },
     { name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2026.4.10" },
+    { name = "packaging", specifier = ">=26.2" },
     { name = "pylint" },
     { name = "pytest" },
+    { name = "requirements-parser", specifier = ">=0.13.0" },
     { name = "typecheck-runner", marker = "python_full_version >= '3.10'", specifier = ">=0.2.0" },
 ]
 typecheck-runner = [{ name = "typecheck-runner", marker = "python_full_version >= '3.10'", specifier = ">=0.2.0" }]
@@ -1888,7 +1892,7 @@ name = "requirements-parser"
 version = "0.13.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "packaging", marker = "python_full_version >= '3.14'" },
+    { name = "packaging" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/95/96/fb6dbfebb524d5601d359a47c78fe7ba1eef90fc4096404aa60c9a906fbb/requirements_parser-0.13.0.tar.gz", hash = "sha256:0843119ca2cb2331de4eb31b10d70462e39ace698fd660a915c247d2301a4418", size = 22630, upload-time = "2025-05-21T13:42:05.464Z" }
 wheels = [
