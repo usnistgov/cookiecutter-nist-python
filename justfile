@@ -85,6 +85,19 @@ ruff: (lint "ruff")
 [group("lint")]
 cog: (lint-manual "cog" "--verbose")
 
+COOKIE := "{{cookiecutter.project_name}}"
+
+# upgrade lint for template
+template-lint-upgrade:
+    cd {{ COOKIE }} && uvx -c../requirements/lock/uvx-tools.txt prek -c .pre-commit-config.yaml autoupdate --cooldown-days=7  # NOTE: need cooldown-days for prek==0.3.11
+    -[[ -f requirements/pre-commit-additional-dependencies.txt ]] && uv run --no-project --script tools/requirements_lock.py --upgrade requirements/pre-commit-additional-dependencies.txt
+    -just lint sync-pre-commit-deps
+    -{{ UVX_WITH_OPTS }} prek run prettier --files .pre-commit-config.yaml
+    -cd {{ COOKIE }} && uvx -c../requirements/lock/uvx-tools.txt prek -c .pre-commit-config.yaml run prettier --files .pre-commit-config.yaml
+    -uv run tools/sync_template_uv_build_deps.py
+
+alias update-template-pre-commit-config := template-lint-upgrade
+
 # update all supported additional dependencies
 [group("lint")]
 lint-upgrade: (pre-commit "autoupdate") lint-sync-deps template-lint-upgrade
@@ -162,6 +175,17 @@ requirements *options: (_requirements "--sync-or-lock" options)
 pyproject-upgrade-min-versions:
     uvx --from "uv-upx>=0.4.3" uv-upx upgrade run --no-sync
 
+# Sync min versions in pyproject.toml with using tools/sync_uvx_tool_min_version.py
+sync-pyproject-min-versions: && lock
+    # sync with pyprojects
+    uv run tools/sync_pyproject_min_versions.py \
+    -r requirements/lock/uvx-tools.txt \
+    {{ "{{cookiecutter.project_name}}" }}/pyproject.toml \
+    pyproject.toml
+
+# Update/Upgrade all dependencies
+update-deps: (lock "--upgrade") sync-pyproject-min-versions lint-upgrade
+
 # * Typecheck ---------------------------------------------------------------------
 
 TYPECHECK_UVRUN_OPTS := "--only-group=type"
@@ -213,7 +237,7 @@ pyrefly-remove-unused-ignores *options: (_typecheck "-c'pyrefly check --remove-u
 [group("typecheck")]
 pylint:
     #!/usr/bin/env sh
-    set -eu
+    set -eux
     possible=("src" "tests" "noxfile.py" "tools" "scripts")
     options=()
     for d in "${possible[@]}"; do
@@ -231,8 +255,8 @@ typecheck *options: (_typecheck "-cmypy[faster-cache] -cbasedpyright -cpyrefly -
 [group("tools")]
 [group("typecheck")]
 @typecheck-tools *files="noxfile.py tools/*.py":
-    -just TYPECHECK_UVRUN_OPTS="--only-group=nox --only-group=typecheck-runner" _typecheck "-c'mypy[faster-cache] --strict' -cbasedpyright -cpyrefly -cty" {{ files }}
-    just TYPECHECK_UVRUN_OPTS="--only-group=nox --only-group=pylint" pylint {{ files }}
+    -just TYPECHECK_UVRUN_OPTS="--only-group=nox --only-group=typecheck-runner --only-group=extras" _typecheck "-c'mypy[faster-cache] --strict' -cbasedpyright -cpyrefly -cty" {{ files }}
+    {{ UVRUN }} --only-group=nox --only-group=pylint --only-group=extras pylint {{ PYLINT_OPTS }} {{ files }}
 
 # ** typecheck all
 
@@ -346,18 +370,6 @@ tuna-import:
 [group("tools")]
 readme-pdf:
     pandoc -V colorlinks -V geometry:margin=0.8in README.md -o README.pdf
-
-COOKIE := "{{cookiecutter.project_name}}"
-
-template-lint-upgrade:
-    cd {{ COOKIE }} && uvx -c../requirements/lock/uvx-tools.txt prek -c .pre-commit-config.yaml autoupdate --cooldown-days=7  # NOTE: need cooldown-days for prek==0.3.11
-    -[[ -f requirements/pre-commit-additional-dependencies.txt ]] && uv run --no-project --script tools/requirements_lock.py --upgrade requirements/pre-commit-additional-dependencies.txt
-    -just lint sync-pre-commit-deps
-    -{{ UVX_WITH_OPTS }} prek run prettier --files .pre-commit-config.yaml
-    -cd {{ COOKIE }} && uvx -c../requirements/lock/uvx-tools.txt prek -c .pre-commit-config.yaml run prettier --files .pre-commit-config.yaml
-    -uv run tools/sync_template_uv_build_deps.py
-
-alias update-template-pre-commit-config := template-lint-upgrade
 
 # update templates
 [group("tools")]

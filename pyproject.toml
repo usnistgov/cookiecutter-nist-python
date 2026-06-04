@@ -48,6 +48,8 @@ test = [
     { include-group = "test-extras" },
 ]
 type = [
+    "packaging>=26.2",
+    "requirements-parser>=0.13.0",
     { include-group = "nox" },
     { include-group = "pylint" },
     { include-group = "pytest" },
@@ -81,8 +83,9 @@ pylint = [ "pylint" ]
 pytest = [ "pytest" ]
 test-extras = [
     "cookiecutter",
-    "copier",
-    "copier-template-extensions>=0.3.1",
+    "copier>=9.15.1",
+    # needed for copier/cookie compat
+    "copier-template-extensions>=0.3.3",
 ]
 typecheck-runner = [ "typecheck-runner>=0.2.0; python_version>'3.9'" ]
 
@@ -321,12 +324,15 @@ pip-deps = [
     "copier-template-extensions>=0.3.3",
     "copier>=9.15.1",
     "grayskull>=3.1.1",
-    "prek>=0.4.1",
+    "prek>=0.4.3",
     "pyrefly>=1.0.0",
     "pyright>=1.1.409",
     "rooster>=0.1.1",
     "twine>=6.2.0",
     "ty>=0.0.39",
+    # include here to sync deps with tools/sync_pyproject_min_version.py
+    "cruft>=2.16.0",
+    "nbqa>=1.9.1",
 ]
 groups = [
     "basedpyright",

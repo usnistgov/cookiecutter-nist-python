@@ -395,11 +395,13 @@ dev = [
     { name = "copier-template-extensions", marker = "python_full_version >= '3.14'" },
     { name = "mypy", extra = ["faster-cache"], marker = "python_full_version >= '3.14'" },
     { name = "nox", marker = "python_full_version >= '3.14'" },
+    { name = "packaging", marker = "python_full_version >= '3.14'" },
     { name = "pylint", marker = "python_full_version >= '3.14'" },
     { name = "pytest", marker = "python_full_version >= '3.14'" },
     { name = "pytest-cov", marker = "python_full_version >= '3.14'" },
     { name = "pytest-sugar", marker = "python_full_version >= '3.14'" },
     { name = "pytest-xdist", marker = "python_full_version >= '3.14'" },
+    { name = "requirements-parser", marker = "python_full_version >= '3.14'" },
     { name = "typecheck-runner", marker = "python_full_version >= '3.14'" },
 ]
 docs = [
@@ -460,8 +462,10 @@ type = [
     { name = "copier" },
     { name = "copier-template-extensions" },
     { name = "nox", marker = "python_full_version >= '3.14'" },
+    { name = "packaging" },
     { name = "pylint" },
     { name = "pytest" },
+    { name = "requirements-parser" },
     { name = "typecheck-runner" },
 ]
 typecheck-runner = [
@@ -475,15 +479,17 @@ basedpyright = [{ name = "basedpyright", specifier = ">=1.39.6" }]
 cog = [{ name = "cogapp", marker = "python_full_version >= '3.14'" }]
 dev = [
     { name = "cookiecutter", marker = "python_full_version >= '3.14'" },
-    { name = "copier", marker = "python_full_version >= '3.14'" },
-    { name = "copier-template-extensions", marker = "python_full_version >= '3.14'", specifier = ">=0.3.1" },
+    { name = "copier", marker = "python_full_version >= '3.14'", specifier = ">=9.15.1" },
+    { name = "copier-template-extensions", marker = "python_full_version >= '3.14'", specifier = ">=0.3.3" },
     { name = "mypy", extras = ["faster-cache"], marker = "python_full_version >= '3.14'", specifier = ">=2.1.0" },
     { name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2026.4.10" },
+    { name = "packaging", marker = "python_full_version >= '3.14'", specifier = ">=26.2" },
     { name = "pylint", marker = "python_full_version >= '3.14'" },
     { name = "pytest", marker = "python_full_version >= '3.14'" },
     { name = "pytest-cov", marker = "python_full_version >= '3.14'" },
     { name = "pytest-sugar", marker = "python_full_version >= '3.14'" },
     { name = "pytest-xdist", marker = "python_full_version >= '3.14'" },
+    { name = "requirements-parser", marker = "python_full_version >= '3.14'", specifier = ">=0.13.0" },
     { name = "typecheck-runner", marker = "python_full_version >= '3.14'", specifier = ">=0.2.0" },
 ]
 docs = [
@@ -517,8 +523,8 @@ pylint = [{ name = "pylint" }]
 pytest = [{ name = "pytest" }]
 test = [
     { name = "cookiecutter" },
-    { name = "copier" },
-    { name = "copier-template-extensions", specifier = ">=0.3.1" },
+    { name = "copier", specifier = ">=9.15.1" },
+    { name = "copier-template-extensions", specifier = ">=0.3.3" },
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-sugar" },
@@ -526,16 +532,18 @@ test = [
 ]
 test-extras = [
     { name = "cookiecutter" },
-    { name = "copier" },
-    { name = "copier-template-extensions", specifier = ">=0.3.1" },
+    { name = "copier", specifier = ">=9.15.1" },
+    { name = "copier-template-extensions", specifier = ">=0.3.3" },
 ]
 type = [
     { name = "cookiecutter" },
-    { name = "copier" },
-    { name = "copier-template-extensions", specifier = ">=0.3.1" },
+    { name = "copier", specifier = ">=9.15.1" },
+    { name = "copier-template-extensions", specifier = ">=0.3.3" },
     { name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2026.4.10" },
+    { name = "packaging", specifier = ">=26.2" },
     { name = "pylint" },
     { name = "pytest" },
+    { name = "requirements-parser", specifier = ">=0.13.0" },
     { name = "typecheck-runner", marker = "python_full_version >= '3.10'", specifier = ">=0.2.0" },
 ]
 typecheck-runner = [{ name = "typecheck-runner", marker = "python_full_version >= '3.10'", specifier = ">=0.2.0" }]
@@ -1877,6 +1885,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/ac/c3/e2a2b89f2d3e2179abd6d00ebd70bff6273f37fb3e0cc209f48b39d00cbf/requests-2.34.2.tar.gz", hash = "sha256:f288924cae4e29463698d6d60bc6a4da69c89185ad1e0bcc4104f584e960b9ed", size = 142856, upload-time = "2026-05-14T19:25:27.735Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a0/f4/c67b0b3f1b9245e8d266f0f112c500d50e5b4e83cb6f3b71b6528104182a/requests-2.34.2-py3-none-any.whl", hash = "sha256:2a0d60c172f83ac6ab31e4554906c0f3b3588d37b5cb939b1c061f4907e278e0", size = 73075, upload-time = "2026-05-14T19:25:26.443Z" },
+]
+
+[[package]]
+name = "requirements-parser"
+version = "0.13.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "packaging" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/95/96/fb6dbfebb524d5601d359a47c78fe7ba1eef90fc4096404aa60c9a906fbb/requirements_parser-0.13.0.tar.gz", hash = "sha256:0843119ca2cb2331de4eb31b10d70462e39ace698fd660a915c247d2301a4418", size = 22630, upload-time = "2025-05-21T13:42:05.464Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bd/60/50fbb6ffb35f733654466f1a90d162bcbea358adc3b0871339254fbc37b2/requirements_parser-0.13.0-py3-none-any.whl", hash = "sha256:2b3173faecf19ec5501971b7222d38f04cb45bb9d87d0ad629ca71e2e62ded14", size = 14782, upload-time = "2025-05-21T13:42:04.007Z" },
 ]
 
 [[package]]

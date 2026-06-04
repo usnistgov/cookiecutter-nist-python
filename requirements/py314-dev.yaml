@@ -13,15 +13,17 @@ channels:
 dependencies:
   - python=3.14
   - cookiecutter
-  - copier
+  - copier>=9.15.1
   - mypy>=2.1.0
   - nox>=2026.4.10
+  - packaging>=26.2
   - pylint
   - pytest
   - pytest-cov
   - pytest-sugar
   - pytest-xdist
+  - requirements-parser>=0.13.0
   - typecheck-runner>=0.2.0
   - pip
   - pip:
-      - copier-template-extensions>=0.3.1
+      - copier-template-extensions>=0.3.3
