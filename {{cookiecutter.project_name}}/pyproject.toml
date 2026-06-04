@@ -407,7 +407,7 @@ pip-deps = [
     {%- if cookiecutter.use_jupyter %}
     "nbqa>=1.9.1",
     {%- endif %}
-    "prek>=0.4.1",
+    "prek>=0.4.3",
     "pyrefly>=1.0.0",
     "pyright>=1.1.409",
     "rooster>=0.1.1",

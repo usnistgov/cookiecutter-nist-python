@@ -83,9 +83,9 @@ pylint = [ "pylint" ]
 pytest = [ "pytest" ]
 test-extras = [
     "cookiecutter",
-    "copier>=9.15.0",
+    "copier>=9.15.1",
     # needed for copier/cookie compat
-    "copier-template-extensions>=0.3.1",
+    "copier-template-extensions>=0.3.3",
 ]
 typecheck-runner = [ "typecheck-runner>=0.2.0; python_version>'3.9'" ]
 
@@ -324,7 +324,7 @@ pip-deps = [
     "copier-template-extensions>=0.3.3",
     "copier>=9.15.1",
     "grayskull>=3.1.1",
-    "prek>=0.4.1",
+    "prek>=0.4.3",
     "pyrefly>=1.0.0",
     "pyright>=1.1.409",
     "rooster>=0.1.1",

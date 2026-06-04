@@ -477,8 +477,8 @@ basedpyright = [{ name = "basedpyright", specifier = ">=1.39.6" }]
 cog = [{ name = "cogapp", marker = "python_full_version >= '3.14'" }]
 dev = [
     { name = "cookiecutter", marker = "python_full_version >= '3.14'" },
-    { name = "copier", marker = "python_full_version >= '3.14'", specifier = ">=9.15.0" },
-    { name = "copier-template-extensions", marker = "python_full_version >= '3.14'", specifier = ">=0.3.1" },
+    { name = "copier", marker = "python_full_version >= '3.14'", specifier = ">=9.15.1" },
+    { name = "copier-template-extensions", marker = "python_full_version >= '3.14'", specifier = ">=0.3.3" },
     { name = "mypy", extras = ["faster-cache"], marker = "python_full_version >= '3.14'", specifier = ">=2.1.0" },
     { name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2026.4.10" },
     { name = "packaging", marker = "python_full_version >= '3.14'", specifier = ">=26.2" },
@@ -521,8 +521,8 @@ pylint = [{ name = "pylint" }]
 pytest = [{ name = "pytest" }]
 test = [
     { name = "cookiecutter" },
-    { name = "copier", specifier = ">=9.15.0" },
-    { name = "copier-template-extensions", specifier = ">=0.3.1" },
+    { name = "copier", specifier = ">=9.15.1" },
+    { name = "copier-template-extensions", specifier = ">=0.3.3" },
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-sugar" },
@@ -530,13 +530,13 @@ test = [
 ]
 test-extras = [
     { name = "cookiecutter" },
-    { name = "copier", specifier = ">=9.15.0" },
-    { name = "copier-template-extensions", specifier = ">=0.3.1" },
+    { name = "copier", specifier = ">=9.15.1" },
+    { name = "copier-template-extensions", specifier = ">=0.3.3" },
 ]
 type = [
     { name = "cookiecutter" },
-    { name = "copier", specifier = ">=9.15.0" },
-    { name = "copier-template-extensions", specifier = ">=0.3.1" },
+    { name = "copier", specifier = ">=9.15.1" },
+    { name = "copier-template-extensions", specifier = ">=0.3.3" },
     { name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2026.4.10" },
     { name = "pylint" },
     { name = "pytest" },
