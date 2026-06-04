@@ -35,6 +35,8 @@ Homepage = "https://github.com/usnistgov/cookiecutter-nist-python"
 
 [dependency-groups]
 dev = [
+    "packaging>=26.2",
+    "requirements-parser>=0.13.0",
     { include-group = "mypy" },
     { include-group = "nox" },
     { include-group = "test" },
@@ -81,7 +83,8 @@ pylint = [ "pylint" ]
 pytest = [ "pytest" ]
 test-extras = [
     "cookiecutter",
-    "copier",
+    "copier>=9.15.0",
+    # needed for copier/cookie compat
     "copier-template-extensions>=0.3.1",
 ]
 typecheck-runner = [ "typecheck-runner>=0.2.0; python_version>'3.9'" ]
@@ -327,6 +330,9 @@ pip-deps = [
     "rooster>=0.1.1",
     "twine>=6.2.0",
     "ty>=0.0.39",
+    # include here to sync deps with tools/sync_pyproject_min_version.py
+    "cruft>=2.16.0",
+    "nbqa>=1.9.1",
 ]
 groups = [
     "basedpyright",

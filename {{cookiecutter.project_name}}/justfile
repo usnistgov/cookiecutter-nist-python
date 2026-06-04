@@ -166,6 +166,9 @@ requirements *options: (_requirements "--sync-or-lock" options)
 pyproject-upgrade-min-versions:
     uvx --from "uv-upx>=0.4.3" uv-upx upgrade run --no-sync
 
+# Update/Upgrade all dependencies
+update-deps: (lock "--upgrade") lint-upgrade
+
 # * Typecheck ---------------------------------------------------------------------
 
 TYPECHECK_UVRUN_OPTS := "--only-group=type"
