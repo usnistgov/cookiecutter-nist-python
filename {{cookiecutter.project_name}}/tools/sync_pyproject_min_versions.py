@@ -259,9 +259,10 @@ def main(argv: Sequence[str] | None = None) -> bool:
 
     for path in paths:
         logger.info("processing %s", path)
-        s = path.read_text(encoding="utf-8")
-        s = REQUIREMENT_REGEX.sub(replacer, path.read_text(encoding="utf-8"))
-        _ = path.write_text(s, encoding="utf-8")
+        _ = path.write_text(
+            REQUIREMENT_REGEX.sub(replacer, path.read_text(encoding="utf-8")),
+            encoding="utf-8",
+        )
 
     return False
 
