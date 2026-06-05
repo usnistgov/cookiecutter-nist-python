@@ -38,13 +38,15 @@ def get_versions_from_requirements(
     if requirements_path is None:
         return {}
 
-    from requirements import parse
+    from requirements import (  # type: ignore[attr-defined]  # pylint: disable=no-name-in-module
+        parse,  # pyright: ignore[reportAttributeAccessIssue, reportUnknownVariableType]  # pyrefly: ignore[missing-module-attribute]  # ty: ignore[unresolved-import]
+    )
 
     versions: dict[str, str] = {}
     with requirements_path.open(encoding="utf-8") as f:
-        for requirement in parse(f):
+        for requirement in parse(f):  # pyright: ignore[reportUnknownVariableType]
             name = cast("str", requirement.name)
-            versions[name] = requirement.specs[0][-1]
+            versions[name] = requirement.specs[0][-1]  # pyright: ignore[reportUnknownMemberType]
     return versions
 
 
@@ -259,9 +261,10 @@ def main(argv: Sequence[str] | None = None) -> bool:
 
     for path in paths:
         logger.info("processing %s", path)
-        s = path.read_text(encoding="utf-8")
-        s = REQUIREMENT_REGEX.sub(replacer, path.read_text(encoding="utf-8"))
-        _ = path.write_text(s, encoding="utf-8")
+        _ = path.write_text(
+            REQUIREMENT_REGEX.sub(replacer, path.read_text(encoding="utf-8")),
+            encoding="utf-8",
+        )
 
     return False
 
