@@ -38,7 +38,7 @@ def get_versions_from_requirements(
     if requirements_path is None:
         return {}
 
-    from requirements import (  # type: ignore[attr-defined]  # pylint: disable=no-name-in-module
+    from requirements import (
         parse,  # pyright: ignore[reportAttributeAccessIssue, reportUnknownVariableType]  # pyrefly: ignore[missing-module-attribute]  # ty: ignore[unresolved-import]
     )
 
