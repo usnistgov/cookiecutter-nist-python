@@ -48,8 +48,6 @@ test = [
     { include-group = "test-extras" },
 ]
 type = [
-    "packaging>=26.2",
-    "requirements-parser>=0.13.0",
     { include-group = "nox" },
     { include-group = "pylint" },
     { include-group = "pytest" },
