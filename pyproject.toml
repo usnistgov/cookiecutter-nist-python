@@ -170,9 +170,8 @@ ignore_missing_imports = true
 [tool.pyrefly]
 enabled-ignores = [ "pyrefly" ]
 project-includes = [
-    "tests",
-    # tools
     "noxfile.py",
+    "tests",
     "tools",
 ]
 search-path = [ "." ]
