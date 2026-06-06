@@ -146,27 +146,26 @@ extend-exclude = [ ".copier-answers.y*ml" ]
 # * typecheck ---------------------------------------------------------------------
 [tool.mypy]
 files = [
-    "tests",
-    # tools
     "noxfile.py",
+    "tests",
     "tools",
 ]
 # options
 check_untyped_defs = true
+warn_unused_ignores = true
+warn_return_any = true
+warn_unreachable = true
 enable_error_code = [
     "ignore-without-code",
     "redundant-expr",
     "truthy-bool",
 ]
 strict = false
-warn_return_any = true
-warn_unreachable = true
 warn_unused_configs = true
-warn_unused_ignores = true
 
 [[tool.mypy.overrides]]
-ignore_missing_imports = true
 module = [ "cookiecutter.*" ]
+ignore_missing_imports = true
 
 [tool.pyrefly]
 enabled-ignores = [ "pyrefly" ]
@@ -179,6 +178,12 @@ project-includes = [
 search-path = [ "." ]
 
 [tool.pyright]
+typeCheckingMode = "strict"
+include = [
+    "noxfile.py",
+    "tests",
+    "tools",
+]
 exclude = [
     "**/.mypy_cache",
     "**/.numba_cache",
@@ -187,22 +192,17 @@ exclude = [
     ".tox/**",
     ".venv/**",
 ]
-include = [
-    "tests",
-    # tools
-    "noxfile.py",
-    "tools",
-]
-typeCheckingMode = "strict"
+enableTypeIgnoreComments = false
 # options
 # reportMissingSuperCall = true
 deprecateTypingAliases = true
-enableReachabilityAnalysis = false
-enableTypeIgnoreComments = false
 reportCallInDefaultInitializer = true
 reportImplicitOverride = true
+reportImplicitStringConcatenation = false
 reportImportCycles = true
 reportOverlappingOverload = true
+reportPrivateImportUsage = false
+reportPrivateUsage = false
 reportPropertyTypeMismatch = true
 reportUninitializedInstanceVariable = true
 reportUnnecessaryTypeIgnoreComment = true
@@ -210,12 +210,9 @@ reportUnreachable = "warning"
 reportUntypedClassDecorator = true
 reportUntypedFunctionDecorator = true
 reportUnusedCallResult = true
-# type-checkers should type-check; linters should lint
-reportImplicitStringConcatenation = false
-reportPrivateImportUsage = false
-reportPrivateUsage = false
 reportUnusedImport = false
 reportUnusedVariable = false
+enableReachabilityAnalysis = false
 
 [[tool.pyright.executionEnvironments]]
 root = "tests"
@@ -225,14 +222,13 @@ root = "tests"
 reportUnusedCallResult = false
 
 [tool.ty]
-# Disable support for `type: ignore` comments
-analysis.respect-type-ignore-comments = false
 src.include = [
-    "tests",
-    # tools
     "noxfile.py",
+    "tests",
     "tools",
 ]
+# Disable support for `type: ignore` comments
+analysis.respect-type-ignore-comments = false
 
 # * Testing --------------------------------------------------------------------
 [tool.pytest.ini_options]
@@ -294,6 +290,9 @@ report.omit = [
 ]
 report.show_missing = true
 
+[tool.commitizen]
+use_shortcuts = true
+
 # * Dependency creation --------------------------------------------------------
 [tool.pyproject2conda]
 template-python = "requirements/py{py}-{env}"
@@ -343,9 +342,6 @@ skip-package = true
 style = "requirements"
 
 # * Other tools ----------------------------------------------------------------
-[tool.commitizen]
-use_shortcuts = true
-
 [tool.rooster]
 changelog_contributors = true
 major-labels = [ "breaking" ]
