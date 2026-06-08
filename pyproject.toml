@@ -325,7 +325,7 @@ pip-deps = [
     "pyright>=1.1.409",
     "rooster>=0.1.1",
     "twine>=6.2.0",
-    "ty>=0.0.40",
+    "ty>=0.0.41",
     # include here to sync deps with tools/sync_pyproject_min_version.py
     "cruft>=2.16.0",
     "nbqa>=1.9.1",
