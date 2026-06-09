@@ -1,4 +1,7 @@
 """Create requirements/lock/*.txt files from requirements/*.txt files."""
+# /// script
+# requires-python = ">=3.11"
+# ///
 
 from __future__ import annotations
 
@@ -26,21 +29,23 @@ if sys.version_info < (3, 11):
     raise RuntimeError(msg)
 
 
-USE_PYTHON_MIN_VERSION = [
+USE_PYTHON_MIN_VERSION = {
     "test.txt",
     "test-extras.txt",
     "typecheck.txt",
     "uvx-tools.txt",
-]
-USE_NO_DEPS = ["uvx-tools.txt", "pre-commit-additional-dependencies.txt"]
-
-LOCK_SCRIPTS = [
+}
+USE_NO_DEPS = {
+    "uvx-tools.txt",
+    "pre-commit-additional-dependencies.txt",
+}
+LOCK_SCRIPTS = {
     "tools/sync_pyproject_min_versions.py",
     "tools/check_dist_version.py",
     {%- if cookiecutter.use_jupyter %}
     "tools/clean_kernelspec.py",
     {%- endif %}
-]
+}
 
 
 def _get_min_python_version() -> str:
