@@ -322,10 +322,10 @@ pip-deps = [
     "grayskull>=3.1.1",
     "prek>=0.4.3",
     "pyrefly>=1.0.0",
-    "pyright>=1.1.409",
+    "pyright>=1.1.410",
     "rooster>=0.1.1",
     "twine>=6.2.0",
-    "ty>=0.0.41",
+    "ty>=0.0.42",
     # include here to sync deps with tools/sync_pyproject_min_version.py
     "cruft>=2.16.0",
     "nbqa>=1.9.1",
