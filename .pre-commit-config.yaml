@@ -141,7 +141,7 @@ repos:
         alias: requirements
         entry: python tools/requirements_lock.py
         pass_filenames: true
-        files: ^requirements/[^/]*\.txt$
+        files: ^requirements/[^/]*\.txt$|^tools/*\.py$
 
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
