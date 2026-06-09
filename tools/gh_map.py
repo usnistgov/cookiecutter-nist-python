@@ -16,6 +16,7 @@ REPOS = [
     "usnistgov/uv-workon",
     "wpk-nist-gov/sync-pre-commit-hooks",
     "wpk-nist-gov/typecheck-runner",
+    "wpk-nist-gov/just-pre-commit",
 ]
 
 
