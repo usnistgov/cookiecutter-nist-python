@@ -34,7 +34,7 @@ USE_PYTHON_MIN_VERSION = [
 USE_NO_DEPS = ["uvx-tools.txt", "pre-commit-additional-dependencies.txt"]
 
 LOCK_SCRIPTS = [
-    "tools/sync_pyproject_min_versions.py"
+    "tools/sync_pyproject_min_versions.py",
 ]
 
 
