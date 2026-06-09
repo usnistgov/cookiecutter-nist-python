@@ -155,7 +155,7 @@ def _maybe_lock_or_sync(
 
 
 def _lock_scripts(
-    scripts: Iterable[str],
+    scripts: Iterable[Path],
     upgrade: bool,
     uv_options: Sequence[str],
 ) -> None:
