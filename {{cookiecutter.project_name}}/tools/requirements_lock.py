@@ -7,6 +7,7 @@ import logging
 import shlex
 import sys
 from argparse import ArgumentParser
+from itertools import chain
 from pathlib import Path
 from subprocess import check_call
 from typing import TYPE_CHECKING
@@ -35,6 +36,10 @@ USE_NO_DEPS = ["uvx-tools.txt", "pre-commit-additional-dependencies.txt"]
 
 LOCK_SCRIPTS = [
     "tools/sync_pyproject_min_versions.py",
+    "tools/check_dist_version.py",
+    {%- if cookiecutter.use_jupyter %}
+    "tools/clean_kernelspec.py",
+    {%- endif %}
 ]
 
 
@@ -163,6 +168,21 @@ def _lock_scripts(
         _ = check_call(command)
 
 
+def _parse_paths_to_scripts_and_requirements(
+    paths: Iterable[Path],
+) -> tuple[list[Path], list[Path]]:
+
+    scripts: list[Path] = []
+    requirements: list[Path] = []
+    for path in paths:
+        if path.suffix == ".py":
+            if str(path) in LOCK_SCRIPTS:
+                scripts.append(path)
+        else:
+            requirements.append(path)
+    return scripts, requirements
+
+
 def _path_or_none(x: str) -> Path | None:
     path = Path(x)
     return path if path.exists() else None
@@ -231,15 +251,6 @@ def main(args: Sequence[str] | None = None) -> int:
         """,
     )
     _ = parser.add_argument(
-        "--script",
-        dest="scripts",
-        default=LOCK_SCRIPTS,
-        action="append",
-        help="""
-        Scripts to lock.
-        """,
-    )
-    _ = parser.add_argument(
         "paths",
         type=Path,
         nargs="*",
@@ -259,14 +270,20 @@ def main(args: Sequence[str] | None = None) -> int:
         uv_options=uv_options,
     )
 
+    scripts, requirements = _parse_paths_to_scripts_and_requirements(
+        chain(Path("./requirements").glob("*.txt"), Path("./tools").glob("*.py"))
+        if opts.all_files
+        else opts.paths
+    )
+
     _lock_scripts(
-        scripts=opts.scripts,
+        scripts=scripts,
         upgrade=opts.upgrade,
         uv_options=uv_options,
     )
 
     _lock_files(
-        Path("./requirements").glob("*.txt") if opts.all_files else opts.paths,
+        requirements,
         min_python_version=_get_min_python_version(),
         default_python_version=_get_default_version(),
         upgrade=opts.upgrade,
