@@ -3,6 +3,9 @@ Symlink notebooks docs/examples/usage/... -> examples/usage/...
 
 Intended for use with pre-commit.
 """
+# /// script
+# requires-python = ">=3.11"
+# ///
 
 from __future__ import annotations
 

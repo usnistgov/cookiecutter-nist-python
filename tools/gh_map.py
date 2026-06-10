@@ -1,4 +1,7 @@
 """Run workflow over multiple repos."""
+# /// script
+# requires-python = ">=3.12"
+# ///
 
 # ruff: noqa: T201
 from __future__ import annotations
