@@ -134,7 +134,7 @@ repos:
         args: [--locked]
       - id: pip-compile
         alias: requirements
-        entry: python tools/requirements_lock.py
+        entry: python tools/uv_locker.py
         pass_filenames: true
         files: ^requirements/[^/]*\.txt$|^tools/*\.py$
 
