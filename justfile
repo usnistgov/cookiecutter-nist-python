@@ -182,7 +182,9 @@ sync-pyproject-min-versions: && lock
     uv run tools/sync_pyproject_min_versions.py \
     -r requirements/lock/uvx-tools.txt \
     {{ "{{cookiecutter.project_name}}" }}/pyproject.toml \
-    pyproject.toml
+    pyproject.toml \
+    noxfile.py \
+    tools/*.py
 
 # Update/Upgrade all dependencies
 update-deps: (lock "--upgrade") sync-pyproject-min-versions lint-upgrade

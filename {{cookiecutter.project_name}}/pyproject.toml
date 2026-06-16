@@ -415,7 +415,6 @@ groups = [
     "basedpyright",
     "cog",
     "mypy",
-    "nox",
     "typecheck-runner",
 ]
 skip-package = true
@@ -424,6 +423,7 @@ style = "requirements"
 [tool.uv-locker]
 pip-compile-config-file = "requirements/uv.toml"
 scripts = [
+    "noxfile.py",
     "tools/check_dist_version.py",
     {%- if cookiecutter.use_jupyter %}
     "tools/clean_kernelspec.py",

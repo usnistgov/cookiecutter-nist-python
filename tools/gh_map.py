@@ -26,7 +26,7 @@ REPOS = [
 def _get_options() -> list[str]:
     from argparse import ArgumentParser
 
-    parser = ArgumentParser(description=__doc__)
+    parser = ArgumentParser(description=__doc__, allow_abbrev=False)
 
     _ = parser.add_argument(
         "args",
