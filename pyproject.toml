@@ -324,6 +324,12 @@ pip-deps = [
     "rooster>=0.1.1",
     "twine>=6.2.0",
     "ty>=0.0.46",
+    # include here to sync deps with tools/sync_pyproject_min_version.py
+    "cogapp>=3.6.0",
+    "cruft>=2.16.0",
+    "nbqa>=1.9.1",
+    "packaging>=26.2",
+    "requirements-parser>=0.13.0",
 ]
 groups = [
     "basedpyright",
