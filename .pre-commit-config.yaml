@@ -156,8 +156,7 @@ repos:
       - id: cog-copier-yaml
         name: cog-copier-yaml
         alias: cog
-        entry: >-
-          python tools/cog_runner.py --use-uvx --format=prettier -- copier.yaml
+        entry: uv run tools/cog_runner.py --format=prettier -- copier.yaml
         language: python
         stages: [manual]
         pass_filenames: false

@@ -4,10 +4,6 @@ basedpyright==1.39.7 \
     --hash=sha256:688d913a19c417870c164c630ed9cdd83a8d8b484b30ab8e99f5dec4ae9604a6 \
     --hash=sha256:81266deb6044c9be98fb4555e4b7b1a521d8aee06b66e80858d183b0e3991140
     # via -r requirements/uvx-tools.txt
-cogapp==3.6.0 \
-    --hash=sha256:6ea11c63221f92978d37d8d76208eadeae2a6e4641d323f165738a5464a19d32 \
-    --hash=sha256:ec2a9170bfa644bf0d91996fdb5576c13d7e5e848bb2378a6f92727b48f92604
-    # via -r requirements/uvx-tools.txt
 conda-lock==4.0.0 \
     --hash=sha256:050305a490861baa98d6c3876ed7b394707a67587d939548aac5e20b91b41d36 \
     --hash=sha256:979aacb4f67eb375f5d84ffbc7afc93c881ab9a513558c7461ed955fe243a3f6
