@@ -152,9 +152,9 @@ repos:
         name: cog-readme
         alias: cog
         entry: >-
-          python tools/cog_runner.py --use-uvx --format=prettier
-          --lint=markdownlint-cli2 --
-        # if need package, use --group=cog --no-dev --no-active/--isolated
+          uv run tools/cog_runner.py --format=prettier --lint=markdownlint-cli2
+          --
+        # if need package, prefix with uv run --no-dev --isolated
         language: python
         files: ^README\.md$
         stages: [manual]
