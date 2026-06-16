@@ -64,7 +64,6 @@ docs = [
 ]
 # other groups
 basedpyright = [ "basedpyright>=1.39.7" ]
-cog = [ "cogapp" ]
 docs-live = [
     "sphinx-autobuild",
     { include-group = "docs" },
@@ -98,7 +97,6 @@ pip.annotation-style = "line"
 pip.generate-hashes = true
 
 [tool.uv.dependency-groups]
-cog.requires-python = ">=3.14"
 dev.requires-python = ">=3.14"
 docs-live.requires-python = ">=3.14"
 docs-spelling.requires-python = ">=3.14"
@@ -329,7 +327,6 @@ pip-deps = [
 ]
 groups = [
     "basedpyright",
-    "cog",
     "mypy",
     "typecheck-runner",
 ]
@@ -341,6 +338,7 @@ pip-compile-config-file = "requirements/uv.toml"
 scripts = [
     "noxfile.py",
     "tools/check_dist_version.py",
+    "tools/cog_runner.py",
     "tools/sync_pyproject_min_versions.py",
     "tools/sync_template_uv_build_deps.py",
 ]
