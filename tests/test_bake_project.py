@@ -65,6 +65,7 @@ def check_directory(
             ".taplo.toml",
             "pyproject.toml",
             "noxfile.py",
+            "noxfile.py.lock",
             "ruff.toml",
             "CHANGELOG.md",
             "CONTRIBUTING.md",
