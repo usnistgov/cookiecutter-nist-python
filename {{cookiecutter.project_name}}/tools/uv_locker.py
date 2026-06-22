@@ -95,7 +95,7 @@ class _Script:
 class _Requirement:
     path: Path
     options: list[str]
-    python: str | None  # Python version used for `--python-version`; config accepts "min", "default", or an explicit version string.
+    python: str | None  # `--python-version`.  {"min", "default", python_version}
     output_file: Path
 
     @classmethod
