@@ -63,7 +63,7 @@ docs = [
     "sphinx-copybutton",
 ]
 # other groups
-basedpyright = [ "basedpyright>=1.39.7" ]
+basedpyright = [ "basedpyright>=1.39.8" ]
 docs-live = [
     "sphinx-autobuild",
     { include-group = "docs" },
@@ -80,7 +80,7 @@ pylint = [ "pylint" ]
 pytest = [ "pytest" ]
 test-extras = [
     "cookiecutter",
-    "copier>=9.15.1",
+    "copier>=9.15.2",
     # needed for copier/cookie compat
     "copier-template-extensions>=0.3.3",
 ]
@@ -316,7 +316,7 @@ pip-deps = [
     # these used solely for specking tools to be run via uvx ...
     "conda-lock>=4.0.0",
     "copier-template-extensions>=0.3.3",
-    "copier>=9.15.1",
+    "copier>=9.15.2",
     "grayskull>=3.1.1",
     "prek>=0.4.4",
     "pyrefly>=1.0.0",
