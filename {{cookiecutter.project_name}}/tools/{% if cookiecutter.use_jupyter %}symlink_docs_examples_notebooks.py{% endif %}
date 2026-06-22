@@ -96,7 +96,7 @@ def main(args: Sequence[str] | None = None) -> int:
     _ = parser.add_argument(
         "--no-clean",
         action="store_true",
-        help="default is to clean out `dos_example_path / usage`.  Pass this to skip clean.",
+        help="default is to clean out `docs_example_path / usage`.  Pass this to skip clean.",
     )
     opts = parser.parse_args(args)
 
