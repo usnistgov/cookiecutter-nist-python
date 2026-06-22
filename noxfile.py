@@ -360,6 +360,7 @@ def install_package(
     installpkg: str | None = None,
 ) -> None:
     """Install current package."""
+    # NOTE: no package to install
 
 
 class _GetPackageWheel:

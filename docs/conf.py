@@ -246,7 +246,7 @@ language = "en"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-# This patterns also effect to html_static_path and html_extra_path
+# These patterns also affect to html_static_path and html_extra_path
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "**.ipynb_checkpoints"]
 
 # The name of the Pygments (syntax highlighting) style to use.
@@ -385,7 +385,7 @@ texinfo_documents = [
         "cookiecutter-nist-python Documentation",
         author,
         "cookiecutter_nist_python",
-        "One line description of project.",
+        "Cookiecutter template for NIST python packages",
         "Miscellaneous",
     ),
 ]
@@ -407,53 +407,6 @@ intersphinx_mapping = {
 }
 
 linkcheck_ignore = ["https://doi.org/"]
-
-
-# based on numpy doc/source/conf.py
-# def linkcode_resolve(domain, info):
-#     """Determine the URL corresponding to Python object."""
-#     import inspect
-#     from operator import attrgetter
-
-#     if domain != "py":
-#         return None
-
-#     parent_name, *sub_parts = info["module"].split(".")
-#     parent_mod = sys.modules.get(parent_name)
-
-#     try:
-#         if len(sub_parts) > 0:
-#             sub_name = ".".join(sub_parts)
-#             obj = attrgetter(sub_name)(parent_mod)
-#         else:
-#             obj = parent_mod
-
-#         # get fullname
-#         obj = attrgetter(info["fullname"])(obj)
-
-#     except AttributeError:
-#         return None
-
-#     try:
-#         fn = inspect.getsourcefile(inspect.unwrap(obj))
-#     except TypeError:
-#         fn = None
-#     if not fn:
-#         return None
-
-#     try:
-#         source, lineno = inspect.getsourcelines(obj)
-#     except OSError:
-#         lineno = None
-
-#     if lineno:
-#         linespec = f"#L{lineno}-L{lineno + len(source) - 1}"
-#     else:
-#         linespec = ""
-
-#     fn = os.path.relpath(fn, start=os.path.dirname(cookiecutter_nist_python.__file__))
-
-#     return f"https://github.com/{github_username}/cookiecutter-nist-python/blob/{html_context['github_version']}/src/cookiecutter_nist_python/{fn}{linespec}"
 
 
 # only set spelling stuff if installed:
