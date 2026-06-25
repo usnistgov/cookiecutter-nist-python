@@ -232,18 +232,10 @@ enable_error_code = [
 strict = true
 warn_unused_configs = true
 
-[[tool.mypy.overrides]]
-module = [
-    # "scipy.*",
-]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = [
-    # "scipy.*",
-]
-ignore_errors = true
-
+## [[tool.mypy.overrides]]
+## module = [ "module.submodule.*" ]
+## ignore_missing_imports = true
+## ignore_errors = true
 [tool.pyrefly]
 enabled-ignores = [ "pyrefly" ]
 project-includes = [
