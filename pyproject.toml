@@ -190,13 +190,13 @@ exclude = [
     ".venv/**",
 ]
 enableTypeIgnoreComments = false
-# options
-# reportMissingSuperCall = true
 deprecateTypingAliases = true
 reportCallInDefaultInitializer = true
 reportImplicitOverride = true
 reportImplicitStringConcatenation = false
 reportImportCycles = true
+# options
+# reportMissingSuperCall = true
 reportOverlappingOverload = true
 reportPrivateImportUsage = false
 reportPrivateUsage = false
