@@ -232,14 +232,18 @@ enable_error_code = [
 strict = true
 warn_unused_configs = true
 
-# [[tool.mypy.overrides]]
-# module = [  ]
-# ignore_missing_imports = true
-#
-# [[tool.mypy.overrides]]
-# module = [  ]
-# ignore_errors = true
-#
+[[tool.mypy.overrides]]
+module = [
+    # "scipy.*",
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+    # "scipy.*",
+]
+ignore_errors = true
+
 [tool.pyrefly]
 enabled-ignores = [ "pyrefly" ]
 project-includes = [
@@ -252,7 +256,6 @@ search-path = [ "." ]
 
 [tool.pyright]
 typeCheckingMode = "strict"
-# typeCheckingMode= "standard"
 include = [
     "noxfile.py",
     "src",
@@ -268,19 +271,13 @@ exclude = [
     ".venv/**",
 ]
 enableTypeIgnoreComments = false
-# strict = [
-#     "src",
-#     "tests",
-#     "noxfile.py",
-#     "tools/*.py",
-# ]
-# options
-# reportMissingSuperCall = true
 deprecateTypingAliases = true
 reportCallInDefaultInitializer = true
 reportImplicitOverride = true
 reportImplicitStringConcatenation = false
 reportImportCycles = true
+# options
+# reportMissingSuperCall = true
 reportOverlappingOverload = true
 reportPrivateImportUsage = false
 reportPrivateUsage = false
@@ -295,6 +292,12 @@ reportUnusedImport = false
 reportUnusedVariable = false
 enableReachabilityAnalysis = false
 
+# strict = [
+#     "src",
+#     "tests",
+#     "noxfile.py",
+#     "tools/*.py",
+# ]
 [[tool.pyright.executionEnvironments]]
 root = "tests"
 # reportArgumentType = false
