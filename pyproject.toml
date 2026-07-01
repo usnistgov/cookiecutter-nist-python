@@ -80,7 +80,7 @@ pylint = [ "pylint" ]
 pytest = [ "pytest" ]
 test-extras = [
     "cookiecutter",
-    "copier>=9.15.2",
+    "copier>=9.16.0",
     # needed for copier/cookie compat
     "copier-template-extensions>=0.3.3",
 ]
@@ -322,14 +322,14 @@ pip-deps = [
     # these used solely for specking tools to be run via uvx ...
     "conda-lock>=4.0.1",
     "copier-template-extensions>=0.3.3",
-    "copier>=9.15.2",
+    "copier>=9.16.0",
     "grayskull>=3.1.1",
     "prek>=0.4.5",
     "pyrefly>=1.1.1",
     "pyright>=1.1.410",
     "rooster>=0.1.1",
     "twine>=6.2.0",
-    "ty>=0.0.51",
+    "ty>=0.0.52",
     # include here to sync deps with tools/sync_pyproject_min_version.py
     "cogapp>=3.6.0",
     "cruft>=2.16.0",
