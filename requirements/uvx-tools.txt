@@ -23,5 +23,5 @@ pyright>=1.1.411
 requirements-parser>=0.13.1
 rooster>=0.1.1
 twine>=6.2.0
-ty>=0.0.54
+ty>=0.0.55
 typecheck-runner>=0.2.0; python_version > "3.9"
