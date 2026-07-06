@@ -126,7 +126,7 @@ jobs:
           echo "prek_version=${prek_version}" >> "$GITHUB_ENV"
 
       - name: Setup prek
-        uses: j178/prek-action@bdca6f102f98e2b4c7029491a53dfd366469e33d # v2.0.4
+        uses: j178/prek-action@e98a699c41eb69ab013a45817a0406469a748f8d # v2.0.5
         with:
           prek-version: ${{ env.prek_version }}
           install-only: true
@@ -222,7 +222,7 @@ jobs:
           cache-dependency-path: uv.lock
 
       - name: Prek cache
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: |
             ~/.cache/prek
