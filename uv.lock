@@ -825,7 +825,6 @@ name = "ipython"
 version = "9.15.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-<<<<<<< update/deps
     { name = "colorama", marker = "sys_platform == 'win32'" },
     { name = "decorator" },
     { name = "ipython-pygments-lexers" },
@@ -837,19 +836,6 @@ dependencies = [
     { name = "pygments" },
     { name = "stack-data" },
     { name = "traitlets" },
-=======
-    { name = "colorama", marker = "python_full_version >= '3.14' and sys_platform == 'win32'" },
-    { name = "decorator", marker = "python_full_version >= '3.14'" },
-    { name = "ipython-pygments-lexers", marker = "python_full_version >= '3.14'" },
-    { name = "jedi", marker = "python_full_version >= '3.14'" },
-    { name = "matplotlib-inline", marker = "python_full_version >= '3.14'" },
-    { name = "pexpect", marker = "python_full_version >= '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32'" },
-    { name = "prompt-toolkit", marker = "python_full_version >= '3.14'" },
-    { name = "psutil", marker = "python_full_version >= '3.14' and sys_platform != 'emscripten'" },
-    { name = "pygments", marker = "python_full_version >= '3.14'" },
-    { name = "stack-data", marker = "python_full_version >= '3.14'" },
-    { name = "traitlets", marker = "python_full_version >= '3.14'" },
->>>>>>> main
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/53/59/165d3b4d75cc34add3122c4417ecb229085140ac573103c223cd01dde96f/ipython-9.15.0.tar.gz", hash = "sha256:da2819ce2aa83135257df830660b1176d986c3d2876db24df01974fa955b2756", size = 4442580, upload-time = "2026-06-26T11:03:35.913Z" }
 wheels = [
