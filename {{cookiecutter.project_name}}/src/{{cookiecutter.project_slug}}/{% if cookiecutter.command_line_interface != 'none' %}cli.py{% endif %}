@@ -46,7 +46,8 @@ def func() -> int:
 def get_parser() -> argparse.ArgumentParser:
     """Create parser."""
     parser = argparse.ArgumentParser()
-    _ = parser.add_argument("_", nargs="*")
+    _ = parser.add_argument("args", nargs="*", help="Main arguments")
+    _ = parser.add_argument("--option", help="An option")
 
     return parser
 
