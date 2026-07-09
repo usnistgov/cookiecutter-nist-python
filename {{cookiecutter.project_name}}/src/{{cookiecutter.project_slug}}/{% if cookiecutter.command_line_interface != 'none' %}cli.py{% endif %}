@@ -46,7 +46,8 @@ def func() -> int:
 def get_parser() -> argparse.ArgumentParser:
     """Create parser."""
     parser = argparse.ArgumentParser()
-    _ = parser.add_argument("_", nargs="*")
+    _ = parser.add_argument("args", nargs="*", help="Main arguments")
+    _ = parser.add_argument("--option", help="An option")
 
     return parser
 
@@ -56,7 +57,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = get_parser()
     args = parser.parse_args(argv)
 
-    print("Arguments: " + str(args._))  # noqa: T201
+    print("Arguments: " + str(args.args))  # noqa: T201
     print(f"Replace this message by putting your code into {PACKAGE}.cli.main")  # noqa: T201
     return 0
 
