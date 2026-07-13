@@ -1,7 +1,7 @@
 [build-system]
 build-backend = "uv_build"
 requires = [
-    "uv-build>=0.11.25,<0.12.0",
+    "uv-build>=0.11.26,<0.12.0",
 ]
 
 [project]
@@ -385,7 +385,7 @@ skip-package = true
 [tool.pyproject2conda.envs.uvx-tools]
 pip-deps = [
     # these used solely for specking tools to be run via uvx ...
-    "conda-lock>=4.0.1",
+    "conda-lock>=4.0.2",
     {%- if cookiecutter.__copier %}
     "copier-template-extensions>=0.3.3",
     "copier>=9.16.0",
@@ -397,12 +397,12 @@ pip-deps = [
     {%- if cookiecutter.use_jupyter %}
     "nbqa>=1.9.1",
     {%- endif %}
-    "prek>=0.4.5",
+    "prek>=0.4.8",
     "pyrefly>=1.1.1",
     "pyright>=1.1.411",
     "rooster>=0.1.1",
     "twine>=6.2.0",
-    "ty>=0.0.55",
+    "ty>=0.0.56",
 ]
 groups = [
     "basedpyright",
