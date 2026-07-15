@@ -14,7 +14,7 @@ dependencies:
   - python=3.14
   - cookiecutter
   - copier>=9.16.0
-  - mypy>=2.1.0
+  - mypy>=2.2.0
   - nox>=2026.4.10
   - pylint
   - pytest
