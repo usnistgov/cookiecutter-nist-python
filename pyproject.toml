@@ -74,7 +74,7 @@ docs-spelling = [
     { include-group = "docs" },
 ]
 ipython = [ "ipython" ]
-mypy = [ "mypy[faster-cache]>=2.1.0" ]
+mypy = [ "mypy[faster-cache]>=2.2.0" ]
 nox = [ "nox>=2026.4.10" ]
 pylint = [ "pylint" ]
 pytest = [ "pytest" ]
