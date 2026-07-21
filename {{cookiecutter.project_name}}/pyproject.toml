@@ -113,7 +113,7 @@ docs-spelling = [
     { include-group = "docs" },
 ]
 ipython = [ "ipython" ]
-mypy = [ "mypy[faster-cache]>=2.2.0" ]
+mypy = [ "mypy[faster-cache]>=2.3.0" ]
 {%- if cookiecutter.use_jupyter %}
 notebook = [ "ipykernel", "nbclient" ]
 {%- endif %}
@@ -388,7 +388,7 @@ pip-deps = [
     "conda-lock>=4.0.2",
     {%- if cookiecutter.__copier %}
     "copier-template-extensions>=0.3.3",
-    "copier>=9.16.0",
+    "copier>=9.17.0",
     {%- endif %}
     {%- if not cookiecutter.__copier %}
     "cruft>=2.16.0",
