@@ -13,7 +13,7 @@ channels:
 dependencies:
   - python=3.11
   - cookiecutter
-  - copier>=9.16.0
+  - copier>=9.17.0
   - pytest
   - pytest-cov
   - pytest-sugar
