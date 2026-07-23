@@ -255,7 +255,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "{{ cookiecutter.project_name }}"
-copyright = "{{ cookiecutter.year }}, {{ cookiecutter.full_name}}"  # noqa: A001
+copyright = "{{ cookiecutter.year }}, {{ cookiecutter.full_name}}"  # ruff:ignore[builtin-variable-shadowing]
 author = "{{ cookiecutter.full_name }}"
 
 
@@ -460,7 +460,7 @@ def linkcode_resolve(domain: str, info: dict[str, Any]) -> str | None:
     parent_name, *sub_parts = info["module"].split(".")
     parent_mod = sys.modules.get(parent_name)
 
-    try:  # noqa: PLW0717
+    try:  # ruff:ignore[too-many-statements-in-try-clause]
         if len(sub_parts) > 0:
             sub_name = ".".join(sub_parts)
             obj = attrgetter(sub_name)(parent_mod)

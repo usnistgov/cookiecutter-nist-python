@@ -10,7 +10,7 @@
 """Config file for nox."""
 # pyright: reportUnusedCallResult=false
 # pylint: disable=wrong-import-position
-# ruff: noqa: C901
+# ruff:file-ignore[complex-structure]
 
 # * Imports ----------------------------------------------------------------------------
 from __future__ import annotations
@@ -270,7 +270,7 @@ def install_dependencies(
 ) -> None:
     """General dependencies installer."""
     if python_version is None:
-        assert isinstance(session.python, str)  # noqa: S101
+        assert isinstance(session.python, str)  # ruff:ignore[assert]
         python_version = session.python
 
     lock = lock if lock is not None else opts.lock
@@ -791,7 +791,7 @@ def lint(
 # ** type checking
 @nox.session(name="typecheck", **ALL_KWS)
 @add_opts
-def typecheck(  # noqa: PLR0912
+def typecheck(  # ruff:ignore[too-many-branches]
     session: nox.Session,
     opts: SessionParams,
 ) -> None:
@@ -925,7 +925,7 @@ def conda_recipe(
                 session.log(f"cat {path}:")
                 with path.open() as f:
                     for line in f:
-                        print(line, end="")  # noqa: T201
+                        print(line, end="")  # ruff:ignore[print]
 
 
 @nox.session(name="conda-build", **CONDA_DEFAULT_KWS)

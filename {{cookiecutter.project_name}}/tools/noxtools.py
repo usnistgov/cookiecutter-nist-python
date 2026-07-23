@@ -191,7 +191,7 @@ def check_for_change_manager(
     If exit normally, write hashes to hash_path file
 
     """
-    # pylint: disable=try-except-raise,no-else-raise, too-many-try-statements
+    # pylint: disable=too-many-try-statements,used-before-assigment
     try:
         changed, hashes, hash_path = check_hash_path_for_change(
             *deps,
@@ -201,10 +201,7 @@ def check_for_change_manager(
 
         yield changed
 
-    except Exception:  # noqa: TRY203
-        raise
-
-    else:
+    finally:
         if force_write or changed:
             logger.info(f"Writing {hash_path}")
 
@@ -295,7 +292,7 @@ def write_hashes(hash_path: str | Path, hashes: dict[str, Any]) -> None:
 def _get_file_hash(path: str | Path, buff_size: int = 65536) -> str:
     import hashlib
 
-    md5 = hashlib.md5()  # noqa: S324
+    md5 = hashlib.md5()  # ruff:ignore[hashlib-insecure-hash-function]
     with Path(path).open("rb") as f:
         while data := f.read(buff_size):  # pylint: disable=while-used
             md5.update(data)
