@@ -5,6 +5,18 @@
 
 Changelog for `cookiecutter-nist-python`
 
+## 0.13.1
+
+Released on 2026-07-24.
+
+### Bug fixes
+
+- fix: update ruff ignores ([#299](https://github.com/usnistgov/cookiecutter-nist-python/pull/299))
+
+### Contributors
+
+- [@wpk-nist-gov](https://github.com/wpk-nist-gov)
+
 ## 0.13.0
 
 Released on 2026-06-02.
