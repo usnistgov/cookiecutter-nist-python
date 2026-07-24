@@ -38,7 +38,7 @@ class Option:
         if self.choices:
             result.append("  choices:")
             for choice in self.choices:
-                result.append(  # noqa: PERF401
+                result.append(  # ruff:ignore[manual-list-comprehension]
                     f'    "{choice.description}": {choice.name}'
                     if choice.description
                     else f"    - {choice.name}"

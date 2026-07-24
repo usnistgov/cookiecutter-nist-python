@@ -68,7 +68,7 @@ def main() -> int:
 
     uv_build_dep = _get_uv_build_dep(_get_uv_version(pre_commit))
 
-    print("uv_build_dep", uv_build_dep)  # noqa: T201
+    print("uv_build_dep", uv_build_dep)  # ruff:ignore[print]
 
     return _update_pyproject(pyproject, _get_uv_build_dep(_get_uv_version(pre_commit)))
 

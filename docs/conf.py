@@ -221,7 +221,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "cookiecutter-nist-python"
-copyright = "2023, William P. Krekelberg"  # noqa: A001
+copyright = "2023, William P. Krekelberg"  # ruff:ignore[builtin-variable-shadowing]
 author = "William P. Krekelberg"
 
 # The version info for the project you're documenting, acts as replacement
