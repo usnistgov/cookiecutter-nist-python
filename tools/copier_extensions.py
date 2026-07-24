@@ -55,7 +55,7 @@ class CookiecutterContext(SmartDict):
 
 @CookiecutterContext.register
 def __year(_: Any) -> str:
-    return str(datetime.datetime.now(tz=None).year)  # noqa: DTZ005
+    return str(datetime.datetime.now(tz=None).year)  # ruff:ignore[call-datetime-now-without-tzinfo]
 
 
 @CookiecutterContext.register
@@ -64,7 +64,7 @@ def __answers(context: Mapping[str, Any]) -> Any:
 
 
 @CookiecutterContext.register
-def __copier(context: Mapping[str, Any]) -> bool:  # noqa: ARG001
+def __copier(context: Mapping[str, Any]) -> bool:  # ruff:ignore[unused-function-argument]
     return True
 
 

@@ -3,7 +3,7 @@
 # requires-python = ">=3.12"
 # ///
 
-# ruff: noqa: T201
+# ruff:file-ignore[print]
 from __future__ import annotations
 
 import shlex
