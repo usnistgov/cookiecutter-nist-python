@@ -421,7 +421,6 @@ scripts = [
     "tools/clean_kernelspec.py",
     {%- endif %}
     "tools/cog_runner.py",
-    "tools/sync_pyproject_min_versions.py",
 ]
 
 [[tool.uv-locker.requirements]]
