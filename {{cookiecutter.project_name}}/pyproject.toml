@@ -239,6 +239,9 @@ warn_unused_configs = true
 [tool.pyrefly]
 enabled-ignores = [ "pyrefly" ]
 project-includes = [
+    {%- if cookiecutter.use_jupyter %}
+    "examples/usage/*.ipynb",
+    {%- endif %}
     "noxfile.py",
     "src",
     "tests",
@@ -255,6 +258,9 @@ typeCheckingMode = "strict"
 #     "tools/*.py",
 # ]
 include = [
+    {%- if cookiecutter.use_jupyter %}
+    "examples/usage/*.ipynb",
+    {%- endif %}
     "noxfile.py",
     "src",
     "tests",
@@ -299,6 +305,9 @@ reportUnusedCallResult = false
 
 [tool.ty]
 src.include = [
+    {%- if cookiecutter.use_jupyter %}
+    "examples/usage/*.ipynb",
+    {%- endif %}
     "noxfile.py",
     "src",
     "tests",

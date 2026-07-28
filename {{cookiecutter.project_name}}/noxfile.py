@@ -811,7 +811,8 @@ def typecheck(  # ruff:ignore[too-many-branches]
             "ty",
             "pylint",
             {%- if cookiecutter.use_jupyter %}
-            "typecheck-notebook",
+            "mypy-notebook",
+            "pylint-notebook",
             {%- endif %}
         ]
 
