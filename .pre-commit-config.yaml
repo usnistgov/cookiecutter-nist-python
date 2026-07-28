@@ -24,17 +24,14 @@ repos:
       - id: forbidden-files
       - id: sync-pre-commit-deps
       - id: sync-uv-dependency-groups
-      - id: sync-pyproject-min-versions
-        files: ^pyproject\.toml$|^requirements/lock/uvx-tools\.txt$|^noxfile\.py$|^tools/.*\.py$
-        args:
-          - "--requirements=requirements/lock/uvx-tools.txt"
 
-      # update cookiecutter
+        # update cookiecutter
       - id: sync-pre-commit-deps
         args:
           - "--config"
           - "{{cookiecutter.project_name}}/.pre-commit-config.yaml"
 
+      # sync min versions
       - id: sync-pyproject-min-versions
         files: |
           (?x)^({{cookiecutter.project_name}}/)?
@@ -42,7 +39,7 @@ repos:
             pyproject\.toml|
             requirements/lock/uvx-tools\.txt|
             noxfile\.py|
-            ^tools/.*\.py|
+            ^tools/.*\.py
           )$
         args:
           - "--requirements=requirements/lock/uvx-tools.txt"

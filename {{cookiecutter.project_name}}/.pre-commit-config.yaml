@@ -26,7 +26,13 @@ repos:
       - id: sync-uv-build-deps
       - id: sync-uv-dependency-groups
       - id: sync-pyproject-min-versions
-        files: ^pyproject\.toml$|^requirements/lock/uvx-tools\.txt$|^noxfile\.py$|^tools/.*\.py$
+        files: |
+          (?x)^(
+            pyproject\.toml|
+            requirements/lock/uvx-tools\.txt|
+            noxfile\.py|
+            ^tools/.*\.py
+          )$
         args:
           - "--requirements=requirements/lock/uvx-tools.txt"
 
