@@ -353,7 +353,6 @@ scripts = [
     "noxfile.py",
     "tools/check_dist_version.py",
     "tools/cog_runner.py",
-    "tools/sync_pyproject_min_versions.py",
     "tools/sync_template_uv_build_deps.py",
 ]
 
