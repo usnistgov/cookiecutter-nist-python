@@ -81,7 +81,7 @@ repos:
         exclude: *exclude_template
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2026.07.20
+    rev: 2026.07.17
     hooks:
       - id: validate-pyproject
         name: validate-pyproject-schema-store
