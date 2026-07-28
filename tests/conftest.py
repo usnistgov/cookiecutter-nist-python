@@ -154,6 +154,7 @@ def example_path(
         f"just lock {'--upgrade' if requirements_upgrade else ''}",
         str(path),
     )
+    run_inside_dir("just sync-pyproject-min-versions", str(path))
     if (path / "tools" / "symlink_docs_examples_notebooks.py").exists():
         run_inside_dir(
             "uv run --no-project tools/symlink_docs_examples_notebooks.py", str(path)

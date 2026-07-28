@@ -7,6 +7,7 @@ ci:
   skip:
     - uv-lock
     - pip-compile
+    - sync-pyproject-min-versions
 default_install_hook_types:
   - pre-commit
   - commit-msg
@@ -25,6 +26,16 @@ repos:
       - id: sync-pre-commit-deps
       - id: sync-uv-build-deps
       - id: sync-uv-dependency-groups
+      - id: sync-pyproject-min-versions
+        files: |
+          (?x)^(
+            pyproject\.toml|
+            requirements/lock/uvx-tools\.txt|
+            noxfile\.py|
+            ^tools/.*\.py
+          )$
+        args:
+          - "--requirements=requirements/lock/uvx-tools.txt"
 
   # * Top level
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -58,7 +69,7 @@ repos:
       - id: pyproject-fmt
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2026.07.20
+    rev: 2026.07.17
     hooks:
       - id: validate-pyproject
         name: validate-pyproject-schema-store

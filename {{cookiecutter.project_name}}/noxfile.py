@@ -3,7 +3,7 @@
 # /// script
 # requires-python = ">=3.12"
 # dependencies = [
-#     "nox>=2026.4.10",
+#     "nox>=2026.7.11",
 # ]
 # ///
 
@@ -811,7 +811,8 @@ def typecheck(  # ruff:ignore[too-many-branches]
             "ty",
             "pylint",
             {%- if cookiecutter.use_jupyter %}
-            "typecheck-notebook",
+            "mypy-notebook",
+            "pylint-notebook",
             {%- endif %}
         ]
 
