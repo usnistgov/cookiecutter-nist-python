@@ -10,7 +10,6 @@ ci:
 default_install_hook_types:
   - pre-commit
   - commit-msg
-exclude: "^{{cookiecutter.project_name}}"
 repos:
   # * meta hooks
   # - repo: meta
@@ -33,7 +32,14 @@ repos:
           - "{{cookiecutter.project_name}}/.pre-commit-config.yaml"
 
       - id: sync-pyproject-min-versions
-        files: ^pyproject\.toml$|^requirements/lock/uvx-tools\.txt$|^noxfile\.py$|^tools/.*\.py$
+        files: |
+          (?x)^({{cookiecutter.project_name}}/)?
+          (
+            pyproject\.toml|
+            requirements/lock/uvx-tools\.txt|
+            noxfile\.py|
+            ^tools/.*\.py|
+          )$
         args:
           - "--requirements=requirements/lock/uvx-tools.txt"
 
@@ -45,10 +51,14 @@ repos:
         exclude: ^uv[.]lock
       - id: check-case-conflict
       - id: check-merge-conflict
+        exclude: &exclude_template "^{{cookiecutter.project_name}}"
         args: [--assume-in-merge]
       - id: check-yaml
+        exclude: *exclude_template
       - id: check-json
+        exclude: *exclude_template
       - id: check-toml
+        exclude: *exclude_template
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: mixed-line-ending
@@ -59,13 +69,15 @@ repos:
     rev: v0.9.3
     hooks:
       - id: taplo-format
-        # exclude: (^|/)pyproject\.toml$
+        exclude: *exclude_template
       - id: taplo-lint
+        exclude: *exclude_template
         args: ["--no-schema"]
   - repo: https://github.com/tox-dev/pyproject-fmt
     rev: v2.25.3
     hooks:
       - id: pyproject-fmt
+        exclude: *exclude_template
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
     rev: 2026.07.20
@@ -85,6 +97,7 @@ repos:
     rev: v3.9.6
     hooks:
       - id: prettier
+        exclude: *exclude_template
         alias: markdownlint
         stages: [pre-commit, manual]
         args:
@@ -96,6 +109,7 @@ repos:
     rev: v0.23.1
     hooks:
       - id: markdownlint-cli2
+        exclude: *exclude_template
         alias: markdownlint
         args: [--style, prettier]
 
@@ -104,16 +118,19 @@ repos:
     rev: v1.57.0
     hooks:
       - id: justfile-format
+        exclude: *exclude_template
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.15.22
     hooks:
       - id: ruff-check
+        exclude: *exclude_template
         alias: ruff
         args: [--fix, --show-fixes]
         types_or: &ruff_types [python, pyi, jupyter, markdown]
       - id: ruff-format
+        exclude: *exclude_template
         alias: ruff
         types_or: *ruff_types
 
@@ -124,7 +141,7 @@ repos:
     hooks:
       - id: typos
         exclude_types: [jupyter]
-        exclude: ^uv[.]lock$|^requirements|^\.copier-answers\.ya?ml$
+        exclude: ^uv[.]lock$|^requirements|^\.copier-answers\.ya?ml$|^{{cookiecutter.project_name}}
 
   # * Dependencies
   # ** pyproject2conda
@@ -199,6 +216,7 @@ repos:
     hooks:
       # Run the linter.
       - id: zizmor
+        exclude: *exclude_template
         alias: actions
 
   # * Other tools --------------------------------------------------------------

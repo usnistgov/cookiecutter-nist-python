@@ -100,7 +100,7 @@ alias update-template-pre-commit-config := template-lint-upgrade
 
 # update all supported additional dependencies
 [group("lint")]
-lint-upgrade: (pre-commit "autoupdate") (pre-commit "-c" ".pre-commit-config-template.yaml" "autoupdate") lint-sync-deps template-lint-upgrade
+lint-upgrade: (pre-commit "autoupdate") lint-sync-deps template-lint-upgrade
 
 # sync dependencies (used primarily with lint-upgrade)
 [group("lint")]
@@ -179,7 +179,6 @@ pyproject-upgrade-min-versions:
 sync-pyproject-min-versions: && lock
     # NOTE: keep this for now.
     just lint sync-pyproject-min-versions || true
-    just lint sync-pyproject-min-versions -c .pre-commit-config-template.yaml || true
 
 # Update/Upgrade all dependencies
 update-deps: (lock "--upgrade") sync-pyproject-min-versions lint-upgrade
