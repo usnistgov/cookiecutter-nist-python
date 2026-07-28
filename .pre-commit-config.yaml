@@ -32,6 +32,11 @@ repos:
           - "--config"
           - "{{cookiecutter.project_name}}/.pre-commit-config.yaml"
 
+      - id: sync-pyproject-min-versions
+        files: ^pyproject\.toml$|^requirements/lock/uvx-tools\.txt$|^noxfile\.py$|^tools/.*\.py$
+        args:
+          - "--requirements=requirements/lock/uvx-tools.txt"
+
   # * Top level
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
