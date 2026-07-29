@@ -340,9 +340,8 @@ pip-deps = [
 groups = [
     "basedpyright",
     "mypy",
-    "typecheck-runner",
-    # include for sync_pyproject_min_versions.py
     "nox",
+    "typecheck-runner",
 ]
 skip-package = true
 style = "requirements"
