@@ -308,6 +308,7 @@ src.include = [
     {%- if cookiecutter.use_jupyter %}
     "examples/usage/*.ipynb",
     {%- endif %}
+    "noxfile.py",
     "src",
     "tests",
     "tools",
