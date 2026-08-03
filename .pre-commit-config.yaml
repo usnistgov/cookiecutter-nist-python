@@ -76,7 +76,7 @@ repos:
         exclude: *exclude_template
         args: ["--no-schema"]
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: v2.25.4
+    rev: v2.26.0
     hooks:
       - id: pyproject-fmt
         exclude: *exclude_template
