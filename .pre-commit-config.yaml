@@ -76,7 +76,7 @@ repos:
         exclude: *exclude_template
         args: ["--no-schema"]
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: v2.25.3
+    rev: v2.25.4
     hooks:
       - id: pyproject-fmt
         exclude: *exclude_template
@@ -108,7 +108,7 @@ repos:
 
   # * Markdown
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.23.1
+    rev: v0.23.2
     hooks:
       - id: markdownlint-cli2
         exclude: *exclude_template
