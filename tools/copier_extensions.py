@@ -1,6 +1,7 @@
 """Hooks for copier"""
 # pyright: reportImplicitOverride=false, reportUnusedFunction=false
 # pylint: disable=missing-class-docstring
+# ruff:file-ignore[undocumented-public-class]
 
 from __future__ import annotations
 
@@ -28,7 +29,7 @@ class SmartDict(Mapping[Any, Any]):
         self._init = init
 
     @classmethod
-    def register(cls, func: Func) -> Func:
+    def register(cls, func: Func) -> Func:  # ruff: ignore[undocumented-public-method]
         cls._computed_keys[func.__name__] = func  # ty: ignore[unresolved-attribute]
         return func
 
@@ -69,5 +70,5 @@ def __copier(context: Mapping[str, Any]) -> bool:  # ruff:ignore[unused-function
 
 
 class CookiecutterNamespace(ContextHook):  # pylint: disable=abstract-method
-    def hook(self, context: dict[str, Any]) -> None:
+    def hook(self, context: dict[str, Any]) -> None:  # ruff:ignore[undocumented-public-method, no-self-use]
         context["cookiecutter"] = CookiecutterContext(context)

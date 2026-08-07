@@ -16,8 +16,8 @@
 # relative to the documentation root, use os.path.abspath to make it
 # absolute, like shown here.
 #
-
 """Build docs."""
+# ruff:file-ignore[implicit-namespace-package, commented-out-code]
 
 from importlib.util import find_spec
 from pathlib import Path
