@@ -1,9 +1,0 @@
-extend = "../pyproject.toml"
-
-[lint]
-ignore = [
-    "D",      # - Don't need to document tests
-    "LOG015",
-    "S101",   # - Assert is fine with tests
-    "S404",
-]
