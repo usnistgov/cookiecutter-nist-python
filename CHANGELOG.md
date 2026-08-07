@@ -5,6 +5,18 @@
 
 Changelog for `cookiecutter-nist-python`
 
+## 0.14.1
+
+Released on 2026-08-07.
+
+### Bug fixes
+
+- fix: go back to per-file-ignores ([#321](https://github.com/usnistgov/cookiecutter-nist-python/pull/321))
+
+### Contributors
+
+- [@wpk-nist-gov](https://github.com/wpk-nist-gov)
+
 ## 0.14.0
 
 Released on 2026-08-07.
