@@ -1,0 +1,10 @@
+extend = "../pyproject.toml"
+
+[lint]
+
+[lint.extend-per-file-ignores]
+"**/*.ipynb" = [
+    # "B018",  # - Don't remove useless expressions in notebooks
+    # "D100",  # - undocumented-public-module
+    # "INP001",
+]
