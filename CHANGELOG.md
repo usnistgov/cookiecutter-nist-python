@@ -5,6 +5,18 @@
 
 Changelog for `cookiecutter-nist-python`
 
+## 0.14.0
+
+Released on 2026-08-07.
+
+### Documentation
+
+- feat: move ruff config to pyproject.toml ([#319](https://github.com/usnistgov/cookiecutter-nist-python/pull/319))
+
+### Contributors
+
+- [@wpk-nist-gov](https://github.com/wpk-nist-gov)
+
 ## 0.13.1
 
 Released on 2026-07-24.
