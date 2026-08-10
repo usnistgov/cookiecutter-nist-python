@@ -155,9 +155,6 @@ ignore = [
     "S603",    # - subprocess-without-shell-equals-true
     "S607",    # - start-process-with-partial-path
     "TID252",  # - Allow relative imports
-    # numpy/pandas
-    "NPY",     # - not using numpy?
-    "PD",      # - not using pandas?
 ]
 isort.known-first-party = [
     "cookiecutter_nist_python",
@@ -168,12 +165,15 @@ pylint.max-positional-args = 15
 pylint.max-public-methods = 30
 ruff.strictly-empty-init-modules = false
 
-# Project specific ignores
 [tool.ruff.lint.per-file-ignores]
-"tests/**/*.py" = [
+"src/**" = [
+    "NPY", # - not using numpy?
+    "PD",  # - not using pandas?
+]
+"tests/**" = [
     "D",      # - Don't need to document tests
-    "LOG015",
     "S101",   # - Assert is fine with tests
+    "LOG015",
     "S404",
 ]
 
@@ -205,6 +205,7 @@ expand_tables = [
     "tool.ruff.format",
     "tool.ruff.lint",
     "tool.ruff.lint.per-file-ignores",
+    "tool.ty.overrides",
     "tool.typos",
     "tool.uv.dependency-groups",
     "tool.uv.exclude-newer-package",
