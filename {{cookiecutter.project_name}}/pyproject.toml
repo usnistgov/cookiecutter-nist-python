@@ -262,6 +262,7 @@ expand_tables = [
     "tool.ruff.format",
     "tool.ruff.lint",
     "tool.ruff.lint.per-file-ignores",
+    "tool.ty.overrides",
     "tool.typos",
     "tool.uv.dependency-groups",
     "tool.uv.exclude-newer-package",
