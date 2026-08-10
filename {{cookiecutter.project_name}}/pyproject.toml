@@ -205,9 +205,6 @@ ignore = [
     "S603",    # - subprocess-without-shell-equals-true
     "S607",    # - start-process-with-partial-path
     "TID252",  # - Allow relative imports
-    # numpy/pandas
-    "NPY",     # - not using numpy?
-    "PD",      # - not using pandas?
 ]
 isort.known-first-party = [
     "{{ cookiecutter.project_slug }}",
@@ -218,19 +215,22 @@ pylint.max-positional-args = 15
 pylint.max-public-methods = 30
 ruff.strictly-empty-init-modules = false
 
-# Project specific ignores
 [tool.ruff.lint.per-file-ignores]
+"src/**" = [
+    "NPY",     # - not using numpy?
+    "PD",      # - not using pandas?
+]
+"tests/**" = [
+    "D",    # - Don't need to document tests
+    "S101", # - Assert is fine with tests
+]
 {%- if cookiecutter.use_jupyter %}
-"**/*.ipynb" = [
+"examples/**" = [
     # "B018",  # - Don't remove useless expressions in notebooks
     # "D100",  # - undocumented-public-module
     # "INP001",
 ]
 {%- endif %}
-"tests/**/*.py" = [
-    "D",    # - Don't need to document tests
-    "S101", # - Assert is fine with tests
-]
 
 # * Checks ---------------------------------------------------------------------
 [tool.repo-review]
@@ -261,6 +261,7 @@ expand_tables = [
     "tool.pytest",
     "tool.ruff.format",
     "tool.ruff.lint",
+    "tool.ruff.lint.per-file-ignores",
     "tool.ruff.lint.per-file-ignores",
     "tool.ty.overrides",
     "tool.typos",
