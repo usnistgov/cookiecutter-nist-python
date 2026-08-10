@@ -82,7 +82,7 @@ repos:
         exclude: *exclude_template
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2026.07.28
+    rev: 2026.08.01
     hooks:
       - id: validate-pyproject
         name: validate-pyproject-schema-store
@@ -156,7 +156,7 @@ repos:
           - "--custom-command=prek run pyproject2conda-project --all-files"
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.12.0
+    rev: 0.12.1
     hooks:
       - id: uv-lock
         alias: requirements
@@ -214,7 +214,7 @@ repos:
         priority: 0
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
     # Zizmor version.
-    rev: v1.28.0
+    rev: v1.29.0
     hooks:
       # Run the linter.
       - id: zizmor
