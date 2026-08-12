@@ -8,7 +8,7 @@ NOTE: use re.sub here to work with template pyproject.toml
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
-#     "packaging>=26.2",
+#     "packaging>=26.3",
 #     "ruamel-yaml>=0.19.1",
 # ]
 # ///

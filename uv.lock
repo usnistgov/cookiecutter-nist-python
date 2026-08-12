@@ -445,7 +445,7 @@ typecheck-runner = [
 basedpyright = [{ name = "basedpyright", specifier = ">=1.39.9" }]
 dev = [
     { name = "cookiecutter", marker = "python_full_version >= '3.14'" },
-    { name = "copier", marker = "python_full_version >= '3.14'", specifier = ">=9.17.0" },
+    { name = "copier", marker = "python_full_version >= '3.14'", specifier = ">=9.17.1" },
     { name = "copier-template-extensions", marker = "python_full_version >= '3.14'", specifier = ">=0.3.3" },
     { name = "mypy", extras = ["faster-cache"], marker = "python_full_version >= '3.14'", specifier = ">=2.3.0" },
     { name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2026.7.11" },
@@ -487,7 +487,7 @@ pylint = [{ name = "pylint" }]
 pytest = [{ name = "pytest" }]
 test = [
     { name = "cookiecutter" },
-    { name = "copier", specifier = ">=9.17.0" },
+    { name = "copier", specifier = ">=9.17.1" },
     { name = "copier-template-extensions", specifier = ">=0.3.3" },
     { name = "pytest" },
     { name = "pytest-cov" },
@@ -496,12 +496,12 @@ test = [
 ]
 test-extras = [
     { name = "cookiecutter" },
-    { name = "copier", specifier = ">=9.17.0" },
+    { name = "copier", specifier = ">=9.17.1" },
     { name = "copier-template-extensions", specifier = ">=0.3.3" },
 ]
 type = [
     { name = "cookiecutter" },
-    { name = "copier", specifier = ">=9.17.0" },
+    { name = "copier", specifier = ">=9.17.1" },
     { name = "copier-template-extensions", specifier = ">=0.3.3" },
     { name = "nox", marker = "python_full_version >= '3.14'", specifier = ">=2026.7.11" },
     { name = "pylint" },
@@ -512,7 +512,7 @@ typecheck-runner = [{ name = "typecheck-runner", marker = "python_full_version >
 
 [[package]]
 name = "copier"
-version = "9.17.0"
+version = "9.17.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "colorama" },
@@ -530,9 +530,9 @@ dependencies = [
     { name = "questionary" },
     { name = "typing-extensions", marker = "python_full_version < '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/08/6a/73ccc2ce53c17a29d650246a625df6342f74cb9d4f15b78a77d311fc6007/copier-9.17.0.tar.gz", hash = "sha256:d966b043a15c74595f7904a6af89f3291135682f8313c4b71ef368811ed554f2", size = 645743, upload-time = "2026-07-13T14:33:04.838Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/40/65/11c8635a27ce06ef525946bb02b1d5271b0f11e5acf9c5ab6d242512598e/copier-9.17.1.tar.gz", hash = "sha256:778e85f1c2de86824a72ddf4a34140744921d6354450c427c4c8a475371b1bda", size = 647338, upload-time = "2026-08-04T09:15:04.826Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/22/2c/68dec88ee26f96af2d4d8ee9d8567313a0826f4fd6bc5ae4527be670d354/copier-9.17.0-py3-none-any.whl", hash = "sha256:fe4e7b59faf4c0e1386eccbb79c6797e6df33ca20d5de49a8372571d8669f2ad", size = 65954, upload-time = "2026-07-13T14:33:03.301Z" },
+    { url = "https://files.pythonhosted.org/packages/7f/bf/3adcb9b3091b36de729dad91c107179c8c7c51adb2b08c31177bb540bef1/copier-9.17.1-py3-none-any.whl", hash = "sha256:f6a48f296e2e536c635213e1000ea71099f9f58f3b464a60f2f0fd386e343628", size = 66364, upload-time = "2026-08-04T09:15:03.026Z" },
 ]
 
 [[package]]
@@ -1306,11 +1306,11 @@ wheels = [
 
 [[package]]
 name = "packaging"
-version = "26.2"
+version = "26.3"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/d7/f1/e7a6dd94a8d4a5626c03e4e99c87f241ba9e350cd9e6d75123f992427270/packaging-26.2.tar.gz", hash = "sha256:ff452ff5a3e828ce110190feff1178bb1f2ea2281fa2075aadb987c2fb221661", size = 228134, upload-time = "2026-04-24T20:15:23.917Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/7d/fa/3944b40b07da9ce895c0e6303a5ab7d53da063554f534556b134a54d6093/packaging-26.3.tar.gz", hash = "sha256:94edc256424af38762eb31306eed28beb9f0efc50a8837492c9d6fd6004aed79", size = 313412, upload-time = "2026-08-04T18:15:28.737Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/df/b2/87e62e8c3e2f4b32e5fe99e0b86d576da1312593b39f47d8ceef365e95ed/packaging-26.2-py3-none-any.whl", hash = "sha256:5fc45236b9446107ff2415ce77c807cee2862cb6fac22b8a73826d0693b0980e", size = 100195, upload-time = "2026-04-24T20:15:22.081Z" },
+    { url = "https://files.pythonhosted.org/packages/63/34/ba1c580383c9eada3711951fef0795c80b829a078d72188184bcab9dd527/packaging-26.3-py3-none-any.whl", hash = "sha256:d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c", size = 129956, upload-time = "2026-08-04T18:15:27.159Z" },
 ]
 
 [[package]]
