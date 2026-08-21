@@ -76,7 +76,7 @@ repos:
         exclude: *exclude_template
         args: ["--no-schema"]
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: v2.27.0
+    rev: v2.27.1
     hooks:
       - id: pyproject-fmt
         exclude: *exclude_template
@@ -124,7 +124,7 @@ repos:
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.2
+    rev: v0.16.3
     hooks:
       - id: ruff-check
         exclude: *exclude_template
@@ -156,7 +156,7 @@ repos:
           - "--custom-command=prek run pyproject2conda-project --all-files"
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.12.3
+    rev: 0.12.4
     hooks:
       - id: uv-lock
         alias: requirements
