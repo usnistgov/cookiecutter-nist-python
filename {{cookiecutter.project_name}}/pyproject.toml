@@ -39,14 +39,14 @@ dependencies = [
     "typer",
     {%- endif %}
 ]
+
+[project.urls]
+Documentation = "https://pages.nist.gov/{{ cookiecutter.project_name }}/"
+Homepage = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name}}"
 {% if cookiecutter.command_line_interface != "none" %}
 [project.scripts]
 {{ cookiecutter.project_slug }} = "{{ cookiecutter.project_slug}}.cli:main"
 {% endif %}
-[project.urls]
-Documentation = "https://pages.nist.gov/{{ cookiecutter.project_name }}/"
-Homepage = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name}}"
-
 [dependency-groups]
 dev = [
     { include-group = "mypy" },
