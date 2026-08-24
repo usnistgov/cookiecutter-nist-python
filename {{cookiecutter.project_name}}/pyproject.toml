@@ -1,7 +1,7 @@
 [build-system]
 build-backend = "uv_build"
 requires = [
-    "uv-build>=0.12.4,<0.13.0",
+    "uv-build>=0.12.5,<0.13.0",
 ]
 
 [project]
@@ -39,14 +39,14 @@ dependencies = [
     "typer",
     {%- endif %}
 ]
+
+[project.urls]
+Documentation = "https://pages.nist.gov/{{ cookiecutter.project_name }}/"
+Homepage = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name}}"
 {% if cookiecutter.command_line_interface != "none" %}
 [project.scripts]
 {{ cookiecutter.project_slug }} = "{{ cookiecutter.project_slug}}.cli:main"
 {% endif %}
-[project.urls]
-Documentation = "https://pages.nist.gov/{{ cookiecutter.project_name }}/"
-Homepage = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name}}"
-
 [dependency-groups]
 dev = [
     { include-group = "mypy" },
@@ -113,7 +113,7 @@ docs-spelling = [
     { include-group = "docs" },
 ]
 ipython = [ "ipython" ]
-mypy = [ "mypy[faster-cache]>=2.3.0" ]
+mypy = [ "mypy[faster-cache]>=2.3.1" ]
 {%- if cookiecutter.use_jupyter %}
 notebook = [ "ipykernel", "nbclient" ]
 {%- endif %}
@@ -413,10 +413,10 @@ minversion = "8"
 strict_xfail = "true"
 
 [tool.coverage]
-run.branch = true
 run.source = [
     "{{ cookiecutter.project_slug }}",
 ]
+run.branch = true
 paths.source = [
     "src/",
     # needed for testing source if not editable install
@@ -424,16 +424,16 @@ paths.source = [
     "*/.nox/**/site-packages",
     "*/src",
 ]
-report.exclude_also = [
-    "@overload",
-    "if TYPE_CHECKING:",
-]
 report.include = [
     "src/*",
 ]
 report.omit = [
     "*/_typing.py",
     "*/vendored/*",
+]
+report.exclude_also = [
+    "@overload",
+    "if TYPE_CHECKING:",
 ]
 report.show_missing = true
 
@@ -480,12 +480,12 @@ pip-deps = [
     {%- if cookiecutter.use_jupyter %}
     "nbqa>=1.9.1",
     {%- endif %}
-    "prek>=0.4.13",
+    "prek>=0.4.14",
     "pyrefly>=1.2.0",
     "pyright>=1.1.411",
     "rooster>=0.1.1",
     "twine>=7.0.0",
-    "ty>=0.0.71",
+    "ty>=0.0.72",
 ]
 groups = [
     "basedpyright",

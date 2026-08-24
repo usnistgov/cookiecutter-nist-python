@@ -74,7 +74,7 @@ docs-spelling = [
     { include-group = "docs" },
 ]
 ipython = [ "ipython" ]
-mypy = [ "mypy[faster-cache]>=2.3.0" ]
+mypy = [ "mypy[faster-cache]>=2.3.1" ]
 nox = [ "nox>=2026.8.10" ]
 pylint = [ "pylint" ]
 pytest = [ "pytest" ]
@@ -357,15 +357,15 @@ strict_xfail = "true"
 
 [tool.coverage]
 run.branch = true
-report.exclude_also = [
-    "@overload",
-    "if TYPE_CHECKING:",
-]
 report.include = [
     "src/*",
 ]
 report.omit = [
     "*/vendored/*",
+]
+report.exclude_also = [
+    "@overload",
+    "if TYPE_CHECKING:",
 ]
 report.show_missing = true
 
@@ -400,12 +400,12 @@ pip-deps = [
     "copier-template-extensions>=0.3.3",
     "copier>=9.17.1",
     "grayskull>=3.1.1",
-    "prek>=0.4.13",
+    "prek>=0.4.14",
     "pyrefly>=1.2.0",
     "pyright>=1.1.411",
     "rooster>=0.1.1",
     "twine>=7.0.0",
-    "ty>=0.0.71",
+    "ty>=0.0.72",
     # include here to sync deps with tools/sync_pyproject_min_version.py
     "cogapp>=3.6.0",
     "cruft>=2.16.0",
