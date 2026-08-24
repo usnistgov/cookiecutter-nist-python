@@ -21,6 +21,8 @@ if TYPE_CHECKING:
 ROOT = (Path(__file__).parent / "..").resolve()
 OUTPUT_PATH = ROOT / "cached_examples"
 
+OUTPUT_PATH.mkdir(parents=True, exist_ok=True)
+
 
 SPHINX_THEMES_CLI_JUPYTER = [
     ("book", "nocli", True),

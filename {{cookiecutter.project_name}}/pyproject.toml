@@ -389,6 +389,11 @@ src.include = [
 ]
 analysis.respect-type-ignore-comments = false
 
+[[tool.ty.overrides]]
+# Get some errors with false positives with `tools/noxtools.py`, etc.
+include = [ "noxfile.py" ]
+analysis.allowed-unresolved-imports = [ "tools.**" ]
+
 # * Testing --------------------------------------------------------------------
 [tool.pytest.ini_options]
 addopts = [
@@ -413,10 +418,10 @@ minversion = "8"
 strict_xfail = "true"
 
 [tool.coverage]
-run.branch = true
 run.source = [
     "{{ cookiecutter.project_slug }}",
 ]
+run.branch = true
 paths.source = [
     "src/",
     # needed for testing source if not editable install
@@ -424,16 +429,16 @@ paths.source = [
     "*/.nox/**/site-packages",
     "*/src",
 ]
-report.exclude_also = [
-    "@overload",
-    "if TYPE_CHECKING:",
-]
 report.include = [
     "src/*",
 ]
 report.omit = [
     "*/_typing.py",
     "*/vendored/*",
+]
+report.exclude_also = [
+    "@overload",
+    "if TYPE_CHECKING:",
 ]
 report.show_missing = true
 
