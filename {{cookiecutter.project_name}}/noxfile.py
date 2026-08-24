@@ -1,4 +1,5 @@
 #!/usr/bin/env -S uv run --script
+# pylint: disable=wrong-import-position,empty-comment
 
 # /// script
 # requires-python = ">=3.12"
@@ -13,7 +14,6 @@
 
 """Config file for nox."""
 # pyright: reportUnusedCallResult=false
-# pylint: disable=wrong-import-position
 # ruff:file-ignore[complex-structure,function-call-in-dataclass-default-argument]
 
 # * Imports ----------------------------------------------------------------------------
