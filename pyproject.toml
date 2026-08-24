@@ -309,12 +309,6 @@ src.include = [
 # Disable support for `type: ignore` comments
 analysis.respect-type-ignore-comments = false
 
-[[tool.ty.overrides]]
-# Get some errors with false positives with `tools/noxtools.py`, etc.
-include = [ "noxfile.py" ]
-analysis.allowed-unresolved-imports = [ "tools.*" ]
-# rules = { unresolved-import = "ignore" }
-
 # * Testing --------------------------------------------------------------------
 [tool.pytest.ini_options]
 addopts = [
@@ -406,7 +400,7 @@ pip-deps = [
     "copier-template-extensions>=0.3.3",
     "copier>=9.17.1",
     "grayskull>=3.1.1",
-    "prek>=0.4.13",
+    "prek>=0.4.14",
     "pyrefly>=1.2.0",
     "pyright>=1.1.411",
     "rooster>=0.1.1",

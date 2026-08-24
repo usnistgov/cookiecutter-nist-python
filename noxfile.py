@@ -5,6 +5,10 @@
 # dependencies = [
 #     "nox>=2026.8.10",
 # ]
+#
+# [tool.ty]
+# # ty can be flaky on tools imports
+# analysis.allowed-unresolved-imports = ["tools.*"]
 # ///
 
 """Config file for nox."""
