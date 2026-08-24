@@ -310,6 +310,7 @@ src.include = [
 analysis.respect-type-ignore-comments = false
 
 [[tool.ty.overrides]]
+# Get some errors with false positives with `tools/noxtools.py`, etc.
 include = [ "noxfile.py" ]
 analysis.allowed-unresolved-imports = [ "tools.**" ]
 
