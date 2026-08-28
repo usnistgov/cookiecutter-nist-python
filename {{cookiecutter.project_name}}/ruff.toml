@@ -1,0 +1,6 @@
+# This file is not copied over.
+# It is only here to make ruff happy when called directly.
+
+include = []
+exclude = ["**"]
+cache-dir = "../.ruff_cache"
