@@ -1,4 +1,8 @@
+# NOTE: auto_update has been renamed update by prek.
+# Remove when prek>=0.5.0 in pyproject.toml
 auto_update:
+  cooldown_days: 7
+update:
   cooldown_days: 7
 ci:
   autoupdate_commit_msg: "chore(deps): update pre-commit hooks"
@@ -124,7 +128,7 @@ repos:
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.5
+    rev: v0.16.4
     hooks:
       - id: ruff-check
         exclude: *exclude_template
