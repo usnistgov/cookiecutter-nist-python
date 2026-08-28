@@ -102,6 +102,7 @@ year:
 # * Copier options
 _exclude:
   - ".github/workflows/update-cruft.yml"
+  - "ruff.toml"
 
 _templates_suffix: ""
 
