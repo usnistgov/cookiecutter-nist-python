@@ -5,6 +5,18 @@
 
 Changelog for `cookiecutter-nist-python`
 
+## 0.14.3
+
+Released on 2026-08-28.
+
+### Bug fixes
+
+- fix: pin prek>=0.5.0  ([#342](https://github.com/usnistgov/cookiecutter-nist-python/pull/342))
+
+### Contributors
+
+- [@wpk-nist-gov](https://github.com/wpk-nist-gov)
+
 ## 0.14.2
 
 Released on 2026-08-10.
