@@ -132,8 +132,8 @@ repos:
         args: [--fix, --show-fixes]
         types_or: &ruff_types [python, pyi, jupyter, markdown]
       - id: ruff-check
-        alias: ruff
-        name: ruff check pyproject.toml
+        alias: ruff-check-config
+        name: ruff check config
         args: [--fix, --show-fixes]
         types_or: [file]
         files: ^pyproject\.toml$|^\.?ruff\.toml$
