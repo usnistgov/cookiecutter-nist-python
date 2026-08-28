@@ -471,7 +471,7 @@ pip-deps = [
     "conda-lock>=4.0.2",
     {%- if cookiecutter.__copier %}
     "copier-template-extensions>=0.3.3",
-    "copier>=9.17.1",
+    "copier>=9.17.2",
     {%- endif %}
     {%- if not cookiecutter.__copier %}
     "cruft>=2.16.0",
@@ -485,7 +485,7 @@ pip-deps = [
     "pyright>=1.1.411",
     "rooster>=0.1.1",
     "twine>=7.0.0",
-    "ty>=0.0.72",
+    "ty>=0.0.73",
 ]
 groups = [
     "basedpyright",
