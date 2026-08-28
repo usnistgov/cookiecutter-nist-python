@@ -113,6 +113,7 @@ extend-include = [
 extend-exclude = [
     ".numba_cache",
     ".venv",
+    "{{cookiecutter.*}}",
     "dist-conda",
 ]
 fix = true
