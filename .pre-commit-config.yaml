@@ -1,4 +1,4 @@
-auto_update:
+update:
   cooldown_days: 7
 ci:
   autoupdate_commit_msg: "chore(deps): update pre-commit hooks"
@@ -76,7 +76,7 @@ repos:
         exclude: *exclude_template
         args: ["--no-schema"]
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: v2.28.1
+    rev: v2.28.0
     hooks:
       - id: pyproject-fmt
         exclude: *exclude_template
@@ -124,7 +124,7 @@ repos:
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.5
+    rev: v0.16.4
     hooks:
       - id: ruff-check
         exclude: *exclude_template
@@ -156,7 +156,7 @@ repos:
           - "--custom-command=prek run pyproject2conda-project --all-files"
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.12.7
+    rev: 0.12.5
     hooks:
       - id: uv-lock
         alias: requirements

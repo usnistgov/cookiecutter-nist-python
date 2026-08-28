@@ -138,6 +138,8 @@ required-version = ">=0.11.8"
 default-groups = [ "dev" ]
 fork-strategy = "requires-python"
 exclude-newer = "7 days"
+# Needed until prek>=0.5.0 is 7 days old
+exclude-newer-package = { prek = "0 days" }
 managed = true
 build-backend.source-exclude = [ ".*cache" ]
 build-backend.source-include = [ "tests/**" ]
@@ -480,7 +482,7 @@ pip-deps = [
     {%- if cookiecutter.use_jupyter %}
     "nbqa>=1.9.1",
     {%- endif %}
-    "prek>=0.4.14",
+    "prek>=0.5.0",
     "pyrefly>=1.2.0",
     "pyright>=1.1.411",
     "rooster>=0.1.1",

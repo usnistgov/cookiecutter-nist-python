@@ -1,4 +1,4 @@
-auto_update:
+update:
   cooldown_days: 7
 ci:
   autoupdate_commit_msg: "chore(deps): update pre-commit hooks"
