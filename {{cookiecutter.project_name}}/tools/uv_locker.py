@@ -209,7 +209,10 @@ def _path_or_none(x: str | None) -> Path | None:
     if x is None:
         return x
     path = Path(x)
-    return path if path.exists() else None
+    if not path.exists():
+        logger.info("Path %s does not exist", path)
+        return None
+    return path
 
 
 def main(args: Sequence[str] | None = None) -> int:
