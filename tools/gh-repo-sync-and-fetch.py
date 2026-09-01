@@ -47,7 +47,6 @@ def _get_remote_mapping(path: Path) -> list[dict[str, Any]]:
 def _call(args: list[str], cwd: Path, ntry: int = 3) -> int:
     logger.info("Run: %s", shlex.join(args))
     logger.info("cwd: %s", cwd)
-    code = 1
     for i in range(ntry):
         logger.info("try: %s", i + 1)
         code = subprocess.run(
@@ -56,9 +55,9 @@ def _call(args: list[str], cwd: Path, ntry: int = 3) -> int:
             check=False,
         ).returncode
 
-        if code == 0:
-            break
-    return code
+        if not code:
+            return code
+    return 1
 
 
 def main() -> bool:
@@ -73,7 +72,7 @@ def main() -> bool:
             raise ValueError(msg)
         code += _call(["gh", "repo", "sync"], cwd=path)
         code += _call(["git", "fetch", "--prune", d["remote"]], cwd=path)
-    return code != 0
+    return bool(code)
 
 
 if __name__ == "__main__":
