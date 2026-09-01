@@ -135,3 +135,4 @@ tuna-loadtime.log
 # Local
 /README.pdf
 /cached_examples/
+.gh-map.toml

@@ -3,32 +3,45 @@
 # requires-python = ">=3.12"
 # ///
 
-# ruff:file-ignore[print]
+# ruff:file-ignore[print, invalid-module-name]
 from __future__ import annotations
 
 import shlex
-
-REPOS = [
-    "usnistgov/cmomy",
-    "usnistgov/tmmc-lnpy",
-    "usnistgov/thermoextrap",
-    "usnistgov/module-utilities",
-    "usnistgov/pyproject2conda",
-    "usnistgov/analphipy",
-    "usnistgov/open-notebook",
-    "usnistgov/uv-workon",
-    "wpk-nist-gov/sync-pre-commit-hooks",
-    "wpk-nist-gov/typecheck-runner",
-    "wpk-nist-gov/just-pre-commit",
-    "wpk-nist-gov/nist-gas-srm",
-]
+from pathlib import Path
+from typing import cast
 
 
-def _get_options() -> list[str]:
+def _get_repos(path: Path) -> list[str]:
+    import tomllib
+
+    return cast(
+        "list[str]", tomllib.loads(path.read_text(encoding="utf-8")).get("repos", [])
+    )
+
+
+def _get_options() -> tuple[list[str], list[str]]:
     from argparse import ArgumentParser
 
     parser = ArgumentParser(description=__doc__, allow_abbrev=False)
 
+    _ = parser.add_argument(
+        "--gh-map-config",
+        dest="config",
+        default=".gh-map.toml",
+        type=Path,
+        help="""
+        Config file containing repos = ['user/repo'] items.
+        """,
+    )
+    _ = parser.add_argument(
+        "--gh-map-repo",
+        dest="repos",
+        action="append",
+        default=[],
+        help="""
+        Additional `user/repo` items.
+        """,
+    )
     _ = parser.add_argument(
         "args",
         nargs="*",
@@ -42,20 +55,24 @@ def _get_options() -> list[str]:
 
     options, extra_args = parser.parse_known_args()
 
-    return [
+    repos = [*options.repos, *_get_repos(options.config)]
+
+    args = [
         *options.args,
         *extra_args,
         *(["-F", "automerge=true"] if options.automerge else []),
     ]
 
+    return repos, args
+
 
 def _main() -> bool:
-    args = _get_options()
+    repos, args = _get_options()
 
     from subprocess import call
 
     failure = False
-    for repo in REPOS:
+    for repo in repos:
         cmd = ["gh", *args, "--repo", repo]
         print(shlex.join(cmd))
         failure = bool(call(cmd)) or failure
