@@ -20,6 +20,7 @@ REPOS = [
     "wpk-nist-gov/sync-pre-commit-hooks",
     "wpk-nist-gov/typecheck-runner",
     "wpk-nist-gov/just-pre-commit",
+    "wpk-nist-gov/nist-gas-srm",
 ]
 
 
