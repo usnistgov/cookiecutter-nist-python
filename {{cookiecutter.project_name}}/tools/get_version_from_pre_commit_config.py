@@ -23,7 +23,9 @@ def _get_version(path: Path, url: str) -> str:
 
     for repo in data.get("repos", []):
         if repo.get("repo") == url and "rev" in repo:
-            return repo["rev"].lstrip("v")
+            out = repo["rev"]
+            if isinstance(out, str):
+                return out.lstrip("v")
 
     msg = f"Failed to find {url}"
     raise ValueError(msg)
@@ -33,13 +35,13 @@ def _get_args(argv: Sequence[str] | None = None) -> tuple[Path, str]:
     from argparse import ArgumentParser
 
     parser = ArgumentParser(description=__doc__)
-    parser.add_argument(
+    _ = parser.add_argument(
         "--config",
         type=Path,
         default=".pre-commit-config.yaml",
         help="pre-commit config file",
     )
-    parser.add_argument("repo", type=str, help="repo name to extract version for")
+    _ = parser.add_argument("repo", type=str, help="repo name to extract version for")
 
     opts = parser.parse_args(argv)
 

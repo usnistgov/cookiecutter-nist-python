@@ -48,6 +48,7 @@ test = [
     { include-group = "test-extras" },
 ]
 type = [
+    "types-pyyaml",
     { include-group = "nox" },
     { include-group = "pylint" },
     { include-group = "pytest" },
