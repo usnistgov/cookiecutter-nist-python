@@ -23,7 +23,7 @@ jobs:
   docs:
     permissions:
       contents: write
-    uses: ./.github/workflows/docs.yml
+    uses: $/.github/workflows/docs.yml
     with:
       deploy:
         ${{ (github.event_name == 'release' && github.event.action ==

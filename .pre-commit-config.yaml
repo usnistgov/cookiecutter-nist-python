@@ -209,6 +209,12 @@ repos:
         args:
           - "-ignore=SC2129" # ignorable stylistic lint from shellcheck
           - "-ignore=SC2016" # another shellcheck lint: seems to have false positives?
+          # NOTE: Ignore these until https://github.com/rhysd/actionlint/issues/711 resolved
+          - "-ignore"
+          - 'specifying action "\$/.+" in invalid format because ref is missing'
+          - "-ignore"
+          - 'reusable workflow call "\$/.+" at "uses" is not following the
+            format'
         language: golang # means renovate will also update `additional_dependencies`
         additional_dependencies:
           # actionlint has a shellcheck integration which extracts shell scripts in `run:` steps from GitHub Actions

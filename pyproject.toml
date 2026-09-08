@@ -434,6 +434,7 @@ scripts = [
     "tools/check_dist_version.py",
     "tools/cog_runner.py",
     "tools/sync_template_uv_build_deps.py",
+    "tools/get_version_from_pre_commit_config.py",
 ]
 
 [[tool.uv-locker.requirements]]
