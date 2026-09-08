@@ -48,6 +48,7 @@ test = [
     { include-group = "test-extras" },
 ]
 type = [
+    "types-pyyaml",
     { include-group = "nox" },
     { include-group = "pylint" },
     { include-group = "pytest" },
@@ -124,42 +125,53 @@ fix = true
 cache-dir = ".ruff_cache"
 
 [tool.ruff.format]
-docstring-code-format = true
 preview = true  # needed for markdown support
+docstring-code-format = true
+
+[tool.ruff.lint.per-file-ignores]
+"src/**" = [
+    "NPY", # - not using numpy?
+    "PD",  # - not using pandas?
+]
+"tests/**" = [
+    "assert",
+    "D",
+    "root-logger-call",
+    "suspicious-subprocess-import",
+]
 
 [tool.ruff.lint]
-preview = true
 select = [
     "ALL",
-]
-# fixable = [ "ALL" ]
-unfixable = [
-    "non-augmented-assignment",
-    "ERA",
-    "T",
 ]
 ignore = [
     "any-type",                             # - Any ok sometimes
     "COM",                                  # - flake8-commas, formatter should take care of this?
     "CPY",                                  # - Don't require copyright
-    "undocumented-public-package",
-    "undocumented-magic-method",            # - Missing magic method docstring
-    "undocumented-public-init",             # - Missing docstring in __init__
-    "incorrect-blank-line-before-class",    # - 1 blank line required before class docstring
-    "missing-blank-line-after-summary",     # - blank line after summary
-    "multi-line-summary-first-line",        # - Multi-line docstring summary should start at the first line
-    "missing-trailing-period",              # - First line should end with a period
-    "non-imperative-mood",                  # - First line of docstring should be in imperative mood: "{first_line}"
-    "docstring-missing-returns",            # - Missing return from documentation
     "docstring-missing-exception",          # - Missing raises from documentation
-    "line-too-long",                        # - line too long - let formatter fix this
-    "lambda-assignment",                    # - do not assign a lambda expression, use a def
+    "docstring-missing-returns",            # - Missing return from documentation
     "FBT",                                  # - bools are ok
     "import-outside-top-level",             # - import should be at top level (leads to issues with imports in func?)
-    "suspicious-subprocess-import",         # - Want to use subprocess sometimes
-    "subprocess-without-shell-equals-true", # - subprocess-without-shell-equals-true
-    "start-process-with-partial-path",      # - start-process-with-partial-path
+    "incorrect-blank-line-before-class",    # - 1 blank line required before class docstring
+    "lambda-assignment",                    # - do not assign a lambda expression, use a def
+    "line-too-long",                        # - line too long - let formatter fix this
+    "missing-blank-line-after-summary",     # - blank line after summary
+    "missing-trailing-period",              # - First line should end with a period
+    "multi-line-summary-first-line",        # - Multi-line docstring summary should start at the first line
+    "non-imperative-mood",                  # - First line of docstring should be in imperative mood: "{first_line}"
     "relative-imports",                     # - Allow relative imports
+    "start-process-with-partial-path",      # - start-process-with-partial-path
+    "subprocess-without-shell-equals-true", # - subprocess-without-shell-equals-true
+    "suspicious-subprocess-import",         # - Want to use subprocess sometimes
+    "undocumented-magic-method",            # - Missing magic method docstring
+    "undocumented-public-init",             # - Missing docstring in __init__
+    "undocumented-public-package",
+]
+# fixable = [ "ALL" ]
+unfixable = [
+    "ERA",
+    "non-augmented-assignment",
+    "T",
 ]
 isort.known-first-party = [
     "cookiecutter_nist_python",
@@ -168,19 +180,8 @@ pydocstyle.convention = "numpy"
 pylint.max-args = 15
 pylint.max-positional-args = 15
 pylint.max-public-methods = 30
+preview = true
 ruff.strictly-empty-init-modules = false
-
-[tool.ruff.lint.per-file-ignores]
-"src/**" = [
-    "NPY", # - not using numpy?
-    "PD",  # - not using pandas?
-]
-"tests/**" = [
-    "D",
-    "assert",
-    "root-logger-call",
-    "suspicious-subprocess-import",
-]
 
 # * Checks ---------------------------------------------------------------------
 [tool.repo-review]
@@ -247,13 +248,13 @@ module = [ "cookiecutter.*" ]
 ignore_missing_imports = true
 
 [tool.pyrefly]
-enabled-ignores = [ "pyrefly" ]
 project-includes = [
     "noxfile.py",
     "tests",
     "tools",
 ]
 search-path = [ "." ]
+enabled-ignores = [ "pyrefly" ]
 
 [tool.pyright]
 typeCheckingMode = "strict"
@@ -316,6 +317,10 @@ analysis.respect-type-ignore-comments = false
 
 # * Testing --------------------------------------------------------------------
 [tool.pytest.ini_options]
+minversion = "8"
+testpaths = [
+    "tests",
+]
 addopts = [
     "--cov-config=pyproject.toml",
     "--doctest-glob=*.md",
@@ -325,9 +330,6 @@ addopts = [
     "--strict-markers",
     "-ra",
     "-s",
-]
-testpaths = [
-    "tests",
 ]
 # markers
 markers = [
@@ -355,9 +357,8 @@ filterwarnings = [
     "ignore: Dirty template:copier.errors.DirtyLocalWarning",
     "ignore: urllib3:Warning",
 ]
-log_cli_level = "INFO"
 log_level = "INFO"
-minversion = "8"
+log_cli_level = "INFO"
 strict_xfail = "true"
 
 [tool.coverage]
@@ -434,6 +435,7 @@ scripts = [
     "tools/check_dist_version.py",
     "tools/cog_runner.py",
     "tools/sync_template_uv_build_deps.py",
+    "tools/get_version_from_pre_commit_config.py",
 ]
 
 [[tool.uv-locker.requirements]]

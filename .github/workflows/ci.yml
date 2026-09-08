@@ -113,7 +113,7 @@ jobs:
           persist-credentials: false
 
       # Not always needed but some hooks use it...
-      - uses: ./.github/actions/setup-cached-uv-and-python
+      - uses: $/.github/actions/setup-cached-uv-and-python
         with:
           python-version-file: ".python-version"
           cache-dependency-path: uv.lock
@@ -172,7 +172,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: ./.github/actions/setup-cached-uv-and-python
+      - uses: $/.github/actions/setup-cached-uv-and-python
         with:
           python-version-file: ".python-version"
           cache-dependency-path: uv.lock
@@ -213,7 +213,7 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0 # needed for copier
-      - uses: ./.github/actions/setup-cached-uv-and-python
+      - uses: $/.github/actions/setup-cached-uv-and-python
         with:
           python-version: |
             ${{ needs.get-parameters.outputs.min-python-version }}
@@ -235,7 +235,17 @@ jobs:
         run: |
           git config --global init.defaultBranch main
 
-      - uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4.0.0
+      - name: Get just version
+        shell: bash
+        run: |
+          just_version=$(uv run tools/get_version_from_pre_commit_config.py https://github.com/wpk-nist-gov/just-pre-commit)
+          echo "just_version: ${just_version}"
+          echo "just_version=${just_version}" >> "$GITHUB_ENV"
+
+      - name: Install just
+        uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4.0.0
+        with:
+          just-version: ${{ env.just_version}} # zizmor: ignore[unpinned-tools] # False positive
 
       - name: Test with nox
         env:
@@ -299,7 +309,7 @@ jobs:
     if: needs.pre_job.outputs.should_skip != 'true'
     permissions:
       contents: write
-    uses: ./.github/workflows/docs.yml
+    uses: $/.github/workflows/docs.yml
     with:
       deploy: false
 

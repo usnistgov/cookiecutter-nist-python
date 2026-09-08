@@ -22,6 +22,7 @@ dependencies:
   - pytest-sugar
   - pytest-xdist
   - typecheck-runner>=0.2.0
+  - types-pyyaml
   - pip
   - pip:
       - copier-template-extensions>=0.3.3
