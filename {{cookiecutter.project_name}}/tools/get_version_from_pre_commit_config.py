@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 
 def _get_version(path: Path, url: str) -> str:
-    import yaml
+    import yaml  # type: ignore[import-untyped] # pyright: ignore[reportMissingModuleSource] # pyrefly: ignore[missing-import] # ty: ignore[unresolved-import] # pylint: disable=import-error
 
     with path.open("r", encoding="utf-8") as f:
         data = yaml.safe_load(f)
