@@ -108,7 +108,7 @@ repos:
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.5
+    rev: v0.16.6
     hooks:
       - id: ruff-check
         alias: ruff
@@ -127,7 +127,7 @@ repos:
   # * Spelling
   # ** typos
   - repo: https://github.com/adhtruong/mirrors-typos
-    rev: v1.50.0
+    rev: v1.50.1
     hooks:
       - id: typos
         exclude_types: [jupyter]
@@ -237,7 +237,7 @@ repos:
         name: nbqa-typos
         alias: typos
         additional_dependencies: &typos-deps
-          - typos==1.50.0
+          - typos==1.50.1
         args:
           - typos
           - --force-exclude
