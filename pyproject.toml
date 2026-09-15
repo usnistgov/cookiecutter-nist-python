@@ -254,7 +254,9 @@ project-includes = [
     "tools",
 ]
 search-path = [ "." ]
+errors.unused-ignore = "warn"
 enabled-ignores = [ "pyrefly" ]
+min-severity = "warn"
 
 [tool.pyright]
 typeCheckingMode = "strict"
