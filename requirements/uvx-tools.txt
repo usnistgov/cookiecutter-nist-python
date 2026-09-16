@@ -23,6 +23,7 @@ pyrefly>=1.2.0
 pyright>=1.1.411
 requirements-parser>=0.13.1
 rooster>=0.1.1
+rust-just>=1.58.0
 twine>=7.0.0
 ty>=0.0.79
 typecheck-runner>=0.2.0; python_version > "3.9"
