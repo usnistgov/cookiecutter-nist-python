@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import datetime
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, override
 
 from copier_template_extensions import ContextHook
 
@@ -33,19 +33,23 @@ class SmartDict(Mapping[Any, Any]):
         cls._computed_keys[func.__name__] = func  # ty: ignore[unresolved-attribute]
         return func
 
+    @override
     def __getitem__(self, item: Any) -> Any:
         if item in self._computed_keys:
             return self._computed_keys[item](self._init)
 
         return self._init[item]
 
+    @override
     def __contains__(self, item: Any) -> bool:
         return item in self._init or item in self._computed_keys
 
+    @override
     def __iter__(self) -> Iterator[str]:
         yield from self._init
         yield from self._computed_keys
 
+    @override
     def __len__(self) -> int:
         return len(self._computed_keys) + len(self._init)
 
@@ -70,5 +74,6 @@ def __copier(context: Mapping[str, Any]) -> bool:  # ruff:ignore[unused-function
 
 
 class CookiecutterNamespace(ContextHook):  # pylint: disable=abstract-method
-    def hook(self, context: dict[str, Any]) -> None:  # ruff:ignore[undocumented-public-method, no-self-use]
+    @override
+    def hook(self, context: dict[str, Any]) -> None:
         context["cookiecutter"] = CookiecutterContext(context)

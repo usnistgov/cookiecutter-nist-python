@@ -87,6 +87,7 @@ class CC:
             if name.startswith("_"):
                 continue
             prompts = data.get("__prompts__", {}).get(name, name)
+            choices: list[Choice]
             if isinstance(prompts, dict):
                 prompt = prompts.pop("__prompt__")  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
                 choices = list(starmap(Choice, prompts.items()))  # pyright: ignore[reportUnknownArgumentType]
