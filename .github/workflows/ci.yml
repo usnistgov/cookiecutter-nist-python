@@ -235,17 +235,9 @@ jobs:
         run: |
           git config --global init.defaultBranch main
 
-      - name: Get just version
-        shell: bash
-        run: |
-          just_version=$(uv run tools/get_version_from_pre_commit_config.py https://github.com/wpk-nist-gov/just-pre-commit)
-          echo "just_version: ${just_version}"
-          echo "just_version=${just_version}" >> "$GITHUB_ENV"
-
       - name: Install just
-        uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4.0.0
-        with:
-          just-version: ${{ env.just_version}} # zizmor: ignore[unpinned-tools] # False positive
+        shell: bash
+        run: uv tool install -c $UVX_CONSTRAIN rust-just
 
       - name: Test with nox
         env:

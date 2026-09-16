@@ -261,7 +261,20 @@ min-severity = "warn"
 preset = "strict"
 
 [tool.pyrefly.errors]
+# NOTE: overlap between below and strict mode
+implicit-abstract-class = "error"
+implicit-any = "error"
+implicitly-defined-attribute = "error"
+missing-override-decorator = "error"
+missing-source = "ignore"
+not-required-key-access = "error"
+open-unpacking = "error"
+unannotated-attribute = "error"
+unannotated-parameter = "error"
+unannotated-return = "error"
+untyped-import = "error"
 unused-ignore = "error"
+variance-mismatch = "error"
 
 [tool.pyright]
 typeCheckingMode = "strict"
@@ -323,6 +336,10 @@ src.include = [
 analysis.respect-type-ignore-comments = false
 
 [tool.ty.rules]
+division-by-zero = "error"
+possibly-missing-import = "error"
+possibly-unresolved-reference = "error"
+unsupported-dynamic-base = "error"
 unused-ignore-comment = "error"
 
 # * Testing --------------------------------------------------------------------
@@ -420,6 +437,7 @@ pip-deps = [
     "pyrefly>=1.2.0",
     "pyright>=1.1.411",
     "rooster>=0.1.1",
+    "rust-just>=1.58.0",
     "twine>=7.0.0",
     "ty>=0.0.79",
     # include here to sync deps with tools/sync_pyproject_min_version.py
@@ -445,7 +463,6 @@ scripts = [
     "tools/check_dist_version.py",
     "tools/cog_runner.py",
     "tools/sync_template_uv_build_deps.py",
-    "tools/get_version_from_pre_commit_config.py",
 ]
 
 [[tool.uv-locker.requirements]]
