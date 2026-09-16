@@ -6,7 +6,10 @@
 # ruff:file-ignore[print, invalid-module-name]
 from __future__ import annotations
 
+import os
 import shlex
+import subprocess
+from collections import ChainMap
 from pathlib import Path
 from typing import cast
 
@@ -19,7 +22,7 @@ def _get_repos(path: Path) -> list[str]:
     )
 
 
-def _get_options() -> tuple[list[str], list[str]]:
+def _get_options() -> tuple[list[str], list[str], ChainMap[str, str]]:
     from argparse import ArgumentParser
 
     parser = ArgumentParser(description=__doc__, allow_abbrev=False)
@@ -50,12 +53,40 @@ def _get_options() -> tuple[list[str], list[str]]:
     )
 
     _ = parser.add_argument(
+        "--gh-map-pager",
+        dest="pager",
+        default="cat",
+        help="""
+        Pager value.  Default is `cat`.
+        """,
+    )
+
+    _ = parser.add_argument(
+        "--gh-map-self",
+        action="store_true",
+        help="""
+        Apply action to this repo
+        """,
+    )
+
+    _ = parser.add_argument(
         "--automerge", action="store_true", help="Add option `-F automerge=true`"
     )
 
     options, extra_args = parser.parse_known_args()
 
+    env = ChainMap({"GH_PAGER": options.pager}, os.environ)
+
     repos = [*options.repos, *_get_repos(options.config)]
+
+    if options.gh_map_self:
+        repos.insert(
+            0,
+            subprocess
+            .check_output(["gh", "repo", "set-default", "--view"])
+            .decode("utf-8")
+            .strip(),
+        )
 
     args = [
         *options.args,
@@ -63,19 +94,17 @@ def _get_options() -> tuple[list[str], list[str]]:
         *(["-F", "automerge=true"] if options.automerge else []),
     ]
 
-    return repos, args
+    return repos, args, env
 
 
 def _main() -> bool:
-    repos, args = _get_options()
-
-    from subprocess import call
+    repos, args, env = _get_options()
 
     failure = False
     for repo in repos:
         cmd = ["gh", *args, "--repo", repo]
         print(shlex.join(cmd))
-        failure = bool(call(cmd)) or failure
+        failure = bool(subprocess.call(cmd, env=env)) or failure
     return failure
 
 
