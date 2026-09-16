@@ -266,6 +266,7 @@ expand_tables = [
     "tool.ruff.lint",
     "tool.ruff.lint.per-file-ignores",
     "tool.ty.overrides",
+    "tool.ty.rules",
     "tool.typos",
     "tool.uv.dependency-groups",
     "tool.uv.exclude-newer-package",
@@ -328,7 +329,7 @@ enabled-ignores = [ "pyrefly" ]
 min-severity = "warn"
 
 [tool.pyrefly.errors]
-unused-ignore = "warn"
+unused-ignore = "error"
 
 [tool.pyright]
 typeCheckingMode = "strict"
@@ -395,6 +396,9 @@ src.include = [
     "tools",
 ]
 analysis.respect-type-ignore-comments = false
+
+[tool.ty.rules]
+unused-ignore-comment = "error"
 
 # * Testing --------------------------------------------------------------------
 [tool.pytest.ini_options]
