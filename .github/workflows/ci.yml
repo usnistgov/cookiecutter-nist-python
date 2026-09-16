@@ -237,7 +237,7 @@ jobs:
 
       - name: Install just
         shell: bash
-        run: uv tool install -c $UVX_CONSTRAIN rust-just
+        run: uv tool install -c "$UVX_CONSTRAINT" rust-just
 
       - name: Test with nox
         env:
