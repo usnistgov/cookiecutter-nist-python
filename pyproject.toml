@@ -64,7 +64,7 @@ docs = [
     "sphinx-copybutton",
 ]
 # other groups
-basedpyright = [ "basedpyright>=1.40.0" ]
+basedpyright = [ "basedpyright>=1.40.1" ]
 docs-live = [
     "sphinx-autobuild",
     { include-group = "docs" },
@@ -276,6 +276,10 @@ untyped-import = "error"
 unused-ignore = "error"
 variance-mismatch = "error"
 
+[[tool.pyrefly.sub-config]]
+matches = "noxfile.py"
+errors.open-unpacking = "ignore"
+
 [tool.pyright]
 typeCheckingMode = "strict"
 # strict = [
@@ -434,12 +438,12 @@ pip-deps = [
     "copier>=9.18.2",
     "grayskull>=3.2.0",
     "prek>=0.5.3",
-    "pyrefly>=1.2.0",
-    "pyright>=1.1.411",
+    "pyrefly>=1.3.0",
+    "pyright>=1.1.414",
     "rooster>=0.1.1",
     "rust-just>=1.58.0",
     "twine>=7.0.0",
-    "ty>=0.0.79",
+    "ty>=0.0.80",
     # include here to sync deps with tools/sync_pyproject_min_version.py
     "cogapp>=3.6.0",
     "cruft>=2.16.0",
