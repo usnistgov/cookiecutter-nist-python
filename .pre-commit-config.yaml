@@ -82,7 +82,7 @@ repos:
         exclude: *exclude_template
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2026.09.17
+    rev: 2026.09.19
     hooks:
       - id: validate-pyproject
         name: validate-pyproject-schema-store
@@ -96,7 +96,7 @@ repos:
 
   # * Prettier
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.9.7
+    rev: v3.9.8
     hooks:
       - id: prettier
         exclude: *exclude_template
@@ -108,7 +108,7 @@ repos:
 
   # * Markdown
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.23.2
+    rev: v0.23.3
     hooks:
       - id: markdownlint-cli2
         exclude: *exclude_template
@@ -162,7 +162,7 @@ repos:
           - "--custom-command=prek run pyproject2conda-project --all-files"
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.12.16
+    rev: 0.12.17
     hooks:
       - id: uv-lock
         alias: requirements
