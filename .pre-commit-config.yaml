@@ -82,7 +82,7 @@ repos:
         exclude: *exclude_template
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: "2026.09.24"
+    rev: "2026.09.25"
     hooks:
       - id: validate-pyproject
         name: validate-pyproject-schema-store
@@ -145,7 +145,7 @@ repos:
   # * Spelling
   # ** typos
   - repo: https://github.com/adhtruong/mirrors-typos
-    rev: "v1.50.2"
+    rev: "v1.50.3"
     hooks:
       - id: typos
         exclude_types: [jupyter]
