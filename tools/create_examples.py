@@ -83,7 +83,7 @@ def bake(
     **kws: Any,
 ) -> None:
     """Bake a cookiecutter"""
-    from cookiecutter.main import (  # pyright: ignore[reportMissingTypeStubs]
+    from cookiecutter.main import (  # pyright: ignore[reportMissingTypeStubs]  # deptry: ignore[DEP004]
         cookiecutter,
     )
 
