@@ -173,6 +173,20 @@ repos:
         pass_filenames: true
         files: ^requirements/[^/]*\.txt$|^tools/*\.py$
 
+  # ** deptry (dependency analysis)
+  - repo: local
+    hooks:
+      - id: deptry
+        name: deptry
+        entry: >-
+          uvx --constraint=requirements/lock/uvx-tools.txt deptry .
+        language: python
+        always_run: true
+        pass_filenames: false
+        stages: [manual]
+        additional_dependencies:
+          - uv==0.12.21
+
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
     rev: "v4.19.0"

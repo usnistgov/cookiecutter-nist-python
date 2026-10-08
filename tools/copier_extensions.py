@@ -9,7 +9,7 @@ import datetime
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, override
 
-from copier_template_extensions import ContextHook
+from copier_template_extensions import ContextHook  # deptry: ignore[DEP004]
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterator
