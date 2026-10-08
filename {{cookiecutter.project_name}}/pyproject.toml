@@ -516,7 +516,6 @@ pip-deps = [
     {%- if not cookiecutter.__copier %}
     "cruft>=2.16.0",
     {%- endif %}
-    "deptry>=0.25.1",
     "grayskull>=3.2.0",
     {%- if cookiecutter.use_jupyter %}
     "nbqa>=1.9.1",
