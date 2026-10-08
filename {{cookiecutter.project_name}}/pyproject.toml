@@ -249,6 +249,12 @@ ignore = [
 src_dir = [ "src" ]
 toplevel = [ "{{ cookiecutter.project_slug }}" ]
 
+[tool.deptry]
+known_first_party = [ "{{ cookiecutter.project_slug }}" ]
+# Group: ignores
+per_rule_ignores.DEP001 = [ "pkginfo" ]
+per_rule_ignores.DEP004 = [ "nox", "pytest" ]
+
 [tool.pyproject-fmt]
 indent = 4
 keep_full_version = true
@@ -510,6 +516,7 @@ pip-deps = [
     {%- if not cookiecutter.__copier %}
     "cruft>=2.16.0",
     {%- endif %}
+    "deptry>=0.25.1",
     "grayskull>=3.2.0",
     {%- if cookiecutter.use_jupyter %}
     "nbqa>=1.9.1",
