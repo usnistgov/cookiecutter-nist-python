@@ -82,7 +82,7 @@ repos:
         exclude: *exclude_template
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: "2026.09.25"
+    rev: "2026.09.30"
     hooks:
       - id: validate-pyproject
         name: validate-pyproject-schema-store
@@ -130,7 +130,7 @@ repos:
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.16.9"
+    rev: "v0.16.10"
     hooks:
       - id: ruff-check
         exclude: *exclude_template
@@ -168,7 +168,7 @@ repos:
           - "--custom-command=prek run pyproject2conda-project --all-files"
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: "0.12.21"
+    rev: "0.12.22"
     hooks:
       - id: uv-lock
         alias: requirements
