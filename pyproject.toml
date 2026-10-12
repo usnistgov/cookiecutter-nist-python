@@ -64,7 +64,7 @@ docs = [
     "sphinx-copybutton",
 ]
 # other groups
-basedpyright = [ "basedpyright>=1.40.1" ]
+basedpyright = [ "basedpyright>=1.40.2" ]
 docs-live = [
     "sphinx-autobuild",
     { include-group = "docs" },
