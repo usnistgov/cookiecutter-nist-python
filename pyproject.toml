@@ -11,14 +11,13 @@ license-files = [ "LICENSE" ]
 authors = [
     { name = "William P. Krekelberg", email = "wpk@nist.gov" },
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Science/Research",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -83,7 +82,7 @@ test-extras = [
     "cookiecutter",
     "copier>=9.18.2",
     # needed for copier/cookie compat
-    "copier-template-extensions>=0.3.3",
+    "copier-template-extensions>=0.3.3", #  sync-pyproject-min-versions: ignore
 ]
 typecheck-runner = [ "typecheck-runner>=0.2.0; python_version>'3.9'" ]
 
@@ -440,7 +439,7 @@ python = "all"
 pip-deps = [
     # these used solely for specking tools to be run via uvx ...
     "conda-lock>=4.0.2",
-    "copier-template-extensions>=0.3.3",
+    "copier-template-extensions>=0.3.3", #  sync-pyproject-min-versions: ignore
     "copier>=9.18.2",
     "grayskull>=3.2.0",
     "prek>=0.5.5",
