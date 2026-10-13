@@ -25,4 +25,4 @@ dependencies:
   - types-pyyaml
   - pip
   - pip:
-      - copier-template-extensions>=0.3.3
+      - copier-template-extensions>=0.3.4

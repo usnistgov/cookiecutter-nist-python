@@ -10,7 +10,7 @@
 basedpyright>=1.40.2
 cogapp>=3.6.0
 conda-lock>=4.0.2
-copier-template-extensions>=0.3.3
+copier-template-extensions>=0.3.4
 copier>=9.18.2
 cruft>=2.16.0
 grayskull>=3.2.0

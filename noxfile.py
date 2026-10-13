@@ -74,7 +74,7 @@ nox.options.reuse_existing_virtualenvs = True
 nox.options.sessions = ["lint", "typecheck", "test-all"]
 nox.options.default_venv_backend = "uv"
 
-# * Options ---------------------------------------------------------------------------
+# * Options ----------------------------------------------------------------------------
 
 # if True, use uv lock/sync.  If False, use uv pip compile/sync...
 UV_LOCK = True
@@ -248,7 +248,7 @@ def add_opts(
     return wrapped
 
 
-# * Dependencies --------------------------------------------------------------
+# * Dependencies -----------------------------------------------------------------------
 def install_dependencies(
     session: Session,
     *args: str,
@@ -422,7 +422,7 @@ class _GetPackageWheel:
 get_package_wheel = _GetPackageWheel()
 
 
-# * uvx runner ----------------------------------------------------------------
+# * uvx runner -------------------------------------------------------------------------
 def get_uvx_constraint_args(locked: bool = True) -> tuple[str, ...]:
     """Get constraints file for uvx."""
     if locked and Path(UVX_LOCK_CONSTRAINTS).exists():
@@ -457,7 +457,7 @@ def pre_commit_run(
     )
 
 
-# * Sessions ------------------------------------------------------------------
+# * Sessions ---------------------------------------------------------------------------
 # ** test-all
 @nox.session(name="test-all", python=False)
 def test_all(session: Session) -> None:
@@ -898,7 +898,7 @@ def conda_build(session: nox.Session, opts: SessionParams) -> None:
             )
 
 
-# * Utilities -------------------------------------------------------------------------
+# * Utilities --------------------------------------------------------------------------
 def _append_recipe(recipe_path: str | Path, append_path: str | Path) -> None:
     recipe_path = Path(recipe_path)
     append_path = Path(append_path)

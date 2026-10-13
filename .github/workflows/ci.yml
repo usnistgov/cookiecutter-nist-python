@@ -31,9 +31,7 @@ jobs:
       should_skip: ${{ steps.skip_check.outputs.should_skip }}
     steps:
       - name: Don't run CI on draft PR
-        if:
-          github.event_name == 'pull_request' && github.event.pull_request.draft
-          == true
+        if: github.event_name == 'pull_request' && github.event.pull_request.draft == true
         run: exit 1
 
       - id: skip_check
@@ -91,14 +89,11 @@ jobs:
             f.write(f"all_python_versions={json.dumps(all_python_versions)}\n")
 
     outputs:
-      default-python-version:
-        ${{ steps.versions.outputs.default_python_version }}
+      default-python-version: ${{ steps.versions.outputs.default_python_version }}
       min-python-version: ${{ steps.versions.outputs.min_python_version }}
       max-python-version: ${{ steps.versions.outputs.max_python_version }}
-      minmax-python-versions:
-        ${{ steps.versions.outputs.minmax_python_versions }}
-      minmax-default-python-versions:
-        ${{ steps.versions.outputs.minmax_default_python_versions }}
+      minmax-python-versions: ${{ steps.versions.outputs.minmax_python_versions }}
+      minmax-default-python-versions: ${{ steps.versions.outputs.minmax_default_python_versions }}
       all-python-version: ${{ steps.versions.outputs.all_python_versions }}
 
   lint:
@@ -135,8 +130,7 @@ jobs:
         env:
           SKIP: "typecheck"
         run: >-
-          prek run --show-diff-on-failure --color=always --all-files
-          --hook-stage=manual -v
+          prek run --show-diff-on-failure --color=always --all-files --hook-stage=manual -v
 
   pinact:
     name: Pin actions
@@ -226,10 +220,7 @@ jobs:
         with:
           path: |
             ~/.cache/prek
-          key:
-            prek-cache|${{ runner.os }}|${{ runner.arch }}|${{
-            env.pythonLocation }}|${{ hashFiles(env.UVX_CONSTRAINT) }}|${{
-            hashFiles('.pre-commit-config.yaml') }}
+          key: prek-cache|${{ runner.os }}|${{ runner.arch }}|${{ env.pythonLocation }}|${{ hashFiles(env.UVX_CONSTRAINT) }}|${{ hashFiles('.pre-commit-config.yaml') }}
 
       - name: Setup git
         run: |
@@ -243,8 +234,7 @@ jobs:
         env:
           python_version: ${{ matrix.python-version }}
         run: >-
-          $NOX_COMMAND -s test-"$python_version" -- ++no-cov ++test-options -m
-          \'${{ matrix.markers }}\'
+          $NOX_COMMAND -s test-"$python_version" -- ++no-cov ++test-options -m \'${{ matrix.markers }}\'
         shell: bash
 
   #     - name: Upload coverage data
