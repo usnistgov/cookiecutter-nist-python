@@ -1,4 +1,4 @@
-# * Variables ------------------------------------------------------------------
+# * Variables --------------------------------------------------------------------------
 
 PACKAGE_NAME := "{{ cookiecutter.project_name }}"
 IMPORT_NAME := "{{ cookiecutter.project_slug }}"
@@ -13,7 +13,7 @@ UVRUN := trim("uv run " + UVRUN_OPTS)
 TYPECHECK := "-m typecheck_runner -v"
 
 {% raw -%}
-# * Functions ------------------------------------------------------------------
+# * Functions --------------------------------------------------------------------------
 
 # run nox
 [group("tools")]

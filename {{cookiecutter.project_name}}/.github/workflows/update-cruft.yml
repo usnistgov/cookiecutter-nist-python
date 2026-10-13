@@ -146,13 +146,11 @@ jobs:
 
       - name: automerge
         if:
-          ${{ "{{ (inputs.automerge || env.AUTOMERGE == 'true') &&
-          steps.cpr.outputs.pull-request-number &&
-          steps.check.outputs.conflict_message == ''  &&
+          ${{ "{{ (inputs.automerge || env.AUTOMERGE == 'true') && steps.cpr.outputs.pull-request-number && steps.check.outputs.conflict_message == '' &&
           steps.check.outputs.automergeable == 'true' }}" }}
         env:
           NUMBER: ${{ "{{ steps.cpr.outputs.pull-request-number }}" }}
           # Need PAT if want to start other actions.  Use GITHUB_TOKEN if not.
           GH_TOKEN: ${{ "{{ secrets.PAT }}" }}
-        run: |
+        run: >-
           gh pr merge -m --auto "$NUMBER"

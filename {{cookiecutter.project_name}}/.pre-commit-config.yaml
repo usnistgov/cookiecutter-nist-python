@@ -20,9 +20,12 @@ repos:
 
   # * sync dependencies
   - repo: https://github.com/wpk-nist-gov/sync-pre-commit-hooks
-    rev: "v0.10.0"
+    rev: "v0.12.1"
     hooks:
       - id: forbidden-files
+      - id: format-code-section-headers
+        types_or: [file, text]
+        files: \.(py|pyi|yaml|toml)$|\.?[jJ]ustfile$|.*\.just$
       - id: sync-pre-commit-deps
       - id: sync-uv-build-deps
       - id: sync-uv-dependency-groups
@@ -175,8 +178,7 @@ repos:
         name: cog-readme
         alias: cog
         entry: >-
-          uv run tools/cog_runner.py --format=prettier --lint=markdownlint-cli2
-          --
+          uv run tools/cog_runner.py --format=prettier --lint=markdownlint-cli2 --
         # if need package, prefix with uv run --no-dev --isolated
         language: python
         files: ^README\.md$
@@ -204,8 +206,7 @@ repos:
           - "-ignore"
           - 'specifying action "\$/.+" in invalid format because ref is missing'
           - "-ignore"
-          - 'reusable workflow call "\$/.+" at "uses" is not following the
-            format'
+          - 'reusable workflow call "\$/.+" at "uses" is not following the format'
         language: golang # means renovate will also update `additional_dependencies`
         additional_dependencies:
           # actionlint has a shellcheck integration which extracts shell scripts in `run:` steps from GitHub Actions
@@ -223,7 +224,7 @@ repos:
       - id: zizmor
         alias: actions
 
-  # {%- if cookiecutter.use_jupyter %} * Notebook specific --------------------------------------------------------
+  # {%- if cookiecutter.use_jupyter %} * Notebook specific ------------------------------------------------------------------------------------------------
   # * Strip out metadata from notebooks
   - repo: https://github.com/kynan/nbstripout
     rev: "0.9.1"
@@ -272,4 +273,4 @@ repos:
         files: ^docs/examples/.*\.md$
         pass_filenames: false
 
-  # {% endif %} * Other tools --------------------------------------------------------------
+  #{% endif %} * Other tools ------------------------------------------------------------------------------------------------------
