@@ -13,7 +13,7 @@ from __future__ import annotations
 import logging
 import shlex
 import subprocess
-import tomllib
+import tomllib  # deptry: ignore[DEP001]
 from argparse import ArgumentParser
 from dataclasses import dataclass
 from functools import lru_cache
