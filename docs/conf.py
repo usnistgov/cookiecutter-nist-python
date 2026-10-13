@@ -19,10 +19,9 @@
 """Build docs."""
 # ruff:file-ignore[implicit-namespace-package, commented-out-code]
 
+import tomllib
 from importlib.util import find_spec
 from pathlib import Path
-
-import tomllib
 
 # -- General configuration ---------------------------------------------
 

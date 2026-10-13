@@ -82,7 +82,7 @@ test-extras = [
     "cookiecutter",
     "copier>=9.18.2",
     # needed for copier/cookie compat
-    "copier-template-extensions>=0.3.3", #  sync-pyproject-min-versions: ignore
+    "copier-template-extensions>=0.3.4",
 ]
 typecheck-runner = [ "typecheck-runner>=0.2.0; python_version>'3.9'" ]
 
@@ -439,7 +439,7 @@ python = "all"
 pip-deps = [
     # these used solely for specking tools to be run via uvx ...
     "conda-lock>=4.0.2",
-    "copier-template-extensions>=0.3.3", #  sync-pyproject-min-versions: ignore
+    "copier-template-extensions>=0.3.4",
     "copier>=9.18.2",
     "grayskull>=3.2.0",
     "prek>=0.5.5",
