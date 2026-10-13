@@ -160,7 +160,7 @@ repos:
         args: [--locked]
       - id: pip-compile
         alias: requirements
-        entry: python tools/uv_locker.py
+        entry: uv run tools/uv_locker.py
         pass_filenames: true
         files: ^requirements/[^/]*\.txt$|^tools/*\.py$
 
