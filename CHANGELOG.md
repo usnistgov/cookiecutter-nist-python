@@ -5,6 +5,18 @@
 
 Changelog for `cookiecutter-nist-python`
 
+## 0.14.4
+
+Released on 2026-10-13.
+
+### Bug fixes
+
+- fix: better file formatting ([#391](https://github.com/usnistgov/cookiecutter-nist-python/pull/391))
+
+### Contributors
+
+- [@wpk-nist-gov](https://github.com/wpk-nist-gov)
+
 ## 0.14.3
 
 Released on 2026-08-28.
