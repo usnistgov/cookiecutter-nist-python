@@ -20,12 +20,14 @@ repos:
 
   # * sync dependencies
   - repo: https://github.com/wpk-nist-gov/sync-pre-commit-hooks
-    rev: "v0.12.1"
+    rev: "v0.12.2"
     hooks:
       - id: forbidden-files
       - id: format-code-section-headers
         types_or: [file, text]
         files: \.(py|pyi|yaml|toml)$|\.?[jJ]ustfile$|.*\.just$
+        args:
+          - "--max-line-length=100"
       - id: sync-pre-commit-deps
       - id: sync-uv-dependency-groups
 
@@ -40,10 +42,11 @@ repos:
         files: |
           (?x)^({{cookiecutter.project_name}}/)?
           (
-            pyproject\.toml|
-            requirements/lock/uvx-tools\.txt|
-            noxfile\.py|
-            ^tools/.*\.py
+            pyproject\.toml
+            |requirements/lock/uvx-tools\.txt
+            |noxfile\.py
+            |^tools/.*\.py
+            |
           )$
         args:
           - "--requirements=requirements/lock/uvx-tools.txt"
@@ -241,7 +244,7 @@ repos:
         exclude: *exclude_template
         alias: actions
 
-  # * Other tools ------------------------------------------------------------------------------------------------------
+  # * Other tools ----------------------------------------------------------------------------------
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.11.0.1-1
     hooks:
