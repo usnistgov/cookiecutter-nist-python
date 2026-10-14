@@ -133,7 +133,7 @@ test-notebook = [
 {%- endif %}
 typecheck-runner = [ "typecheck-runner>=0.2.0; python_version>'3.9'" ]
 
-# * uv -----------------------------------------------------------------------------------------------------------------
+# * uv ---------------------------------------------------------------------------------------------
 [tool.uv]
 required-version = ">=0.11.8"
 default-groups = [ "dev" ]
@@ -159,7 +159,7 @@ notebook.requires-python = ">=3.14"
 {%- endif %}
 nox.requires-python = ">=3.14"
 
-# * ruff ---------------------------------------------------------------------------------------------------------------
+# * ruff -------------------------------------------------------------------------------------------
 [tool.ruff]
 extend-include = [
     "*.ipynb",
@@ -235,7 +235,7 @@ pylint.max-public-methods = 30
 preview = true
 ruff.strictly-empty-init-modules = false
 
-# * Checks -------------------------------------------------------------------------------------------------------------
+# * Checks -----------------------------------------------------------------------------------------
 [tool.repo-review]
 ignore = [
     "NOX103", # I prefer using "nox.options.sessions"
@@ -296,7 +296,7 @@ CPY = "CPY"
 check-file = false
 {%- endif %}
 
-# * typecheck ----------------------------------------------------------------------------------------------------------
+# * typecheck --------------------------------------------------------------------------------------
 [tool.mypy]
 files = [
     "noxfile.py",
@@ -429,7 +429,7 @@ possibly-unresolved-reference = "error"
 unsupported-dynamic-base = "error"
 unused-ignore-comment = "error"
 
-# * Testing ------------------------------------------------------------------------------------------------------------
+# * Testing ----------------------------------------------------------------------------------------
 [tool.pytest.ini_options]
 minversion = "8"
 testpaths = [
@@ -480,7 +480,7 @@ report.show_missing = true
 [tool.commitizen]
 use_shortcuts = true
 
-# * Dependency creation ------------------------------------------------------------------------------------------------
+# * Dependency creation ----------------------------------------------------------------------------
 [tool.pyproject2conda]
 template-python = "requirements/py{py}-{env}"
 template = "requirements/{env}"
@@ -558,7 +558,7 @@ options = [
     "--universal",
 ]
 
-# * Other tools --------------------------------------------------------------------------------------------------------
+# * Other tools ------------------------------------------------------------------------------------
 [tool.rooster]
 changelog_contributors = true
 major-labels = [ "breaking" ]

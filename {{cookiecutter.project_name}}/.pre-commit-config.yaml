@@ -20,22 +20,24 @@ repos:
 
   # * sync dependencies
   - repo: https://github.com/wpk-nist-gov/sync-pre-commit-hooks
-    rev: "v0.12.1"
+    rev: "v0.12.2"
     hooks:
       - id: forbidden-files
       - id: format-code-section-headers
         types_or: [file, text]
         files: \.(py|pyi|yaml|toml)$|\.?[jJ]ustfile$|.*\.just$
+        args:
+          - "--max-line-length=100"
       - id: sync-pre-commit-deps
       - id: sync-uv-build-deps
       - id: sync-uv-dependency-groups
       - id: sync-pyproject-min-versions
         files: |
           (?x)^(
-            pyproject\.toml|
-            requirements/lock/uvx-tools\.txt|
-            noxfile\.py|
-            ^tools/.*\.py
+            pyproject\.toml
+            |requirements/lock/uvx-tools\.txt
+            |noxfile\.py
+            |^tools/.*\.py
           )$
         args:
           - "--requirements=requirements/lock/uvx-tools.txt"
@@ -224,7 +226,7 @@ repos:
       - id: zizmor
         alias: actions
 
-  # {%- if cookiecutter.use_jupyter %} * Notebook specific ------------------------------------------------------------------------------------------------
+  # {%- if cookiecutter.use_jupyter %} * Notebook specific ----------------------------------------------------------------------------
   # * Strip out metadata from notebooks
   - repo: https://github.com/kynan/nbstripout
     rev: "0.9.1"
@@ -273,4 +275,4 @@ repos:
         files: ^docs/examples/.*\.md$
         pass_filenames: false
 
-  #{% endif %} * Other tools ------------------------------------------------------------------------------------------------------
+  #{% endif %} * Other tools ----------------------------------------------------------------------------------
