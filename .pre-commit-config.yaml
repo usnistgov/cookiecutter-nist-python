@@ -42,10 +42,11 @@ repos:
         files: |
           (?x)^({{cookiecutter.project_name}}/)?
           (
-            pyproject\.toml|
-            requirements/lock/uvx-tools\.txt|
-            noxfile\.py|
-            ^tools/.*\.py
+            pyproject\.toml
+            |requirements/lock/uvx-tools\.txt
+            |noxfile\.py
+            |^tools/.*\.py
+            |
           )$
         args:
           - "--requirements=requirements/lock/uvx-tools.txt"
