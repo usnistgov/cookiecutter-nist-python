@@ -157,7 +157,7 @@ repos:
   # * Spelling
   # ** typos
   - repo: https://github.com/adhtruong/mirrors-typos
-    rev: "v1.50.3"
+    rev: "v1.51.1"
     hooks:
       - id: typos
         exclude_types: [jupyter]
@@ -174,7 +174,7 @@ repos:
           - "--custom-command=prek run pyproject2conda-project --all-files"
   # ** uv
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: "0.12.23"
+    rev: "0.12.24"
     hooks:
       - id: uv-lock
         alias: requirements
@@ -186,7 +186,7 @@ repos:
 
   # * Commit message
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: "v4.19.1"
+    rev: "v4.19.2"
     hooks:
       - id: commitizen
         stages: [commit-msg]
