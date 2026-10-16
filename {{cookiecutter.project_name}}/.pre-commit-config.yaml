@@ -224,6 +224,7 @@ repos:
       # Run the linter.
       - id: zizmor
         alias: actions
+        args: [--pedantic]
 
   # {%- if cookiecutter.use_jupyter %} * Notebook specific ----------------------------------------------------------------------------
   # * Strip out metadata from notebooks
