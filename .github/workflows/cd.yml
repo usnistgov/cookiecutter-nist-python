@@ -12,17 +12,19 @@ on:
     types:
       - published
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
 env:
   FORCE_COLOR: "3"
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   docs:
     permissions:
-      contents: write
+      contents: write # required for update/download
     uses: $/.github/workflows/docs.yml
     with:
       deploy: ${{ (github.event_name == 'release' && github.event.action == 'published') || (github.event_name == 'workflow_dispatch' && inputs.deploy) }}

@@ -242,6 +242,7 @@ repos:
       - id: zizmor
         exclude: *exclude_template
         alias: actions
+        args: [--pedantic]
 
   # * Other tools ----------------------------------------------------------------------------------
   - repo: https://github.com/shellcheck-py/shellcheck-py
