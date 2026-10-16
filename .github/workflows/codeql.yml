@@ -13,14 +13,23 @@ on:
     - cron: "19 12 * * 5"
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+env:
+  FORCE_COLOR: "3"
+
 jobs:
   analyze:
     name: Analyze (${{ matrix.language }})
     runs-on: ubuntu-latest
     permissions:
-      actions: read
-      contents: read
-      security-events: write
+      actions: read # for action
+      contents: read # for action
+      security-events: write # for action
 
     strategy:
       fail-fast: false
