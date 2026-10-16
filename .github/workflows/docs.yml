@@ -31,8 +31,7 @@ concurrency:
   group: ${{ github.workflow }}-docs-${{ github.event.number || github.ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: read
+permissions: {}
 
 env:
   FORCE_COLOR: "3"
