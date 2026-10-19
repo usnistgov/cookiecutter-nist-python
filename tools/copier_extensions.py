@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 
-import datetime
+import datetime as dt
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any, override
 
@@ -60,7 +60,7 @@ class CookiecutterContext(SmartDict):
 
 @CookiecutterContext.register
 def __year(_: Any) -> str:
-    return str(datetime.datetime.now(tz=None).year)  # ruff:ignore[call-datetime-now-without-tzinfo]
+    return str(dt.dt.now(tz=None).year)
 
 
 @CookiecutterContext.register
