@@ -11,6 +11,8 @@ ci:
 default_install_hook_types:
   - pre-commit
   - commit-msg
+default_language_version:
+  python: "3.14"
 repos:
   # * meta hooks
   # - repo: meta
