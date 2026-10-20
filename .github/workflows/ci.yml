@@ -204,6 +204,7 @@ jobs:
         env:
           python_version: ${{ matrix.python-version }}
           markers: ${{ matrix.markers }}
+          # UV_PYTHON: ${{ needs.get-parameters.outputs.default-python-version }}
         run: >-
           $NOX_COMMAND -s test-"$python_version" -- ++no-cov ++test-options -m \'"$markers"\'
         shell: bash

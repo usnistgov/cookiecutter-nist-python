@@ -464,7 +464,7 @@ def uvx_run(
     session: Session,
     *args: str | PathLike[str],
     locked: bool = True,
-    python_version: str | None = "default",
+    python_version: str | None = None,
     **kwargs: Any,
 ) -> Any:
     """Run command using uvx"""
@@ -484,7 +484,7 @@ def pre_commit_run(
     session: Session,
     *args: str | PathLike[str],
     use_prek: bool = True,
-    python_version: str | None = "default",
+    python_version: str | None = None,
     **kwargs: Any,
 ) -> Any:
     """Run pre-commit via uvx."""
@@ -901,9 +901,7 @@ def conda_recipe(
     """Run grayskull to create recipe."""
     commands = opts.conda_recipe or ["recipe"]
 
-    run = partial(
-        uvx_run, session, external=True, python_version=PYTHON_DEFAULT_VERSION
-    )
+    run = partial(uvx_run, session, external=True)
 
     if not (sdist_path := opts.conda_recipe_sdist_path):
         sdist_path = PACKAGE_NAME
