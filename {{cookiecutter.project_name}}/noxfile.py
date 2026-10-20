@@ -802,9 +802,8 @@ def lint(
     `nox -s lint -- --lint-run "pre-commit run --hook-stage manual --all-files`
     """
     import os
+
     session.log(f"UV_PYTHON: {os.getenv('UV_PYTHON')}")
-
-
     pre_commit_run(
         session,
         "--all-files",
