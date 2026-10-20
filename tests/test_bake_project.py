@@ -147,7 +147,6 @@ def test_baked_lint(example_path: Path, nox_opts: str, nox_session_opts: str) ->
         run_inside_dir(
             f"nox {nox_opts} -s lint -- {nox_session_opts} ++lint-options --stage=manual --skip=typecheck --skip check-hooks-apply --skip check-useless-excludes",
             example_path,
-            env={"UV_PYTHON": get_python_version()},
         )
 
 

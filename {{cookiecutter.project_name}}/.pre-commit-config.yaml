@@ -11,6 +11,8 @@ ci:
 default_install_hook_types:
   - pre-commit
   - commit-msg
+default_env:
+  UV_PYTHON: "3.14"
 repos:
   # * meta hooks
   - repo: meta
