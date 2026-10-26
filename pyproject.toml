@@ -84,7 +84,7 @@ test-extras = [
     # needed for copier/cookie compat
     "copier-template-extensions>=0.3.4",
 ]
-typecheck-runner = [ "typecheck-runner>=0.2.0; python_version>'3.9'" ]
+typecheck-runner = [ "typecheck-runner>=0.2.2; python_version>'3.9'" ]
 
 # * uv ---------------------------------------------------------------------------------------------
 [tool.uv]
@@ -448,7 +448,7 @@ pip-deps = [
     "rooster>=0.1.1",
     "rust-just>=1.59.0",
     "twine>=7.0.0",
-    "ty>=0.0.88",
+    "ty>=0.0.89",
     # include here to sync deps with tools/sync_pyproject_min_version.py
     "cogapp>=3.6.0",
     "cruft>=2.16.0",
