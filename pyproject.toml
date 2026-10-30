@@ -448,7 +448,7 @@ pip-deps = [
     "rooster>=0.1.1",
     "rust-just>=1.59.0",
     "twine>=7.0.0",
-    "ty>=0.0.90",
+    "ty>=0.0.91",
     # include here to sync deps with tools/sync_pyproject_min_version.py
     "cogapp>=3.6.0",
     "cruft>=2.16.0",
