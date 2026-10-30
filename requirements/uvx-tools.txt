@@ -25,5 +25,5 @@ requirements-parser>=0.13.1
 rooster>=0.1.1
 rust-just>=1.59.0
 twine>=7.0.0
-ty>=0.0.90
+ty>=0.0.91
 typecheck-runner>=0.2.2; python_version > "3.9"
