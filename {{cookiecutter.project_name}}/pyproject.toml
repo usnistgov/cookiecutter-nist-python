@@ -1,7 +1,7 @@
 [build-system]
 build-backend = "uv_build"
 requires = [
-    "uv-build>=0.13.5,<0.14.0",
+    "uv-build>=0.13.6,<0.14.0",
 ]
 
 [project]
@@ -520,13 +520,13 @@ pip-deps = [
     {%- if cookiecutter.use_jupyter %}
     "nbqa>=1.9.1",
     {%- endif %}
-    "prek>=0.5.9",
+    "prek>=0.5.10",
     "pyrefly>=1.4.0",
     "pyright>=1.1.414",
     "rooster>=0.1.1",
     "rust-just>=1.59.0",
     "twine>=7.0.0",
-    "ty>=0.0.92",
+    "ty>=0.0.93",
 ]
 groups = [
     "basedpyright",

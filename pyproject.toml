@@ -369,22 +369,30 @@ addopts = [
 ]
 # markers
 markers = [
-    "book: sphinx book theme",
+    # Group: cli
+    "argparse: Argparse cli",
     "click: Click cli",
+    "nocli: no command-line interface",
+    "typer: Typer template",
+    # Group: theme
+    "book: sphinx book theme",
+    "furo: furo theme",
+    # Group: template engine
     "cookie: cookiecutter",
     "copier: run copier tests",
+    # Group: jupyter
+    "jupyter: jupyter support",
+    "nojupyter: no jupyter support",
+    # Group: Commands
     "create: simple test on path creation",
     "default: default template",
     "disable: test that has been disabled by default",
     "docs: make docs",
-    "furo: furo theme",
     "lint: run linting",
     "longname: a project with a long name",
-    "nocli: no command-line interface",
     "notebook: run test on notebook",
     "test: run tests",
     "typecheck: run type checkers",
-    "typer: Typer template",
     "version: update-version-scm (disabled by default)",
 ]
 # options
@@ -442,13 +450,13 @@ pip-deps = [
     "copier-template-extensions>=0.3.4",
     "copier>=9.19.1",
     "grayskull>=3.2.0",
-    "prek>=0.5.9",
+    "prek>=0.5.10",
     "pyrefly>=1.4.0",
     "pyright>=1.1.414",
     "rooster>=0.1.1",
     "rust-just>=1.59.0",
     "twine>=7.0.0",
-    "ty>=0.0.92",
+    "ty>=0.0.93",
     # include here to sync deps with tools/sync_pyproject_min_version.py
     "cogapp>=3.6.0",
     "cruft>=2.16.0",
