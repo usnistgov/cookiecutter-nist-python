@@ -508,7 +508,7 @@ skip-package = true
 [tool.pyproject2conda.envs.uvx-tools]
 pip-deps = [
     # these used solely for specking tools to be run via uvx ...
-    "conda-lock>=4.0.5",
+    "conda-lock>=4.1.0",
     {%- if cookiecutter.__copier %}
     "copier-template-extensions>=0.3.3", #  sync-pyproject-min-versions: ignore
     "copier>=9.19.1",
@@ -518,15 +518,15 @@ pip-deps = [
     {%- endif %}
     "grayskull>=3.2.0",
     {%- if cookiecutter.use_jupyter %}
-    "nbqa>=1.9.1",
+    "nbqa>=1.10.0",
     {%- endif %}
-    "prek>=0.5.10",
+    "prek>=0.5.11",
     "pyrefly>=1.4.1",
     "pyright>=1.1.414",
     "rooster>=0.1.1",
     "rust-just>=1.59.0",
     "twine>=7.0.0",
-    "ty>=0.0.98",
+    "ty>=0.0.100",
 ]
 groups = [
     "basedpyright",
