@@ -80,7 +80,7 @@ repos:
       - id: pyproject-fmt
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: "2026.11.10"
+    rev: "2026.11.12"
     hooks:
       - id: validate-pyproject
         name: validate-pyproject-schema-store
@@ -100,7 +100,7 @@ repos:
 
   # * Prettier
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: "v3.9.10"
+    rev: "v3.10.1"
     hooks:
       - id: prettier
         alias: markdownlint
@@ -111,7 +111,7 @@ repos:
 
   # * Markdown
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: "v0.24.0"
+    rev: "v0.24.1"
     hooks:
       - id: markdownlint-cli2
         alias: markdownlint
@@ -125,7 +125,7 @@ repos:
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.17.4"
+    rev: "v0.17.5"
     hooks:
       - id: ruff-check
         alias: ruff
@@ -144,7 +144,7 @@ repos:
   # * Spelling
   # ** typos
   - repo: https://github.com/adhtruong/mirrors-typos
-    rev: "v1.52.0"
+    rev: "v1.52.2"
     hooks:
       - id: typos
         exclude_types: [jupyter]
@@ -252,7 +252,7 @@ repos:
         name: nbqa-typos
         alias: typos
         additional_dependencies: &typos-deps
-          - typos==1.52.0
+          - typos==1.52.2
         args:
           - typos
           - --force-exclude
