@@ -94,7 +94,7 @@ repos:
         exclude: *exclude_template
   # ** validate (schema-store)
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: "2026.11.10"
+    rev: "2026.11.12"
     hooks:
       - id: validate-pyproject
         name: validate-pyproject-schema-store
@@ -114,7 +114,7 @@ repos:
 
   # * Prettier
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: "v3.9.10"
+    rev: "v3.10.1"
     hooks:
       - id: prettier
         exclude: *exclude_template
@@ -126,7 +126,7 @@ repos:
 
   # * Markdown
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: "v0.24.0"
+    rev: "v0.24.1"
     hooks:
       - id: markdownlint-cli2
         exclude: *exclude_template
@@ -142,7 +142,7 @@ repos:
 
   # * Linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.17.4"
+    rev: "v0.17.5"
     hooks:
       - id: ruff-check
         exclude: *exclude_template
@@ -163,7 +163,7 @@ repos:
   # * Spelling
   # ** typos
   - repo: https://github.com/adhtruong/mirrors-typos
-    rev: "v1.52.0"
+    rev: "v1.52.2"
     hooks:
       - id: typos
         exclude_types: [jupyter]

@@ -523,7 +523,7 @@ pip-deps = [
     "rooster>=0.1.1",
     "rust-just>=1.59.0",
     "twine>=7.0.0",
-    "ty>=0.0.100",
+    "ty>=0.0.101",
 ]
 groups = [
     "basedpyright",
