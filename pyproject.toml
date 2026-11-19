@@ -92,8 +92,6 @@ required-version = ">=0.11.8"
 default-groups = [ "dev" ]
 fork-strategy = "requires-python"
 exclude-newer = "7 days"
-# Needed until prek>=0.5.0 is 7 days old
-exclude-newer-package = { prek = "0 days" }
 managed = true
 pip.annotation-style = "line"
 pip.generate-hashes = true
@@ -446,7 +444,7 @@ python = "all"
 [tool.pyproject2conda.envs.uvx-tools]
 pip-deps = [
     # these used solely for specking tools to be run via uvx ...
-    "conda-lock>=4.0.5",
+    "conda-lock>=4.1.0",
     "copier-template-extensions>=0.3.4",
     "copier>=9.19.1",
     "grayskull>=3.2.0",
@@ -456,11 +454,11 @@ pip-deps = [
     "rooster>=0.1.1",
     "rust-just>=1.59.0",
     "twine>=7.0.0",
-    "ty>=0.0.98",
+    "ty>=0.0.100",
     # include here to sync deps with tools/sync_pyproject_min_version.py
     "cogapp>=3.6.0",
     "cruft>=2.16.0",
-    "nbqa>=1.9.1",
+    "nbqa>=1.10.0",
     "packaging>=26.3",
     "requirements-parser>=0.13.1",
 ]

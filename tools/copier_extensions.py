@@ -30,7 +30,7 @@ class SmartDict(Mapping[Any, Any]):
 
     @classmethod
     def register(cls, func: Func) -> Func:  # ruff: ignore[undocumented-public-method]
-        cls._computed_keys[func.__name__] = func  # ty: ignore[unresolved-attribute]
+        cls._computed_keys[func.__name__] = func  # ty: ignore[missing-attribute]
         return func
 
     @override
