@@ -23,7 +23,7 @@ class SmartDict(Mapping[Any, Any]):
     _computed_keys: dict[Any, Any]
 
     def __init_subclass__(cls) -> None:
-        cls._computed_keys = {}
+        cls._computed_keys = {}  # pyrefly: ignore[instance-var-assign]
 
     def __init__(self, init: Mapping[str, Any]) -> None:
         self._init = init

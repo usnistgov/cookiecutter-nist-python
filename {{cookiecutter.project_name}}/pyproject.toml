@@ -518,12 +518,12 @@ pip-deps = [
     "nbqa>=1.10.0",
     {%- endif %}
     "prek>=0.5.11",
-    "pyrefly>=1.4.1",
+    "pyrefly>=1.5.0",
     "pyright>=1.1.414",
     "rooster>=0.1.1",
     "rust-just>=1.59.0",
     "twine>=7.0.0",
-    "ty>=0.0.105",
+    "ty>=0.0.107",
 ]
 groups = [
     "basedpyright",
